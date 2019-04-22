@@ -436,7 +436,7 @@
                 row_count = result.totalCount;
                 if (row_count != 0) {
                     $.each(JSON.parse(product_Data), function (a, b) {
-                        dataArry.push(b.PriDate); //PriDate formatterTime(b.PriDate, "YYYY-MM-DD")
+                        dataArry.push(getdatefroment(b.PriDate)); //PriDate formatterTime(b.PriDate, "YYYY-MM-DD")
                         priceArry.push(parseInt(b.Price));
                     });
                 }

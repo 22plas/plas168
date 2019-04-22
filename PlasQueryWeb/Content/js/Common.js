@@ -30,21 +30,19 @@ function getQueryString(name) {
     return "";
 } 
 
-//修改时间格式
-function formatterTime(value, formatStr) {
+//获取时间年月日
+function getdatefroment(strobj) {
+    var str = strobj;
+    // 转换日期格式
+    str = str.replace(/-/g, '/'); // "2010/08/01";
+    // 创建日期对象
+    var date = new Date(str);
+    // 没有格式化的功能，只能一个一个取
+    str = date.getFullYear() + '-'
+        // 因为js里month从0开始，所以要加1
+        + (parseInt(date.getMonth()) + 1) + '-'
+        + date.getDate();
 
-    //YYYY-MM-DD HH:mm:ss
+    return str;
 
-    formatStr = formatStr || "YYYY-MM-DD HH:mm:ss";
-
-    if (value) {
-        var s = value;
-        s = s.replace("/Date(", "").replace(")/", "");
-        var date = new Date(parseInt(s));
-        date = moment(date).format(formatStr);
-        return date;
-    }
-    else {
-        return value;
-    }
 }
