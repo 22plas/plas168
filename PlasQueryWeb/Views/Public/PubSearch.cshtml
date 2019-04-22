@@ -1,0 +1,35 @@
+﻿
+@{
+    Layout = null;
+}
+@{var hotProducts = ViewBag.HotList == null ? (new List<PlasModel.ProductViewModel>()) : (ViewBag.HotList as List<PlasModel.ProductViewModel>);}
+<div class="header-white">
+    <div class="logo">
+        <a href="/"> <img src="/Content/img/logo.png" alt="塑蚁网-全国最精准永久免费塑胶和助剂材料物性搜索网站" title="塑蚁网-全国最精准永久免费塑胶和助剂材料物性搜索网站"></a>
+    </div>
+    <div class="header-search-box">
+        <input type="text" class="search-input-orange" id="search_input_top" placeholder="请输入任意塑料类型、型号、厂家、性能、用途进行智能搜索"><span onclick="onSearch_Top_select();" class="fa fa-search search-icon search-icon-orange">搜索</span>
+        <div class="common-models">
+            常用型号：
+            @foreach (var item in hotProducts)
+            {
+                <span class="item"><a href="/PhysicalProducts/Detail/@(item.ProductGuid).html" target="_blank">@item.ProModel</a></span>
+            }
+            <!---<span class="item">VSTOUT@L13-PYX</span><span class="item">VSTOUT@L17-PYX</span>--->
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function onSearch_Top_select()
+    {
+        var keyword=$.trim($("#search_input_top").val());
+        if (keyword == "") {
+            alert("请输入任意塑料类型、型号、厂家、性能、用途!");
+            $("#search_input_top").focus();
+            return false;
+        }
+        else {
+            window.location.href = "/Product/Index?key=" + keyword;
+        }
+    }
+</script>

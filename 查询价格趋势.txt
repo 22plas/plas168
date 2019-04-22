@@ -1,0 +1,75 @@
+/*  
+价格趋势查询  
+黄远林  
+2019-4-19  
+--SmallClass='ABS' and Manufacturer='台湾台化' and Model='AG15A1'  
+*/  
+alter proc QueryPriceProc(  
+@pageIndex int,  
+@pageSize int,  
+@SmallClass nvarchar(200),  --分类
+@Manufacturer nvarchar(200),  --产地
+@Model nvarchar(200)  --型号
+)  
+as  
+
+begin
+
+declare @beginPage nvarchar(10)
+declare @endPage nvarchar(10)
+
+declare @sqlstr nvarchar(max)--sql字符串
+declare @sqlwhere nvarchar(max)--条件
+declare @sqlcount nvarchar(max)--统计
+
+
+set @beginPage=convert(int,(@pageIndex-1)*@pageSize)
+set @endPage=convert(int,@pageIndex*@pageSize)
+set @sqlwhere=''
+
+if (@SmallClass!='')
+set @sqlwhere+=' and b.SmallClass like ''%'+@SmallClass+'%'''
+
+if (@Manufacturer!='')
+set @sqlwhere+=' and b.ManuFacturer like ''%'+@Manufacturer+'%'''
+
+if (@Model!='')
+set @sqlwhere+=' and b.Model like ''%'+@Model+'%'''
+
+
+
+
+set @sqlstr='
+select * from ( 
+select b.*,row_number() over(order by PriDate desc)as rownum from (
+select SmallClass,ManuFacturer,Model,Max(PriDate) as MaxDate from Pri_DayAvgPrice group by SmallClass,ManuFacturer,Model
+) as a 
+inner join Pri_DayAvgPrice as b on 
+a.SmallClass=b.SmallClass 
+and a.ManuFacturer=b.ManuFacturer
+and a.Model=b.Model
+and b.PriDate=a.MaxDate
+'+ @sqlwhere +'
+) as t where t.rownum  between '+@beginPage+' and '+@endPage
+
+
+--print @sqlstr
+
+set @sqlcount='
+select Count(1) as totalcount from (
+select SmallClass,ManuFacturer,Model,Max(PriDate) as MaxDate from Pri_DayAvgPrice group by SmallClass,ManuFacturer,Model
+) as a 
+inner join Pri_DayAvgPrice as b on 
+a.SmallClass=b.SmallClass 
+and a.ManuFacturer=b.ManuFacturer
+and a.Model=b.Model
+and b.PriDate=a.MaxDate'+@sqlwhere
+  
+  exec (@sqlstr)
+  exec (@sqlcount)
+  
+end 
+  
+  
+
+

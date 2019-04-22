@@ -1,0 +1,131 @@
+﻿@{ViewBag.Title = "塑料和弹性体-产品详情"; }
+@{
+    ViewBag.HideSearch = true;//隐藏搜索框
+    var PhysicalData = ViewBag.PhysicalInfo == null ? new System.Data.DataTable() : ViewBag.PhysicalInfo as System.Data.DataTable;
+    var liveds = (ViewBag.LiveProdcut) as System.Data.DataSet;//第一表：同一个厂家，第二表：感兴趣的产品
+}
+<style type="text/css">
+    .item-left {
+        width: 78%;
+        padding: 15px 10px;
+        box-sizing: border-box;
+    }
+
+    .icon-cycle-box {
+        display: inline-block;
+        border: 2px solid orange;
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        border-radius: 12px;
+        text-align: center;
+        color: red;
+    }
+
+        .icon-cycle-box > .fa {
+            line-height: 16px;
+            font-size: 12px;
+        }
+
+    .l, .f-l {
+        float: left !important;
+        _display: inline;
+        font-size: 13px;
+    }
+
+    .r, .f-r {
+        float: right !important;
+        _display: inline;
+    }
+
+    .bold {
+        font-weight: bold;
+        padding: 8px 0;
+        border-bottom: 2px solid orange !important;
+        color: #009887 !important;
+        background: #e1e1e1;
+    }
+</style>
+
+@Html.Partial("~/Views/Public/SubPageNav.cshtml")
+
+@{Html.RenderAction("PubSearch", "Public");}
+
+<div class="marginTop" style="padding: 15px 2.5%;box-sizing: border-box;font-size: 14px;">
+    <div class="item-left">
+        <p style="color:#de5f02;font-size: 20px;margin-bottom: 15px;">@ViewBag.ProModel 物性表</p>
+        <table class="table-list" border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+                @foreach (System.Data.DataRow dr in PhysicalData.Rows)
+                {
+                    <tr class="@(dr["lev"].ToString() == "1" ? "bold" : "pl-10")">
+                        <td>
+                            @if (string.IsNullOrWhiteSpace(dr["Attribute2"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
+                            {
+                                <div class="f-l" style="width:100%;">@dr["Attribute1"].ToString()</div>
+                            }
+                            else if (string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
+                            {
+                                <div class="f-l" style="width:25%;">@dr["Attribute1"].ToString()</div>
+                                <div class="f-l" style="width: 75%;">@dr["Attribute2"].ToString()</div>
+                            }
+                            else if (string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
+                            {
+                                <div class="f-l" style="width: 25%;">@dr["Attribute1"].ToString()</div>
+                                <div class="f-l" style="width: 25%;">@dr["Attribute2"].ToString()</div>
+                                <div class="f-l" style="width: 50%;">@dr["Attribute3"].ToString()</div>
+                            }
+                            else
+                            {
+                                int paddleft = 0;
+                                int.TryParse(dr["lev"].ToString(), out paddleft);
+                                paddleft = paddleft * 10;
+                                <div class="f-l" style="width:25%;"><span style="margin-right:5px; padding-left:@(paddleft)px;">@dr["Attribute1"].ToString()</span></div>
+                                <div class="f-l" style="width:25%;">
+                                    @dr["Attribute2"].ToString()
+                                </div>
+                                <div class="f-l" style="width:25%;">@dr["Attribute3"].ToString()</div>
+                                <div class="f-l" style="width:25%;">
+                                    @dr["Attribute4"].ToString()
+                                </div>
+
+                            }
+                            <div class="clear"></div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+
+    </div>
+    <div class="item-right" style="width: 18%;text-align: left;">
+        <div class="small-list">
+            <p class="title">猜你喜欢的产品</p>
+            <ul class="ul-list">
+                @for (var i = 0; i < liveds.Tables[1].Rows.Count; i++)
+                {
+                    <li title="@liveds.Tables[1].Rows[i]["ProModel"].ToString()"><span class="fa fa-caret-right"></span><a href="/PhysicalProducts/Detail/@(liveds.Tables[1].Rows[i]["ProductGuid"].ToString()).html" target="_blank">@liveds.Tables[1].Rows[i]["ProModel"].ToString()</a></li>
+                }
+            </ul>
+        </div>
+        <div class="small-list">
+            <p class="title">同厂家产品</p>
+            <ul class="ul-list">
+                @for (var i = 0; i < liveds.Tables[0].Rows.Count; i++)
+                {
+                    <li title="@liveds.Tables[0].Rows[i]["ProModel"].ToString()"><span class="fa fa-caret-right"></span><a href="/PhysicalProducts/Detail/@(liveds.Tables[0].Rows[i]["ProductGuid"].ToString()).html" target="_blank">@liveds.Tables[0].Rows[i]["ProModel"].ToString()</a></li>
+                }
+
+
+            </ul>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $(".navBox").find(".nav").find("li").eq(2).children("a").addClass("active");
+    })
+</script>
+@Html.Partial("~/Views/Public/Bottom.cshtml")

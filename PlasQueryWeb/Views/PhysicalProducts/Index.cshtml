@@ -1,0 +1,252 @@
+﻿@{ViewBag.Title = "塑料和弹性体-超级搜索"; }
+@{
+    var type = (ViewBag.ProductType) as System.Data.DataTable;
+    var te = (ViewBag.texing) as System.Data.DataTable;
+    //zuran company jiagong used addliao tianjiaji
+
+    var zuran = (ViewBag.zuran) as System.Data.DataTable;
+    var company = (ViewBag.company) as System.Data.DataTable;
+    var jiagong = (ViewBag.jiagong) as System.Data.DataTable;
+    var used = (ViewBag.used) as System.Data.DataTable;
+    var addliao = (ViewBag.addliao) as System.Data.DataTable;
+    var tianjiaji = (ViewBag.tianjiaji) as System.Data.DataTable;
+    //属性
+    var attrs = (ViewBag.attr) as System.Data.DataTable;
+    var count = 0;
+    var countone = 0;
+}
+<style type="text/css">
+    .table-contrast, .ul-lst {
+        background-color: #fff;
+    }
+
+        .table-contrast th {
+            background-color: #f57202;
+            color: #fff;
+        }
+</style>
+<link href="~/Content/css/Pagination.css" rel="stylesheet" />
+<script src="~/Content/layui/lay/modules/layer.js" type="text/javascript"></script>
+<script src="~/Scripts/jquery.pagination.js" type="text/javascript"></script>
+@Html.Partial("~/Views/Public/SubPageNav.cshtml")
+
+@{Html.RenderAction("PubSearch", "Public");}
+
+<div class="search-item-box">
+    <div class="search-item">
+        <div class="search-item-type">产品种类：</div>
+        <div class="search-item-content">
+            <ul class="search-item-content" data-type="1" data-typename="产品种类">
+                <li data-guid="" data-value="0" class="active">全部</li>
+                @for (var i = 0; i < type.Rows.Count; i++)
+                {
+                    <li data-guid="" data-value="@type.Rows[i]["Name"].ToString()">@type.Rows[i]["Name"].ToString()</li>
+                }
+            </ul>
+        </div>
+        <div class="search-item-btn" data-type="1" data-typename="产品种类">更多<span class="fa fa-angle-down"></span></div>
+    </div>
+    <div class="search-item">
+        <div class="search-item-type">产品特性：</div>
+        <div class="search-item-content">
+            <ul class="search-item-content" data-type="2" data-typename="产品特性">
+                <li data-guid="" data-value="0" class="active">全部</li>
+                @for (var i = 0; i < te.Rows.Count; i++)
+                {
+                    <li data-guid="" data-value="@te.Rows[i]["Name"].ToString()">@te.Rows[i]["Name"].ToString()</li>
+                }
+            </ul>
+
+        </div>
+        <div class="search-item-btn" data-type="2" data-typename="产品特性">更多<span class="fa fa-angle-down"></span></div>
+    </div>
+    <div class="search-item">
+        <div class="search-item-type">阻燃等级：</div>
+        <div class="search-item-content">
+            <ul class="search-item-content" data-type="3" data-typename="阻燃等级">
+                <li data-guid="" data-value="0" class="active">全部</li>
+                @for (var i = 0; i < zuran.Rows.Count; i++)
+                {
+                    <li data-guid="" data-value="@zuran.Rows[i]["Name"].ToString()">@zuran.Rows[i]["Name"].ToString()</li>
+                }
+            </ul>
+        </div>
+        <!--<div class="search-item-btn" data-type="3" data-typename="阻燃等级">更多<span class="fa fa-angle-down"></span></div>-->
+    </div>
+    <div class="search-item">
+        <div class="search-item-type">生产厂家：</div>
+        <div class="search-item-content" style="height: auto;">
+            <ul data-type="4" data-typename="生产厂家">
+                <li data-guid="" data-value="0" class="active">全部</li>
+                @for (var i = 0; i < company.Rows.Count; i++)
+                {
+                    <li data-guid="" data-value="@company.Rows[i]["Name"].ToString()">@company.Rows[i]["Name"].ToString()</li>
+                }
+            </ul>
+        </div>
+        <div class="search-item-btn" data-type="4" data-typename="生产厂家">更多<span class="fa fa-angle-down"></span></div>
+    </div>
+
+    <div class="search-item" name="AtrrNone" style="display:none;">
+        <div class="search-item-type">加工方法：</div>
+        <div class="search-item-content" style="height: auto;">
+            <ul data-type="5" data-typename="加工方法">
+                <li data-guid="" data-value="0" class="active">全部</li>
+                @for (var i = 0; i < jiagong.Rows.Count; i++)
+                {
+                    <li data-guid="" data-value="@jiagong.Rows[i]["Name"].ToString()">@jiagong.Rows[i]["Name"].ToString()</li>
+                }
+            </ul>
+        </div>
+        <div class="search-item-btn" data-type="5" data-typename="加工方法">更多<span class="fa fa-angle-down"></span></div>
+    </div>
+    <div class="search-item" name="AtrrNone" style="display:none;">
+        <div class="search-item-type">产品用途：</div>
+        <div class="search-item-content" style="height: auto;">
+            <ul data-type="7" data-typename="产品用途">
+                <li data-guid="" data-value="0" class="active">全部</li>
+                @for (var i = 0; i < used.Rows.Count; i++)
+                {
+                    <li data-guid="" data-value="@used.Rows[i]["Name"].ToString()">@used.Rows[i]["Name"].ToString()</li>
+                }
+
+            </ul>
+        </div>
+        <div class="search-item-btn" data-type="7" data-typename="产品用途">更多<span class="fa fa-angle-down"></span></div>
+    </div>
+    <div class="search-item" name="AtrrNone" style="display:none;">
+        <div class="search-item-type">填料/增强：</div>
+        <div class="search-item-content" style="height: auto;">
+            <ul data-type="8" data-typename="填料/增强">
+                <li data-guid="" data-value="0" class="active">全部</li>
+                @for (var i = 0; i < addliao.Rows.Count; i++)
+                {
+                    <li data-guid="" data-value="@addliao.Rows[i]["Name"].ToString()">@addliao.Rows[i]["Name"].ToString()</li>
+                }
+            </ul>
+        </div>
+        <div class="search-item-btn" data-type="8" data-typename="填料/增强">更多<span class="fa fa-angle-down"></span></div>
+    </div>
+    <div class="search-item" name="AtrrNone" style="display:none;">
+        <div class="search-item-type">添加剂：</div>
+        <div class="search-item-content" style="height: auto;">
+            <ul data-type="9" data-typename="添加剂">
+                <li data-guid="" data-value="0" class="active">全部</li>
+                @for (var i = 0; i < tianjiaji.Rows.Count; i++)
+                {
+                    <li data-guid="" data-value="@tianjiaji.Rows[i]["Name"].ToString()">@tianjiaji.Rows[i]["Name"].ToString()</li>
+                }
+            </ul>
+        </div>
+        <div class="search-item-btn" data-type="9" data-typename="添加剂">更多<span class="fa fa-angle-down"></span></div>
+    </div>
+    <div class="search-more-btn">
+        <span>点击查看更多查询条件 <span class="fa fa-angle-down"></span></span>
+    </div>
+</div>
+<div style="font-size: 14px;border-bottom: 1px solid #ddd;">
+    <div class="item-left" style="width: 23%;text-align: center;">
+        <p class="orange-title">选择查询功能</p>
+        @{
+            var dt2 = attrs.Select("ParentID=0");
+        }
+        <ul class="ul-lst orange-border">
+            @foreach (var item in dt2)
+            {
+                countone++;
+                <li class="@(countone == 1 ? "active" : "")" id="@item["ParentGuid"].ToString()">@item["FaceKey"].ToString()</li>
+            }
+        </ul>
+    </div>
+    <div class="item-right" style="width: 76%;padding-left: 0;margin-left: 0;">
+
+        @foreach (var item in dt2)
+        {
+            count++;
+            <table class="table-contrast @(count==1?"":"none")" id="Attr_@item["ParentGuid"].ToString()" style="margin-top:0px;" name="AttrRightList">
+                <thead>
+                    <tr>
+                        <th>@item["FaceKey"].ToString()</th>
+                        <th class="cell-4">@item["MinValueFaceKey"].ToString()</th>
+                        <th class="cell-4">@item["MaxValueFaceKey"].ToString()</th>
+                        <th class="cell-4">@item["UnitFaceKey"].ToString()</th>
+                        <th class="cell-4">@item["RangeFaceKey"].ToString()</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var ds = attrs.Select("ParentID=" + item["id"].ToString());
+                        var sammlds = 0;
+                    }
+                    @foreach (var sammll in ds)
+                    {
+                        sammlds++;
+                        <tr @(sammlds > 8 ? "name=samll_" + count + "" : "") class="@(sammlds>8?"none":"")">
+                            <td class="cell-title"><span name="FaceKey">@sammll["FaceKey"].ToString()</span></td>
+                            <td><input type="text" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" bigtypename="@item["FaceKey"].ToString()" smalltypename="@sammll["FaceKey"].ToString()" name="MinValue" class="input" /></td>
+                            <td><input type="text" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" name="MaxValue" class="input" /></td>
+                            <td>
+                                <select class="input" name="UnitFaceKey">
+                                    <option value="@sammll["UnitFaceKey"].ToString()">@sammll["UnitFaceKey"].ToString()</option>
+                                </select>
+                            </td>
+                            <td>@sammll["RangeFaceKey"].ToString()</td>
+                        </tr>
+                        if (sammlds == ds.Count() && sammlds > 8)
+                        {
+                            <tr>
+                                <td colspan="5" name="samllHit" number="@count" style="cursor:pointer">点击更多 ↓</td>
+                            </tr>
+                        }
+                    }
+
+
+                </tbody>
+            </table>
+        }
+    </div>
+    <p style="padding: 10px 20px;" id="selectCheckValue">
+        当前已选择条件：<span class="search_condition_wrap">
+            <!--<span class="search-select-item">film,PE/PCTFE<span class="fa fa-close" title="删除"></span></span>-->
+
+        </span>
+    </p>
+    <div style="padding: 0 20px;box-sizing: border-box;" id="QueryBtnSuper">
+        <p class="search-btn-screem"><span class="fa fa-search"></span>开始搜索</p>
+    </div>
+</div>
+<div class="search-content-box">
+    <div class="search-content-page">
+        共搜索到<span style="color: red;" id="records">0</span>条相关商品信息
+    </div>
+    <div class="search-content">
+        <table>
+            <thead>
+                <tr>
+                    <th>牌号</th>
+                    <th>厂商</th>
+                    <th>各类</th>
+                    <th>用途</th>
+                    <th>特性</th>
+                </tr>
+            </thead>
+            <tbody id="DataList">
+                <!--      <tr>
+                    <td>abceD@ff.com</td>
+                    <td>Ravago Manufactuing Americas,LLC</td>
+                    <td>ABS</td>
+                    <td>{ProUse}</td>
+                    <td>{Absdd Deee}</td>
+                </tr>--->
+                <tr>
+                    <td colspan="5" align="center" class='red'>请筛选您需要查询的数据！</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="black2" id="Pagination">
+</div>
+@Scripts.Render("~/PhysicalJS/BesJS")
+
+@Html.Partial("~/Views/Public/Bottom.cshtml")

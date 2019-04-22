@@ -1,0 +1,123 @@
+﻿
+@{
+    ViewBag.Title = "行情浏览记录";
+    Layout = "~/Views/Shared/MemberCenterShared.cshtml";
+}
+<div class="tpl-content-wrapper">
+    <div class="tpl-content-wrapper-bg">
+        <ol class="am-breadcrumb">
+            <li><a href="#" class="am-icon-home">首页</a></li>
+            <li>会员中心</li>
+            <li class="am-active">浏览记录</li>
+        </ol>
+        <div class="tpl-portlet-components">
+            <div class="portlet-title">
+                <div class="caption"><span class="am-icon-eye" style="margin-right: 3px;"></span>行情浏览记录</div>
+                <div class="tpl-portlet-input tpl-fz-ml">
+                    <div class="portlet-input input-small input-inline">
+                        <div class="input-icon right">
+                            <i class="am-icon-search"></i>
+                            <input type="text" class="form-control form-control-solid" placeholder="搜索...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tpl-block" style="padding-top: 0;">
+                <div class="am-g" style="border-bottom: 1px dashed #ddd;padding-top: 8px;padding-bottom: 8px;">
+                    <div class="am-u-sm-12 am-u-md-3">
+                        <div class="am-btn-toolbar" style="margin-top: 2px;">
+                            <div class="am-btn-group am-btn-group-xs">
+                                <button type="button" class="am-btn am-btn-default am-btn-success" style="margin-right: 5px;"><span class="am-icon-star"></span>收藏</button>
+                                <button type="button" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删除</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-9">
+                        <div class="am-form-group" style="margin-bottom: 0;float: right;display: flex;">
+                            <select data-am-selected="{btnSize: 'sm'}">
+                                <option value="option1">按日期查询</option>
+                            </select>
+                            <input type="text" class="am-form-field" style="margin-left: 8px;border:1px solid #ddd;">
+                            <button class="am-btn  am-btn-default am-btn-success tpl-am-btn-success am-icon-search am-btn-sm" type="button"></button>
+                        </div>
+                    </div>
+                </div>
+                <ul class="tpl-task-list">
+                    <li>
+                        <div class="task-checkbox">
+                            <input type="hidden" value="1" name="test">
+                            <span class="am-icon-square" style="color: #aaa;"></span>
+                        </div>
+                        <div class="task-title">
+                            <span class="task-title-sp"><a href="table-font-list.html">POLYLAC® PA-757 CHI MEI CORPORATION ABS</a></span>
+                            <span class="label label-sm label-success">产品</span>
+                            <span class="task-bell">
+                                <i class="am-icon-bell-o"></i>2018-10-22 17：16
+                            </span>
+                            <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="task-checkbox">
+                            <input type="hidden" value="1" name="test">
+                            <span class="am-icon-square" style="color: #aaa;"></span>
+                        </div>
+                        <div class="task-title">
+                            <span class="task-title-sp"><a href="table-font-list.html">POLYLAC® PA-757 CHI MEI CORPORATION ABS</a></span>
+                            <span class="label label-sm label-danger">案例</span>
+                            <span class="task-bell">2018-10-22 17：16</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="task-checkbox">
+                            <input type="hidden" value="1" name="test">
+                            <span class="am-icon-square" style="color: #aaa;"></span>
+                        </div>
+                        <div class="task-title">
+                            <span class="task-title-sp"><a href="table-font-list.html">POLYLAC® PA-757 CHI MEI CORPORATION ABS</a></span>
+                            <span class="label label-sm label-warning">应用</span>
+                            <span class="task-bell">2018-10-22 17：16</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="task-checkbox">
+                            <input type="hidden" value="1" name="test">
+                            <span class="am-icon-square" style="color: #aaa;"></span>
+                        </div>
+                        <div class="task-title">
+                            <span class="task-title-sp"><a href="table-font-list.html">这是测试数据这是测试数据这是测试数据这是测试数据这是测试数据</a></span>
+                            <span class="label label-sm label-warning">应用</span>
+                            <span class="task-bell">2018-10-22 17：16</span>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="task-checkbox">
+                            <input type="hidden" value="1" name="test">
+                            <span class="am-icon-check-square-o" style="color: #0093dd;"></span>
+                        </div>
+                        <div class="task-title">
+                            <span class="task-title-sp"><a href="table-font-list.html">POLYLAC® PA-757 CHI MEI CORPORATION ABSCORPORATION CORPORATION</a></span>
+                            <span class="label label-sm label-success">产品</span>
+                            <span class="task-bell">
+                                <i class="am-icon-bell-o"></i>2018-10-22 17：16
+                            </span>
+                            <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="task-checkbox">
+                            <input type="hidden" value="1" name="test">
+                            <span class="am-icon-square" style="color: #aaa;"></span>
+                        </div>
+                        <div class="task-title">
+                            <span class="task-title-sp"><a href="table-font-list.html">POLYLAC® PA-757 CHI MEI CORPORATION ABS</a></span>
+                            <span class="label label-sm label-danger">案例</span>
+                            <span class="task-bell">2018-10-22 17：16</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="tpl-alert"></div>
+        </div>
+    </div>
+</div>

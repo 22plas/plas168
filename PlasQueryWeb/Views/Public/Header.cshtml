@@ -1,0 +1,27 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div class="header-gray text-gray" style="line-height: 38px;">
+    <div class="logo-register-btn" style="border: none;margin-top: 6px;">
+        <a class="btn" href="/MemberCenter/Login" style="color: #ff4200;">登录</a> | <a class="btn" href="/MemberCenter/Register" style="color: #ff4200;">注册</a>
+    </div>
+    <div><span id="Time_Show"></span>，欢迎来到塑料和弹性体页面！</div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        var str_time = "";
+        now = new Date(), hour = now.getHours()
+        if (hour < 6) { str_time = "凌晨好"; }
+        else if (hour < 9) { str_time = "早上好";  }
+        else if (hour < 12) { str_time = "上午好";  }
+        else if (hour < 14) { str_time = "中午好";  }
+        else if (hour < 17) { str_time = "下午好";  }
+        else if (hour < 19) { str_time = "傍晚好";  }
+        else if (hour < 22) { str_time = "晚上好";  }
+        else { str_time = "夜里好"; }
+        $("#Time_Show").html(str_time);
+    })
+</script>

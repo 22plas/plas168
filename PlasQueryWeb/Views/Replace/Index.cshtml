@@ -1,0 +1,127 @@
+﻿@{ViewBag.Title = "塑料和弹性体-材料替换"; }
+
+<style type="text/css">
+    a {
+        color: #000;
+        text-decoration: none;
+    }
+
+    .search-common-item {
+        font-size: 12px;
+        padding: 4px 10px;
+        color: #777;
+    }
+
+    .cell-title {
+        min-width: 38%;
+        max-width: 38%;
+        background-color: transparent;
+    }
+
+    .contrast_remark {
+        padding: 12px 20px;
+        background-color: #fff;
+    }
+
+    .table-contrast {
+        background-color: #fff;
+    }
+
+    .fa {
+        font-size: 16px;
+    }
+
+    .fa-check-square-o {
+        color: #f95c00;
+    }
+</style>
+@Html.Partial("~/Views/Public/SubPageNav.cshtml")
+@{
+    Html.RenderAction("PubSearch", "Public");
+}
+
+<div style="font-size: 14px;">
+    <p class="contrast_remark" style="text-align: center;"><span style="font-size: 18px;">选中的型号：<span>VSTOUT@L12-PYX</span></span><a class="btn btn-green" id="btn_contrast" style="float: right;margin-top: -5px;">提交对比</a></p>
+    <p class="contrast_remark" style="border-bottom-color:#ccc;padding-right: 0;">选择你需要对比的参数：<span style="float: right;width: 10%;text-align: center;margin-top: 5px;" class="fa fa-check-square-o"></span></p>
+    <table class="table-contrast">
+        <tbody>
+            <tr>
+                <td class="cell-title">用途</td>
+                <td style="width: 51.9%;">电视外壳</td>
+                <td style="width:10%"><span class="fa fa-check-square-o"></span></td>
+            </tr>
+            <tr>
+                <td class="cell-title">特性</td>
+                <td style="width: 51.9%;">坚硬无比</td>
+                <td style="width:10%"><span class="fa fa-check-square-o"></span></td>
+            </tr>
+            <tr>
+                <td class="cell-title">供货地区</td>
+                <td style="width:51.9%">深圳</td>
+                <td style="width:10%"><span class="fa fa-check-square-o"></span></td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table-contrast">
+        <thead>
+            <tr>
+                <th class="cell-title">物理性能</th>
+                <th style="width: 10%;">额定值</th>
+                <th style="width: 10%;">单位制</th>
+                <th style="width: 32%;">测试方法</th>
+                <th style="width: 10%"><span class="fa fa-check-square-o"></span></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="cell-title">密度/比重</td>
+                <td>1.05</td>
+                <td>g/cm<sup>2</sup></td>
+                <td>ASTMD792</td>
+                <td><span class="fa fa-check-square-o"></span></td>
+            </tr>
+            <tr>
+                <td class="cell-title">熔流率(熔体流动速率)(200℃/5kg)</td>
+
+                <td>1.05</td>
+                <td>g/cm<sup>2</sup></td>
+                <td>ASTMD792</td>
+                <td><span class="fa fa-check-square-o"></span></td>
+            </tr>
+            <tr>
+                <td class="cell-title">熔融体积流量(MVR)(220℃/10kg)</td>
+
+                <td>1.05</td>
+                <td>g/cm<sup>2</sup></td>
+                <td>ASTMD792</td>
+                <td><span class="fa fa-check-square-o"></span></td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table-contrast">
+        <thead>
+            <tr>
+                <th class="cell-title">硬度</th>
+                <th style="width: 10%;">额定值</th>
+                <th style="width: 10%;">单位制</th>
+                <th style="width: 32%;">测试方法</th>
+                <th style="width: 10%"><span class="fa fa-check-square-o"></span></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="cell-title">洛氏硬度（R级）</td>
+                <td>1.05</td>
+                <td>g/cm<sup>2</sup></td>
+                <td>ASTMD792</td>
+                <td><span class="fa fa-check-square-o"></span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $(".navBox").find(".nav").find("li").eq(3).children("a").addClass("active");
+    })
+</script>
+@Html.Partial("~/Views/Public/Bottom.cshtml")

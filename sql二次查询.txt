@@ -1,0 +1,75 @@
+/*  
+2019-4-16  
+黄远林  
+用于数据二次查询，根据ver数据植入  
+*/  
+alter Proc Get_TwoHeadSearchTmpData(  
+@pageIndex int=1,  
+@pageSize int=20,  
+@ver varchar(100),  
+@Characteristic varchar(300),--特性  
+@Used varchar(300),--用途  
+@Kind varchar(300),--种类  
+@Method varchar(300),--方法  
+@Factory varchar(300),--厂家  
+@Additive varchar(300),--添加剂  
+@AddingMaterial varchar(300)--增料  
+)  
+as  
+begin  
+declare @beginPage nvarchar(10)  
+declare @endPage nvarchar(10)  
+declare @sqlstr nvarchar(max)--sql字符串  
+declare @sqlwhere nvarchar(max)--条件  
+declare @sqlcount nvarchar(max)--统计  
+  
+set @beginPage=convert(int,(@pageIndex-1)*@pageSize)  
+set @endPage=convert(int,@pageIndex*@pageSize)  
+set @sqlwhere=''  
+  
+if (@ver!='')--必须传入对应GUID 进行第二次检索  
+begin   
+  
+  
+  
+if (@Characteristic!='')  
+set @sqlwhere+=' and characteristic like ''%'+@Characteristic+'%'''  
+  
+if (@Used!='')  
+set @sqlwhere+=' and ProUse like ''%'+@Used+'%'''  
+  
+if (@Kind!='')  
+set @sqlwhere+=' and ProModel like ''%'+@Kind+'%'''  
+  
+if (@Method!='')  
+set @sqlwhere+=' and jgfh like ''%'+@Method+'%'''  
+  
+if (@Factory!='')  
+set @sqlwhere+=' and PlaceOrigin like ''%'+@Factory+'%'''  
+  
+if (@Additive!='')  
+set @sqlwhere+=' and tjj like ''%'+@Additive+'%'''  
+  
+if (@AddingMaterial!='')  
+set @sqlwhere+=' and tl like ''%'+@AddingMaterial+'%'''  
+  
+  
+  
+set @sqlstr='select * from 
+(select  row_number() over(order by createtime desc)as rownum,prodid,ProModel,PlaceOrigin,Name,ProUse,characteristic
+ from dbo.HeadSearchTmp
+ where ver='''+@ver+''''+@sqlwhere+') as T 
+ where t.rownum  between '+@beginPage+' and '+@endPage  
+print @ver  
+print @sqlstr  
+exec (@sqlstr)  
+  
+set @sqlcount='select count(1) as totalcount from HeadSearchTmp where ver='''+@ver+''''+@sqlwhere  
+  
+exec (@sqlcount)  
+   
+end   
+  
+  
+end   
+  

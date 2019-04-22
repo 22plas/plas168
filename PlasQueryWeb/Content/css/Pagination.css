@@ -1,0 +1,39 @@
+﻿
+div.black2 {
+	 padding:5px; margin: 30px;text-align: center;
+}
+div.black2 a {
+        border: #cbcbcb 1px solid; 
+        padding:8px 10px;
+        margin: 3px;
+        color: #515151;
+        text-decoration: none; 
+        font-size:14px;
+        font-weight:bold;
+}
+div.black2 a:hover
+{
+    border: #cbcbcb 1px solid;
+    color: #fff;
+    background-color: #ec5d09;
+    
+}
+div.black2 a:active {
+	border: #cbcbcb 1px solid;
+	color: #fff;
+	background-color:  #ec5d09;
+}
+div.black2 span.current {
+        border: #cbcbcb 1px solid;
+        padding:8px 10px;
+        margin: 3px;
+        color: #ffffff; 
+        background-color: #ec5d09
+}
+div.black2 span.disabled {
+    border: #eee 1px solid; 
+    padding:8px 10px;
+    margin: 3px;
+    color: #dddddd; 
+}
+

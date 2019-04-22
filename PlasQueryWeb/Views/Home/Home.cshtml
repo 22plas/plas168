@@ -1,0 +1,132 @@
+﻿@{ViewBag.Title = "塑料和弹性体"; }
+<style type="text/css">
+    .item2 {
+        display: inline-block;
+        width: 30%;
+        height: 220px;
+        vertical-align: top;
+        margin: 50px 2.5% 50px 0;
+        border: 1px solid #ddd;
+        background-color: #fff;
+        padding: 10px 20px;
+        box-sizing: border-box;
+    }
+
+        .item2 > .title {
+            font-size: 18px;
+            letter-spacing: 2px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .item2 > .text-gray {
+            padding: 10px 0;
+            font-size: 14px;
+        }
+
+    .index-more-btn {
+        padding: 10px 15px 0;
+        box-sizing: border-box;
+        text-align: right;
+        border-top: 1px solid #ddd;
+    }
+
+    a {
+        color: #000;
+        text-decoration: none;
+    }
+
+    .item-box > .item {
+        height: 210px;
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-left: 2.3%;
+        box-sizing: border-box;
+        background-color: #fff;
+        border-left: 5px solid #eaeaea;
+        border-right: 5px solid #eaeaea;
+    }
+
+    .item > .title {
+        font-weight: bold;
+    }
+
+    .item > .text-gray {
+        position: absolute;
+        width: 92%;
+        text-align: center;
+    }
+
+    .search-common-item {
+        font-size: 12px;
+        padding: 4px 10px;
+        color: #777;
+    }
+</style>
+
+@Html.Partial("~/Views/Public/Header.cshtml")
+<div class="header-orange">
+    <div class="logo">
+        <a href="/"><img src="/Content/img/logo-withe.png" alt="塑蚁网-全国最精准永久免费塑胶和助剂材料物性搜索网站" title="塑蚁网-全国最精准永久免费塑胶和助剂材料物性搜索网站"></a>
+    </div>
+    <div class="header-search-box" style="margin-top: 28px;">
+        <input type="text" class="search-input-orange" placeholder="请输入任意塑料类型、型号、厂家、性能、用途进行智能搜索"><span class="fa fa-search search-icon text-orange">搜索</span>
+        <div class="common-models common-models-suliao-index">
+            常用型号：<span class="item">VSTOUT@L12-PYX</span><span class="item">VSTOUT@L13-PYX</span><span class="item">VSTOUT@L17-PYX</span>
+        </div>
+    </div>
+</div>
+
+
+<div class="item-box" style="padding: 15px 0;">
+    <a class="item" href="/Price/Index">
+        <p class="icon"><span class="radius-icon" style="background-color:#dd00cc;"><span class="fa fa-line-chart" style="line-height: 60px;"></span></span></p>
+        <p class="title">价格走势</p>
+        <p class="text-gray">种类 型号 厂家 用途 特性 熔脂 硬度等智能搜索</p>
+    </a>
+    <a class="item" href="/PhysicalProducts/Index">
+        <p class="icon"><span class="radius-icon" style="background-color:#ff6a00;"><span class="fa fa-search" style="line-height: 60px;"></span></span></p>
+        <p class="title">高级搜索</p>
+        <p class="text-gray">各类多条件综合搜索</p>
+    </a>
+    <a class="item" href="/Replace/Index">
+        <p class="icon"><span class="radius-icon" style="background-color:#00dd11;"><span class="fa fa-compress" style="line-height: 60px;"></span></span></p>
+        <p class="title">材料替换</p>
+        <p class="text-gray">查找综合性能最接近的型号</p>
+    </a>
+    <a class="item" href="/Contrast/Index">
+        <p class="icon"><span class="radius-icon" style="background-color:#8500ff;"><span class="fa fa-sign-language" style="line-height: 60px;"></span></span></p>
+        <p class="title">物性对比</p>
+        <p class="text-gray">各种类型号参数对比</p>
+    </a>
+    <a class="item" href="case/product.html">
+        <p class="icon"><span class="radius-icon" style="background-color:#0093dd;"><span class="fa fa-window-restore" style="line-height: 60px;"></span></span></p>
+        <p class="title">应用案例</p>
+        <p class="text-gray">使用案例查看</p>
+    </a>
+</div>
+<div style="padding-left: 2.5%;box-sizing: border-box;overflow: hidden;">
+    <a class="item2">
+        <p class="title">通用塑料频道</p>
+        <p class="text-gray">通用塑料主要包括聚乙烯、聚丙烯、聚氯乙烯、聚苯乙烯、ABS（丙烯酸-丁二烯-苯乙烯）、聚甲基苯烯酸甲酯和氨基塑料等,其产量占整个塑料产量的90%以上,故又称之为大宗塑料品种。</p>
+        <div class="index-more-btn">
+            <button class="btn btn-blue">更多资讯</button>
+        </div>
+    </a>
+    <a class="item2">
+        <p class="title">工程塑料频道</p>
+        <p class="text-gray">工程塑料分为通用工程塑料和特种工程塑料两类.前者主要品种有聚酰胺、聚碳酸酯、聚甲醛、改性聚苯醚和热塑性聚酯五大通用工程塑料;后者主要是指耐热达150℃以上的工程塑料,主要品种有聚酰亚胺、聚苯硫醚、聚砜类、芳香族聚酰胺、聚芳酯、聚苯酯、聚芳醚酮、液晶聚合物和氟树脂等。</p>
+        <div class="index-more-btn">
+            <button class="btn btn-blue">更多资讯</button>
+        </div>
+    </a>
+    <a class="item2">
+        <p class="title">弹性体/降解塑料</p>
+        <p class="text-gray">弹性体泛指在除去外力后能恢复原状的材料，然而具有弹性的材料并不一定是弹性体。主要品种有TPU,TPV,TPE,TPR,POE,TPEE。生物降解材料是指在适当和可表明期限的自然环境条件下，能够被微生物（如细菌、真菌和藻类等）完全分解变成低分子化合物的材料</p>
+        <div class="index-more-btn">
+            <button class="btn btn-blue">更多资讯</button>
+        </div>
+    </a>
+</div>
+
+@Html.Partial("~/Views/Public/Bottom.cshtml")

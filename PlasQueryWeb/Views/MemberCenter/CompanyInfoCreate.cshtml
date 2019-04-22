@@ -1,0 +1,113 @@
+﻿
+@{
+    ViewBag.Title = "新增公司资料";
+    Layout = "~/Views/Shared/MemberCenterShared.cshtml";
+}
+
+<div class="tpl-content-wrapper">
+    <div class="tpl-content-wrapper-bg">
+        <ol class="am-breadcrumb">
+            <li><a href="#" class="am-icon-home">首页</a></li>
+            <li>会员中心</li>
+            <li class="am-active">新增公司资料</li>
+        </ol>
+        <div class="tpl-portlet-components">
+            <form class="am-form tpl-form-line-form">
+                <div class="am-form-group">
+                    <label for="user-name" class="am-u-sm-3 am-form-label ">公司名称</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="tpl-form-input" id="user-name" placeholder="公司名称">
+                    </div>
+                </div>
+
+                <div class="am-form-group">
+                    <label for="user-tax" class="am-u-sm-3 am-form-label">税号</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="tpl-form-input" id="user-tax" placeholder="税号" />
+                    </div>
+                </div>
+
+                <div class="am-form-group">
+                    <label class="am-u-sm-3 am-form-label">地址 </label>
+                    <table width="100%" border="0">
+                        <tr>
+                            <td style="width: 33.333333%;">
+                                <div class="am-u-sm-9">
+                                    <select data-am-selected="{searchBox: 1}">
+                                        <option value="a">请选择省</option>
+
+                                    </select>
+                                </div>
+                            </td>
+                            <td style="width: 33.333333%;">
+                                <div class="am-u-sm-9">
+                                    <select data-am-selected="{searchBox: 1}">
+                                        <option value="a">请选择市</option>
+
+                                    </select>
+                                </div>
+                            </td>
+                            <td style="width: 33.333333%;">
+                                <div class="am-u-sm-9">
+                                    <select data-am-selected="{searchBox: 1}">
+                                        <option value="a">请选择区</option>
+
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="am-form-group">
+                    <label for="user-addr1" class="am-u-sm-3 am-form-label">详细地址</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="tpl-form-input" id="user-addr1" placeholder="">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="user-addr2" class="am-u-sm-3 am-form-label">公司电话</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="tpl-form-input" id="user-addr2" placeholder="">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="user-fax" class="am-u-sm-3 am-form-label">公司传真</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="tpl-form-input" id="user-fax" placeholder="">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="user-bank" class="am-u-sm-3 am-form-label">开户银行</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="tpl-form-input" id="user-bank" placeholder="">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="user-account" class="am-u-sm-3 am-form-label">开户帐号</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="tpl-form-input" id="user-account" placeholder="">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="user-bankAddr" class="am-u-sm-3 am-form-label">开户行地址</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="tpl-form-input" id="user-bankAddr" placeholder="开户行地址">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label class="am-u-sm-3 am-form-label">营业执照</label>
+                    <div class="am-u-sm-9" style="cursor: pointer;color: #555;text-decoration: underline;font-size: 14px;">
+                        <span class="am-icon-upload"></span>上传营业执照
+                    </div>
+                </div>
+                <div class="am-form-group" style="justify-content:center;">
+                    <button type="button" class="am-btn am-btn-danger am-btn-sm"><i class="am-icon-cloud-upload"></i> 保存</button>
+                    <button type="button" class="am-btn am-btn-danger am-btn-sm" style="margin-left:30px;">
+                        <a href="/MemberCenter/CompanyInfo" style="color:#ffffff;">返回</a>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

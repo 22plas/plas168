@@ -1,0 +1,8 @@
+价格对比
+
+
+select top 100 * from 
+Pri_DailyQuotation where SmallClass='ABS' and Manufacturer='台湾台化' and Model='AG15A1'
+
+select top 100 * from 
+Pri_DayAvgPrice where SmallClass='ABS' and Manufacturer='台湾台化' and Model='AG15A1'
