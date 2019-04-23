@@ -1,9 +1,11 @@
 ﻿using PlasCommon;
+using PlasCommon.SqlCommonQuery;
 using PlasModel;
 using PlasQueryWeb.App_Start;
-using PlasQueryWeb.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,7 +14,6 @@ namespace PlasQueryWeb.Controllers
 {
     public class MemberCenterController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
         public void Sidebar(string name = "用户管理")
         {
             ViewBag.Sidebar = name;
@@ -149,19 +150,106 @@ namespace PlasQueryWeb.Controllers
         /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpGet]
-        public ActionResult SaveRegister(cp_user model)
+        public ActionResult SaveRegister(cp_userview model)
         {
-            if (db.cp_user.Any(s => s.Phone == model.Phone))
+            try
             {
-                return Json(Common.ToJsonResult("Error", "用户已存在"), JsonRequestBehavior.AllowGet);
+                //if (db.cp_user.Any(s => s.Phone == model.Phone))
+                //{
+                //    return Json(Common.ToJsonResult("AlreadyExist", "用户已存在"), JsonRequestBehavior.AllowGet);
+                //}
+                //else
+                //{
+
+
+                //    cp_user usmodel = new cp_user();
+                //    usmodel.Phone = model.Phone;
+                //    usmodel.LeaderUserName = string.Empty;
+                //    usmodel.HeadImage = string.Empty;
+                //    usmodel.CreateDate = DateTime.Now;
+                //    usmodel.states = 0;
+                //    usmodel.WeChat = string.Empty;
+                //    usmodel.ErrorCount = 0;
+                //    usmodel.ErrorDate = "1990-01-01";
+                //    usmodel.Email = string.Empty;
+                //    usmodel.UserPwd = ToolHelper.MD5_SET(model.UserPwd);
+                //    usmodel.Email = string.Empty;
+                //    usmodel.ContentAddress = string.Empty;
+                //    usmodel.Address = string.Empty;
+                //    usmodel.TestQQ = string.Empty;
+                //    usmodel.UserName = model.UserName;
+                //    usmodel.WeChat = string.Empty;
+                //    db.cp_user.Add(usmodel);
+                //    int row = db.SaveChanges();
+                //    if (row > 0)
+                //    {
+                //        return Json(Common.ToJsonResult("Success", "注册成功"), JsonRequestBehavior.AllowGet);
+                //    }
+                //    else
+                //    {
+                //        return Json(Common.ToJsonResult("Fail", "失败"), JsonRequestBehavior.AllowGet);
+                //    }
+                //}
+
+                string execsql = string.Format(@"select * from cp_user where phone ='{0}'", model.Phone);
+                int haveusercount = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, execsql, null);
+                if (haveusercount > 0)
+                {
+                    return Json(Common.ToJsonResult("AlreadyExist", "用户已存在"), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    string leaderuserid = string.Empty;
+                    if (!string.IsNullOrWhiteSpace(model.RecommendPhone))
+                    {
+                        string getlsql = string.Format(@"select * from cp_user where phone ='{0}'", model.RecommendPhone);
+                        DataTable ldt = SqlHelper.GetSqlDataTable(getlsql);
+                        if (ldt.Rows.Count > 0)
+                        {
+                            leaderuserid = ldt.Rows[0]["ID"].ToString();
+                        }
+                    }
+                    //拼接参数
+                    SqlParameter[] parameters = {
+                                            new SqlParameter("@UserName", SqlDbType.NVarChar),
+                                            new SqlParameter("@UserPwd", SqlDbType.NVarChar),
+                                            new SqlParameter("@Email", SqlDbType.NVarChar),
+                                            new SqlParameter("@Phone", SqlDbType.NVarChar),
+                                            new SqlParameter("@Address", SqlDbType.NVarChar),
+                                            new SqlParameter("@LeaderUserName", SqlDbType.NVarChar)
+                    };
+                    parameters[0].Value = model.UserName;
+                    parameters[1].Value = model.UserPwd;
+                    parameters[2].Value = model.Email == null ? "" : model.Email;
+                    parameters[3].Value = model.Phone;
+                    parameters[4].Value = ToolHelper.GetAddressIP();
+                    parameters[5].Value = leaderuserid;
+                    string sqlstr = string.Empty;
+                    string addsql = string.Format(@"INSERT dbo.cp_user
+                ( UserName ,UserPwd ,Email ,Phone ,Address ,TestQQ ,CreateDate ,states ,ErrorDate ,ErrorCount ,WeChat ,ContentAddress ,LeaderUserName,HeadImage)
+                VALUES  ( @UserName ,@UserPwd ,@Email ,@Phone ,@Address ,N'' ,GETDATE() ,0 ,null ,0 ,N'' ,N'' ,@LeaderUserName,'')");
+                    int addrow = SqlHelper.ExecuteScalar(SqlHelper.ConnectionStrings, addsql, parameters);
+
+
+                    SqlCommand sqlcmd = new SqlCommand();
+                    SqlConnection con = new SqlConnection(DataBase.ConnectionString);
+                    SqlTransaction tra = con.BeginTransaction();
+                    bool returns = SqlHelper.ExecuteTransaction(con, sqlcmd, tra,"",null);
+
+                    //if (addrow > 0)
+                    //{
+                    return Json(Common.ToJsonResult("Success", "注册成功"), JsonRequestBehavior.AllowGet);
+                    //}
+                    //else
+                    //{
+                    //    return Json(Common.ToJsonResult("Fail", "失败"), JsonRequestBehavior.AllowGet);
+                    //}
+                }
             }
-            else
+            catch (Exception ex)
             {
-                model.LeaderUserName = string.Empty;
-                db.cp_user.Add(model);
-                db.SaveChanges();
+                return Json(Common.ToJsonResult("Fail", ex.Message), JsonRequestBehavior.AllowGet);
             }
-            return Json(Common.ToJsonResult("Fail", "失败"), JsonRequestBehavior.AllowGet);
         }
     }
 }

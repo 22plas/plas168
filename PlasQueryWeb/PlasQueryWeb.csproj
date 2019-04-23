@@ -150,7 +150,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +157,8 @@
     <Content Include="Content\css\amazeui.min.css" />
     <Content Include="Content\css\app.css" />
     <Content Include="Content\css\base.css" />
+    <Content Include="Content\css\bootstrap.css" />
+    <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\css\font-awesome.css" />
     <Content Include="Content\css\font-awesome.min.css" />
     <Content Include="Content\css\fonts\fontawesome-webfont.svg" />
@@ -224,6 +225,7 @@
     <Content Include="Content\js\business\PhysicalJS.js" />
     <Content Include="Content\js\business\priceJS.js" />
     <Content Include="Content\js\business\ProductJS.js" />
+    <Content Include="Content\js\business\Register.js" />
     <Content Include="Content\js\Common.js" />
     <Content Include="Content\js\echarts.min.js" />
     <Content Include="Content\js\index.js" />
@@ -358,6 +360,7 @@
     <Content Include="Scripts\ChinesePY.js" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\comm.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-1.12.4.min.js" />
@@ -420,6 +423,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

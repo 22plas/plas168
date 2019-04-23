@@ -40,6 +40,12 @@ namespace PlasQueryWeb
              "~/Content/js/business/priceJS.js"
              ));
 
+            bundles.Add(new ScriptBundle("~/RegisterJS/BesRJS").Include(
+              "~/Content/js/business/Register.js",
+              "~/Scripts/comm.js"
+              ));
+
+
             BundleTable.EnableOptimizations = true;
         }
     }

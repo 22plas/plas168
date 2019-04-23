@@ -1,5 +1,6 @@
 ﻿
 @{ViewBag.Title = "用户注册"; }
+<script src="~/Content/layui/lay/modules/layer.js" type="text/javascript"></script>
 <div class="header-white" style="padding: 20px 50px;height: auto;">
     <div class="logo">
         <a href="/"><img src="/Content/img/logo.png" width="88" alt=""></a>
@@ -13,10 +14,16 @@
         text-align: center;
         font-size: 12px;
     }
+    .layermsgcss {
+        background: #0066CC;
+        text-align: center;
+        border: none;
+        color: #ffffff;
+    }
 </style>
-<div class="login-bg" style="height: auto;text-align: center;">
-    <div style="display: inline-block;width: 400px; background-color: rgba(255,255,255,.8);padding: 10px 0;margin: 60px 0;">
-        <div class="login-box" style="margin: 0;">
+<div class="login-bg" style="height: auto;">
+    <div style="display: inline-block;width: 400px; background-color: rgba(255,255,255,.8);padding: 10px 15px;margin: 60px 60px;">
+        <div class="login-box" style="margin: 0;width:340px;">
             <p class="login-title">帐号注册</p>
             <div class="row">
                 <span class="title"><span class="text-red">*</span>登录帐号：</span><input id="account" type="text" class="register-input" style="text-align: left;" placeholder="请输入帐号">
@@ -38,6 +45,9 @@
                 <span class="title"><span class="text-red">*</span>验证码：</span><input id="verificationcode" type="text" class="register-input" style="text-align: left;" placeholder="请输入手机验证码">
             </div>
             <div class="row">
+                <span class="title">推荐号码：</span><input id="recommendcode" type="text" class="register-input" style="text-align: left;" placeholder="请输入推荐人手机号码(选填)">
+            </div>
+            <div class="row">
                 <button id="savebtn" class="search-btn-screem">立即注册</button>
             </div>
             <div style="text-align: right;font-size: 14px;">
@@ -46,5 +56,4 @@
         </div>
     </div>
 </div>
-@Scripts.Render("~/RegisterJS/BesJS")
-@Html.Partial("~/Views/Public/Bottom.cshtml")
+@Scripts.Render("~/RegisterJS/BesRJS")
