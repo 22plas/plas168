@@ -144,24 +144,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201904230111067_sd.cs" />
-    <Compile Include="Migrations\201904230111067_sd.Designer.cs">
-      <DependentUpon>201904230111067_sd.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904230136031_updateus.cs" />
-    <Compile Include="Migrations\201904230136031_updateus.Designer.cs">
-      <DependentUpon>201904230136031_updateus.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904230142532_upus.cs" />
-    <Compile Include="Migrations\201904230142532_upus.Designer.cs">
-      <DependentUpon>201904230142532_upus.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904230149122_ss.cs" />
-    <Compile Include="Migrations\201904230149122_ss.Designer.cs">
-      <DependentUpon>201904230149122_ss.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\EFDBContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -430,6 +412,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -452,20 +435,6 @@
       <Project>{8d6bbea3-233c-402d-9611-904b9a656644}</Project>
       <Name>PlasModel</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201904230111067_sd.resx">
-      <DependentUpon>201904230111067_sd.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904230136031_updateus.resx">
-      <DependentUpon>201904230136031_updateus.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904230142532_upus.resx">
-      <DependentUpon>201904230142532_upus.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904230149122_ss.resx">
-      <DependentUpon>201904230149122_ss.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

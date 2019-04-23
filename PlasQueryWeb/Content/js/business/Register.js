@@ -64,7 +64,7 @@ $("#savebtn").click(function () {
             $.ajax({
                 type: "get",
                 url: comm.action("SaveRegister", "MemberCenter"),
-                data: { UserName: account, UserPwd: password, Email: "", Phone: phonestr, Address: "" },
+                data: { UserName: account, UserPwd: password, Phone: phonestr, RecommendPhone: recommendcode },
                 dataType: "json",
                 success: function (data) {
                     console.log(data);
