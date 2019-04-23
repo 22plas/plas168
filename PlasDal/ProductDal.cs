@@ -238,6 +238,26 @@ namespace PlasDal
             return dt;
         }
 
+        //获取分类
+        public DataSet GetPriceType(int numtop=10)
+        {
+            StringBuilder sql = new StringBuilder();
+            sql.Append("select ");
+            if (numtop > 0)
+            {
+                sql.Append(" top " + numtop + " ");
+            }
+            sql.Append("SmallClass as Name from Pri_DayAvgPrice group by SmallClass ");
+            sql.Append("select ");
+            if (numtop > 0)
+            {
+                sql.Append(" top " + numtop + " ");
+            }
+            sql.Append("Manufacturer as Name from Pri_DayAvgPrice group by Manufacturer ");
+            var ds = SqlHelper.GetSqlDataSet(sql.ToString());
+            return ds;
+        }
+
         #endregion
 
     }

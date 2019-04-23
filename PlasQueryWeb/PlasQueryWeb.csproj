@@ -222,11 +222,14 @@
     <Content Include="Content\js\amazeui.min.js" />
     <Content Include="Content\js\app.js" />
     <Content Include="Content\js\business\PhysicalJS.js" />
+    <Content Include="Content\js\business\priceJS.js" />
     <Content Include="Content\js\business\ProductJS.js" />
     <Content Include="Content\js\Common.js" />
     <Content Include="Content\js\echarts.min.js" />
     <Content Include="Content\js\index.js" />
     <Content Include="Content\js\iscroll.js" />
+    <Content Include="Content\js\jeDate\jedate.js" />
+    <Content Include="Content\js\jeDate\skin\jedate.css" />
     <Content Include="Content\js\jquery-1.11.0.min.js" />
     <Content Include="Content\js\jquery-2.1.1.js" />
     <Content Include="Content\js\json2.js" />
@@ -412,6 +415,7 @@
     <Content Include="Views\MemberCenter\SellerOfferCreate.cshtml" />
     <Content Include="Views\MemberCenter\UserInfo.cshtml" />
     <Content Include="Views\Shared\MemberCenterShared.cshtml" />
+    <Content Include="Views\Price\More.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -15,15 +15,13 @@ namespace PlasQueryWeb.Controllers
         // GET: 价格
         public ActionResult Index()
         {
-            var ys_character = new DataTable();
-            var company = new DataTable();
+            var companyAndtype = new DataSet();
+            //在Pri_DayAvgPrice 取
             //种类
-            ys_character = bll.GetSearchParam(1);
             //生产厂家
-            company = bll.GetSearchParam(4);
+            companyAndtype = bll.GetPriceType(10);
 
-            ViewBag.ProductType = ys_character;
-            ViewBag.company = company;
+            ViewBag.company = companyAndtype;
             return View();
         }
 
@@ -36,7 +34,7 @@ namespace PlasQueryWeb.Controllers
             if (!string.IsNullOrWhiteSpace(Request["SmallClass"]))
             {
                 SmallClass = Request["SmallClass"].ToString();
-             }
+            }
             string Manufacturer = string.Empty;
             if (!string.IsNullOrWhiteSpace(Request["Manufacturer"]))
             {
@@ -59,7 +57,7 @@ namespace PlasQueryWeb.Controllers
             {
                 int.TryParse(ds.Tables[1].Rows[0]["totalcount"].ToString(), out count);
             }
-            return Json(new { data = jsonstr, totalCount = count}, JsonRequestBehavior.AllowGet);
+            return Json(new { data = jsonstr, totalCount = count }, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -92,7 +90,25 @@ namespace PlasQueryWeb.Controllers
             if (!string.IsNullOrEmpty(Request["priceDate"]))
             {
                 priceDate = Request["priceDate"].ToString();
-                sql.Append(" and  datediff(d,PriDate,getdate())<="+ priceDate);
+                sql.Append(" and  datediff(d,PriDate,getdate())<=" + priceDate);
+            }
+
+            //开始时间
+            string bdate = string.Empty;
+            if (!string.IsNullOrEmpty(Request["bdate"]))
+            {
+                bdate = Request["bdate"].ToString();
+            }
+            //ndate
+            string ndate = string.Empty;
+            if (!string.IsNullOrEmpty(Request["ndate"]))
+            {
+                ndate = Request["ndate"].ToString();
+            }
+
+            if (!string.IsNullOrEmpty(bdate) && !string.IsNullOrEmpty(ndate))
+            {
+                sql.Append(" and pridate>='" + bdate + "' and  pridate<='" + ndate + "'");
             }
 
             var dt = bll.GetPriceLineDt(sql.ToString());
@@ -102,7 +118,32 @@ namespace PlasQueryWeb.Controllers
                 jsonstr = ToolHelper.DataTableToJson(dt);
                 count = dt.Rows.Count;
             }
-            return Json(new { data= jsonstr, totalCount= count },JsonRequestBehavior.AllowGet);
+            return Json(new { data = jsonstr, totalCount = count }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult More(int rid, string rname, string more)
+        {
+            var companyAndtype = new DataSet();
+            var allData = new DataTable();
+            //在Pri_DayAvgPrice 取
+            //种类 --1
+            //生产厂家----2
+            companyAndtype = bll.GetPriceType(0);
+            if (rid == 1)//类别
+            {
+                allData = companyAndtype.Tables[0];
+            }
+            else
+            {
+                allData = companyAndtype.Tables[1];
+            }
+
+            ViewBag.allData = allData;
+            ViewBag.rname = rname;
+            ViewBag.rid = rid;
+            ViewBag.more = more;
+            return View();
         }
 
 

@@ -29,7 +29,7 @@
             return false;
         }
         else {
-            window.location.href = "/Product/Index?key=" + keyword;
+            window.location.href = "/Product/Index?key=" + encodeURI(encodeURI(keyword));
         }
     }
 </script>

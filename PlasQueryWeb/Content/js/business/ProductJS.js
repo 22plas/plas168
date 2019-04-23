@@ -1,4 +1,4 @@
-﻿var keywork = getQueryString("key");
+﻿var keywork = decodeURI(getQueryString("key"));
 $(function () {
     if (keywork != "") {
         $(".search_condition_wrap").append('<span class="search-select-item" title="搜索" datatype="66" bigtitle="搜索">搜索:' + keywork + '</span>');

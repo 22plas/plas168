@@ -34,6 +34,11 @@ namespace PlasQueryWeb
               "~/Content/js/business/ProductJS.js"
               ));
 
+            //价格趋势
+            bundles.Add(new ScriptBundle("~/PriceJS/PrcJS").Include(
+             "~/Content/js/echarts.min.js",
+             "~/Content/js/business/priceJS.js"
+             ));
 
             BundleTable.EnableOptimizations = true;
         }

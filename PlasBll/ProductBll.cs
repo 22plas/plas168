@@ -97,6 +97,12 @@ namespace PlasBll
         {
             return dal.GetPriceLineDt(strwhere);
         }
+
+        //价格趋势分类列表
+        public DataSet GetPriceType(int numtop = 10)
+        {
+            return dal.GetPriceType(numtop);
+        }
         #endregion
 
     }
