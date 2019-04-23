@@ -1,9 +1,11 @@
 ﻿using PlasCommon;
+using PlasCommon.SqlCommonQuery;
 using PlasModel;
 using PlasQueryWeb.App_Start;
-using PlasQueryWeb.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -12,7 +14,7 @@ namespace PlasQueryWeb.Controllers
 {
     public class MemberCenterController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        EFDBContext db = new EFDBContext();
         public void Sidebar(string name = "用户管理")
         {
             ViewBag.Sidebar = name;
@@ -151,17 +153,76 @@ namespace PlasQueryWeb.Controllers
         [HttpGet]
         public ActionResult SaveRegister(cp_user model)
         {
-            if (db.cp_user.Any(s => s.Phone == model.Phone))
+            try
             {
-                return Json(Common.ToJsonResult("Error", "用户已存在"), JsonRequestBehavior.AllowGet);
+                if (db.cp_user.Any(s => s.Phone == model.Phone))
+                {
+                    return Json(Common.ToJsonResult("AlreadyExist", "用户已存在"), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    model.LeaderUserName = "";
+                    model.HeadImage = "";
+                    model.CreateDate = DateTime.Now;
+                    model.states = 0;
+                    model.WeChat = "";
+                    model.ErrorCount = 0;
+                    model.ErrorDate = "1990-01-01";
+                    model.Email = "";
+                    model.UserPwd = ToolHelper.MD5_SET(model.UserPwd);
+                    db.cp_user.Add(model);
+                    int row = db.SaveChanges();
+                    if (row > 0)
+                    {
+                        return Json(Common.ToJsonResult("Success", "注册成功"), JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(Common.ToJsonResult("Fail", "失败"), JsonRequestBehavior.AllowGet);
+                    }
+                }
+
+                //        string execsql = string.Format(@"select * from cp_user where phone ='{0}'", model.Phone);
+                //        int haveusercount = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, execsql, null);
+                //        if (haveusercount > 0)
+                //        {
+                //            return Json(Common.ToJsonResult("Error", "用户已存在"), JsonRequestBehavior.AllowGet);
+                //        }
+                //        else
+                //        {
+
+                //            //拼接参数
+                //            SqlParameter[] parameters = {
+                //                            new SqlParameter("@UserName", SqlDbType.NVarChar),
+                //                            new SqlParameter("@UserPwd", SqlDbType.NVarChar),
+                //                            new SqlParameter("@Email", SqlDbType.NVarChar),
+                //                            new SqlParameter("@Phone", SqlDbType.NVarChar),
+                //                            new SqlParameter("@Address", SqlDbType.NVarChar)
+                //                        };
+                //            parameters[0].Value = model.UserName;
+                //            parameters[1].Value = model.UserPwd;
+                //            parameters[2].Value = model.Email==null?"":model.Email;
+                //            parameters[3].Value = model.Phone;
+                //            parameters[4].Value = model.Address == null ? "" : model.Address;
+                //            string sqlstr = string.Empty;
+                //            string addsql = string.Format(@"INSERT dbo.cp_user
+                //( UserName ,UserPwd ,Email ,Phone ,Address ,TestQQ ,CreateDate ,states ,ErrorDate ,ErrorCount ,WeChat ,ContentAddress ,LeaderUserName,HeadImage)
+                //VALUES  ( @UserName ,@UserPwd ,@Email ,@Phone ,@Address ,N'' ,GETDATE() ,0 ,null ,0 ,N'' ,N'' ,'','')");
+                //            int addrow = SqlHelper.ExecuteScalar(SqlHelper.ConnectionStrings, addsql, parameters);
+                //            if (addrow > 0)
+                //            {
+                //                return Json(Common.ToJsonResult("Success", "注册成功"), JsonRequestBehavior.AllowGet);
+                //            }
+                //            else
+                //            {
+                //                return Json(Common.ToJsonResult("Fail", "失败"), JsonRequestBehavior.AllowGet);
+                //            }
+                //        }
             }
-            else
+            catch (Exception ex)
             {
-                model.LeaderUserName = string.Empty;
-                db.cp_user.Add(model);
-                db.SaveChanges();
+                return Json(Common.ToJsonResult("Fail", ex.Message), JsonRequestBehavior.AllowGet);
             }
-            return Json(Common.ToJsonResult("Fail", "失败"), JsonRequestBehavior.AllowGet);
         }
     }
 }

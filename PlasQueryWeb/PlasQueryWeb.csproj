@@ -144,7 +144,24 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Migrations\201904230111067_sd.cs" />
+    <Compile Include="Migrations\201904230111067_sd.Designer.cs">
+      <DependentUpon>201904230111067_sd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904230136031_updateus.cs" />
+    <Compile Include="Migrations\201904230136031_updateus.Designer.cs">
+      <DependentUpon>201904230136031_updateus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904230142532_upus.cs" />
+    <Compile Include="Migrations\201904230142532_upus.Designer.cs">
+      <DependentUpon>201904230142532_upus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904230149122_ss.cs" />
+    <Compile Include="Migrations\201904230149122_ss.Designer.cs">
+      <DependentUpon>201904230149122_ss.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\EFDBContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -152,6 +169,8 @@
     <Content Include="Content\css\amazeui.min.css" />
     <Content Include="Content\css\app.css" />
     <Content Include="Content\css\base.css" />
+    <Content Include="Content\css\bootstrap.css" />
+    <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\css\font-awesome.css" />
     <Content Include="Content\css\font-awesome.min.css" />
     <Content Include="Content\css\fonts\fontawesome-webfont.svg" />
@@ -217,6 +236,7 @@
     <Content Include="Content\js\app.js" />
     <Content Include="Content\js\business\PhysicalJS.js" />
     <Content Include="Content\js\business\ProductJS.js" />
+    <Content Include="Content\js\business\Register.js" />
     <Content Include="Content\js\Common.js" />
     <Content Include="Content\js\echarts.min.js" />
     <Content Include="Content\js\index.js" />
@@ -348,6 +368,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\ChinesePY.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\comm.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-1.12.4.min.js" />
@@ -431,6 +452,20 @@
       <Project>{8d6bbea3-233c-402d-9611-904b9a656644}</Project>
       <Name>PlasModel</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201904230111067_sd.resx">
+      <DependentUpon>201904230111067_sd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904230136031_updateus.resx">
+      <DependentUpon>201904230136031_updateus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904230142532_upus.resx">
+      <DependentUpon>201904230142532_upus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904230149122_ss.resx">
+      <DependentUpon>201904230149122_ss.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

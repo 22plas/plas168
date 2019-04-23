@@ -34,6 +34,16 @@ namespace PlasQueryWeb
               "~/Content/js/business/ProductJS.js"
               ));
 
+            //注册
+            bundles.Add(new ScriptBundle("~/RegisterJS/BesRJS").Include(
+              "~/Content/js/business/Register.js",
+              "~/Scripts/comm.js"
+              ));
+            //bundles.Add(new StyleBundle("~/RegisterCS/RCSS").Include(
+            //          "~/Content/css/base.css",
+            //          "~/Content/css/bootstrap.min.css"
+            //          ));
+
 
             BundleTable.EnableOptimizations = true;
         }
