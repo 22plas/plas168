@@ -34,6 +34,11 @@
     .fa-check-square-o {
         color: #f95c00;
     }
+    .inputClass {
+        border: solid 1px #ddd;
+        height:27px;line-height:27px;
+        width:100%;
+    }
 </style>
 @Html.Partial("~/Views/Public/SubPageNav.cshtml")
 @{
@@ -48,17 +53,23 @@
             <tr>
                 <td class="cell-title">用途</td>
                 <td style="width: 51.9%;">电视外壳</td>
+                <td style="width:10%">权重</td>
                 <td style="width:10%"><span class="fa fa-check-square-o"></span></td>
+
             </tr>
             <tr>
                 <td class="cell-title">特性</td>
                 <td style="width: 51.9%;">坚硬无比</td>
+                <td style="width:10%"><input name="" class="inputClass" type="text" /></td>
                 <td style="width:10%"><span class="fa fa-check-square-o"></span></td>
+
             </tr>
             <tr>
                 <td class="cell-title">供货地区</td>
                 <td style="width:51.9%">深圳</td>
+                <td style="width:10%"><input name=""  class="inputClass"  type="text" /></td>
                 <td style="width:10%"><span class="fa fa-check-square-o"></span></td>
+
             </tr>
         </tbody>
     </table>
@@ -69,7 +80,9 @@
                 <th style="width: 10%;">额定值</th>
                 <th style="width: 10%;">单位制</th>
                 <th style="width: 32%;">测试方法</th>
+                <th style="width: 10%">权重</th>
                 <th style="width: 10%"><span class="fa fa-check-square-o"></span></th>
+
             </tr>
         </thead>
         <tbody>
@@ -78,7 +91,9 @@
                 <td>1.05</td>
                 <td>g/cm<sup>2</sup></td>
                 <td>ASTMD792</td>
+                <td><input name=""  class="inputClass"  type="text" /></td>
                 <td><span class="fa fa-check-square-o"></span></td>
+
             </tr>
             <tr>
                 <td class="cell-title">熔流率(熔体流动速率)(200℃/5kg)</td>
@@ -86,7 +101,9 @@
                 <td>1.05</td>
                 <td>g/cm<sup>2</sup></td>
                 <td>ASTMD792</td>
+                <td><input name=""  class="inputClass"  type="text" /></td>
                 <td><span class="fa fa-check-square-o"></span></td>
+
             </tr>
             <tr>
                 <td class="cell-title">熔融体积流量(MVR)(220℃/10kg)</td>
@@ -94,7 +111,9 @@
                 <td>1.05</td>
                 <td>g/cm<sup>2</sup></td>
                 <td>ASTMD792</td>
+                <td><input name=""  class="inputClass"  type="text" /></td>
                 <td><span class="fa fa-check-square-o"></span></td>
+
             </tr>
         </tbody>
     </table>
@@ -105,7 +124,9 @@
                 <th style="width: 10%;">额定值</th>
                 <th style="width: 10%;">单位制</th>
                 <th style="width: 32%;">测试方法</th>
+                <th style="width: 10%">权重</th>
                 <th style="width: 10%"><span class="fa fa-check-square-o"></span></th>
+
             </tr>
         </thead>
         <tbody>
@@ -114,10 +135,13 @@
                 <td>1.05</td>
                 <td>g/cm<sup>2</sup></td>
                 <td>ASTMD792</td>
+                <td><input name=""  class="inputClass"  type="text" /></td>
                 <td><span class="fa fa-check-square-o"></span></td>
+
             </tr>
         </tbody>
     </table>
+
 </div>
 <script type="text/javascript">
     $(function () {
