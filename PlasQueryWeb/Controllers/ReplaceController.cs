@@ -11,6 +11,12 @@ namespace PlasQueryWeb.Controllers
         // GET: 替换
         public ActionResult Index()
         {
+            //产品编号
+            string Rpt = string.Empty;
+            if (!string.IsNullOrEmpty(Request["Rpt"]))
+            {
+                Rpt = Request["Rpt"].ToString();
+            }
             return View();
         }
     }

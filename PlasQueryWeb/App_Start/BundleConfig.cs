@@ -17,7 +17,8 @@ namespace PlasQueryWeb
                 ));
             bundles.Add(new StyleBundle("~/GetContent/CommonCss").Include(
                       "~/Content/css/base.css",
-                      "~/Content/css/pageSwitch.min.css"
+                      "~/Content/css/pageSwitch.min.css",
+                      "~/Content/css/iconfont/iconfont.css"
                       ));
 
             bundles.Add(new ScriptBundle("~/GetButtom/FootJS").Include(

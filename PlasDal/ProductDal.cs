@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -146,7 +147,7 @@ namespace PlasDal
                     //产生一个查询条件
                     string onesql = searchStr.Substring(1, searchStr.IndexOf("}") - 1);
                     //一个线程执行一个查询条件
-                    string execsql = string.Format("exec suppersearchone '{0}','{1}',{2},{3}", ver, onesql, languageid, i);
+                    string execsql = string.Format("exec suppersearchone '{0}','{1}',{2},{3}", ver, "{"+ onesql+"}", languageid, i);
                     taskList.Add(taskfactory.StartNew(() =>
                     {
                         SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, execsql, null);
@@ -158,7 +159,7 @@ namespace PlasDal
             Task.WaitAll(taskList.ToArray());
             //所有线程执行完成后再将全部结果求交集
             string sql = string.Format("exec suppersearchmerge '{0}',{1},{2},{3}", ver, taskts, pageCount, pageSize);
-            //Common.Common.AddLog("system", "执行超级搜索", sql.ToString(), "");
+            PlasCommon.Common.AddLog("system", "执行超级搜索", sql.ToString(), "");
             var ds = SqlHelper.GetSqlDataSet(sql);
             return ds;
         }
@@ -259,6 +260,22 @@ namespace PlasDal
         }
 
         #endregion
+
+        #region 点击次数累增
+        /// <summary>
+        /// 产品点击数次累加
+        /// </summary>
+        /// <param name="proid"></param>
+        public  void ProductHit(string proid)
+        {
+            string sql = "update Product set HitCount=isnull(HitCount,0)+1 where ProductGuid=@ProductGuid";
+            SqlParameter[] parm = {
+                new SqlParameter("@ProductGuid",proid)
+            };
+            SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings,sql, parm);
+        }
+        #endregion
+
 
     }
 }

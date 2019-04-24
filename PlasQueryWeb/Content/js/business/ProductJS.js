@@ -4,7 +4,10 @@ $(function () {
         $(".search_condition_wrap").append('<span class="search-select-item" title="搜索" datatype="66" bigtitle="搜索">搜索:' + keywork + '</span>');
     }
 })
-
+function LookLoadingIcon(obj) {
+    //alert("调用到了e");
+    window.location.href = "/Replace/Index?Rpt=" + obj;
+}
 //展开更多
 $(".search-more-btn").click(function () {
     if ($("div[name='AtrrNone']").css("display") == "none") {
@@ -55,6 +58,7 @@ function InitData(pageindx) {
                     tbodyui += "<td>" + n.Name + "</td>";
                     tbodyui += "<td>" + n.ProUse + "</td>";
                     tbodyui += "<td>" + n.characteristic + "</td>";
+                    tbodyui += "<td><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.prodid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span> <span class='layui-btn layui-btn-sm'><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span></td>";
                     tbodyui += "</tr>";
                 });
                 if (json.BigType != "") {
@@ -91,7 +95,7 @@ function InitData(pageindx) {
             }
             else {
                 tbodyui += "<tr>";
-                tbodyui += "<td colspan=\"5\" align=\"center\" class='red'>未找到数据</td>";
+                tbodyui += "<td colspan=\"6\" align=\"center\" class='red'>未找到数据</td>";
                 tbodyui += "</tr>";
             }
             if (typelist != "")//未塞选条件分页
