@@ -11,13 +11,13 @@
     <div class="login-box">
         <p class="login-title">帐号密码登录</p>
         <div>
-            <span class="fa fa-user login-icon"></span><input type="text" class="login-input" style="text-align: left;" placeholder="请输入帐号">
+            <span class="fa fa-user login-icon"></span><input id="usaccount" type="text" class="login-input" style="text-align: left;" placeholder="请输手机号">
         </div>
         <div style="margin-top: 15px;">
-            <span class="fa fa-lock login-icon"></span><input type="password" class="login-input" style="text-align: left;" placeholder="请输入密码">
+            <span class="fa fa-lock login-icon"></span><input id="uspassword" type="password" class="login-input" style="text-align: left;" placeholder="请输入密码">
         </div>
         <div style="width: 100%;margin-top: 10px;">
-            <button class="search-btn-screem">登录</button>
+            <button id="savelogin" class="search-btn-screem">登录</button>
         </div>
         <div style="text-align: right;font-size: 14px;margin-top: 10px;">
             <a href="/MemberCenter/Login" style="color: #000;margin-right: 15px;text-decoration: none;"><span class="fa fa-qq" style="color: orangered;"></span>QQ登录</a>
@@ -26,3 +26,6 @@
         </div>
     </div>
 </div>
+<script src="~/Content/js/business/Login.js" type="text/javascript"></script>
+<script src="~/Scripts/comm.js" type="text/javascript"></script>
+<script src="~/Content/layui/lay/modules/layer.js" type="text/javascript"></script>

@@ -10,7 +10,7 @@
         /// <returns type="String">地址</returns>
         var url = comm.webPath + "/" + control + "/" + action;
         if (param != null) {
-            url += "?" + $.param(param);
+            url += "?" + param//$.param(param);
         }
         return url;
     },

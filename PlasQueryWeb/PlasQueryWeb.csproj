@@ -222,6 +222,7 @@
     <Content Include="Content\i\startup-640x1096.png" />
     <Content Include="Content\js\amazeui.min.js" />
     <Content Include="Content\js\app.js" />
+    <Content Include="Content\js\business\Login.js" />
     <Content Include="Content\js\business\PhysicalJS.js" />
     <Content Include="Content\js\business\priceJS.js" />
     <Content Include="Content\js\business\ProductJS.js" />
