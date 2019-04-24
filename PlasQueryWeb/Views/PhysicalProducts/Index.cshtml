@@ -36,11 +36,12 @@
     <div class="search-item">
         <div class="search-item-type">产品种类：</div>
         <div class="search-item-content">
+            
             <ul class="search-item-content" data-type="1" data-typename="产品种类">
                 <li data-guid="" data-value="0" class="active">全部</li>
                 @for (var i = 0; i < type.Rows.Count; i++)
                 {
-                    <li data-guid="" data-value="@type.Rows[i]["Name"].ToString()">@type.Rows[i]["Name"].ToString()</li>
+                    <li data-guid="@type.Rows[i]["SmallGuid"].ToString()" data-value="@type.Rows[i]["Name"].ToString()">@type.Rows[i]["Name"].ToString()</li>
                 }
             </ul>
         </div>
@@ -74,17 +75,17 @@
         <!--<div class="search-item-btn" data-type="3" data-typename="阻燃等级">更多<span class="fa fa-angle-down"></span></div>-->
     </div>
     <div class="search-item">
-        <div class="search-item-type">生产厂家：</div>
+        <div class="search-item-type">生产厂商：</div>
         <div class="search-item-content" style="height: auto;">
-            <ul data-type="4" data-typename="生产厂家">
+            <ul data-type="4" data-typename="生产厂商">
                 <li data-guid="" data-value="0" class="active">全部</li>
                 @for (var i = 0; i < company.Rows.Count; i++)
                 {
-                    <li data-guid="" data-value="@company.Rows[i]["Name"].ToString()">@company.Rows[i]["Name"].ToString()</li>
+                    <li data-guid="@company.Rows[i]["SmallGuid"].ToString()" data-value="@company.Rows[i]["Name"].ToString()">@company.Rows[i]["Name"].ToString()</li>
                 }
             </ul>
         </div>
-        <div class="search-item-btn" data-type="4" data-typename="生产厂家">更多<span class="fa fa-angle-down"></span></div>
+        <div class="search-item-btn" data-type="4" data-typename="生产厂商">更多<span class="fa fa-angle-down"></span></div>
     </div>
 
     <div class="search-item" name="AtrrNone" style="display:none;">
