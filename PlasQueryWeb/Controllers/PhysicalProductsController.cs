@@ -64,13 +64,13 @@ namespace PlasQueryWeb.Controllers
         {
             #region 产品详情
             var ds = bll.GetModelInfo(prodid);
-            if (ds != null && ds.Tables.Count > 0)
+            if (ds != null && ds.Tables.Contains("ds") && ds.Tables.Count > 0)
             {
                 if (ds.Tables[0].Rows.Count > 0)
                 {
                     ViewBag.ProModel = ds.Tables[0].Rows[0]["proModel"];
                 }
-                if (ds.Tables.Count > 1)
+                if (ds.Tables.Count > 1 && ds.Tables.Contains("ds1"))
                 {
                     //物性
                     ViewBag.PhysicalInfo = ds.Tables[1];
@@ -98,6 +98,8 @@ namespace PlasQueryWeb.Controllers
                 }
 
             }
+            //新增点击次数
+            bll.ProductHit(prodid);
             #endregion
 
             #region 猜你喜欢和同厂家产品

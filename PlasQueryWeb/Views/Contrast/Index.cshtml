@@ -2,7 +2,9 @@
 
 @Html.Partial("~/Views/Public/SubPageNav.cshtml")
 
-@Html.Partial("~/Views/Public/PubSearch.cshtml")
+@{
+    Html.RenderAction("PubSearch", "Public");
+}
 <div class="marginTop">
     <table class="table-contrast">
         <tbody>

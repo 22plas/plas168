@@ -1,6 +1,12 @@
 ﻿$(function () {
     $(".navBox").find(".nav").find("li").eq(2).children("a").addClass("active");
+    //需要验证是否登录
+   
 })
+function LookLoadingIcon(obj) {
+    //alert("调用到了e");
+     window.location.href = "/Replace/Index?Rpt=" + obj;
+}
 
 $(".search-more-btn").click(function () {
     if ($("div[name='AtrrNone']").css("display") == "none") {
@@ -176,15 +182,17 @@ function InitData(pageindx,isNavLink) {
                     tbodyui += "<td>" + n.Name + "</td>";
                     tbodyui += "<td>" + n.ProUse + "</td>";
                     tbodyui += "<td>" + n.characteristic + "</td>";
+                    tbodyui += "<td><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.productid +"');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span> <span class='layui-btn layui-btn-sm'><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span></td>";
                     tbodyui += "</tr>";
                 });
             }
             else {
                 tbodyui += "<tr>";
-                tbodyui += "<td colspan=\"5\" align=\"center\" class='red'>未找到数据</td>";
+                tbodyui += "<td colspan=\"6\" align=\"center\" class='red'>未找到数据</td>";
                 tbodyui += "</tr>";
             }
             $("#DataList").html(tbodyui);
+            
 
         },
         error: function () { layer.msg('Load the data failure!', { icon: 5 }); }
@@ -200,6 +208,7 @@ function InitData(pageindx,isNavLink) {
         num_edge_entries: 1
     });
     $("html, body").stop().animate({ scrollTop: $("#records").offset().top - 200 }, 400);
+    
 }
 
 function pageselectCallback(page_id, jq) {

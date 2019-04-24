@@ -83,34 +83,22 @@ namespace PlasCommon
         /// <param name="Title">大致标题</param>
         /// <param name="Message">操作信息</param>
         /// <param name="BusData">业务数据</param>
-        //public static void AddLog(string UserName, string Title, string Message, string BusData)
-        //{
-        //    using (PlasConfig db = new PlasConfig())
-        //    {
-        //        systemLog log = new systemLog();
-        //        log.BusinessData = BusData;
-        //        log.Createdate = DateTime.Now;
-        //        log.Message = Message;
-        //        log.Title = Title;
-        //        log.UserName = UserName;
-        //        db.systemLog.Add(log);
-        //        db.SaveChanges();
-        //    }
-        //}
+        public static void AddLog(string UserName, string Title, string Message, string BusData)
+        {
+            StringBuilder sql = new StringBuilder();
+            sql.Append("insert into systemLog(UserName,Title,Createdate,Message,BusinessData) values(@UserName,@Title,@Createdate,@Message,@BusinessData)");
+            SqlParameter[] parm = {
+                new SqlParameter("@UserName",UserName),
+                new SqlParameter("@Title",Title),
+                new SqlParameter("@Createdate",DateTime.Now),
+                new SqlParameter("@Message",Message),
+                new SqlParameter("@BusinessData",BusData)
+            };
+            SqlCommonQuery.SqlHelper.ExectueNonQuery(SqlCommonQuery.SqlHelper.ConnectionStrings, sql.ToString(), parm);
+        }
 
 
-        ///// <summary>
-        ///// 产品点击数次累加
-        ///// </summary>
-        ///// <param name="proid"></param>
-        //public static void ProductHit(int proid)
-        //{
-        //    string sql = "update NewProduct set HitCount=isnull(HitCount,0)+1 where ID=@proid";
-        //    SqlParameter[] parm = {
-        //        new SqlParameter("@proid",proid)
-        //    };
-        //    // ExectueNonQuery(sql, parm);
-        //}
+   
         ///// <summary>
         ///// 产品类目
         ///// </summary>

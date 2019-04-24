@@ -105,5 +105,12 @@ namespace PlasBll
         }
         #endregion
 
+        #region 点击次数累增
+        public  void ProductHit(string proid)
+        {
+             dal.ProductHit(proid);
+        }
+        #endregion
+
     }
 }
