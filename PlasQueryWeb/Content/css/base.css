@@ -370,7 +370,7 @@ table{width: 100%;border-spacing: 0;background-color: #fff;}
 
 /**button*/
 .layui-btn {
-    margin: 0 7px 10px 0;
+    margin: 3px 7px 3px 0;
 }
 .layui-btn-sm {
     height: 30px;
