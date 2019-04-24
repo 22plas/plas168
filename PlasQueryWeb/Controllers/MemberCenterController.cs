@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using static PlasCommon.Enums;
@@ -15,17 +16,29 @@ namespace PlasQueryWeb.Controllers
 {
     public class MemberCenterController : Controller
     {
+        //获取当前登录的用户信息
+        AccountData AccountData
+        {
+            get
+            {
+                return this.GetAccountData();
+            }
+        }
         private PlasBll.MemberCenterBll mbll = new PlasBll.MemberCenterBll();
         public void Sidebar(string name = "用户管理")
         {
             ViewBag.Sidebar = name;
 
         }
+     
         //
         // GET: /会员中心首页/
         public ActionResult Index()
         {
-            Sidebar("概览");
+            ViewBag.username = AccountData.UserName;
+            ViewBag.userheadimage = AccountData.HeadImage;
+            ViewBag.timestr = Common.GetTimeStr();
+            Sidebar("个人中心");
             return View();
         }
         //登录
@@ -39,11 +52,11 @@ namespace PlasQueryWeb.Controllers
             return View();
         }
         //用户信息
-        public ActionResult UserInfo()
-        {
-            Sidebar("个人信息");
-            return View();
-        }
+        //public ActionResult UserInfo()
+        //{
+        //    Sidebar("个人信息");
+        //    return View();
+        //}
         //公司资料
         public ActionResult CompanyInfo()
         {
@@ -169,7 +182,37 @@ namespace PlasQueryWeb.Controllers
         public ActionResult GetLogin(string account, string password)
         {
             string returnstr = mbll.LoginBll(account, password);
-            return Json(Common.ToJsonResult(returnstr, "返回结果"), JsonRequestBehavior.AllowGet);
+            string[] resultstr = returnstr.Split(',');
+            string tempstr = string.Empty;
+            if (resultstr.Length > 0)
+            {
+                if (resultstr[0].Equals("Success"))
+                {
+                    //把重要的用户信息进行加密，存放到cookie
+                    this.SetAccountData(new AccountData
+                    {
+                        UserID = resultstr[1],
+                        UserName = resultstr[2],
+                        HeadImage = resultstr[3]
+
+                    });
+                }
+                tempstr = resultstr[0];
+            }
+            else
+            {
+                tempstr = returnstr;
+            }
+            return Json(Common.ToJsonResult(tempstr, "返回结果"), JsonRequestBehavior.AllowGet);
+        }
+
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult UserInfoPartial()
+        {
+            cp_userview um = new cp_userview();
+            um.UserName = AccountData.UserName;
+            return Json(Common.ToJsonResult("Success", "成功", um), JsonRequestBehavior.AllowGet);
         }
     }
 }

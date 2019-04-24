@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PlasModel;
+using PlasQueryWeb.App_Start;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,8 +11,18 @@ namespace PlasQueryWeb.Controllers
     public class HomeController : Controller
     {
         private PlasBll.ProductBll bll = new PlasBll.ProductBll();
+        //获取当前登录的用户信息
+        AccountData AccountData
+        {
+            get
+            {
+                return this.GetAccountData();
+            }
+        }
+        //首页
         public ActionResult Index()
         {
+            ViewBag.username = AccountData.UserName;
             return View();
         }
 

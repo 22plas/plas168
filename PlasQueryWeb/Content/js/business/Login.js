@@ -13,9 +13,8 @@ $("#savelogin").click(function () {
             success: function (data) {
                 console.log(data);
                 if (data.State == "Success") {
-                    var rs = data.Result;
-                    console.log(rs.usid);
-                    window.location.href = comm.action("Index", "MemberCenter");
+                    //var rs = data.Result;
+                    window.location.href = comm.action("Index", "Home");
                 }
                 else if (data.State == "NoFind") {
                     layer.alert("账号不存在！");

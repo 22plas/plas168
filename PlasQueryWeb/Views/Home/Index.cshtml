@@ -60,14 +60,24 @@
         <ul class="nav" style="margin-right: 25px;">
             <!--<li class="active">首页</li>-->
             <!--<li><a href="search_height.html" target="_blank">高级搜索</a></li>
-            <li>材料替换</li>
-            <li><a href="contrast_detail.html" target="_blank">物性对比</a></li>
-            <li>应用案例</li>-->
+        <li>材料替换</li>
+        <li><a href="contrast_detail.html" target="_blank">物性对比</a></li>
+        <li>应用案例</li>-->
         </ul>
-        <div class="logo-register-btn" style="margin-top: 22px;">
-            <a class="btn text-orange" href="/MemberCenter/Login">登录</a> | <a class="btn text-orange" href="/MemberCenter/Register">注册</a>
-            | <a class="btn text-orange" href="/MemberCenter/Index">个人中心</a>
-        </div>
+        @if (ViewBag.username == "" || ViewBag.username == null)
+        {
+            <div class="logo-register-btn" style="margin-top: 22px;">
+                <a class="btn text-orange" href="/MemberCenter/Login">登录</a> | <a class="btn text-orange" href="/MemberCenter/Register">注册</a>
+            </div>
+        }
+        @if(ViewBag.username != ""&& ViewBag.username != null)
+        {
+            <div class="logo-register-btn" style="margin-top: 22px;border:none;">
+                <span>您好！ @ViewBag.username</span>
+                <a class="btn text-orange" href="/MemberCenter/Index">个人中心</a>
+            </div>
+        }
+
     </div>
 </div>
 <div id="banner">

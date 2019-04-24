@@ -59,6 +59,7 @@ namespace PlasBll
         {
             try
             {
+                //检测用户手机号是否被注册
                 DataTable usdt1 = mdal.GetUserDt(account, "phone");
                 if (usdt1.Rows.Count <= 0)
                 {
@@ -66,15 +67,12 @@ namespace PlasBll
                 }
                 else
                 {
+                    //根据手机号和密码查询用户信息
                     DataTable usdt = mdal.LgoinDal(account, userpwd);
                     if (usdt.Rows.Count > 0)
                     {
-                        var resultstr = new
-                        {
-                            usid = usdt.Rows[0]["ID"].ToString(),
-                            usname = usdt.Rows[0]["UserName"].ToString()
-                        };
-                        return "Success";
+                        string returns = string.Format(@"Success,{0},{1},{2}", usdt.Rows[0]["ID"].ToString(), usdt.Rows[0]["UserName"].ToString(),usdt.Rows[0]["HeadImage"]);
+                        return returns;
                     }
                     else
                     {

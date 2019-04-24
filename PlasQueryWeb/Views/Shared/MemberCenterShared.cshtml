@@ -20,13 +20,14 @@
     <title>个人中心</title>
 </head>
 <body>
+    @*@Html.Action("UserInfoPartial")*@
     <header class="am-topbar am-topbar-inverse admin-header">
         <div class="am-topbar-brand">
             <a href="javascript:;" class="tpl-logo">
                 <img src="~/Content/img/logo1.png" alt="">
             </a>
         </div>
-        <div class="am-icon-list tpl-header-nav-hover-ico am-fl am-margin-right">
+        <div class="am-icon-list tpl-header-nav-hover-ico am-fl am-margin-right" id="displaybtn">
 
         </div>
 
@@ -37,7 +38,7 @@
             <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
                 <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
                     <a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
-                        <span class="am-icon-bell-o"></span> 提醒 <span class="am-badge tpl-badge-success am-round">5</span></span>
+                        <span class="am-icon-bell-o"></span> 提醒 <span class="am-badge tpl-badge-success am-round">5</span>
                     </a>
                     <ul class="am-dropdown-content tpl-dropdown-content">
                         <li class="tpl-dropdown-content-external">
@@ -59,7 +60,7 @@
                 </li>
                 <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
                     <a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
-                        <span class="am-icon-comment-o"></span> 消息 <span class="am-badge tpl-badge-danger am-round">9</span></span>
+                        <span class="am-icon-comment-o"></span> 消息 <span class="am-badge tpl-badge-danger am-round">9</span>
                     </a>
                     <ul class="am-dropdown-content tpl-dropdown-content">
                         <li class="tpl-dropdown-content-external">
@@ -92,7 +93,7 @@
                 </li>
                 <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
                     <a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
-                        <span class="am-icon-calendar"></span> 进度 <span class="am-badge tpl-badge-primary am-round">4</span></span>
+                        <span class="am-icon-calendar"></span> 进度 <span class="am-badge tpl-badge-primary am-round">4</span>
                     </a>
                     <ul class="am-dropdown-content tpl-dropdown-content">
                         <li class="tpl-dropdown-content-external">
@@ -138,7 +139,7 @@
 
                 <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
                     <a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
-                        <span class="tpl-header-list-user-nick">禁言小张</span><span class="tpl-header-list-user-ico"> <img src="~/Content/img/user01.png"></span>
+                        <span class="tpl-header-list-user-nick"></span>{{usname}}<span class="tpl-header-list-user-ico"> <img src="~/Content/img/user01.png"></span>
                     </a>
                     <ul class="am-dropdown-content">
                         <li><a href="#"><span class="am-icon-bell-o"></span> 资料</a></li>
@@ -150,9 +151,8 @@
             </ul>
         </div>
     </header>
-
     <div class="tpl-page-container tpl-page-header-fixed">
-        <div class="tpl-left-nav tpl-left-nav-hover">
+        <div class="tpl-left-nav tpl-left-nav-hover" id="menudiv">
             <div class="tpl-left-nav-title"></div>
             <div id="sidebar" class="tpl-left-nav-list">
                 <ul class="tpl-left-nav-menu">
@@ -172,16 +172,16 @@
                         </a>
                         <ul class="tpl-left-nav-sub-menu" style="display: block;">
                             <li>
-                                <a id="UserInfo" href="/MemberCenter/Index" title="概览">
+                                <a id="UserInfo" href="/MemberCenter/Index" title="个人中心">
                                     <i class="am-icon-angle-right"></i>
-                                    <span>概览</span>
+                                    <span>个人中心</span>
                                     <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
                                 </a>
-                                <a id="UserInfo" href="/MemberCenter/UserInfo" title="个人信息">
-                                    <i class="am-icon-angle-right"></i>
-                                    <span>个人信息</span>
-                                    <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
-                                </a>
+                                @*<a id="UserInfo" href="/MemberCenter/UserInfo" title="个人信息">
+                                        <i class="am-icon-angle-right"></i>
+                                        <span>个人信息</span>
+                                        <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
+                                    </a>*@
                                 <a href="/MemberCenter/CompanyInfo" title="公司资料">
                                     <i class="am-icon-angle-right"></i>
                                     <span>公司资料</span>
@@ -190,7 +190,7 @@
                                 <a href="/MemberCenter/DeliveryAddress" title="收货地址">
                                     <i class="am-icon-angle-right"></i>
                                     <span>收货地址</span>
-                                    <i class="tpl-left-nav-content tpl-badge-primary">5</i>
+                                    @*<i class="tpl-left-nav-content tpl-badge-primary">5</i>*@
                                 </a>
                             </li>
                         </ul>
@@ -314,7 +314,7 @@
                 </ul>
             </div>
         </div>
-        <div class="main">
+        <div class="main" id="mindiv">
             @RenderBody()
         </div>
     </div>
@@ -324,8 +324,37 @@
 <script src="~/Content/js/amazeui.min.js"></script>
 <script src="~/Content/js/iscroll.js"></script>
 <script src="~/Content/js/app.js"></script>
+<script src="~/Content/js/vue.js"></script>
+<script src="~/Scripts/comm.js" type="text/javascript"></script>
 <script>
+    var vm = new Vue({
+        el: '#topbar-collapse',
+        data: {
+            usname: ""//用户名
+        }, methods: {
+            load: function () {
+                $.ajax({
+                    type: "get",
+                    url: comm.action("UserInfoPartial", "MemberCenter"),
+                    data: {},
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        if (data.State == "Success") {
+                            var rs = data.Result;
+                            vm.usname = rs.UserName;
+                        }
+                        else {
+                            vm.usname = "";
+                        }
+                    }
+                });
+            }
+        }
+    });
         $(function () {
             $("#sidebar a[title='@ViewBag.Sidebar']").addClass("addcolor");
+            vm.load();
         })
+
 </script>
