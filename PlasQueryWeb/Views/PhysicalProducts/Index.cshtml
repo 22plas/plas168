@@ -183,7 +183,7 @@
                         sammlds++;
                         <tr @(sammlds > 8 ? "name=samll_" + count + "" : "") class="@(sammlds>8?"none":"")">
                             <td class="cell-title"><span name="FaceKey">@sammll["FaceKey"].ToString()</span></td>
-                            <td><input type="text" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" bigtypename="@item["FaceKey"].ToString()" smalltypename="@sammll["FaceKey"].ToString()" name="MinValue" class="input" /></td>
+                            <td><input type="text" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" bigtypename="@item["FaceKey"].ToString()" smalltypename="@sammll["Realkey"].ToString()" name="MinValue" class="input" /></td>
                             <td><input type="text" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" name="MaxValue" class="input" /></td>
                             <td>
                                 <select class="input" name="UnitFaceKey">
