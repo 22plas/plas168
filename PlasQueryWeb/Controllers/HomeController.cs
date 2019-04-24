@@ -8,6 +8,7 @@ namespace PlasQueryWeb.Controllers
 {
     public class HomeController : Controller
     {
+        private PlasBll.ProductBll bll = new PlasBll.ProductBll();
         public ActionResult Index()
         {
             return View();
@@ -15,6 +16,12 @@ namespace PlasQueryWeb.Controllers
 
         public ActionResult Home()
         {
+            var ds = bll.HotProducts(5);
+            if (ds != null && ds.Rows.Count > 0)
+            {
+                var list = PlasCommon.ToolClass<PlasModel.ProductViewModel>.ConvertDataTableToModel(ds);
+                ViewBag.HotList = list;
+            }
             return View();
         }
 

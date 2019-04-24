@@ -8,7 +8,7 @@ namespace PlasQueryWeb.Controllers
 {
     public class PublicController : Controller
     {
-        PlasBll.ProductBll bll = new PlasBll.ProductBll();
+       private  PlasBll.ProductBll bll = new PlasBll.ProductBll();
         // 公用
         public ActionResult Header()
         {
