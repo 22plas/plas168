@@ -22,7 +22,10 @@ namespace PlasQueryWeb.Controllers
         //首页
         public ActionResult Index()
         {
-            ViewBag.username = AccountData.UserName;
+            if (AccountData!=null)
+            {
+                ViewBag.username = AccountData.UserName;
+            }
             return View();
         }
 
