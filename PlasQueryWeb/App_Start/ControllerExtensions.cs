@@ -22,15 +22,11 @@ namespace PlasQueryWeb.App_Start
             if (controller.Request.Cookies["AccountData"] != null)
             {
                 //throw new Exception("AccountData is null");
-
-                var data = controller.Request.Cookies["AccountData"].Value;
-                var decData = Common.Decrypt(data);
-                return JsonConvert.DeserializeObject<AccountData>(decData);
-            }
-            else
-            {
                 return JsonConvert.DeserializeObject<AccountData>("");
             }
+            var data = controller.Request.Cookies["AccountData"].Value;
+            var decData = Common.Decrypt(data);
+            return JsonConvert.DeserializeObject<AccountData>(decData);
         }
     }
 }
