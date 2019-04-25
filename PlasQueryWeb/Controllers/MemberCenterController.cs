@@ -38,6 +38,19 @@ namespace PlasQueryWeb.Controllers
             ViewBag.username = AccountData.UserName;
             ViewBag.userheadimage = AccountData.HeadImage;
             ViewBag.timestr = Common.GetTimeStr();
+            DataTable usdt = mbll.GetUserInfo(AccountData.UserID);
+            if (usdt.Rows.Count > 0)
+            {
+                ViewBag.balance = usdt.Rows[0]["Balance"].ToString();
+                ViewBag.Intotal = usdt.Rows[0]["Intotal"].ToString();
+                ViewBag.OutTotal = usdt.Rows[0]["OutTotal"].ToString();
+            }
+            else
+            {
+                ViewBag.balance = "0";
+                ViewBag.Intotal = "0";
+                ViewBag.OutTotal = "0";
+            }
             Sidebar("个人中心");
             return View();
         }
@@ -66,7 +79,9 @@ namespace PlasQueryWeb.Controllers
         //新增公司资料
         public ActionResult CompanyInfoCreate()
         {
-            return View();
+            Sidebar("公司资料");
+            var model = new cp_Company();
+            return View(model);
         }
         //收货地址
         public ActionResult DeliveryAddress()
@@ -77,6 +92,7 @@ namespace PlasQueryWeb.Controllers
         //收货地址
         public ActionResult DeliveryAddressCreate()
         {
+            Sidebar("收货地址");
             return View();
         }
         //物性收藏
@@ -100,6 +116,7 @@ namespace PlasQueryWeb.Controllers
         //新增卖家报价
         public ActionResult SellerOfferCreate()
         {
+            Sidebar("卖家报价");
             return View();
         }
 
@@ -112,6 +129,7 @@ namespace PlasQueryWeb.Controllers
         //新增买家询价
         public ActionResult BuyerOfferCreate()
         {
+            Sidebar("买家询价");
             return View();
         }
 
@@ -205,7 +223,10 @@ namespace PlasQueryWeb.Controllers
             }
             return Json(Common.ToJsonResult(tempstr, "返回结果"), JsonRequestBehavior.AllowGet);
         }
-
+        /// <summary>
+        /// 个人中心母版页获取用户信息
+        /// </summary>
+        /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpGet]
         public ActionResult UserInfoPartial()

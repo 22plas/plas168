@@ -19,13 +19,18 @@ namespace PlasQueryWeb.App_Start
 
         public static AccountData GetAccountData(this Controller controller)
         {
-            if (controller.Request.Cookies["AccountData"] == null)
+            if (controller.Request.Cookies["AccountData"] != null)
             {
-                throw new Exception("AccountData is null");
+                //throw new Exception("AccountData is null");
+
+                var data = controller.Request.Cookies["AccountData"].Value;
+                var decData = Common.Decrypt(data);
+                return JsonConvert.DeserializeObject<AccountData>(decData);
             }
-            var data = controller.Request.Cookies["AccountData"].Value;
-            var decData = Common.Decrypt(data);
-            return JsonConvert.DeserializeObject<AccountData>(decData);
+            else
+            {
+                return JsonConvert.DeserializeObject<AccountData>("");
+            }
         }
     }
 }

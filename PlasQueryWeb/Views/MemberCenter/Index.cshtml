@@ -9,6 +9,39 @@
     <meta name="keywords" content="index">
     <script src="~/Content/js/echarts.min.js"></script>
     <title>个人中心</title>
+    <style>
+        .jfdivallbox {
+            width: 100%;
+            height: 30px;
+        }
+        .jfdivbox {
+            min-width: 120px;
+            width: auto;
+            height: 30px;
+            float: left;
+            padding-left: 5px;
+            padding-right: 5px;
+            font-size: 12px;
+            text-align: center;
+            line-height: 30px;
+            color: #666666;
+        }
+        .jfsmdivbox {
+            color: #08a2fc;
+            cursor: pointer;
+        }
+            .jfdivbox i {
+                font-style: normal;
+                font-size: 18px;
+                color: #08a2fc
+            }
+        .jljfi {
+            color: #339933 !important;
+        }
+        .xhjfi {
+            color: #e7505a !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -17,21 +50,13 @@
                 <div class="tpl-content-scope">
                     <div class="note note-info">
                         <h2><strong>@ViewBag.timestr</strong><strong>，@ViewBag.username</strong><strong> </strong></h2>
-                        @*<h3>
-                无痛地找到您需要的材料
-
-                免费注册以访问我们的所有材料数据并解锁由世界级专家策划的内容
-
-
-                从最详尽的材料和成分数据库中搜索，比较和选择材料（350,000多个数据表）
-
-                访问专家策划的资源，以更好地选择产品，包括起点配方，材料选择指南，文章，案例研究，白皮书，在线课程，更多
-
-                通过我们的免费新闻通讯和每日更新的网站供稿，及时了解有关产品，供应商，技术，趋势和重要活动 的最新新闻
-            </h3>*@
-
+                        <div class="jfdivallbox">
+                            <div class="jfdivbox">可用积分：<i>@ViewBag.balance</i></div>
+                            <div class="jfdivbox">奖励积分：<i class="jljfi">@ViewBag.Intotal</i></div>
+                            <div class="jfdivbox">消耗积分：<i class="xhjfi">@ViewBag.OutTotal</i></div>
+                            <div class="jfdivbox jfsmdivbox">查看积分说明！</div>
+                        </div>
                     </div>
-                    
                 </div>
                 <div class="row">
                     <div class="am-u-md-6 am-u-sm-12 row-mb">

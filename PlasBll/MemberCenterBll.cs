@@ -85,5 +85,14 @@ namespace PlasBll
                 return "Fail";
             }
         }
+        /// <summary>
+        /// 根据用户id获取用户信息
+        /// </summary>
+        /// <param name="usid"></param>
+        /// <returns></returns>
+        public DataTable GetUserInfo(string usid) {
+            DataTable usdt = mdal.GetUserDt(usid, "ID");
+            return usdt;
+        }
     }
 }

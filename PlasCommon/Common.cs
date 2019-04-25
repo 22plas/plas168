@@ -324,7 +324,7 @@ namespace PlasCommon
         public static string GetTimeStr()
         {
             DateTime tmCur = DateTime.Now;
-            if (tmCur.Hour < 5 || tmCur.Hour > 18)
+            if (tmCur.Hour < 5 || tmCur.Hour >18)
             {//晚上
                 return "晚上好";
             }
@@ -332,7 +332,7 @@ namespace PlasCommon
             {//上午
                 return "上午好";
             }
-            else if (tmCur.Hour > 12 && tmCur.Hour < 18)
+            else if (tmCur.Hour > 12 && tmCur.Hour <= 18)
             {//下午
                 return "下午好";
             }
