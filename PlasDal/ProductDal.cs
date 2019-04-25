@@ -77,19 +77,19 @@ namespace PlasDal
                     ds = Sys_GetSmallClassList(showNum);
                     break;
                 case 2://特性
-                    ds = Sys_GetSearchParam("Sys_character", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid ", " and name<>'''' and name<>''--''", " substring(dbo.[fn_ChineseToSpell](name),1,1),name ");
+                    ds = Sys_GetSearchParam("Sys_character", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid", " and name<>'''' and name<>''--''", " substring(dbo.[fn_ChineseToSpell](name),1,1),name ");
                     break;
                 case 3://阻燃等级
                     ds = Sys_GetSearchParam("Prd_ZRDJSort", showNum, "  substring(dbo.[fn_ChineseToSpell](KeyWord),1,1) as fw,KeyWord as Name,*,'''' as SmallGuid ", "", " value desc ,substring(dbo.[fn_ChineseToSpell](KeyWord),1,1),KeyWord ");
                     break;
                 case 4://厂家
-                    ds = Sys_GetSearchParam("Sys_Manufacturer", showNum, "  substring(dbo.[fn_ChineseToSpell](AliasName),1,1) as fw,AliasName as Name,*,[Guid] as SmallGuid", " and AliasName<>'''' and AliasName<>''--''", "  substring(dbo.[fn_ChineseToSpell](AliasName),1,1),AliasName ");
+                    ds = Sys_GetSearchParam("Sys_Manufacturer", showNum, "  substring(dbo.[fn_ChineseToSpell](ShortName),1,1) as fw,ShortName as Name,*,[Guid] as SmallGuid", " and ShortName<>'''' and ShortName<>''--''", "  substring(dbo.[fn_ChineseToSpell](ShortName),1,1),ShortName ");
                     break;
                 case 5://加工方法
-                    ds = Sys_GetSearchParam("Sys_Method", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid ", " and name<>'''' and name<>''--''", " substring(dbo.[fn_ChineseToSpell](name),1,1),name ");
+                    ds = Sys_GetSearchParam("Sys_Method", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid,'''' as AliasName ", " and name<>'''' and name<>''--''", " substring(dbo.[fn_ChineseToSpell](name),1,1),name ");
                     break;
                 case 6://安全级别(阻燃等级的二级属性)
-                    ds = Sys_GetSearchParam("Prd_SmallClass", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid ", " and name<>'''' and name<>''--''", " substring(dbo.[fn_ChineseToSpell](name),1,1),name  ");//Weigth字段加在了Prd_SmallClass_l表
+                    ds = Sys_GetSearchParam("Prd_SmallClass", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid,'''' as AliasName ", " and name<>'''' and name<>''--''", " substring(dbo.[fn_ChineseToSpell](name),1,1),name  ");//Weigth字段加在了Prd_SmallClass_l表
                     break;
                 case 7://用途
                     ds = Sys_GetSearchParam("Sys_ForUse", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid ", " and name<>'''' and name<>''--''", " substring(dbo.[fn_ChineseToSpell](name),1,1),name  ");
@@ -98,10 +98,10 @@ namespace PlasDal
                     ds = Sys_GetSearchParam("Sys_filler", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid ", " and name<>'''' and name<>''--''", "  substring(dbo.[fn_ChineseToSpell](name),1,1),name ");
                     break;
                 case 9://添加剂
-                    ds = Sys_GetSearchParam("Sys_Additive", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid ", " and name<>'''' and name<>''--''", "  substring(dbo.[fn_ChineseToSpell](name),1,1),name ");
+                    ds = Sys_GetSearchParam("Sys_Additive", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid,'''' as AliasName ", " and name<>'''' and name<>''--''", "  substring(dbo.[fn_ChineseToSpell](name),1,1),name ");
                     break;
                 default:
-                    ds = Sys_GetSearchParam("Prd_SmallClass", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,* ,'''' as SmallGuid ", " and name<>'''' and name<>''--''", "  substring(dbo.[fn_ChineseToSpell](name),1,1),name ");
+                    ds = Sys_GetSearchParam("Prd_SmallClass", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,* ,'''' as SmallGuid,'''' as AliasName ", " and name<>'''' and name<>''--''", "  substring(dbo.[fn_ChineseToSpell](name),1,1),name ");
                     break;
             }
             return ds.Tables[0];
@@ -146,8 +146,13 @@ namespace PlasDal
                 {
                     //产生一个查询条件
                     string onesql = searchStr.Substring(1, searchStr.IndexOf("}") - 1);
+                    string splitsql = onesql;
+                    if (onesql.IndexOf("=)") > -1)
+                    {
+                        splitsql = "{" + onesql + "}";
+                    }
                     //一个线程执行一个查询条件
-                    string execsql = string.Format("exec suppersearchone '{0}','{1}',{2},{3}", ver, "{"+ onesql+"}", languageid, i);
+                    string execsql = string.Format("exec suppersearchone '{0}','{1}',{2},{3}", ver, splitsql, languageid, i);
                     taskList.Add(taskfactory.StartNew(() =>
                     {
                         SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, execsql, null);

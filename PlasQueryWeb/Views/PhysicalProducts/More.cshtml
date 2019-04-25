@@ -86,7 +86,7 @@
         @for (var i = 0; i < all.Rows.Count; i++)
         {
         <span class="pagelist">
-            <span class="text_2" data-guid="@all.Rows[i]["SmallGuid"].ToString()" data-value="@all.Rows[i]["Name"].ToString()">@all.Rows[i]["Name"].ToString()</span>
+            <span class="text_2" data-guid="@all.Rows[i]["SmallGuid"].ToString()" title="@all.Rows[i]["AliasName"].ToString()" data-value="@all.Rows[i]["Name"].ToString()">@all.Rows[i]["Name"].ToString()</span>
         </span>
 
         }
@@ -173,7 +173,8 @@
         }
         $.each($(".clearfix .pagelist"), function (index, item) {
             var st = $(this).find(".text_2").html();
-            if (st.toLowerCase().indexOf(search_input.val().trim().toLowerCase()) > -1) {
+            var an = $(this).find(".text_2").attr("title");
+            if (st.toLowerCase().indexOf(search_input.val().trim().toLowerCase()) > -1 || an.toLowerCase().indexOf(search_input.val().trim().toLowerCase())>-1) {
                 $(this).show();
             }
             else {

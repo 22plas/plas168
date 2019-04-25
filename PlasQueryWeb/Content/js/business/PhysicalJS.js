@@ -277,7 +277,7 @@ $("#QueryBtnSuper").click(function () {
     titlestr += str
     datas = "&searchstr=" + titlestr;
     //alert(datas);
-    //guidstr = guid();//重置UGID
+    guidstr = guid();//重置UGID
     InitData(0, '');
     // alert(titlestr);
 })
