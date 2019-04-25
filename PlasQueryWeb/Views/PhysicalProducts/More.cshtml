@@ -85,9 +85,9 @@
     <div class="clearfix" data-type="" data-typename="" data-checkmore="true">
         @for (var i = 0; i < all.Rows.Count; i++)
         {
-            <span class="pagelist">
-                <span class="text_2" data-guid="" data-value="@all.Rows[i]["Name"].ToString()">@all.Rows[i]["Name"].ToString()</span>
-            </span>
+        <span class="pagelist">
+            <span class="text_2" data-guid="@all.Rows[i]["SmallGuid"].ToString()" data-value="@all.Rows[i]["Name"].ToString()">@all.Rows[i]["Name"].ToString()</span>
+        </span>
 
         }
     </div>
@@ -190,8 +190,9 @@
             if ($(this).hasClass("text2check")) {
                 // alert($(this).attr("data-value"));
                 var dataval = $(this).attr("data-value");
+                var dataguid = $(this).attr("data-guid");
                 if (window.parent.$(".search_condition_wrap").find(".search-select-item").length == 0) {
-                    str += '<span class="search-select-item" title="' + $(this).attr("data-value") + '"  datatype="' + datatype + '" bigTitle="' + dataname + '">' + dataname + ':' + $(this).attr("data-value") + '<span class="fa fa-close" title="删除"></span></span>';
+                    str += '<span class="search-select-item" dataguid="' + $(this).attr("data-guid") +'" title="' + $(this).attr("data-value") + '"  datatype="' + datatype + '" bigTitle="' + dataname + '">' + dataname + ':' + $(this).attr("data-value") + '<span class="fa fa-close" title="删除"></span></span>';
                 }
                 else {//否则判断是否已经添加
                     var istrue = false;
@@ -207,7 +208,7 @@
 
                     })
                     if (!istrue) {
-                        str += '<span class="search-select-item" title="' + dataval + '"  datatype="' + datatype + '" bigTitle="' + dataname + '">' + dataname + ':' + dataval + '<span class="fa fa-close" title="删除"></span></span>';
+                        str += '<span class="search-select-item" dataguid="' + dataguid +'"  title="' + dataval + '"  datatype="' + datatype + '" bigTitle="' + dataname + '">' + dataname + ':' + dataval + '<span class="fa fa-close" title="删除"></span></span>';
                     }
                 }
             }

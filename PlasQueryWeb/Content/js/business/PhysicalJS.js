@@ -51,6 +51,7 @@ $(".orange-border").find("li").click(function () {
 $(".search-item-content").find("li").click(function () {
     var dataname = $(this).parent().attr("data-typename");//名称
     var datatype = $(this).parent().attr("data-type");//类型
+    var dataguid = $(this).attr("data-guid");//ID
     var dataval = $(this).attr("data-value");
     var str = "";
     var istrue = false;
@@ -74,7 +75,7 @@ $(".search-item-content").find("li").click(function () {
 
         //首次添加
         if ($(".search_condition_wrap").find(".search-select-item").length == 0) {
-            str = '<span class="search-select-item" title="' + $(this).attr("data-value") + '"  datatype="' + datatype + '" bigTitle="' + dataname + '">' + dataname + ':' + $(this).attr("data-value") + '<span class="fa fa-close" title="删除"></span></span>'
+            str = '<span class="search-select-item" dataguid="' + dataguid +'"  title="' + $(this).attr("data-value") + '"  datatype="' + datatype + '" bigTitle="' + dataname + '">' + dataname + ':' + $(this).attr("data-value") + '<span class="fa fa-close" title="删除"></span></span>'
         }
         else {//否则判断是否已经添加
             $.each($(".search_condition_wrap").find(".search-select-item"), function (index, item) {
@@ -89,7 +90,7 @@ $(".search-item-content").find("li").click(function () {
 
             })
             if (!istrue) {
-                str = '<span class="search-select-item" title="' + dataval + '"  datatype="' + datatype + '" bigTitle="' + dataname + '">' + dataname + ':' + dataval + '<span class="fa fa-close" title="删除"></span></span>'
+                str = '<span class="search-select-item" dataguid="' + dataguid +'"  title="' + dataval + '"  datatype="' + datatype + '" bigTitle="' + dataname + '">' + dataname + ':' + dataval + '<span class="fa fa-close" title="删除"></span></span>'
             }
         }
         $(".search_condition_wrap").append(str);
@@ -124,16 +125,18 @@ $("input[name='MinValue'],input[name='MaxValue']").blur(function () {
         var unit = $("select[name='UnitFaceKey']").eq(idx).val();//$("input[name='UnitFaceKey']").eq(idx).val();
         var bigname = $("input[name='MinValue']").eq(idx).attr("bigtypename");
         var samlname = $("input[name='MinValue']").eq(idx).attr("smalltypename");
+       // alert(samlname);
         if (maxval != "" && minval != "") {
             if ($(".search_condition_wrap").find(".search-select-item").length == 0) {
-                str = '<span class="search-select-item" title="' + bigname + '" unit="' + unit + '" minval="' + minval + '" maxval="' + maxval + '" datatype="11" bigTitle="' + samlname + '">' + samlname + '：' + minval + "-" + maxval + '/' + unit + '<span class="fa fa-close" title="删除"></span></span>';
+                str = '<span class="search-select-item" dataguid="" title="' + bigname + '" unit="' + unit + '" minval="' + minval + '" maxval="' + maxval + '" datatype="11" bigTitle="' + samlname + '">' + samlname + '：' + minval + "-" + maxval + '/' + unit + '<span class="fa fa-close" title="删除"></span></span>';
             }
             else {
                 //  var istrue = false;
-                if ($(".search_condition_wrap").find("i[bigtitle='" + samlname + "']").length > 0) {
-                    $(".search_condition_wrap").find("i[bigtitle='" + samlname + "']").parent().remove();
+                if ($(".search_condition_wrap").find("span[bigtitle='" + samlname + "']").length > 0) {
+                   // alert("存在")
+                    $(".search_condition_wrap").find("span[bigtitle='" + samlname + "']").remove();
                 }
-                str = '<span class="search-select-item" title="' + bigname + '"  unit="' + unit + '"  minval="' + minval + '" maxval="' + maxval + '" datatype="11" bigTitle="' + samlname + '">' + samlname + '：' + minval + "-" + maxval + '/' + unit + '<span class="fa fa-close" title="删除"></span></span>';
+                str = '<span class="search-select-item" dataguid="" title="' + bigname + '"  unit="' + unit + '"  minval="' + minval + '" maxval="' + maxval + '" datatype="11" bigTitle="' + samlname + '">' + samlname + '：' + minval + "-" + maxval + '/' + unit + '<span class="fa fa-close" title="删除"></span></span>';
             }
 
         }
@@ -230,7 +233,14 @@ $("#QueryBtnSuper").click(function () {
                 var count = 0;
                 $.each($(".search_condition_wrap").find("span[datatype='" + i + "']"), function (index, item) {
                     count++;
-                    str += $(this).attr("title");
+                    var isval = "";
+                    if ($.trim($(this).attr("dataguid")) != "") {
+                        isval = $.trim($(this).attr("dataguid"));
+                    }
+                    else {
+                        isval = $.trim($(this).attr("title"));
+                    }
+                    str += isval;
                     if (count < $(".search_condition_wrap").find("span[datatype='" + i + "']").length) {
                         str += ";"
                     }
@@ -250,8 +260,8 @@ $("#QueryBtnSuper").click(function () {
     })
     titlestr += str
     datas = "&searchstr=" + titlestr;
-//    alert(datas);
-    guidstr = guid();//重置UGID
+    //alert(datas);
+    //guidstr = guid();//重置UGID
     InitData(0,'');
     // alert(titlestr);
 })
