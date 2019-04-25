@@ -13,7 +13,7 @@ namespace PlasQueryWeb.Controllers
         // GET:超级搜索
         public ActionResult Index()
         {
-            int rowscount = 10;
+            //int rowscount = 10;
             var ys_character = new DataTable();
             var texing = new DataTable();
             var zuran = new DataTable();

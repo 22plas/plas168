@@ -145,7 +145,12 @@ $("input[name='MinValue'],input[name='MaxValue']").blur(function () {
     $(".search_condition_wrap").append(str);
 
     $(".fa-close").click(function () {
+       // alert("清理");
         //alert($(this).parent().html());
+        var datatype = $(this).parent().attr("datatype");
+        var dataval = $(this).parent().attr("title");
+      //  alert(datatype + "+" + dataval);
+        $("ul[data-type='" + datatype + "']").find("li[data-value='" + dataval + "']").removeClass("active");
         $(this).parent().remove();
     })
 
