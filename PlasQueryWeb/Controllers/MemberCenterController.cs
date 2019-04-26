@@ -3,6 +3,7 @@ using PlasCommon;
 using PlasCommon.SqlCommonQuery;
 using PlasModel;
 using PlasModel.App_Start;
+using PlasQueryWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -86,6 +87,49 @@ namespace PlasModel.Controllers
             ViewBag.District = abll.pliststrbll("北京市","2");//街道
             Sidebar("公司资料");
             var model = new cp_CompanyView();
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CompanyInfoCreate(cp_CompanyView model)
+        {
+            ////var model = new cp_CompanyView();
+            //return View(model);
+            if (ModelState.IsValid)
+            {
+                cp_Company tempmodel = new cp_Company();
+                tempmodel.AccountOpenBank = model.AccountOpenBank;
+                tempmodel.AccountOpening = model.AccountOpening;
+                tempmodel.Address = model.Address;
+                tempmodel.Area = model.Area;
+                tempmodel.City = model.City;
+                tempmodel.Contacts = model.Contacts;
+                tempmodel.CreateDate = model.CreateDate;
+                tempmodel.Email = model.Email;
+                tempmodel.Fax = model.Fax;
+                tempmodel.Id = model.Id;
+                tempmodel.isdefault = model.isdefault;
+                tempmodel.logo = string.Empty;
+                tempmodel.image = string.Join(",", model.image.Images) ;
+                tempmodel.Mobile = model.Mobile;
+                tempmodel.Name = model.Name;
+                tempmodel.OpenBank = model.OpenBank;
+                tempmodel.Province = model.Province;
+                tempmodel.QQ = model.QQ;
+                tempmodel.TaxId = model.TaxId;
+                tempmodel.Tel = model.Tel;
+                tempmodel.Trade = model.Trade;
+                tempmodel.UserId = AccountData.UserID;
+                tempmodel.WeChat = model.WeChat;
+
+                mbll.EditCompanyInfoBll(tempmodel, Operation.Add);
+                //return RedirectToAction("CompanyInfo");
+            }
+            AreaBll abll = new AreaBll();
+            ViewBag.Province = abll.pliststrbll("", "");//省份
+            ViewBag.City = abll.pliststrbll("北京市", "1"); //城市
+            ViewBag.District = abll.pliststrbll("北京市", "2");//街道
+            Sidebar("公司资料");
             return View(model);
         }
         //收货地址

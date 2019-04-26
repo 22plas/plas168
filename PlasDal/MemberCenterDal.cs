@@ -104,5 +104,29 @@ namespace PlasDal
             DataTable usdt = SqlHelper.GetSqlDataTable(execsql2);
             return usdt;
         }
+        //新增/修改公司信息
+        public bool EditCompanyInfoDal(cp_Company model, Operation operation)
+        {
+            string sql = "";
+            //新增
+            if (operation == Operation.Add)
+            {
+                sql = string.Format(@"INSERT INTO dbo.cp_Company( Name ,Trade ,Province ,City ,Address ,Contacts ,Tel ,Fax ,QQ ,logo ,UserId ,WeChat ,Mobile ,Area ,Email ,AccountOpenBank ,AccountOpening ,
+                                      OpenBank ,CreateDate ,isdefault ,TaxId,image)
+                            VALUES  ( N'{0}' ,N'{1}' , N'{2}' ,N'{3}' , N'{4}' ,N'{5}' ,N'{6}' ,N'{7}' ,N'{8}' ,'{9}' ,'{10}' ,N'{11}' ,N'{12}' ,N'{13}' ,N'{14}' ,N'{15}' ,N'{16}' ,N'{17}' , '{18}',{19} ,'{20}','{21}')",
+                            model.Name, string.Empty, model.Province, model.City, model.Address, model.Contacts, model.Tel, model.Fax, string.Empty, model.logo,
+                                    model.UserId, model.WeChat, model.Mobile, model.Area, model.Email, model.AccountOpenBank, model.AccountOpening, model.OpenBank, DateTime.Now.ToString(), YesOrNo.No.GetHashCode(), model.TaxId,model.image);
+            }
+            //修改
+            else
+            {
+                sql = string.Format(@"update dbo.cp_Company set Name='{0}' ,Trade='{1}' ,Province='{2}' ,City='{3}' ,Address='{4}' ,Contacts='{5}' ,Tel='{6}' ,Fax='{7}' ,QQ='{8}' ,logo='{9}' ,UserId='{10}' ,
+                                    WeChat='{11}' ,Mobile='{12}' ,Area='{13}' ,Email='{14}' ,AccountOpenBank='{15}' ,AccountOpening='{16}' ,OpenBank='{17}' ,CreateDate='{18}' ,isdefault={19} ,TaxId='{20}',image='{21}' where Id='{22}'",
+                           model.Name, string.Empty, model.Province, model.City, model.Address, model.Contacts, model.Tel, model.Fax, string.Empty, model.logo,
+                                   model.UserId, model.WeChat, model.Mobile, model.Area, model.Email, model.AccountOpenBank, model.AccountOpening, model.OpenBank, DateTime.Now.ToString(), model.isdefault, model.TaxId, model.image, model.Id);
+            }
+            int rows = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql, null);
+            return rows > 0 ? true : false;
+        }
     }
 }

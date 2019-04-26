@@ -1,4 +1,4 @@
-﻿@model PlasModel.cp_CompanyView
+﻿@model PlasQueryWeb.Models.cp_CompanyView
 @{
     ViewBag.Title = "新增公司资料";
     Layout = "~/Views/Shared/MemberCenterShared.cshtml";
@@ -14,105 +14,133 @@
                 <li class="am-active">新增公司资料</li>
             </ol>
             <div class="tpl-portlet-components">
-                <form class="am-form tpl-form-line-form">
-                        <div class="am-form-group">
-                            <label for="user-name" class="am-u-sm-3 am-form-label ">公司名称</label>
-                            <div class="am-u-sm-9">
-                                <input type="text" class="tpl-form-input" id="Name" name="Name" placeholder="公司名称">
-                                @*@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })*@
-                            </div>
+                @*<form class="am-form tpl-form-line-form"> Html.BeginForm()*@
+                @using (Html.BeginForm("CompanyInfoCreate", "MemberCenter", FormMethod.Post, new { @class = "am-form tpl-form-line-form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="am-form-group">
+                        <label for="user-name" class="am-u-sm-3 am-form-label ">公司名称</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" class="tpl-form-input" id="Name" name="Name" placeholder="公司名称">
+                            @*@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })*@
                         </div>
+                    </div>
 
-                        <div class="am-form-group">
-                            <label for="user-tax" class="am-u-sm-3 am-form-label">税号</label>
-                            <div class="am-u-sm-9">
-                                <input type="text" class="tpl-form-input" id="TaxId" name="TaxId" placeholder="税号" />
-                                @*@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })*@
-                            </div>
+                    <div class="am-form-group">
+                        <label for="user-tax" class="am-u-sm-3 am-form-label">税号</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" class="tpl-form-input" id="TaxId" name="TaxId" placeholder="税号" />
+                            @*@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })*@
                         </div>
+                    </div>
 
-                        <div class="am-form-group">
-                            <label class="am-u-sm-3 am-form-label">地址 </label>
-                            <table width="100%" border="0">
-                                <tr>
-                                    <td style="width: 33.333333%;">
-                                        <div class="am-u-sm-9">
-                                            @*<select data-am-selected="{searchBox: 1}">
-                                                <option value="a">请选择省</option>
-                                            </select>*@
-                                            @Html.DropDownListFor(model => model.Province, province, new { @class = "form-control" })
-                                        </div>
-                                    </td>
-                                    <td style="width: 33.333333%;">
-                                        <div class="am-u-sm-9">
-                                            @*<select data-am-selected="{searchBox: 1}">
-                                                <option value="a">请选择市</option>
-                                            </select>*@
-                                            @Html.DropDownListFor(model => model.City, city, new { @class = "form-control" })
-                                        </div>
-                                    </td>
-                                    <td style="width: 33.333333%;">
-                                        <div class="am-u-sm-9">
-                                            @*<select data-am-selected="{searchBox: 1}">
-                                                <option value="a">请选择区</option>
-                                            </select>*@
-                                            @Html.DropDownListFor(model => model.Contacts, district, new { @class = "form-control" })
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">地址 </label>
+                        <table width="100%" border="0">
+                            <tr>
+                                <td style="width: 33.333333%;">
+                                    <div class="am-u-sm-9">
+                                        @*<select data-am-selected="{searchBox: 1}">
+                                    <option value="a">请选择省</option>
+                                </select>*@
+                                        @Html.DropDownListFor(model => model.Province, province, new { @class = "form-control" })
+                                    </div>
+                                </td>
+                                <td style="width: 33.333333%;">
+                                    <div class="am-u-sm-9">
+                                        @*<select data-am-selected="{searchBox: 1}">
+                                    <option value="a">请选择市</option>
+                                </select>*@
+                                        @Html.DropDownListFor(model => model.City, city, new { @class = "form-control" })
+                                    </div>
+                                </td>
+                                <td style="width: 33.333333%;">
+                                    <div class="am-u-sm-9">
+                                        @*<select data-am-selected="{searchBox: 1}">
+                                    <option value="a">请选择区</option>
+                                </select>*@
+                                        @Html.DropDownListFor(model => model.Area, district, new { @class = "form-control" })
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="user-addr1" class="am-u-sm-3 am-form-label">详细地址</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" class="tpl-form-input" id="Address" name="Address" placeholder="详细地址">
                         </div>
-                        <div class="am-form-group">
-                            <label for="user-addr1" class="am-u-sm-3 am-form-label">详细地址</label>
-                            <div class="am-u-sm-9">
-                                <input type="text" class="tpl-form-input" id="Address" name="Address" placeholder="详细地址">
-                            </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="user-addr2" class="am-u-sm-3 am-form-label">联系人</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" class="tpl-form-input" id="Contacts" name="Contacts" placeholder="联系人">
                         </div>
-                        <div class="am-form-group">
-                            <label for="user-addr2" class="am-u-sm-3 am-form-label">公司电话</label>
-                            <div class="am-u-sm-9">
-                                <input type="text" class="tpl-form-input" id="Tel" name="Tel" placeholder="公司电话">
-                            </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="user-addr2" class="am-u-sm-3 am-form-label">联系手机</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" class="tpl-form-input" id="Mobile" name="Mobile" placeholder="手机号">
                         </div>
-                        <div class="am-form-group">
-                            <label for="user-fax" class="am-u-sm-3 am-form-label">公司传真</label>
-                            <div class="am-u-sm-9">
-                                <input type="text" class="tpl-form-input" id="Fax" name="Fax" placeholder="公司传真">
-                            </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="user-addr2" class="am-u-sm-3 am-form-label">公司电话</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" class="tpl-form-input" id="Tel" name="Tel" placeholder="公司电话">
                         </div>
-                        <div class="am-form-group">
-                            <label for="user-bank" class="am-u-sm-3 am-form-label">开户银行</label>
-                            <div class="am-u-sm-9">
-                                <input type="text" class="tpl-form-input" id="OpenBank" name="OpenBank" placeholder="开户银行">
-                            </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="user-addr2" class="am-u-sm-3 am-form-label">邮箱</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" class="tpl-form-input" id="Email" name="Email" placeholder="邮箱">
                         </div>
-                        <div class="am-form-group">
-                            <label for="user-account" class="am-u-sm-3 am-form-label">开户帐号</label>
-                            <div class="am-u-sm-9">
-                                <input type="text" class="tpl-form-input" id="AccountOpenBank" name="AccountOpenBank" placeholder="开户帐号">
-                            </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="user-addr2" class="am-u-sm-3 am-form-label">微信</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" class="tpl-form-input" id="WeChat" name="WeChat" placeholder="微信">
                         </div>
-                        <div class="am-form-group">
-                            <label for="user-bankAddr" class="am-u-sm-3 am-form-label">开户行地址</label>
-                            <div class="am-u-sm-9">
-                                <input type="text" class="tpl-form-input" id="AccountOpening" name="AccountOpening" placeholder="开户行地址">
-                            </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="user-fax" class="am-u-sm-3 am-form-label">公司传真</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" class="tpl-form-input" id="Fax" name="Fax" placeholder="公司传真">
                         </div>
-                        <div class="am-form-group">
-                            <label class="am-u-sm-3 am-form-label">营业执照</label>
-                            <div class="am-u-sm-9" style="cursor: pointer;color: #555;text-decoration: underline;font-size: 14px;">
-                                <span class="am-icon-upload"></span>上传营业执照
-                                @*<p>@Html.EditorFor(model => model.ImagePath)</p>*@
-                            </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="user-bank" class="am-u-sm-3 am-form-label">开户银行</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" class="tpl-form-input" id="OpenBank" name="OpenBank" placeholder="开户银行">
                         </div>
-                        <div class="am-form-group" style="justify-content:center;">
-                            <button type="submit" class="am-btn am-btn-danger am-btn-sm"><i class="am-icon-cloud-upload"></i> 保存</button>
-                            <button type="button" class="am-btn am-btn-danger am-btn-sm" style="margin-left:30px;">
-                                <a href="/MemberCenter/CompanyInfo" style="color:#ffffff;">返回</a>
-                            </button>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="user-account" class="am-u-sm-3 am-form-label">开户帐号</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" class="tpl-form-input" id="AccountOpenBank" name="AccountOpenBank" placeholder="开户帐号">
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label for="user-bankAddr" class="am-u-sm-3 am-form-label">开户行地址</label>
+                        <div class="am-u-sm-9">
+                            <input type="text" class="tpl-form-input" id="AccountOpening" name="AccountOpening" placeholder="开户行地址">
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label class="am-u-sm-3 am-form-label">营业执照</label>
+                        <div class="am-u-sm-9" style="cursor: pointer;color: #555;text-decoration: underline;font-size: 14px;">
+@*                            <span class="am-icon-upload"></span>上传营业执照*@
+                            <p>@Html.EditorFor(model => model.image)</p>
+                        </div>
+                    </div>
+                    <div class="am-form-group" style="justify-content:center;">
+                        <button type="submit" class="am-btn am-btn-danger am-btn-sm"><i class="am-icon-cloud-upload"></i> 保存</button>
+                        <button type="button" class="am-btn am-btn-danger am-btn-sm" style="margin-left:30px;">
+                            <a href="/MemberCenter/CompanyInfo" style="color:#ffffff;">返回</a>
+                        </button>
+                    </div>
+                    @*</form>*@
+                }
+            </div>
         </div>
     </div>
 <script src="~/Content/js/jquery-2.1.1.js"></script>

@@ -1,1 +1,1 @@
-﻿var myarea = new Area("#Province", "#City", "#Contacts");
+﻿var myarea = new Area("#Province", "#City", "#Area");

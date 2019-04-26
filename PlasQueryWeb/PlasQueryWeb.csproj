@@ -152,9 +152,10 @@
     <Compile Include="App_Start\AllowCrossSiteJsonAttribute.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\Comm.cs" />
-    <Compile Include="App_Start\ControllerExtensions.cs" />
-    <Compile Include="App_Start\DictionaryExtensions.cs" />
+    <Compile Include="App_Start\Extensions\ControllerExtensions.cs" />
+    <Compile Include="App_Start\Extensions\DictionaryExtensions.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="App_Start\Qiniu\Base64.cs" />
     <Compile Include="App_Start\Qiniu\QinQiuApi.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -167,9 +168,13 @@
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\PublicController.cs" />
     <Compile Include="Controllers\ReplaceController.cs" />
+    <Compile Include="Controllers\UploaderController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Common\BaseFileUpload.cs" />
+    <Compile Include="Models\Common\FileUpload.cs" />
+    <Compile Include="Models\cp_CompanyView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -181,6 +186,7 @@
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\css\iconfont\iconfont.css" />
     <Content Include="Content\css\iconfont\iconfont.svg" />
+    <Content Include="Content\css\site.css" />
     <Content Include="Content\css\uploader.css" />
     <Content Include="Content\img\check_mark.png" />
     <Content Include="Content\css\font-awesome.css" />
@@ -261,9 +267,13 @@
     <Content Include="Content\js\jeDate\skin\jedate.css" />
     <Content Include="Content\js\jquery-1.11.0.min.js" />
     <Content Include="Content\js\jquery-2.1.1.js" />
+    <Content Include="Content\js\jquery-ui.js" />
+    <Content Include="Content\js\jQueryEx.js" />
+    <Content Include="Content\js\jsEx.js" />
     <Content Include="Content\js\json2.js" />
     <Content Include="Content\js\loadingoverlay.js" />
     <Content Include="Content\js\pageSwitch.min.js" />
+    <Content Include="Content\js\uploadfile.js" />
     <Content Include="Content\js\vue.js" />
     <Content Include="Content\layui\common.js" />
     <Content Include="Content\layui\css\layui.css" />
@@ -389,6 +399,8 @@
     <Content Include="Content\css\iconfont\iconfont.eot" />
     <Content Include="Content\css\iconfont\iconfont.ttf" />
     <Content Include="Content\css\iconfont\iconfont.woff" />
+    <Content Include="Content\css\uploader.less" />
+    <Content Include="Content\css\base.less" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\comm.js" />
@@ -451,12 +463,14 @@
     <Content Include="Views\MemberCenter\UserInfo.cshtml" />
     <Content Include="Views\Shared\MemberCenterShared.cshtml" />
     <Content Include="Views\Price\More.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\FileUpload.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\FileUpload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
     <Folder Include="Views\Area\" />
     <Folder Include="Views\EditorFoText\" />
+    <Folder Include="Views\Uploader\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

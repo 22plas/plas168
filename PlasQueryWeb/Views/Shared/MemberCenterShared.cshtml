@@ -17,10 +17,10 @@
     <link rel="stylesheet" href="~/Content/css/admin.css">
     <link rel="stylesheet" href="~/Content/css/app.css">
     <link rel="stylesheet" href="~/Content/css/font-awesome.min.css">
-    <link rel="stylesheet" href="~/Content/css/uploader.css">
-    <title>个人中心</title>
+    @Styles.Render("~/Content/bgcss")
 </head>
-<body>
+<title>个人中心</title>
+<body style="height:auto;background:#e9ecf3;">
     @*@Html.Action("UserInfoPartial")*@
     <header class="am-topbar am-topbar-inverse admin-header">
         <div class="am-topbar-brand">
@@ -152,7 +152,7 @@
             </ul>
         </div>
     </header>
-    <div class="tpl-page-container tpl-page-header-fixed">
+    <div class="tpl-page-container tpl-page-header-fixed" style="margin-top:0px;">
         <div class="tpl-left-nav tpl-left-nav-hover" id="menudiv">
             <div class="tpl-left-nav-title"></div>
             <div id="sidebar" class="tpl-left-nav-list">
@@ -321,12 +321,15 @@
     </div>
 </body>
 </html>
-<script src="~/Content/js/jquery-2.1.1.js"></script>
-<script src="~/Content/js/amazeui.min.js"></script>
-<script src="~/Content/js/iscroll.js"></script>
-<script src="~/Content/js/app.js"></script>
-<script src="~/Content/js/vue.js"></script>
-<script src="~/Scripts/comm.js" type="text/javascript"></script>
+@Scripts.Render("~/RegisterJS/BesRJS")
+@*<script src="~/Content/js/jquery-2.1.1.js"></script>
+    <script src="~/Content/js/amazeui.min.js"></script>
+    <script src="~/Content/js/iscroll.js"></script>
+    <script src="~/Content/js/app.js"></script>
+    <script src="~/Content/js/vue.js"></script>
+    <script src="~/Scripts/comm.js" type="text/javascript"></script>
+    <script src="~/Content/js/jquery-ui.js"></script>
+    <script src="~/Content/js/uploadfile.js"></script>*@
 <script>
     var vm = new Vue({
         el: '#topbar-collapse',

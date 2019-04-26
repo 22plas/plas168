@@ -47,6 +47,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PlasCommon\PlasCommon.csproj">
+      <Project>{eac881dd-c7dd-419c-bca9-6286d7545ff5}</Project>
+      <Name>PlasCommon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlasDal\PlasDal.csproj">
       <Project>{ee265ea1-6520-4b02-8c7a-cbc8a29e9ffe}</Project>
       <Name>PlasDal</Name>

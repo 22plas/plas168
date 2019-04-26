@@ -8,7 +8,9 @@ namespace PlasModel
         // 有关捆绑的详细信息，请访问 https://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-
+            bundles.Add(new StyleBundle("~/Content/bgcss").Include(
+            "~/Content/css/bootstrap.css",
+            "~/Content/css/site.css"));
             //@Styles.Render("~/GetContent/CommonCss")
             //@Scripts.Render("~/GetContent/CommonJS")
             bundles.Add(new ScriptBundle("~/GetContent/CommonJS").Include(
@@ -40,14 +42,22 @@ namespace PlasModel
              "~/Content/js/echarts.min.js",
              "~/Content/js/business/priceJS.js"
              ));
-
+            //个人中心用到的js
             bundles.Add(new ScriptBundle("~/RegisterJS/BesRJS").Include(
-              "~/Content/js/business/Register.js",
-              "~/Scripts/comm.js"
+                "~/Content/js/jquery-2.1.1.js",
+              "~/Scripts/comm.js",
+              "~/Content/js/jsEx.js",
+              "~/Content/js/jQueryEx.js",
+              "~/Content/js/amazeui.min.js",
+              "~/Content/js/iscroll.js",
+              "~/Content/js/app.js",
+              "~/Content/js/vue.js",
+              "~/Content/js/jquery-ui.js",
+              "~/Content/js/uploadfile.js",
+              "~/Content/js/Area.js",
+              "~/Content/js/business/Register.js"
               ));
-
-
-            BundleTable.EnableOptimizations = true;
+                 BundleTable.EnableOptimizations = true;
         }
     }
 }

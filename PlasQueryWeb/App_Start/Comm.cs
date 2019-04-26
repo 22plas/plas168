@@ -10,7 +10,21 @@ namespace PlasModel.App_Start
 {
     public static class Comm
     {
-
+        private static Random _random;
+        /// <summary>
+        /// 系统唯一随机
+        /// </summary>
+        public static Random Random
+        {
+            get
+            {
+                if (_random == null)
+                {
+                    _random = new Random();
+                }
+                return _random;
+            }
+        }
         #region ResizeImage图片地址生成
         /// <summary>
         /// ResizeImage图片地址生成

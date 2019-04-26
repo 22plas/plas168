@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static PlasCommon.Enums;
 
 namespace PlasBll
 {
@@ -93,6 +94,12 @@ namespace PlasBll
         public DataTable GetUserInfo(string usid) {
             DataTable usdt = mdal.GetUserDt(usid, "ID");
             return usdt;
+        }
+
+        //新增公司信息
+        public bool EditCompanyInfoBll(cp_Company model, Operation operation)
+        {
+            return mdal.EditCompanyInfoDal(model, operation);
         }
     }
 }

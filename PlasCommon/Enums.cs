@@ -9,6 +9,14 @@ namespace PlasCommon
 {
    public class Enums
     {
+        //是否
+        public enum YesOrNo
+        {
+            [Display(Name = "否")]
+            No,
+            [Display(Name = "是")]
+            Yes
+        }
         //用户积分流水类型
         public enum UserInType
         {
@@ -41,6 +49,18 @@ namespace PlasCommon
             Down,
             Both,
             Canvas
+        }
+        //操作
+        public enum Operation
+        {
+            [Display(Name = "新增")]
+            Add,
+            [Display(Name = "修改")]
+            Update,
+            [Display(Name = "删除")]
+            Delete,
+            [Display(Name = "查询")]
+            Select
         }
     }
 }

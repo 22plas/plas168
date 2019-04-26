@@ -1,13 +1,13 @@
-﻿using System;
+﻿using PlasQueryWeb.Models.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 using static PlasCommon.Enums;
 
-namespace PlasModel
+namespace PlasQueryWeb.Models
 {
-   public class cp_Company
+    public class cp_CompanyView
     {
         public string Id { get; set; }//公司id
         public string Name { get; set; }//公司名称
@@ -30,8 +30,16 @@ namespace PlasModel
         public string OpenBank { get; set; }//开户行
         public string CreateDate { get; set; }//创建时间
         public YesOrNo isdefault { get; set; }//是否默认
-        public string  TaxId { get; set; }//税号
-        public string image { get; set; }//营业执照
-
+        public string TaxId { get; set; }//税号
+        //营业执照
+        public FileUpload image { get; set; } = new FileUpload
+        {
+            AutoInit = true,
+            Max = 5,
+            Name = "image",
+            Server = UploadServer.QinQiu,
+            Sortable = true,
+            Type = FileType.Image,
+        };
     }
 }
