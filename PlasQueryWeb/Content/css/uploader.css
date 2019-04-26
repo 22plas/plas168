@@ -1,0 +1,141 @@
+﻿.uploader .btnModal {
+    margin-bottom: 5px;
+}
+
+.uploader ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+    .uploader ul:before,
+    .uploader ul:after {
+        content: " ";
+        display: table;
+    }
+
+    .uploader ul:after {
+        clear: both;
+    }
+
+    .uploader ul:before,
+    .uploader ul:after {
+        content: " ";
+        display: table;
+    }
+
+    .uploader ul:after {
+        clear: both;
+    }
+
+    .uploader ul li {
+        float: left;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        height: 70px;
+        max-width: 120px;
+        position: relative;
+    }
+
+        .uploader ul li a {
+            -moz-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            -o-transform: translateY(-50%);
+            -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -moz-transform: translateX(-50%) translateY(-50%);
+            -ms-transform: translateX(-50%) translateY(-50%);
+            -o-transform: translateX(-50%) translateY(-50%);
+            -webkit-transform: translateX(-50%) translateY(-50%);
+            transform: translateX(-50%) translateY(-50%);
+            text-decoration: none;
+            color: #fff;
+            font-size: 32px;
+            opacity: 0.8;
+        }
+
+        .uploader ul li img {
+            max-height: 100%;
+            max-width: 100%;
+            border: 0.03864734rem solid rgba(0, 0, 0, 0.05);
+        }
+
+        .uploader ul li span {
+            position: absolute;
+            top: 0;
+            right: 0;
+            color: #fff;
+            background-color: #d9534f;
+            display: none;
+            font-size: 12px;
+            padding: 2px;
+            cursor: pointer;
+        }
+
+        .uploader ul li:hover span {
+            display: inline-block;
+        }
+
+.uploader .uploader_modal {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    position: fixed;
+    z-index: 10001;
+    width: 500px;
+    top: 150px;
+}
+
+    .uploader .uploader_modal .uploader_modal_close {
+        float: right;
+    }
+
+.uploader .DragOver {
+    height: 150px;
+    text-align: center;
+    border: dashed 1px #ddd;
+    color: #ddd;
+    padding-top: 40px;
+    margin-bottom: 5px;
+}
+
+.uploader .filename {
+    max-width: 270px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 5px;
+}
+
+.uploader .preview {
+    max-width: 45px;
+    max-height: 45px;
+}
+
+.uploader .fileList {
+    max-height: 310px;
+    overflow-y: auto;
+}
+
+    .uploader .fileList .table tr td {
+        height: 62px;
+    }
+
+        .uploader .fileList .table tr td:nth-child(1) {
+            width: 45px;
+            vertical-align: middle;
+        }
+
+        .uploader .fileList .table tr td:nth-child(3) {
+            width: 100px;
+            vertical-align: middle;
+        }
+
+.uploader .progress {
+    margin-bottom: 0;
+}

@@ -7,7 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Text;
 
-namespace PlasQueryWeb.Controllers
+namespace PlasModel.Controllers
 {
     public class PriceController : Controller
     {

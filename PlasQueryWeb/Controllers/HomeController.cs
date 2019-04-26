@@ -1,5 +1,5 @@
 ﻿using PlasModel;
-using PlasQueryWeb.App_Start;
+using PlasModel.App_Start;
 using System;
 using System.Collections.Generic;
 using System.Linq;

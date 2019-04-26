@@ -17,5 +17,30 @@ namespace PlasCommon
             [Display(Name = "充值")]
             UserRecharge=1
         }
+
+        /// <summary>
+        /// 占位图
+        /// </summary>
+        public enum DummyImage
+        {
+            [Display(Name = "默认")]
+            Default,
+            [Display(Name = "头像")]
+            Avatar
+        }
+
+        public enum ResizerMode
+        {
+            Pad,
+            Crop,
+            Max,
+        }
+
+        public enum ReszieScale
+        {
+            Down,
+            Both,
+            Canvas
+        }
     }
 }

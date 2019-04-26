@@ -7,7 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace PlasQueryWeb.App_Start
+namespace PlasModel.App_Start
 {
     public static class ControllerExtensions
     {
