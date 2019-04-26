@@ -121,9 +121,8 @@ namespace PlasModel.Controllers
                 tempmodel.Trade = model.Trade;
                 tempmodel.UserId = AccountData.UserID;
                 tempmodel.WeChat = model.WeChat;
-
                 mbll.EditCompanyInfoBll(tempmodel, Operation.Add);
-                //return RedirectToAction("CompanyInfo");
+                return RedirectToAction("CompanyInfo");
             }
             AreaBll abll = new AreaBll();
             ViewBag.Province = abll.pliststrbll("", "");//省份

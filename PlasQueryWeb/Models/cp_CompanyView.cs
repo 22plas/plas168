@@ -1,6 +1,7 @@
 ﻿using PlasQueryWeb.Models.Common;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using static PlasCommon.Enums;
@@ -10,6 +11,8 @@ namespace PlasQueryWeb.Models
     public class cp_CompanyView
     {
         public string Id { get; set; }//公司id
+        [Required(ErrorMessage = "公司名称不能为空")]
+        [Display(Name = "公司名称")]
         public string Name { get; set; }//公司名称
         public string Trade { get; set; }//
         public string Province { get; set; }//所在省份
