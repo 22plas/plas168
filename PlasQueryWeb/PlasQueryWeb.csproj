@@ -463,8 +463,6 @@
     <Content Include="Views\MemberCenter\UserInfo.cshtml" />
     <Content Include="Views\Shared\MemberCenterShared.cshtml" />
     <Content Include="Views\Price\More.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\FileUpload.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\FileUpload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -66,11 +66,11 @@ namespace PlasModel.Controllers
             var ds = bll.GetModelInfo(prodid);
             if (ds != null && ds.Tables.Contains("ds") && ds.Tables.Count > 0)
             {
-                if (ds.Tables[0].Rows.Count > 0)
+                if (ds.Tables.Contains("ds") &&  ds.Tables[0].Rows.Count > 0)
                 {
                     ViewBag.ProModel = ds.Tables[0].Rows[0]["proModel"];
                 }
-                if (ds.Tables.Count > 1 && ds.Tables.Contains("ds1"))
+                if (ds.Tables.Contains("ds1") && ds.Tables.Count > 1)
                 {
                     //物性
                     ViewBag.PhysicalInfo = ds.Tables[1];

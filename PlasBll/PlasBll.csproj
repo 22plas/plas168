@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AreaBll.cs" />
+    <Compile Include="ContrastBll.cs" />
     <Compile Include="MemberCenterBll.cs" />
     <Compile Include="ProductBll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

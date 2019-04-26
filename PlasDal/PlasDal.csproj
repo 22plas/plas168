@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AreaDal.cs" />
+    <Compile Include="ContrastDal.cs" />
     <Compile Include="MemberCenterDal.cs" />
     <Compile Include="ProductDal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
