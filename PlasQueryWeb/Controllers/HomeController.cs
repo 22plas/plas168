@@ -1,4 +1,4 @@
-﻿using PlasModel;
+﻿using PlasQueryWeb;
 using PlasQueryWeb.App_Start;
 using System;
 using System.Collections.Generic;
@@ -38,7 +38,7 @@ namespace PlasQueryWeb.Controllers
             var ds = bll.HotProducts(5);
             if (ds != null && ds.Rows.Count > 0)
             {
-                var list = PlasCommon.ToolClass<PlasModel.ProductViewModel>.ConvertDataTableToModel(ds);
+                var list = PlasCommon.ToolClass<PlasQueryWeb.ProductViewModel>.ConvertDataTableToModel(ds);
                 ViewBag.HotList = list;
             }
             return View();

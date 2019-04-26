@@ -67,8 +67,12 @@
     <Reference Include="Microsoft.Extensions.Logging, Version=2.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.Logging.2.1.0\lib\netstandard2.0\Microsoft.Extensions.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Qiniu, Version=7.2.15.0, Culture=neutral, PublicKeyToken=2894d75bb9f220bf, processorArchitecture=MSIL">
+      <HintPath>..\packages\Qiniu.Shared.ExtJson.7.2.15\lib\net45\Qiniu.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -147,9 +151,14 @@
   <ItemGroup>
     <Compile Include="App_Start\AllowCrossSiteJsonAttribute.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\Comm.cs" />
     <Compile Include="App_Start\ControllerExtensions.cs" />
+    <Compile Include="App_Start\DictionaryExtensions.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\Qiniu\Base64.cs" />
+    <Compile Include="App_Start\Qiniu\QinQiuApi.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\ContrastController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MemberCenterController.cs" />
@@ -172,6 +181,7 @@
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\css\iconfont\iconfont.css" />
     <Content Include="Content\css\iconfont\iconfont.svg" />
+    <Content Include="Content\css\uploader.css" />
     <Content Include="Content\img\check_mark.png" />
     <Content Include="Content\css\font-awesome.css" />
     <Content Include="Content\css\font-awesome.min.css" />
@@ -236,6 +246,8 @@
     <Content Include="Content\i\startup-640x1096.png" />
     <Content Include="Content\js\amazeui.min.js" />
     <Content Include="Content\js\app.js" />
+    <Content Include="Content\js\Area.js" />
+    <Content Include="Content\js\business\CompanyInfoCreate.js" />
     <Content Include="Content\js\business\Login.js" />
     <Content Include="Content\js\business\PhysicalJS.js" />
     <Content Include="Content\js\business\priceJS.js" />
@@ -443,6 +455,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="Views\Area\" />
     <Folder Include="Views\EditorFoText\" />
   </ItemGroup>
   <ItemGroup>

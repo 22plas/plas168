@@ -1,9 +1,11 @@
-﻿@model PlasModel.cp_Company
+﻿@model PlasModel.cp_CompanyView
 @{
     ViewBag.Title = "新增公司资料";
     Layout = "~/Views/Shared/MemberCenterShared.cshtml";
+    SelectList province = new SelectList((List<string>)ViewBag.Province, "name");
+    SelectList city = new SelectList((List<string>)ViewBag.City, "name");
+    SelectList district = new SelectList((List<string>)ViewBag.District, "name");
 }
-
     <div class="tpl-content-wrapper">
         <div class="tpl-content-wrapper-bg">
             <ol class="am-breadcrumb">
@@ -24,8 +26,8 @@
                         <div class="am-form-group">
                             <label for="user-tax" class="am-u-sm-3 am-form-label">税号</label>
                             <div class="am-u-sm-9">
-                                @*<input type="text" class="tpl-form-input" id="user-tax" placeholder="税号" />*@
-                                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                <input type="text" class="tpl-form-input" id="TaxId" name="TaxId" placeholder="税号" />
+                                @*@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })*@
                             </div>
                         </div>
 
@@ -35,26 +37,26 @@
                                 <tr>
                                     <td style="width: 33.333333%;">
                                         <div class="am-u-sm-9">
-                                            <select data-am-selected="{searchBox: 1}">
+                                            @*<select data-am-selected="{searchBox: 1}">
                                                 <option value="a">请选择省</option>
-
-                                            </select>
+                                            </select>*@
+                                            @Html.DropDownListFor(model => model.Province, province, new { @class = "form-control" })
                                         </div>
                                     </td>
                                     <td style="width: 33.333333%;">
                                         <div class="am-u-sm-9">
-                                            <select data-am-selected="{searchBox: 1}">
+                                            @*<select data-am-selected="{searchBox: 1}">
                                                 <option value="a">请选择市</option>
-
-                                            </select>
+                                            </select>*@
+                                            @Html.DropDownListFor(model => model.City, city, new { @class = "form-control" })
                                         </div>
                                     </td>
                                     <td style="width: 33.333333%;">
                                         <div class="am-u-sm-9">
-                                            <select data-am-selected="{searchBox: 1}">
+                                            @*<select data-am-selected="{searchBox: 1}">
                                                 <option value="a">请选择区</option>
-
-                                            </select>
+                                            </select>*@
+                                            @Html.DropDownListFor(model => model.Contacts, district, new { @class = "form-control" })
                                         </div>
                                     </td>
                                 </tr>
@@ -63,43 +65,44 @@
                         <div class="am-form-group">
                             <label for="user-addr1" class="am-u-sm-3 am-form-label">详细地址</label>
                             <div class="am-u-sm-9">
-                                <input type="text" class="tpl-form-input" id="user-addr1" placeholder="">
+                                <input type="text" class="tpl-form-input" id="Address" name="Address" placeholder="详细地址">
                             </div>
                         </div>
                         <div class="am-form-group">
                             <label for="user-addr2" class="am-u-sm-3 am-form-label">公司电话</label>
                             <div class="am-u-sm-9">
-                                <input type="text" class="tpl-form-input" id="user-addr2" placeholder="">
+                                <input type="text" class="tpl-form-input" id="Tel" name="Tel" placeholder="公司电话">
                             </div>
                         </div>
                         <div class="am-form-group">
                             <label for="user-fax" class="am-u-sm-3 am-form-label">公司传真</label>
                             <div class="am-u-sm-9">
-                                <input type="text" class="tpl-form-input" id="user-fax" placeholder="">
+                                <input type="text" class="tpl-form-input" id="Fax" name="Fax" placeholder="公司传真">
                             </div>
                         </div>
                         <div class="am-form-group">
                             <label for="user-bank" class="am-u-sm-3 am-form-label">开户银行</label>
                             <div class="am-u-sm-9">
-                                <input type="text" class="tpl-form-input" id="user-bank" placeholder="">
+                                <input type="text" class="tpl-form-input" id="OpenBank" name="OpenBank" placeholder="开户银行">
                             </div>
                         </div>
                         <div class="am-form-group">
                             <label for="user-account" class="am-u-sm-3 am-form-label">开户帐号</label>
                             <div class="am-u-sm-9">
-                                <input type="text" class="tpl-form-input" id="user-account" placeholder="">
+                                <input type="text" class="tpl-form-input" id="AccountOpenBank" name="AccountOpenBank" placeholder="开户帐号">
                             </div>
                         </div>
                         <div class="am-form-group">
                             <label for="user-bankAddr" class="am-u-sm-3 am-form-label">开户行地址</label>
                             <div class="am-u-sm-9">
-                                <input type="text" class="tpl-form-input" id="user-bankAddr" placeholder="开户行地址">
+                                <input type="text" class="tpl-form-input" id="AccountOpening" name="AccountOpening" placeholder="开户行地址">
                             </div>
                         </div>
                         <div class="am-form-group">
                             <label class="am-u-sm-3 am-form-label">营业执照</label>
                             <div class="am-u-sm-9" style="cursor: pointer;color: #555;text-decoration: underline;font-size: 14px;">
                                 <span class="am-icon-upload"></span>上传营业执照
+                                @*<p>@Html.EditorFor(model => model.ImagePath)</p>*@
                             </div>
                         </div>
                         <div class="am-form-group" style="justify-content:center;">
@@ -112,4 +115,7 @@
                 </div>
         </div>
     </div>
+<script src="~/Content/js/jquery-2.1.1.js"></script>
+<script src="~/Content/js/Area.js"></script>
+<script src="~/Content/js/business/CompanyInfoCreate.js"></script>
 

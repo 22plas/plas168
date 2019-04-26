@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlasModel
+namespace PlasQueryWeb
 {
     public partial class ProductViewModel
     {

@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 using PlasCommon;
-using PlasModel;
+using PlasQueryWeb;
 using System;
 using System.Collections.Generic;
 using System.Linq;

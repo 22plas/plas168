@@ -1,6 +1,7 @@
-﻿using PlasCommon;
+﻿using PlasBll;
+using PlasCommon;
 using PlasCommon.SqlCommonQuery;
-using PlasModel;
+using PlasQueryWeb;
 using PlasQueryWeb.App_Start;
 using System;
 using System.Collections.Generic;
@@ -79,8 +80,12 @@ namespace PlasQueryWeb.Controllers
         //新增公司资料
         public ActionResult CompanyInfoCreate()
         {
+            AreaBll abll = new AreaBll();
+            ViewBag.Province = abll.pliststrbll("","");//省份
+            ViewBag.City = abll.pliststrbll("北京市","1"); //城市
+            ViewBag.District = abll.pliststrbll("北京市","2");//街道
             Sidebar("公司资料");
-            var model = new cp_Company();
+            var model = new cp_CompanyView();
             return View(model);
         }
         //收货地址
