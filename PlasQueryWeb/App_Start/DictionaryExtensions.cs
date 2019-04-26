@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace PlasQueryWeb.App_Start
+namespace PlasModel.App_Start
 {
     public static class DictionaryExtensions
     {

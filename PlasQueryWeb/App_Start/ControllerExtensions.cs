@@ -1,13 +1,13 @@
 ﻿using Newtonsoft.Json;
 using PlasCommon;
-using PlasQueryWeb;
+using PlasModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace PlasQueryWeb.App_Start
+namespace PlasModel.App_Start
 {
     public static class ControllerExtensions
     {

@@ -1,8 +1,8 @@
 ﻿using PlasBll;
 using PlasCommon;
 using PlasCommon.SqlCommonQuery;
-using PlasQueryWeb;
-using PlasQueryWeb.App_Start;
+using PlasModel;
+using PlasModel.App_Start;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,7 +13,7 @@ using System.Web;
 using System.Web.Mvc;
 using static PlasCommon.Enums;
 
-namespace PlasQueryWeb.Controllers
+namespace PlasModel.Controllers
 {
     public class MemberCenterController : Controller
     {

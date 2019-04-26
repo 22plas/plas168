@@ -1,4 +1,4 @@
-﻿using PlasQueryWeb.App_Start.Qiniu;
+﻿using PlasModel.App_Start.Qiniu;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Web;
 using static PlasCommon.Enums;
 
-namespace PlasQueryWeb.App_Start
+namespace PlasModel.App_Start
 {
     public static class Comm
     {

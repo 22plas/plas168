@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace PlasQueryWeb.Controllers
+namespace PlasModel.Controllers
 {
     public class AreaController : Controller
     {

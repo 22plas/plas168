@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PlasQueryWeb
+namespace PlasModel
 {
    public class cp_user
     {

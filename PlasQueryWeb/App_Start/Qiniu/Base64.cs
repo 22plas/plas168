@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace PlasQueryWeb.App_Start.Qiniu
+namespace PlasModel.App_Start.Qiniu
 {
     public class Base64
     {

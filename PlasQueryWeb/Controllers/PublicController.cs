@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace PlasQueryWeb.Controllers
+namespace PlasModel.Controllers
 {
     public class PublicController : Controller
     {
@@ -40,7 +40,7 @@ namespace PlasQueryWeb.Controllers
             var ds = bll.HotProducts(5);
             if (ds != null && ds.Rows.Count > 0)
             {
-                var list = PlasCommon.ToolClass<PlasQueryWeb.ProductViewModel>.ConvertDataTableToModel(ds);
+                var list = PlasCommon.ToolClass<PlasModel.ProductViewModel>.ConvertDataTableToModel(ds);
                 ViewBag.HotList = list;
             }
             return PartialView();

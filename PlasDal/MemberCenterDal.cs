@@ -1,6 +1,6 @@
 ﻿using PlasCommon;
 using PlasCommon.SqlCommonQuery;
-using PlasQueryWeb;
+using PlasModel;
 using System;
 using System.Collections.Generic;
 using System.Data;

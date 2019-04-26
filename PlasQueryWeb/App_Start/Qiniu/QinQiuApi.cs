@@ -13,7 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 
-namespace PlasQueryWeb.App_Start.Qiniu
+namespace PlasModel.App_Start.Qiniu
 {
     public class QinQiuApi
     {
