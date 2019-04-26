@@ -1,0 +1,114 @@
+﻿@{ViewBag.Title = "塑料和弹性体-替换列表"; }
+<link href="~/Content/css/Pagination.css" rel="stylesheet" />
+<script src="~/Content/layui/lay/modules/layer.js" type="text/javascript"></script>
+<script src="~/Scripts/jquery.pagination.js" type="text/javascript"></script>
+@Html.Partial("~/Views/Public/SubPageNav.cshtml")
+@{
+    Html.RenderAction("PubSearch", "Public");
+}
+
+
+<div class="search-content-box">
+    <div class="search-content-page">
+        共搜索到<span style="color: red;">200</span>条相关商品信息
+    </div>
+    <div class="search-content">
+        <table>
+            <thead>
+                <tr>
+                    <th>牌号</th>
+                    <th>厂商</th>
+                    <th>各类</th>
+                    <th>用途</th>
+                    <th>特性</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>abceD@ff.com</td>
+                    <td>Ravago Manufactuing Americas,LLC</td>
+                    <td>ABS</td>
+                    <td>{ProUse}</td>
+                    <td>{Absdd Deee}</td>
+                </tr>
+                <tr>
+                    <td>abceD@ff.com</td>
+                    <td>Ravago Manufactuing Americas,LLC</td>
+                    <td>ABS</td>
+                    <td>{ProUse}</td>
+                    <td>{Absdd Deee}</td>
+                </tr>
+                <tr>
+                    <td>abceD@ff.com</td>
+                    <td>Ravago Manufactuing Americas,LLC</td>
+                    <td>ABS</td>
+                    <td>{ProUse}</td>
+                    <td>{Absdd Deee}</td>
+                </tr>
+                <tr>
+                    <td>abceD@ff.com</td>
+                    <td>Ravago Manufactuing Americas,LLC</td>
+                    <td>ABS</td>
+                    <td>{ProUse}</td>
+                    <td>{Absdd Deee}</td>
+                </tr>
+                <tr>
+                    <td>abceD@ff.com</td>
+                    <td>Ravago Manufactuing Americas,LLC</td>
+                    <td>ABS</td>
+                    <td>{ProUse}</td>
+                    <td>{Absdd Deee}</td>
+                </tr>
+                <tr>
+                    <td>abceD@ff.com</td>
+                    <td>Ravago Manufactuing Americas,LLC</td>
+                    <td>ABS</td>
+                    <td>{ProUse}</td>
+                    <td>{Absdd Deee}</td>
+                </tr>
+                <tr>
+                    <td>abceD@ff.com</td>
+                    <td>Ravago Manufactuing Americas,LLC</td>
+                    <td>ABS</td>
+                    <td>{ProUse}</td>
+                    <td>{Absdd Deee}</td>
+                </tr>
+                <tr>
+                    <td>abceD@ff.com</td>
+                    <td>Ravago Manufactuing Americas,LLC</td>
+                    <td>ABS</td>
+                    <td>{ProUse}</td>
+                    <td>{Absdd Deee}</td>
+                </tr>
+                <tr>
+                    <td>abceD@ff.com</td>
+                    <td>Ravago Manufactuing Americas,LLC</td>
+                    <td>ABS</td>
+                    <td>{ProUse}</td>
+                    <td>{Absdd Deee}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="pagination">
+    <a class="page-btn">上一页</a>
+    <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li>6</li>
+        <li>...</li>
+        <li>20</li>
+    </ul>
+    <a class="page-btn">下一页</a>
+    <a class="page-btn">尾页</a>
+    <input type="text" class="page-input" placeholder="输入页码">
+    <a class="page-btn">确定</a>
+</div>
+
+@Html.Partial("~/Views/Public/Bottom.cshtml")
+
+

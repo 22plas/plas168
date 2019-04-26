@@ -439,6 +439,8 @@
     <Content Include="Views\MemberCenter\UserInfo.cshtml" />
     <Content Include="Views\Shared\MemberCenterShared.cshtml" />
     <Content Include="Views\Price\More.cshtml" />
+    <Content Include="Views\Replace\ReplaceList.cshtml" />
+    <Content Include="Views\Contrast\More.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

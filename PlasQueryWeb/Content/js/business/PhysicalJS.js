@@ -21,18 +21,18 @@
 })
 
 ///点击更多
-    $(".search-item-btn").click(function () {
-        var dataval = $(this).attr("data-type");
+$(".search-item-btn").click(function () {
+    var dataval = $(this).attr("data-type");
     var datatile = $(this).attr("data-typename");
-        layer.open({
+    layer.open({
         type: 2,
-    title: 'MORE-' + datatile,
-    shadeClose: true,
-    shade: 0.8,
-    maxmin: true,
-    area: ['90%', '90%'],
-    content: '/PhysicalProducts/More?rid=' + dataval + "&rname=" + datatile + "&more=2"
-});
+        title: 'MORE-' + datatile,
+        shadeClose: true,
+        shade: 0.8,
+        maxmin: true,
+        area: ['90%', '90%'],
+        content: '/PhysicalProducts/More?rid=' + dataval + "&rname=" + datatile + "&more=2"
+    });
 })
 
 ///点击切换

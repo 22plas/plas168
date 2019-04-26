@@ -215,6 +215,19 @@
     $(function () {
         $(".navBox").find(".nav").find("li").eq(4).children("a").addClass("active");
     })
+
+    function InputChecked(obj) {
+        layer.open({
+            type: 2,
+            title: '选择对比项',
+            shadeClose: true,
+            shade: 0.8,
+            maxmin: true,
+            area: ['90%', '90%'],
+            content: '/Contrast/More?rid=' + obj
+        });
+    }
+
 </script>
 
 @Html.Partial("~/Views/Public/Bottom.cshtml")
