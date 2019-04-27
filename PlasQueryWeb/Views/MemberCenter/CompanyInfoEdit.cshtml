@@ -1,0 +1,168 @@
+﻿@model PlasQueryWeb.Models.cp_CompanyView
+@{
+    ViewBag.Title = "新增公司资料";
+    Layout = "~/Views/Shared/MemberCenterShared.cshtml";
+    SelectList province = new SelectList((List<string>)ViewBag.Province, selectedValue: Model.Province);
+    SelectList city = new SelectList((List<string>)ViewBag.City, selectedValue: Model.City);
+    SelectList district = new SelectList((List<string>)ViewBag.District, selectedValue:Model.Area);
+}
+<div class="tpl-content-wrapper">
+    <div class="tpl-content-wrapper-bg">
+        <ol class="am-breadcrumb">
+            <li><a href="#" class="am-icon-home">首页</a></li>
+            <li>会员中心</li>
+            <li class="am-active">新增公司资料</li>
+        </ol>
+        <div class="tpl-portlet-components">
+            @*<form class="am-form tpl-form-line-form"> Html.BeginForm()*@
+            @using (Html.BeginForm("CompanyInfoEdit", "MemberCenter", FormMethod.Post, new { @class = "am-form tpl-form-line-form" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="am-form-group">
+                    <label for="user-name" class="am-u-sm-3 am-form-label ">公司名称</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="tpl-form-input" id="Name" value="@Model.Name" name="Name" placeholder="公司名称">
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        @*@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })*@
+                    </div>
+                </div>
+
+                <div class="am-form-group">
+                    <label for="user-tax" class="am-u-sm-3 am-form-label">税号</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="tpl-form-input" id="TaxId" value="@Model.TaxId" name="TaxId" placeholder="税号" />
+                        @*@Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })*@
+                    </div>
+                </div>
+
+                <div class="am-form-group">
+                    <label class="am-u-sm-3 am-form-label">地址 </label>
+                    <table width="100%" border="0">
+                        <tr>
+                            <td style="width: 33.333333%;">
+                                <div class="am-u-sm-9">
+                                    @*<select data-am-selected="{searchBox: 1}">
+                                        <option value="a">请选择省</option>
+                                    </select>*@
+                                    <select id="Province" name="Province" class="form-control">
+                                        @foreach (var item in (List<string>)ViewBag.Province)
+                                        {
+                                            var selected = item == Model.Province ? "selected" : "";
+                                            <option @selected value="@item">@item</option>
+                                        }
+                                    </select>
+                                </div>
+                            </td>
+                            <td style="width: 33.333333%;">
+                                <div class="am-u-sm-9">
+                                    @*<select data-am-selected="{searchBox: 1}">
+                                        <option value="a">请选择市</option>
+                                    </select>*@
+                                    <select id="City" name="City" class="form-control">
+                                        @foreach (var item in (List<string>)ViewBag.City)
+                                        {
+                                            var selected = item == Model.City ? "selected" : "";
+                                            <option @selected value="@item">@item</option>
+                                        }
+                                    </select>
+                                </div>
+                            </td>
+                            <td style="width: 33.333333%;">
+                                <div class="am-u-sm-9">
+                                    @*<select data-am-selected="{searchBox: 1}">
+                                        <option value="a">请选择区</option>
+                                    </select>*@
+                                    <select id="Area" name="Area" class="form-control">
+                                        @foreach (var item in (List<string>)ViewBag.District)
+                                        {
+                                            var selected = item == Model.Area ? "selected" : "";
+                                            <option @selected value="@item">@item</option>
+                                        }
+                                    </select>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="am-form-group">
+                    <label for="user-addr1" class="am-u-sm-3 am-form-label">详细地址</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="tpl-form-input" id="Address" value="@Model.Address" name="Address" placeholder="详细地址">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="user-addr2" class="am-u-sm-3 am-form-label">联系人</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="tpl-form-input" id="Contacts" value="@Model.Contacts" name="Contacts" placeholder="联系人">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="user-addr2" class="am-u-sm-3 am-form-label">联系手机</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="tpl-form-input" id="Mobile" value="@Model.Mobile" name="Mobile" placeholder="手机号">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="user-addr2" class="am-u-sm-3 am-form-label">公司电话</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="tpl-form-input" id="Tel" value="@Model.Tel" name="Tel" placeholder="公司电话">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="user-addr2" class="am-u-sm-3 am-form-label">邮箱</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="tpl-form-input" id="Email" value="@Model.Email" name="Email" placeholder="邮箱">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="user-addr2" class="am-u-sm-3 am-form-label">微信</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="tpl-form-input" id="WeChat" value="@Model.WeChat" name="WeChat" placeholder="微信">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="user-fax" class="am-u-sm-3 am-form-label">公司传真</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="tpl-form-input" id="Fax" value="@Model.Fax" name="Fax" placeholder="公司传真">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="user-bank" class="am-u-sm-3 am-form-label">开户银行</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="tpl-form-input" id="OpenBank" value="@Model.OpenBank" name="OpenBank" placeholder="开户银行">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="user-account" class="am-u-sm-3 am-form-label">开户帐号</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="tpl-form-input" id="AccountOpenBank" value="@Model.AccountOpenBank" name="AccountOpenBank" placeholder="开户帐号">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label for="user-bankAddr" class="am-u-sm-3 am-form-label">开户行地址</label>
+                    <div class="am-u-sm-9">
+                        <input type="text" class="tpl-form-input" id="AccountOpening" value="@Model.AccountOpening" name="AccountOpening" placeholder="开户行地址">
+                    </div>
+                </div>
+                <div class="am-form-group">
+                    <label class="am-u-sm-3 am-form-label">营业执照</label>
+                    <div class="am-u-sm-9" style="cursor: pointer;color: #555;text-decoration: underline;font-size: 14px;">
+                        @*                            <span class="am-icon-upload"></span>上传营业执照*@
+                        <p>@Html.EditorFor(model => model.image)</p>
+                    </div>
+                </div>
+                <div class="am-form-group" style="justify-content:center;">
+                    <button type="submit" class="am-btn am-btn-danger am-btn-sm"><i class="am-icon-cloud-upload"></i> 保存</button>
+                    <button type="button" class="am-btn am-btn-danger am-btn-sm" style="margin-left:30px;">
+                        <a href="/MemberCenter/CompanyInfo" style="color:#ffffff;">返回</a>
+                    </button>
+                </div>
+                @*</form>*@
+            }
+        </div>
+    </div>
+</div>
+<script src="~/Content/js/jquery-2.1.1.js"></script>
+<script src="~/Content/js/Area.js"></script>
+<script src="~/Content/js/business/CompanyInfo.js"></script>
+

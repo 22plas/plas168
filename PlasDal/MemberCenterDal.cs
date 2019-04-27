@@ -104,6 +104,89 @@ namespace PlasDal
             DataTable usdt = SqlHelper.GetSqlDataTable(execsql2);
             return usdt;
         }
+        /// <summary>
+        /// 获取公司列表信息
+        /// </summary>
+        /// <param name="userid">用户ID</param>
+        /// <param name="page">页码</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <returns></returns>
+        public DataSet GetCompanyList(string userid, string filter, int? page = 1, int? pageSize = 20)
+        {
+            DataSet returnds = new DataSet();
+            try
+            {
+                string tempstr= string.IsNullOrWhiteSpace(filter)  == false ? string.Format(@" and g.Name like '%{0}%'", filter) : "";
+                int starpagesize = page.Value * pageSize.Value - pageSize.Value;
+                int endpagesize = page.Value * pageSize.Value;
+                //拼接参数
+                //SqlParameter[] parameters = {
+                //                new SqlParameter("@userid", SqlDbType.NVarChar),
+                //                new SqlParameter("@starpagesize", SqlDbType.Int),
+                //                new SqlParameter("@endpagesize", SqlDbType.Int),
+                //                new SqlParameter("@wherestr",SqlDbType.NVarChar)
+                //            };
+                //parameters[0].Value = userid;
+                //parameters[1].Value = starpagesize;
+                //parameters[2].Value = endpagesize;
+                //parameters[3].Value = tempstr;
+                string execsql2 = string.Format(@"SELECT * FROM (
+                                                SELECT CAST(ROW_NUMBER() over(order by COUNT(g.Id) DESC) AS INTEGER) AS Ornumber,g.Name,g.Province,g.City,g.Area,g.[Address],g.Contacts,g.Tel,g.Fax,g.[image],g.WeChat,
+                                                g.Mobile,g.Email,g.AccountOpenBank,g.AccountOpening,g.OpenBank,g.TaxId,g.Id
+                                                FROM dbo.cp_Company g WHERE g.UserId='{0}' {1}
+                                                GROUP BY g.Name,g.Province,g.City,g.Area,g.[Address],g.Contacts,g.Tel,g.Fax,g.[image],g.WeChat,
+                                                g.Mobile,g.Email,g.AccountOpenBank,g.AccountOpening,g.OpenBank,g.TaxId,g.Id) t WHERE t.Ornumber > {2} AND t.Ornumber<={3}", userid, tempstr, starpagesize, endpagesize);
+                execsql2 = execsql2+ string.Format(@" SELECT COUNT(*) as totals FROM dbo.cp_Company g WHERE g.UserId='{0}' {1}", userid, tempstr);
+                //DataTable returndt = SqlHelper.GetSqlDataTable_Param(execsql2, parameters);
+
+                //returnds.Tables.Add(returndt);
+                returnds = SqlHelper.GetSqlDataSet(execsql2);
+                return returnds;
+            }
+            catch (Exception ex)
+            {
+                return returnds;
+            }
+        }
+        /// <summary>
+        /// 根据id获取公司信息
+        /// </summary>
+        /// <param name="Id">公司ID</param>
+        /// <returns></returns>
+        public cp_Company GetCompanyById(string Id)
+        {
+            cp_Company m = new cp_Company();
+            try
+            {
+                string sql =string.Format(@"select * from cp_company where Id='{0}'",Id);
+                DataTable dt = SqlHelper.GetSqlDataTable(sql);
+                if (dt.Rows.Count>0)
+                {
+                    m.AccountOpenBank = dt.Rows[0]["AccountOpenBank"].ToString();
+                    m.AccountOpening = dt.Rows[0]["AccountOpening"].ToString();
+                    m.Address = dt.Rows[0]["Address"].ToString();
+                    m.Area = dt.Rows[0]["Area"].ToString();
+                    m.City = dt.Rows[0]["City"].ToString();
+                    m.Contacts = dt.Rows[0]["Contacts"].ToString();
+                    m.Email = dt.Rows[0]["Email"].ToString();
+                    m.Fax = dt.Rows[0]["Fax"].ToString();
+                    m.image = dt.Rows[0]["image"].ToString();
+                    m.Mobile = dt.Rows[0]["Mobile"].ToString();
+                    m.Name = dt.Rows[0]["Name"].ToString();
+                    m.OpenBank = dt.Rows[0]["OpenBank"].ToString();
+                    m.Province = dt.Rows[0]["Province"].ToString();
+                    m.TaxId = dt.Rows[0]["TaxId"].ToString();
+                    m.Tel = dt.Rows[0]["Tel"].ToString();
+                    m.WeChat = dt.Rows[0]["WeChat"].ToString();
+                    m.Id = dt.Rows[0]["Id"].ToString();
+                }
+                return m;
+            }
+            catch (Exception)
+            {
+                return m;
+            }
+        }
         //新增/修改公司信息
         public bool EditCompanyInfoDal(cp_Company model, Operation operation)
         {
@@ -123,10 +206,28 @@ namespace PlasDal
                 sql = string.Format(@"update dbo.cp_Company set Name='{0}' ,Trade='{1}' ,Province='{2}' ,City='{3}' ,Address='{4}' ,Contacts='{5}' ,Tel='{6}' ,Fax='{7}' ,QQ='{8}' ,logo='{9}' ,UserId='{10}' ,
                                     WeChat='{11}' ,Mobile='{12}' ,Area='{13}' ,Email='{14}' ,AccountOpenBank='{15}' ,AccountOpening='{16}' ,OpenBank='{17}' ,CreateDate='{18}' ,isdefault={19} ,TaxId='{20}',image='{21}' where Id='{22}'",
                            model.Name, string.Empty, model.Province, model.City, model.Address, model.Contacts, model.Tel, model.Fax, string.Empty, model.logo,
-                                   model.UserId, model.WeChat, model.Mobile, model.Area, model.Email, model.AccountOpenBank, model.AccountOpening, model.OpenBank, DateTime.Now.ToString(), model.isdefault, model.TaxId, model.image, model.Id);
+                                   model.UserId, model.WeChat, model.Mobile, model.Area, model.Email, model.AccountOpenBank, model.AccountOpening, model.OpenBank, DateTime.Now.ToString(), model.isdefault.GetHashCode(), model.TaxId, model.image, model.Id);
             }
             int rows = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql, null);
             return rows > 0 ? true : false;
+        }
+        //删除公司信息
+        public bool DeleteCompanyInfo(string id)
+        {
+            try
+            {
+                SqlParameter[] parameters = {
+                                new SqlParameter("@id", SqlDbType.NVarChar)
+                            };
+                parameters[0].Value = id;
+                string sql =string.Format(@"delete from cp_company where Id='{0}'", id);
+                SqlHelper.ExecuteScalar(SqlHelper.ConnectionStrings,sql,null);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

@@ -1,1 +1,0 @@
-﻿var myarea = new Area("#Province", "#City", "#Area");

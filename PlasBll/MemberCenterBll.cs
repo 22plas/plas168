@@ -10,7 +10,7 @@ using static PlasCommon.Enums;
 
 namespace PlasBll
 {
-   public class MemberCenterBll
+    public class MemberCenterBll
     {
         MemberCenterDal mdal = new MemberCenterDal();
         //保存用户注册
@@ -72,7 +72,7 @@ namespace PlasBll
                     DataTable usdt = mdal.LgoinDal(account, userpwd);
                     if (usdt.Rows.Count > 0)
                     {
-                        string returns = string.Format(@"Success,{0},{1},{2}", usdt.Rows[0]["ID"].ToString(), usdt.Rows[0]["UserName"].ToString(),usdt.Rows[0]["HeadImage"]);
+                        string returns = string.Format(@"Success,{0},{1},{2}", usdt.Rows[0]["ID"].ToString(), usdt.Rows[0]["UserName"].ToString(), usdt.Rows[0]["HeadImage"]);
                         return returns;
                     }
                     else
@@ -91,7 +91,8 @@ namespace PlasBll
         /// </summary>
         /// <param name="usid"></param>
         /// <returns></returns>
-        public DataTable GetUserInfo(string usid) {
+        public DataTable GetUserInfo(string usid)
+        {
             DataTable usdt = mdal.GetUserDt(usid, "ID");
             return usdt;
         }
@@ -100,6 +101,36 @@ namespace PlasBll
         public bool EditCompanyInfoBll(cp_Company model, Operation operation)
         {
             return mdal.EditCompanyInfoDal(model, operation);
+        }
+        /// <summary>
+        /// 获取公司列表信息
+        /// </summary>
+        /// <param name="userid">用户ID</param>
+        /// <param name="page">页码</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <returns></returns>
+        public DataSet GetCompanyList(string userid, string filter, int? page = 1, int? pageSize = 20)
+        {
+            DataSet dtset = new DataSet();
+            try
+            {
+                dtset = mdal.GetCompanyList(userid, filter, page, pageSize);
+                return dtset;
+            }
+            catch (Exception ex)
+            {
+                return dtset;
+            }
+        }
+        //根据id获取公司信息
+        public cp_Company GetCompanyById(string id)
+        {
+            return mdal.GetCompanyById(id);
+        }
+        //删除公司信息
+        public bool DeleteCompanyInfo(string id)
+        {
+            return mdal.DeleteCompanyInfo(id);
         }
     }
 }

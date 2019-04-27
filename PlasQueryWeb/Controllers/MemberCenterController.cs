@@ -73,10 +73,72 @@ namespace PlasModel.Controllers
         //    return View();
         //}
         //公司资料
-        public ActionResult CompanyInfo()
+        public ActionResult CompanyInfo(string filter, int? page = 1)
         {
             Sidebar("公司资料");
-            return View();
+            List<cp_Company> listcompany = new List<cp_Company>();
+            DataSet dtset=mbll.GetCompanyList(AccountData.UserID, filter, page, 20);
+            int pagetotal = 0;
+            if (dtset.Tables.Count > 0)
+            {
+                DataTable dt = dtset.Tables[0];
+                DataTable totaldt = dtset.Tables[1];
+                if (dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        cp_Company m = new cp_Company();
+                        m.AccountOpenBank = dt.Rows[i]["AccountOpenBank"].ToString();
+                        m.AccountOpening = dt.Rows[i]["AccountOpening"].ToString();
+                        m.Address = dt.Rows[i]["Address"].ToString();
+                        m.Area = dt.Rows[i]["Area"].ToString();
+                        m.City = dt.Rows[i]["City"].ToString();
+                        m.Contacts = dt.Rows[i]["Contacts"].ToString();
+                        m.Email = dt.Rows[i]["Email"].ToString();
+                        m.Fax = dt.Rows[i]["Fax"].ToString();
+                        m.image = dt.Rows[i]["image"].ToString();
+                        m.Mobile = dt.Rows[i]["Mobile"].ToString();
+                        m.Name = dt.Rows[i]["Name"].ToString();
+                        m.OpenBank = dt.Rows[i]["OpenBank"].ToString();
+                        m.Province = dt.Rows[i]["Province"].ToString();
+                        m.TaxId = dt.Rows[i]["TaxId"].ToString();
+                        m.Tel = dt.Rows[i]["Tel"].ToString();
+                        m.WeChat = dt.Rows[i]["WeChat"].ToString();
+                        m.Id = dt.Rows[i]["Id"].ToString();
+                        listcompany.Add(m);
+                    }
+                }
+                //计算页数
+                if (totaldt.Rows.Count>0)
+                {
+                    int total = Convert.ToInt32(totaldt.Rows[0]["totals"]);
+                    if (total > 0)
+                    {
+                        int temppagenumber = total / 20;
+                        int qynumber = 0;
+                        if (temppagenumber > 0)
+                        {
+                            qynumber = total - (temppagenumber * 20);
+                            if (qynumber > 0)
+                            {
+                                pagetotal = temppagenumber + 1;
+                            }
+                            else
+                            {
+                                pagetotal = temppagenumber;
+                            }
+                        }
+                        else
+                        {
+                            pagetotal = 1;
+                        }
+                    }
+                }
+                ViewBag.pagetotal = pagetotal;
+            }
+
+
+            return View(listcompany);
         }
         //新增公司资料
         public ActionResult CompanyInfoCreate()
@@ -131,8 +193,102 @@ namespace PlasModel.Controllers
             Sidebar("公司资料");
             return View(model);
         }
-        //收货地址
-        public ActionResult DeliveryAddress()
+        //编辑公司资料
+        public ActionResult CompanyInfoEdit(string Id)
+        {
+
+            cp_CompanyView tempmodel = new cp_CompanyView();
+            var model= mbll.GetCompanyById(Id);
+            tempmodel.AccountOpenBank = model.AccountOpenBank;
+            tempmodel.AccountOpening = model.AccountOpening;
+            tempmodel.Address = model.Address;
+            tempmodel.Area = model.Area;
+            tempmodel.City = model.City;
+            tempmodel.Contacts = model.Contacts;
+            tempmodel.CreateDate = model.CreateDate;
+            tempmodel.Email = model.Email;
+            tempmodel.Fax = model.Fax;
+            tempmodel.Id = model.Id;
+            tempmodel.isdefault = model.isdefault;
+            tempmodel.logo = string.Empty;
+            tempmodel.image.Images = model.image?.Split(',') ?? new string[0];
+            tempmodel.Mobile = model.Mobile;
+            tempmodel.Name = model.Name;
+            tempmodel.OpenBank = model.OpenBank;
+            tempmodel.Province = model.Province;
+            tempmodel.QQ = model.QQ;
+            tempmodel.TaxId = model.TaxId;
+            tempmodel.Tel = model.Tel;
+            tempmodel.Trade = model.Trade;
+            tempmodel.UserId = AccountData.UserID;
+            tempmodel.WeChat = model.WeChat;
+            tempmodel.Id = model.Id;
+            AreaBll abll = new AreaBll();
+            ViewBag.Province = abll.pliststrbll("", "");//省份
+            ViewBag.City = abll.pliststrbll(model.Province, "1"); //城市
+            ViewBag.District = abll.pliststrbll(model.City, "2");//街道
+            Sidebar("公司资料");
+            return View(tempmodel);
+        }
+
+        //保存编辑公司信息
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CompanyInfoEdit(cp_CompanyView model)
+        {
+            if (ModelState.IsValid)
+            {
+                cp_Company tempmodel = new cp_Company();
+                tempmodel.AccountOpenBank = model.AccountOpenBank;
+                tempmodel.AccountOpening = model.AccountOpening;
+                tempmodel.Address = model.Address;
+                tempmodel.Area = model.Area;
+                tempmodel.City = model.City;
+                tempmodel.Contacts = model.Contacts;
+                tempmodel.CreateDate = model.CreateDate;
+                tempmodel.Email = model.Email;
+                tempmodel.Fax = model.Fax;
+                tempmodel.Id = model.Id;
+                tempmodel.isdefault = model.isdefault;
+                tempmodel.logo = string.Empty;
+                tempmodel.image = string.Join(",", model.image.Images);
+                tempmodel.Mobile = model.Mobile;
+                tempmodel.Name = model.Name;
+                tempmodel.OpenBank = model.OpenBank;
+                tempmodel.Province = model.Province;
+                tempmodel.QQ = model.QQ;
+                tempmodel.TaxId = model.TaxId;
+                tempmodel.Tel = model.Tel;
+                tempmodel.Trade = model.Trade;
+                tempmodel.UserId = AccountData.UserID;
+                tempmodel.WeChat = model.WeChat;
+                tempmodel.Id = model.Id;
+                mbll.EditCompanyInfoBll(tempmodel, Operation.Update);
+                return RedirectToAction("CompanyInfo");
+            }
+            AreaBll abll = new AreaBll();
+            ViewBag.Province = abll.pliststrbll("", "");//省份
+            ViewBag.City = abll.pliststrbll("北京市", "1"); //城市
+            ViewBag.District = abll.pliststrbll("北京市", "2");//街道
+            Sidebar("公司资料");
+            return View(model);
+        }
+        //删除公司信息
+        [AllowCrossSiteJson]
+        [HttpPost]
+        public ActionResult DeleteCompanyInfo(string id)
+        {
+            bool returns = mbll.DeleteCompanyInfo(id);
+            if (returns)
+            {
+                return Json(Common.ToJsonResult("Success", "删除成功"), JsonRequestBehavior.AllowGet);
+            }
+            else {
+                return Json(Common.ToJsonResult("Fail", "删除失败"), JsonRequestBehavior.AllowGet);
+            }
+        }
+            //收货地址
+            public ActionResult DeliveryAddress()
         {
             Sidebar("收货地址");
             return View();
