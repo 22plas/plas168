@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountData.cs" />
+    <Compile Include="ContrastModel.cs" />
     <Compile Include="cp_Company.cs" />
     <Compile Include="cp_user.cs" />
     <Compile Include="ProductViewModel.cs" />

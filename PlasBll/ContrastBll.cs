@@ -17,10 +17,15 @@ namespace PlasBll
         /// <param name="pageSize"></param>
         /// <param name="pageIndex"></param>
         /// <returns></returns>
-        public DataSet GetProductList(int pageSize = 10, int pageIndex = 1)
+        public DataSet GetProductList(int pageSize = 10, int pageIndex = 1,string wherestr="")
         {
-            return dal.GetProductList(pageSize, pageIndex);
+            return dal.GetProductList(pageSize, pageIndex, wherestr);
         }
 
+        //查询对比数据
+        public DataTable GetContrastList(string wherestr)
+        {
+            return dal.GetContrastList(wherestr);
+        }
     }
 }

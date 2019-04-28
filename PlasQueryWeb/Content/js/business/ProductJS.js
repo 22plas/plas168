@@ -58,7 +58,7 @@ function InitData(pageindx) {
                     tbodyui += "<td>" + n.Name + "</td>";
                     tbodyui += "<td>" + n.ProUse + "</td>";
                     tbodyui += "<td>" + n.characteristic + "</td>";
-                    tbodyui += "<td><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.prodid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span> <span class='layui-btn layui-btn-sm'><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span></td>";
+                    tbodyui += "<td><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.prodid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span> </td>";//<span class='layui-btn layui-btn-sm'><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>
                     tbodyui += "</tr>";
                 });
                 if (json.BigType != "") {

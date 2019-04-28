@@ -1,6 +1,7 @@
 ﻿using PlasCommon;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -27,9 +28,17 @@ namespace PlasModel.Controllers
 
         public JsonResult MoreDataList(int pageindex, int pagesize)
         {
-            var ds = bll.GetProductList(pagesize, pageindex);
+           
             string jsonstr = string.Empty;
+            string txtQuery = string.Empty;//查询值
+            string sql = string.Empty;
+            if (!string.IsNullOrEmpty(Request["txtQuery"]))
+            {
+                txtQuery = Request["txtQuery"].ToString();
+                sql = " and ProModel like ''%" + txtQuery + "%''";
+            }
             int count = 0;
+            var ds = bll.GetProductList(pagesize, pageindex, sql);
             if (ds.Tables.Contains("ds") && ds.Tables[0] != null)
             {
                 jsonstr = ToolHelper.DataTableToJson(ds.Tables[0]);
@@ -42,6 +51,26 @@ namespace PlasModel.Controllers
 
             return Json(new { data = jsonstr, totalCount = count }, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult ContrastSearch()
+        {
+            var dt = new DataTable();
+            string contsval = string.Empty;
+            if (!string.IsNullOrEmpty(Request["contsval"]))
+            {
+                contsval = Request["contsval"].ToString();
+                dt = bll.GetContrastList(contsval);
+                var jsonlist = ToolClass<PlasModel.ContrastModel>.ConvertDataTableToModel(dt);//ToolHelper.DataTableToJson(dt);
+                return Json(new { data = jsonlist }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return null;
+            }
+
+           
+        }
+
 
     }
 }

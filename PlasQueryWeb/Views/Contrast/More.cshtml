@@ -65,12 +65,12 @@
 <link href="~/Content/css/H-ui.min.css" rel="stylesheet" />
 <link href="~/Content/css/Pagination.css" rel="stylesheet" />
 <script src="~/Scripts/jquery.pagination.js" type="text/javascript"></script>
-
+<script src="~/Content/layui/lay/modules/layer.js" type="text/javascript"></script>
 <div c style="margin:40px;">
     <div class="selectTitle">请选择你要选择对比产品</div>
     <div>
         <div class="left" style="width:78%;">
-            <input type="text" id="txtQuery" class="input-text" />
+            <input type="text" id="txtQuery" placeholder="请输入牌号" class="input-text" />
         </div>
         <div class="right" style="width:20%;">
             <button class="btn btn-secondary-outline radius" id="btn-Query" type="button">检索</button>
@@ -113,6 +113,10 @@
 
 
 <script type="text/javascript">
+
+    var parentValue = getQueryString("rid");
+
+
     var pagesize = 20;
     var rowcount = 0;
     var datas = "";
@@ -140,10 +144,10 @@
                 rowcount = json.totalCount;
                 if (rowcount != 0 && productData != "") {
                     $.each(JSON.parse(productData), function (i, n) {
-                        tbodyui += "<tr onclick=\"selectradio('" + n.ProductGuid+"');\">";
-                        tbodyui += "<td><input type=\"radio\" id='" + n.ProductGuid+"' value='" + n.ProductGuid+"' name=\"radio-btn\" /></td>";
-                        tbodyui += "<td>" + n.PlaceOrigin + "</td>";
+                        tbodyui += "<tr onclick=\"selectradio('" + n.ProductGuid + "');\" ondblclick=\"shartProduct('" + n.ProductGuid + "','" + n.ProModel+"')\">";
+                        tbodyui += "<td><input type=\"radio\" id='" + n.ProductGuid + "'  value='" + n.ProModel+"' name=\"radio-btn\" /></td>";
                         tbodyui += "<td>" + n.ProModel + "</td>";
+                        tbodyui += "<td>" + n.PlaceOrigin + "</td>";
                         tbodyui += "</tr>";
                     });
                 }
@@ -167,7 +171,7 @@
             current_page: pageindx,
             num_edge_entries: 1
         });
-        $("html, body").stop().animate({ scrollTop: $("#records").offset().top - 200 }, 400);
+        $("html, body").stop().animate({ scrollTop: $("#btn-Query").offset().top - 200 }, 400);
 
 
     }
@@ -180,4 +184,41 @@
         $("#" + obj).attr("checked", true);
     }
 
+    //搜索
+    $("#btn-Query").click(function () {
+        datas = "&txtQuery=" + $.trim($("#txtQuery").val());
+        InitData(0);
+    })
+    //选中值 
+    function shartProduct(proid, protitle) {
+        window.parent.$("#" + parentValue).val(protitle);
+        window.parent.$("#Hid_" + parentValue).val(proid);
+        window.parent.onLoadContrast();
+        CloseWindow();
+    }
+    //确定值
+    $("#btn-True").click(function () {
+        var checkedvalue = "";
+        var checkedID = "";
+        $.each($("input[name='radio-btn']"), function (index, item) {
+            if ($(this).is(":checked")) {
+                checkedvalue = $(this).val();
+                checkedID = $(this).attr("id");
+            }
+        })
+        //alert(checkedvalue + "+" + checkedID);
+        if (checkedvalue == "" && checkedID == "") {
+            layer.msg("请选择对比产品！", { icon: 5 });
+            return false;
+        }
+        shartProduct(checkedID, checkedvalue);
+
+    })
+
+    ///关闭当前页面
+    function CloseWindow() {
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        parent.layer.close(index);
+
+    }
 </script>
