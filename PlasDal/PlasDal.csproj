@@ -46,6 +46,7 @@
     <Compile Include="MemberCenterDal.cs" />
     <Compile Include="ProductDal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReplaceDal.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PlasCommon\PlasCommon.csproj">

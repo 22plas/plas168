@@ -1,5 +1,7 @@
 ﻿@{ViewBag.Title = "塑料和弹性体-材料替换";
     var PhysicalData = ViewBag.PhysicalInfo == null ? new System.Data.DataTable() : ViewBag.PhysicalInfo as System.Data.DataTable;
+    var bigName = string.Empty;
+    var samllName = string.Empty; 
     }
 
 <style type="text/css">
@@ -90,44 +92,48 @@
 @{
     Html.RenderAction("PubSearch", "Public");
 }
+<script src="~/Content/layui/lay/modules/layer.js" type="text/javascript"></script>
 <!--卿思明:
 产品说明；注射;注射说明;备注   这些都不参与对比
 ，说明，加工方法，备注不允许选择-->
 <!--总体参与对比的有（（RoHS 合规性；供货地区；加工方法；树脂ID (ISO 1043)；特性；添加剂；填料/增强材料；用途 ）这个是总体里要参与对比的）-->
 <div style="font-size: 14px;">
-    <p class="contrast_remark" style="text-align: center;"><span style="font-size: 18px;">选中的型号：<span>@Html.Raw(ViewBag.ProModel)</span></span><a class="btn btn-green" id="btn_contrast" style="float: right;margin-top: -5px;">提交对比</a></p>
+    <p class="contrast_remark" style="text-align: center;"><span style="font-size: 18px;">选中的型号：<span><a href='/PhysicalProducts/Index' style='color:#FF9933'>@Html.Raw(ViewBag.ProModel)</a></span><input name="" id="ProductGuid" type="hidden" value="@ViewBag.ProGuid" /></span><a class="btn btn-green" id="btn_contrast" style="float: right;margin-top: -5px;" onclick="SubmitComparison();">提交对比</a></p>
     <p class="contrast_remark" style="border-bottom-color:#ccc;padding-right: 0;font-weight:700;">选择你需要对比的参数：<span style="float: right;width: 10%;text-align:left;margin-top: 5px;" class="fa fa-check-square-o"></span> <span style="float:right;">比较选择项：</span> <span style="float:right; margin-right:20px;">权重</span> </p>
 
             <table class="table-list" border="0" cellspacing="0" cellpadding="0">
-                <tbody>
+                <tbody id="DataList">
                     @foreach (System.Data.DataRow dr in PhysicalData.Rows)
                     {
                         <tr class="@(dr["lev"].ToString() == "1" ? "bold" : "pl-10")">
                             <td>
                                 @if (string.IsNullOrWhiteSpace(dr["Attribute2"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
                                 {
+                                    bigName = dr["Attribute1"].ToString();
                                     <div class="f-l" style="width:100%;" name="isHideDiv">@dr["Attribute1"].ToString()</div>
                                 }
                                 else if (string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
                                 {
+                                    samllName = dr["Attribute1"].ToString();
                                     <div class="f-l" style="width:25%;">@dr["Attribute1"].ToString()</div>
                                     <div class="f-l" style="width: 55%;">@dr["Attribute2"].ToString()</div>
                                     if (dr["lev"].ToString() != "1")
                                     {
-                                        <div class="f-l" style="width: 10%;"><input name="weight" class="inputClass" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" type="text" /></div>
-                                        <div class="f-l" style="width: 10%;"><input type="checkbox" name="check-box" checked="checked" /></div>
+                                        <div class="f-l" style="width: 10%;"><input name="weight" bigName="@bigName" samllName="@samllName" class="inputClass" placeholder="请必须输入权重分" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" type="text" /></div>
+                                        <div class="f-l" style="width: 10%;"><input type="checkbox" bigName="@bigName" samllName="@samllName" name="check-box" checked="checked" /></div>
                                     }
 
                                 }
                                 else if (string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
                                 {
+                                    samllName = dr["Attribute1"].ToString();
                                     <div class="f-l" style="width: 25%;">@dr["Attribute1"].ToString()</div>
                                     <div class="f-l" style="width: 25%;">@dr["Attribute2"].ToString()</div>
                                     <div class="f-l" style="width: 30%;">@dr["Attribute3"].ToString()</div>
                                     if (dr["lev"].ToString() != "1")
                                     {
-                                        <div class="f-l" style="width: 10%;"><input name="weight" class="inputClass" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" type="text" /></div>
-                                        <div class="f-l" style="width: 10%;"><input type="checkbox" name="check-box" checked="checked" /></div>
+                                        <div class="f-l" style="width: 10%;"><input name="weight" bigName="@bigName" samllName="@samllName" class="inputClass" placeholder="请必须输入权重分" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" type="text" /></div>
+                                        <div class="f-l" style="width: 10%;"><input type="checkbox" bigName="@bigName" samllName="@samllName" name="check-box" checked="checked" /></div>
                                     }
                                 }
                                 else
@@ -145,8 +151,8 @@
                                     </div>
                                     if (dr["lev"].ToString() != "1")
                                     {
-                                        <div class="f-l" style="width: 10%;"><input name="weight" class="inputClass" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" type="text" /></div>
-                                        <div class="f-l" style="width: 10%;"><input type="checkbox" name="check-box" checked="checked" /></div>
+                                        <div class="f-l" style="width: 10%;"><input name="weight" bigName="@bigName" samllName="@samllName" class="inputClass" placeholder="请必须输入权重分" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" type="text" /></div>
+                                        <div class="f-l" style="width: 10%;"><input type="checkbox" bigName="@bigName" samllName="@samllName" name="check-box" checked="checked" /></div>
                                     }
 
                                 }
@@ -164,5 +170,66 @@
         $(".navBox").find(".nav").find("li").eq(3).children("a").addClass("active");
         $("div[name='isHideDiv']").parent().parent().remove();//删除单行数据
     })
+    var ver = guid();//版本号
+    //string WhereString = "{物理性能=)密度=>10}{机械性能=)伸长率=>10}{物理性能=)熔流率=>15}{可燃性=)阻燃等级=>15}";
+    ///提交对比
+    function SubmitComparison() {
+        var proid = $("#ProductGuid").val();
+        var chaeckvalue = "";
+        var tbodyui = "";
+        var isinput = true;
+        //$.each($("input[name='check-box']"), function (index, item) {
+
+        //})
+        $.ajax({
+            type: "POST",
+            dataType: "JSON",
+            url: '/Replace/GetReplaceList',
+            data: "",
+            async: false,
+            success: function (json) {
+                // debugger;
+                var productData = json.data;
+                var countnum = 5;
+                if (productData.length > 0) {
+                    $.each((productData), function (i, n) {
+                        //alert(n);
+                        tbodyui += "<tr>";
+
+                        tbodyui += "<td style=\" min-width:200px;text-align:left; max-width:300px;";
+                        if (n.lev == 1) {
+                            tbodyui += "font-size:16px; font-weight:700;";
+                        }
+                        else if (n.lev == 2) {
+                            tbodyui += "font-size:14px;padding-left:20px;";
+                        }
+                        else {
+                            tbodyui += "font-size:13px;padding-left:40px;";
+                        }
+                        tbodyui += "\"";
+                        tbodyui += ">" + (n.Attribute == null ? "" : n.Attribute) + "</td>";
+                        tbodyui += "<td style='min-width:200px; max-width:400px;text-align:left; '>" + (n.Attribute1 == null ? "" : n.Attribute1) + "</td>";
+                        tbodyui += "<td style='min-width:200px; max-width:400px;text-align:left; '>" + (n.Attribute2 == null ? "" : n.Attribute2) + "</td>";
+                        tbodyui += "<td>" + (n.Attribute3 == null ? "" : n.Attribute3) + "</td>";
+                        tbodyui += "<td>" + (n.unit == null ? "" : n.unit) + "</td>";
+                        tbodyui += "<td>" + (n.testtype == null ? "" : n.testtype) + "</td>";
+                        tbodyui += "</tr>";
+                    });
+                }
+                else {
+                    tbodyui += "<tr>";
+                    tbodyui += "<td colspan=\"6\" align=\"center\" class='red'>未找到数据</td>";
+                    tbodyui += "</tr>";
+                }
+                $("#DataList").html(tbodyui);
+
+
+            },
+            error: function () { layer.msg('Load the data failure!', { icon: 5 }); }
+        });
+    }
+
+
+
 </script>
 @Html.Partial("~/Views/Public/Bottom.cshtml")

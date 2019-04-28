@@ -46,6 +46,7 @@
     <Compile Include="MemberCenterBll.cs" />
     <Compile Include="ProductBll.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReplaceBll.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PlasCommon\PlasCommon.csproj">
