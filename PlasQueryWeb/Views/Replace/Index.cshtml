@@ -107,14 +107,22 @@
                     {
                         <tr class="@(dr["lev"].ToString() == "1" ? "bold" : "pl-10")">
                             <td>
-                                @if (string.IsNullOrWhiteSpace(dr["Attribute2"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
+                                @if (dr["lev"].ToString() == "1")
                                 {
                                     bigName = dr["Attribute1"].ToString();
+                                }
+                                else
+                                {
+                                    samllName = dr["Attribute1"].ToString();
+                                }
+
+
+                                @if (string.IsNullOrWhiteSpace(dr["Attribute2"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
+                                {
                                     <div class="f-l" style="width:100%;" name="isHideDiv">@dr["Attribute1"].ToString()</div>
                                 }
                                 else if (string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
                                 {
-                                    samllName = dr["Attribute1"].ToString();
                                     <div class="f-l" style="width:25%;">@dr["Attribute1"].ToString()</div>
                                     <div class="f-l" style="width: 55%;">@dr["Attribute2"].ToString()</div>
                                     if (dr["lev"].ToString() != "1")
@@ -126,7 +134,6 @@
                                 }
                                 else if (string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
                                 {
-                                    samllName = dr["Attribute1"].ToString();
                                     <div class="f-l" style="width: 25%;">@dr["Attribute1"].ToString()</div>
                                     <div class="f-l" style="width: 25%;">@dr["Attribute2"].ToString()</div>
                                     <div class="f-l" style="width: 30%;">@dr["Attribute3"].ToString()</div>
