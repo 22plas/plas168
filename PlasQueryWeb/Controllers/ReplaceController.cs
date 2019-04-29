@@ -79,34 +79,36 @@ namespace PlasModel.Controllers
         public JsonResult GetReplaceList(int pageindex, int pagesize, string guidstr,string proid)
         {
             string sErr = string.Empty;
-            string WhereString = string.Empty;
-            if (!string.IsNullOrWhiteSpace(Request["WhereString"]))
-            {
-                WhereString = Request["WhereString"].ToString();
-            }
-            // GetReplace(string SourceId, string ver, string UserId, string WhereString)
-            //计算一个产品的相似度
-            string SourceId = proid; //"088CF6D2-C231-499E-AD9F-82688EB6F9D5";// "2D1636B6-9548-4790-8F14-66DCD5879F2A";// "D161293C-4A8C-4267-B38A-D19A19B89682";// "2350C07B-D47C-46FD-88FF-00A903EF4594"; //TextProductId.Text.Trim();//
-
-            //本次执行运算的唯一版本号
-            string ver = guidstr;//Guid.NewGuid().ToString();
-            //用户ID，应该从Session中取得
-            string UserId = string.Empty;
-            if (AccountData != null)
-            {
-                UserId = AccountData.UserName;//"张三或李四";
-            }
-            
-            //@WhereString: 要求参与相似度计算的所有属性及权重列表，这个是你前端用JS拼装出来的。
-            //下面共有4个属性参与运算，每个属性用{}分开，每个{}中的最后一个是数值，代表这个属性的权重
-            //string WhereString = "{物理性能=)密度=>10}{机械性能=)伸长率=>10}{物理性能=)熔流率=>15}{可燃性=)阻燃等级=>15}";
-            //采用多少个任务来处理本次相似度运算，我们的SQL服务器有32个逻辑内核，这里采用30个任务来处理，
-            //当需要处理的目标物料较少时，由SQL存储过程会自动任务个数来保持执行效率
-            var ds = new DataSet();
             string jsonstr = string.Empty;
             int count = 0;
-            if (!string.IsNullOrWhiteSpace(UserId))
+            try
             {
+                string WhereString = string.Empty;
+                if (!string.IsNullOrWhiteSpace(Request["WhereString"]))
+                {
+                    WhereString = Request["WhereString"].ToString();
+                }
+                // GetReplace(string SourceId, string ver, string UserId, string WhereString)
+                //计算一个产品的相似度
+                string SourceId = proid; //"088CF6D2-C231-499E-AD9F-82688EB6F9D5";// "2D1636B6-9548-4790-8F14-66DCD5879F2A";// "D161293C-4A8C-4267-B38A-D19A19B89682";// "2350C07B-D47C-46FD-88FF-00A903EF4594"; //TextProductId.Text.Trim();//
+
+                //本次执行运算的唯一版本号
+                string ver = guidstr;//Guid.NewGuid().ToString();
+                                     //用户ID，应该从Session中取得
+                string UserId = string.Empty;
+                if (AccountData != null)
+                {
+                    UserId = AccountData.UserName;//"张三或李四";
+                }
+                UserId = "黄远林";
+                //@WhereString: 要求参与相似度计算的所有属性及权重列表，这个是你前端用JS拼装出来的。
+                //下面共有4个属性参与运算，每个属性用{}分开，每个{}中的最后一个是数值，代表这个属性的权重
+                //string WhereString = "{物理性能=)密度=>10}{机械性能=)伸长率=>10}{物理性能=)熔流率=>15}{可燃性=)阻燃等级=>15}";
+                //采用多少个任务来处理本次相似度运算，我们的SQL服务器有32个逻辑内核，这里采用30个任务来处理，
+                //当需要处理的目标物料较少时，由SQL存储过程会自动任务个数来保持执行效率
+                var ds = new DataSet();
+                //if (!string.IsNullOrWhiteSpace(UserId))
+                //{
                 if (!string.IsNullOrWhiteSpace(WhereString))
                 {
                     ds = plbll.GetReplace(SourceId, ver, UserId, WhereString, pageindex, pagesize);
@@ -123,9 +125,14 @@ namespace PlasModel.Controllers
                 {
                     sErr = "违法操作，筛选数据异常！";
                 }
+                //}
+                //else {
+                //    sErr = "请先登陆！";
+                //}
             }
-            else {
-                sErr = "请先登陆！";
+            catch (Exception ex)
+            {
+                sErr = ex.Message.ToString();
             }
           
             
