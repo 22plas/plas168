@@ -73,7 +73,11 @@ namespace PlasModel.Controllers
                             (dr.Rows[i]["Attribute1"].ToString().Trim() == "加工方法"
                             || dr.Rows[i]["Attribute1"].ToString().Trim() == "材料状态"
                             || dr.Rows[i]["Attribute1"].ToString().Trim().Replace(" ", "") == "资料 1".Replace(" ", "")
-                            || dr.Rows[i]["Attribute1"].ToString().Trim().Replace(" ", "") == "搜索 UL 黄卡".Replace(" ", "")))
+                            || dr.Rows[i]["Attribute1"].ToString().Trim().Replace(" ", "") == "搜索 UL 黄卡".Replace(" ", "")
+                            || dr.Rows[i]["Attribute1"].ToString().Trim().Replace(" ", "") == "UL 黄卡 2".Replace(" ", "")
+                            || dr.Rows[i]["Attribute1"].ToString().Trim().Replace(" ", "") == "UL文件号".Replace(" ", "")
+                            )
+                            )
                         {
                         }
                         else

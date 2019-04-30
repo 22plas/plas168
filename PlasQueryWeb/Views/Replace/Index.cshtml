@@ -172,25 +172,33 @@
                         count++;
                         <tr class="@(dr["lev"].ToString() == "1" ? "bold" : "pl-10")">
                             <td>
-                              
-                                    @{ int paddleft = 0;
-                                        int.TryParse(dr["lev"].ToString(), out paddleft);
-                                        paddleft = paddleft * 10;}
-                                    <div class="f-l" style="width:15%;"><span style="margin-right:5px; padding-left:@(paddleft)px;">@dr["Attribute1"].ToString()</span></div>
-                                    <div class="f-l" style="width:15%;">
-                                        &nbsp;@dr["Attribute2"].ToString()
-                                    </div>
-                                    <div class="f-l" style="width:25%;">&nbsp;@dr["Attribute3"].ToString()</div>
-                                    <div class="f-l" style="width:25%;">
-                                        &nbsp; @dr["Attribute4"].ToString()
-                                    </div>
-                                    @if (dr["lev"].ToString() != "1")
-                                    {
-                                        <div class="f-l" style="width: 10%; text-align:center;"><input name="weight" bigName="@bigName" samllName="@samllName" id="weight_@count" class="inputClass" placeholder="请必须输入权重分" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" type="text" /></div>
-                                        <div class="f-l" style="width: 10%; text-align:center;"><input type="checkbox" class="ButCheckBox" bigName="@bigName" samllName="@samllName" value="@count" name="check-box" checked="checked" /></div>
-                                    }
+                                @if (dr["lev"].ToString() == "1")
+                                {
+                                    bigName = dr["Attribute1"].ToString();
+                                }
+                                else
+                                {
+                                    samllName = dr["Attribute1"].ToString();
+                                }
 
-                          
+                                @{ int paddleft = 0;
+                                    int.TryParse(dr["lev"].ToString(), out paddleft);
+                                    paddleft = paddleft * 10;}
+                                <div class="f-l" style="width:15%;"><span style="margin-right:5px; padding-left:@(paddleft)px;">@dr["Attribute1"].ToString()</span></div>
+                                <div class="f-l" style="width:15%;">
+                                    &nbsp;@dr["Attribute2"].ToString()
+                                </div>
+                                <div class="f-l" style="width:25%;">&nbsp;@dr["Attribute3"].ToString()</div>
+                                <div class="f-l" style="width:25%;">
+                                    &nbsp; @dr["Attribute4"].ToString()
+                                </div>
+                                @if (dr["lev"].ToString() == "2")
+                                {
+                                    <div class="f-l" style="width: 10%; text-align:center;"><input name="weight" bigName="@bigName" samllName="@samllName" id="weight_@count" class="inputClass" placeholder="请必须输入权重分" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" type="text" /></div>
+                                    <div class="f-l" style="width: 10%; text-align:center;"><input type="checkbox" class="ButCheckBox" bigName="@bigName" samllName="@samllName" value="@count" name="check-box" checked="checked" /></div>
+                                }
+
+
                                 <div class="clear"></div>
                             </td>
                         </tr>
@@ -251,8 +259,8 @@
         for (var i = 0; i < $("input[name='check-box']").length; i++) {
             if ($("input[name='check-box']").eq(i).is(":checked")) {
                 var inputid = $("input[name='check-box']").eq(i).val();
-                if ($.trim($("#weight_" + inputid).val()) == "" || $.trim($("#weight_" + inputid).val())=="0") {
-                    layer.msg('请输入权重值，并且不能为0', { icon: 5 });
+                if ($.trim($("#weight_" + inputid).val()) == "" || $.trim($("#weight_" + inputid).val()) == "0" || parseInt($.trim($("#weight_" + inputid).val()))>100) {
+                    layer.msg('请输入权重值，并且 大于0小于等于100', { icon: 5 });
                     $("#weight_" + inputid).focus();
                     return false;
                     break;
@@ -268,7 +276,11 @@
             }
         })
        // WhereString = "{物理性能=)密度=>10}{机械性能=)伸长率=>10}";
-       // alert(WhereString + guidstr);
+        if (WhereString == "") {
+            layer.msg('请选择对比项!', { icon: 5 });
+            return false;
+        }
+        //alert(WhereString);
         //return false;
         $.ajax({
             type: "POST",
