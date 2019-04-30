@@ -10,6 +10,7 @@ namespace PlasModel.Controllers
     public class PhysicalProductsController : Controller
     {
         private PlasBll.ProductBll bll = new PlasBll.ProductBll();
+        protected string MainHost = System.Web.Configuration.WebConfigurationManager.AppSettings["MainHost"];
         // GET:超级搜索
         public ActionResult Index()
         {
@@ -164,6 +165,47 @@ namespace PlasModel.Controllers
             }
             return Json(new { data = jsonstr, totalCount = count }, JsonRequestBehavior.AllowGet);
         }
+
+
+
+        #region 生成PDF
+        public string ViewPdf(string prodid, string prodModel = "")
+        {
+            if (string.IsNullOrWhiteSpace(prodModel))
+                return "";
+            //prodModel = HttpUtility.UrlEncode(prodModel);
+            //prodModel = prodModel.Replace(" ","+");
+            string pdfUrl = "pdf/" + prodid + ".pdf";
+            bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewDetail?prodid=" + prodid, pdfUrl);
+            if (success)
+                return pdfUrl;
+            return "";
+        }
+
+        /// <summary>
+        /// 用于生成pdf的页面，只保留产品信息
+        /// </summary>
+        /// <param name="prodid"></param>
+        /// <returns></returns>
+        public ActionResult ViewDetail(string prodid)
+        {
+            var ds = bll.GetModelInfo(prodid);
+            if (ds != null && ds.Tables.Count > 0)
+            {
+                if ( ds.Tables[0].Rows.Count > 0)
+                {
+                    ViewBag.ProModel = ds.Tables[0].Rows[0]["proModel"];
+                }
+                if ( ds.Tables.Count > 1)
+                {
+                    //物性
+                    ViewBag.PhysicalInfo = ds.Tables[1];
+                }
+            }
+            return View();
+        }
+
+        #endregion
 
     }
 }
