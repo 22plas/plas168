@@ -127,6 +127,12 @@
         color: #CCCCCC;
         outline: none;
     }
+    .xiangshidu a{
+        color:#000;
+    }
+        .xiangshidu a:hover {
+            color:#f95c00;
+        }
 </style>
 @Html.Partial("~/Views/Public/SubPageNav.cshtml")
 @{
@@ -160,7 +166,7 @@
         </div>
         <div class="tabBody">
             <table class="table-list" border="0" cellspacing="0" cellpadding="0">
-                <tbody id="DataList">
+                <tbody>
                     @foreach (System.Data.DataRow dr in PhysicalData.Rows)
                     {
                         count++;
@@ -236,8 +242,8 @@
                     <thead>
                         <tr style="height:35px; line-height:35px;">
                             <th>牌号</th>
-                            <th>厂商</th>
-                            <th>各类</th>
+                            <th>类别</th>
+                            <th>相似度值</th>
                         </tr>
                     </thead>
                     <tbody id="DataList">
@@ -298,7 +304,7 @@
                 }
             }
         })
-        WhereString = "{物理性能=)密度=>10}{机械性能=)伸长率=>10}";
+       // WhereString = "{物理性能=)密度=>10}{机械性能=)伸长率=>10}";
        // alert(WhereString + guidstr);
         //return false;
         $.ajax({
@@ -315,10 +321,10 @@
                     if (rowcount != 0 && productData != "") {
                         $.each(JSON.parse(productData), function (i, n) {
                             //alert(n);
-                            tbodyui += "<tr>";
-                            tbodyui += "<td><a href='/PhysicalProducts/Detail/" + n.ProductId + ".html' target=\"_blank\">" + n.ALikePercent + "</a></td>";
-                            tbodyui += "<td>" + n.ProModel + "</td>";
+                            tbodyui += "<tr style='height:30px;line-height:30px;'>";
+                            tbodyui += "<td class='xiangshidu'><a href='/PhysicalProducts/Detail/" + n.ProductId + ".html' target=\"_blank\">" + n.ProModel + "</a></td>";
                             tbodyui += "<td>" + n.ShortName + "</td>";
+                            tbodyui += "<td>" + n.ALikePercent + "</td>";
                             tbodyui += "</tr>";
                         });
                     }

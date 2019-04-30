@@ -61,18 +61,30 @@ namespace PlasDal
             {
                 TaskFactory taskfactory = new TaskFactory();
                 List<Task> taskList = new List<Task>();
-                while (tasks > 0)
+                Task t = Task.Run(() =>
                 {
-                    taskList.Add(taskfactory.StartNew(() =>
+                    for (int i = 1; i <= tasks; i++)
                     {
                         string sqlparm = string.Format("exec AlikeCount_User '{0}',{1}", ver, tasks);
                         SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sqlparm, null);
-                        //SqlParameter[] parm3 = { new SqlParameter("@ver", ver), new SqlParameter("@task", tasks) };
-                        //SqlHelper.ExecProcSqlQuery_Param("AlikeCountPara_User", parm3);
-                    }));
-                    tasks -= 1;
-                }
-                Task.WaitAll(taskList.ToArray());
+                    }
+                });
+                t.Wait();
+                #region OLD
+                    //while (tasks > 0)
+                    //{
+                    //    string sqlparm = string.Format("exec AlikeCount_User '{0}',{1}", ver, tasks);
+                    //    taskList.Add(taskfactory.StartNew(() =>
+                    //    {
+                    //        //SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sqlparm, null);
+                    //        SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sqlparm, null);
+                    //        //SqlParameter[] parm3 = { new SqlParameter("@ver", ver), new SqlParameter("@task", tasks) };
+                    //        //SqlHelper.ExecProcSqlQuery_Param("AlikeCountPara_User", parm3);
+                    //    }));
+                    //    tasks -= 1;
+                    //}
+                    //Task.WaitAll(taskList.ToArray());
+                    #endregion
 
             }
             else
