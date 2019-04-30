@@ -20,7 +20,7 @@ namespace PlasDal
         /// <param name="UserId"></param>
         /// <param name="WhereString"></param>
         /// <returns></returns>
-        public DataSet GetReplace(string SourceId,string ver,string UserId,string WhereString)
+        public DataSet GetReplace(string SourceId,string ver,string UserId,string WhereString, int pageno = 1, int pagesize = 20)
         {
             //计算一个产品的相似度
             //string SourceId = "088CF6D2-C231-499E-AD9F-82688EB6F9D5";// "2D1636B6-9548-4790-8F14-66DCD5879F2A";// "D161293C-4A8C-4267-B38A-D19A19B89682";// "2350C07B-D47C-46FD-88FF-00A903EF4594"; //TextProductId.Text.Trim();//
@@ -85,8 +85,8 @@ namespace PlasDal
             //以上代码执行完成第二步,分多任务（目标物料较少时采用单线程执行）完成所有目标物料的相似度运算明细内容
 
             //以下代码实现第三步：最终相似度得分与排序，并实现分页显示 存储过程名称为：AlikeMerge_User
-            int pageno = 1;  //分页显示时的页码编号
-            int pagesize = 20;//分页显示时每页要求显示的记录条数
+            //int pageno = 1;  //分页显示时的页码编号
+            //int pagesize = 20;//分页显示时每页要求显示的记录条数
             string sqlparm5 = string.Format("exec AlikeMerge_User '{0}',{1},{2}", ver, pageno, pagesize);
             var ds = SqlHelper.GetSqlDataSet(sqlparm5);
            // SqlParameter[] parm5 = { new SqlParameter("@ver", ver), new SqlParameter("@pageno", pageno), new SqlParameter("@pagesize", pagesize) };

@@ -13,9 +13,9 @@ namespace PlasBll
         private PlasDal.ReplaceDal dal = new PlasDal.ReplaceDal();
 
         //查找替换产品
-        public DataSet GetReplace(string SourceId, string ver, string UserId, string WhereString)
+        public DataSet GetReplace(string SourceId, string ver, string UserId, string WhereString,int pageindex=1,int pagesize=20)
         {
-            return dal.GetReplace(SourceId, ver, UserId, WhereString);
+            return dal.GetReplace(SourceId, ver, UserId, WhereString, pageindex, pagesize);
         }
 
     }
