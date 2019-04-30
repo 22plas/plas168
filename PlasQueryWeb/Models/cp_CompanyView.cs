@@ -18,13 +18,16 @@ namespace PlasQueryWeb.Models
         public string Province { get; set; }//所在省份
         public string City { get; set; }//所在城市
         public string Address { get; set; }//地址
+        [Required(ErrorMessage = "联系人不能为空")]
         public string Contacts { get; set; }//联系人
+        [Required(ErrorMessage = "座机不能为空")]
         public string Tel { get; set; }//座机
         public string Fax { get; set; }//传真
         public string QQ { get; set; }//QQ
         public string logo { get; set; }//公司logo
         public string UserId { get; set; }//用户id
         public string WeChat { get; set; }//微信
+        [Required(ErrorMessage = "手机号不能为空")]
         public string Mobile { get; set; }//手机号
         public string Area { get; set; }//城镇
         public string Email { get; set; }//邮箱

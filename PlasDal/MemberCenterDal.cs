@@ -211,17 +211,104 @@ namespace PlasDal
             int rows = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql, null);
             return rows > 0 ? true : false;
         }
-        //删除公司信息
-        public bool DeleteCompanyInfo(string id)
+        
+
+        /// <summary>
+        /// 获取收货地址列表信息
+        /// </summary>
+        /// <param name="userid">用户ID</param>
+        /// <param name="page">页码</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <returns></returns>
+        public DataSet GetDeliveryAddressList(string userid, string filter, int? page = 1, int? pageSize = 20)
+        {
+            DataSet returnds = new DataSet();
+            try
+            {
+                string tempstr = string.IsNullOrWhiteSpace(filter) == false ? string.Format(@" and g.Contacts like '%{0}%'", filter) : "";
+                int starpagesize = page.Value * pageSize.Value - pageSize.Value;
+                int endpagesize = page.Value * pageSize.Value;
+                string execsql2 = string.Format(@"SELECT * FROM (
+                                                SELECT CAST(ROW_NUMBER() over(order by COUNT(g.Id) DESC) AS INTEGER) AS Ornumber,g.Id,g.Tel,g.Contacts,g.ContactsMobile,g.Province,g.City,g.[Count],g.[Address],g.IsDefault FROM dbo.cp_CompanyAddress g
+                                                WHERE g.UserId='{0}' {1}
+                                                GROUP BY g.Id,g.Tel,g.Contacts,g.ContactsMobile,g.Province,g.City,g.[Count],g.[Address],g.IsDefault) t WHERE t.Ornumber > {2} AND t.Ornumber<={3}", userid, tempstr, starpagesize, endpagesize);
+                execsql2 = execsql2 + string.Format(@" SELECT COUNT(*) as totals FROM dbo.cp_CompanyAddress g WHERE g.UserId='{0}' {1}", userid, tempstr);
+                returnds = SqlHelper.GetSqlDataSet(execsql2);
+                return returnds;
+            }
+            catch (Exception ex)
+            {
+                return returnds;
+            }
+        }
+        /// <summary>
+        /// 根据id获取公司信息
+        /// </summary>
+        /// <param name="Id">公司ID</param>
+        /// <returns></returns>
+        public DeliveryAddress GetDeliveryAddressById(string Id)
+        {
+            DeliveryAddress m = new DeliveryAddress();
+            try
+            {
+                string sql = string.Format(@"select * from cp_CompanyAddress where Id='{0}'", Id);
+                DataTable dt = SqlHelper.GetSqlDataTable(sql);
+                if (dt.Rows.Count > 0)
+                {
+                    m.Address = dt.Rows[0]["Address"].ToString();
+                    m.Count = dt.Rows[0]["Count"].ToString();
+                    m.City = dt.Rows[0]["City"].ToString();
+                    m.Contacts = dt.Rows[0]["Contacts"].ToString();
+                    m.ContactsMobile= dt.Rows[0]["ContactsMobile"].ToString();
+                    m.Fax = dt.Rows[0]["Fax"].ToString();
+                    m.Province = dt.Rows[0]["Province"].ToString();
+                    m.Tel = dt.Rows[0]["Tel"].ToString();
+                    m.WeChat = dt.Rows[0]["WeChat"].ToString();
+                    m.Id = dt.Rows[0]["Id"].ToString();
+                    m.IsDefault = Convert.ToInt32(dt.Rows[0]["IsDefault"]) == 0 ? false : true;
+                }
+                return m;
+            }
+            catch (Exception)
+            {
+                return m;
+            }
+        }
+        //新增/修改收货地址信息
+        public bool EditDeliveryAddressInfoDal(DeliveryAddress model, Operation operation)
+        {
+            string sql = "";
+            //如果当前保存的收货地址为默认的话则修改原来的默认的收货地址为不默认
+            if (model.IsDefault)
+            {
+                string updatesql = string.Format(@"update cp_CompanyAddress set IsDefault=0 where IsDefault=1 and UserId='{0}'", model.UserId);
+                SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, updatesql, null);
+            }
+            //新增
+            if (operation == Operation.Add)
+            {
+                sql = string.Format(@"INSERT INTO dbo.cp_CompanyAddress( UserId ,Tel ,Fax ,Contacts ,ContactsMobile ,QQ ,WeChat ,Province ,City ,Count ,Address ,IsDefault)
+                                    VALUES  ( '{0}' ,N'{1}' ,N'{2}' ,N'{3}' ,'{4}' ,N'{5}' ,N'{6}' ,N'{7}' ,N'{8}' ,N'{9}' ,N'{10}' ,{11})",
+                            model.UserId, model.Tel, model.Fax, model.Contacts, model.ContactsMobile, model.QQ, model.WeChat, model.Province, model.City, model.Count, model.Address, model.IsDefault == false ? 0 : 1);
+            }
+            //修改
+            else
+            {
+                sql = string.Format(@"update dbo.cp_CompanyAddress set UserId='{0}' ,Tel='{1}' ,Fax='{2}' ,Contacts='{3}' ,ContactsMobile='{4}' ,QQ='{5}' ,WeChat='{6}' ,Province='{7}' ,City='{8}' ,Count='{9}' ,Address='{10}' ,
+                                    IsDefault='{11}'  where Id='{12}'",
+                           model.UserId, model.Tel, model.Fax, model.Contacts, model.ContactsMobile, model.QQ, model.WeChat, model.Province, model.City, model.Count, model.Address, model.IsDefault==false?0:1, model.Id);
+
+            }
+            int rows = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql, null);
+            return rows > 0 ? true : false;
+        }
+        //公共删除方法
+        public bool DeleteCommon(string id,string tbname)
         {
             try
             {
-                SqlParameter[] parameters = {
-                                new SqlParameter("@id", SqlDbType.NVarChar)
-                            };
-                parameters[0].Value = id;
-                string sql =string.Format(@"delete from cp_company where Id='{0}'", id);
-                SqlHelper.ExecuteScalar(SqlHelper.ConnectionStrings,sql,null);
+                string sql = string.Format(@"delete from {1} where Id='{0}'", id, tbname);
+                SqlHelper.ExecuteScalar(SqlHelper.ConnectionStrings, sql, null);
                 return true;
             }
             catch (Exception)

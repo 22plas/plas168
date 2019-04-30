@@ -76,18 +76,21 @@
                         <label for="user-addr2" class="am-u-sm-3 am-form-label">联系人</label>
                         <div class="am-u-sm-9">
                             <input type="text" class="tpl-form-input" id="Contacts" name="Contacts" placeholder="联系人">
+                            @Html.ValidationMessageFor(model => model.Contacts, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="am-form-group">
                         <label for="user-addr2" class="am-u-sm-3 am-form-label">联系手机</label>
                         <div class="am-u-sm-9">
                             <input type="text" class="tpl-form-input" id="Mobile" name="Mobile" placeholder="手机号">
+                            @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="am-form-group">
                         <label for="user-addr2" class="am-u-sm-3 am-form-label">公司电话</label>
                         <div class="am-u-sm-9">
                             <input type="text" class="tpl-form-input" id="Tel" name="Tel" placeholder="公司电话">
+                            @Html.ValidationMessageFor(model => model.Tel, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="am-form-group">

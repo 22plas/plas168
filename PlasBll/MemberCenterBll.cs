@@ -127,10 +127,32 @@ namespace PlasBll
         {
             return mdal.GetCompanyById(id);
         }
-        //删除公司信息
-        public bool DeleteCompanyInfo(string id)
+
+        /// <summary>
+        /// 获取收货地址列表信息
+        /// </summary>
+        /// <param name="userid">用户ID</param>
+        /// <param name="page">页码</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <returns></returns>
+        public DataSet GetDeliveryAddressList(string userid, string filter, int? page = 1, int? pageSize = 20)
         {
-            return mdal.DeleteCompanyInfo(id);
+            return mdal.GetDeliveryAddressList(userid, filter, page, pageSize);
+        }
+        //编辑收货地址信息
+        public bool EditDeliveryAddressInfoBll(DeliveryAddress model, Operation operation)
+        {
+            return mdal.EditDeliveryAddressInfoDal(model, operation);
+        }
+        //根据id获取收货地址
+        public DeliveryAddress GetDeliveryAddressById(string id)
+        {
+            return mdal.GetDeliveryAddressById(id);
+        }
+        //删除收货地址信息
+        public bool DeleteCommon(string id,string tbname)
+        {
+            return mdal.DeleteCommon(id, tbname);
         }
     }
 }
