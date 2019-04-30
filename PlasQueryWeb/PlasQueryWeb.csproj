@@ -254,6 +254,7 @@
     <Content Include="Content\js\app.js" />
     <Content Include="Content\js\Area.js" />
     <Content Include="Content\js\business\CompanyInfo.js" />
+    <Content Include="Content\js\business\DeliveryAddress.js" />
     <Content Include="Content\js\business\Login.js" />
     <Content Include="Content\js\business\PhysicalJS.js" />
     <Content Include="Content\js\business\priceJS.js" />
@@ -468,6 +469,7 @@
     <Content Include="Views\Replace\ReplaceList.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\FileUpload.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\FileUpload.cshtml" />
+    <Content Include="Views\MemberCenter\DeliveryAddressEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

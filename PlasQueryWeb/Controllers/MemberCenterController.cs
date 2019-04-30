@@ -278,7 +278,7 @@ namespace PlasModel.Controllers
         [HttpPost]
         public ActionResult DeleteCompanyInfo(string id)
         {
-            bool returns = mbll.DeleteCompanyInfo(id);
+            bool returns = mbll.DeleteCommon(id, "cp_Company");
             if (returns)
             {
                 return Json(Common.ToJsonResult("Success", "删除成功"), JsonRequestBehavior.AllowGet);
@@ -287,17 +287,141 @@ namespace PlasModel.Controllers
                 return Json(Common.ToJsonResult("Fail", "删除失败"), JsonRequestBehavior.AllowGet);
             }
         }
-            //收货地址
-            public ActionResult DeliveryAddress()
+        //收货地址
+        public ActionResult DeliveryAddress(string filter, int? page = 1)
         {
             Sidebar("收货地址");
-            return View();
+            List<DeliveryAddress> list = new List<DeliveryAddress>();
+            DataSet dtset = mbll.GetDeliveryAddressList(AccountData.UserID, filter, page, 20);
+            int pagetotal = 0;
+            if (dtset.Tables.Count > 0)
+            {
+                DataTable dt = dtset.Tables[0];
+                DataTable totaldt = dtset.Tables[1];
+                if (dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        DeliveryAddress m = new DeliveryAddress();
+                        m.Address = dt.Rows[i]["Address"].ToString();
+                        m.Count = dt.Rows[i]["Count"].ToString();
+                        m.City = dt.Rows[i]["City"].ToString();
+                        m.Contacts = dt.Rows[i]["Contacts"].ToString();
+                        m.ContactsMobile = dt.Rows[i]["ContactsMobile"].ToString();
+                        m.Province = dt.Rows[i]["Province"].ToString();
+                        m.Tel = dt.Rows[i]["Tel"].ToString();
+                        m.Id = dt.Rows[i]["Id"].ToString();
+                        m.IsDefaultStr= (YesOrNo)dt.Rows[i]["IsDefault"]== YesOrNo.No? YesOrNo.No.GetDisplayName(): YesOrNo.Yes.GetDisplayName();
+                        list.Add(m);
+                    }
+                }
+                //计算页数
+                if (totaldt.Rows.Count > 0)
+                {
+                    int total = Convert.ToInt32(totaldt.Rows[0]["totals"]);
+                    if (total > 0)
+                    {
+                        int temppagenumber = total / 20;
+                        int qynumber = 0;
+                        if (temppagenumber > 0)
+                        {
+                            qynumber = total - (temppagenumber * 20);
+                            if (qynumber > 0)
+                            {
+                                pagetotal = temppagenumber + 1;
+                            }
+                            else
+                            {
+                                pagetotal = temppagenumber;
+                            }
+                        }
+                        else
+                        {
+                            pagetotal = 1;
+                        }
+                    }
+                }
+                ViewBag.pagetotal = pagetotal;
+            }
+            return View(list);
         }
         //收货地址
         public ActionResult DeliveryAddressCreate()
         {
             Sidebar("收货地址");
-            return View();
+            AreaBll abll = new AreaBll();
+            ViewBag.Province = abll.pliststrbll("", "");//省份
+            ViewBag.City = abll.pliststrbll("北京市", "1"); //城市
+            ViewBag.District = abll.pliststrbll("北京市", "2");//街道
+            var model = new DeliveryAddress();
+            return View(model);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeliveryAddressCreate(DeliveryAddress model)
+        {
+            if (ModelState.IsValid)
+            {
+                Sidebar("收货地址");
+                model.Fax = string.Empty;
+                model.QQ = string.Empty;
+                model.WeChat = string.Empty;
+                model.UserId = AccountData.UserID;
+                mbll.EditDeliveryAddressInfoBll(model, Operation.Add);
+                return RedirectToAction("DeliveryAddress");
+            }
+            AreaBll abll = new AreaBll();
+            ViewBag.Province = abll.pliststrbll("", "");//省份
+            ViewBag.City = abll.pliststrbll("北京市", "1"); //城市
+            ViewBag.District = abll.pliststrbll("北京市", "2");//街道
+            return View(model);
+        }
+        
+        //编辑公司资料
+        public ActionResult DeliveryAddressEdit(string Id)
+        {
+
+            var model = mbll.GetDeliveryAddressById(Id);
+            AreaBll abll = new AreaBll();
+            ViewBag.Province = abll.pliststrbll("", "");//省份
+            ViewBag.City = abll.pliststrbll(model.Province, "1"); //城市
+            ViewBag.District = abll.pliststrbll(model.City, "2");//街道
+            Sidebar("收货地址");
+            return View(model);
+        }
+
+        //保存编辑公司信息
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeliveryAddressEdit(DeliveryAddress model)
+        {
+            if (ModelState.IsValid)
+            {
+                model.UserId= AccountData.UserID;
+                mbll.EditDeliveryAddressInfoBll(model, Operation.Update);
+                return RedirectToAction("DeliveryAddress");
+            }
+            AreaBll abll = new AreaBll();
+            ViewBag.Province = abll.pliststrbll("", "");//省份
+            ViewBag.City = abll.pliststrbll("北京市", "1"); //城市
+            ViewBag.District = abll.pliststrbll("北京市", "2");//街道
+            Sidebar("收货地址");
+            return View(model);
+        }
+        //删除收货地址
+        [AllowCrossSiteJson]
+        [HttpPost]
+        public ActionResult DeleteDeliverAddress(string id)
+        {
+            bool returns = mbll.DeleteCommon(id, "cp_CompanyAddress");
+            if (returns)
+            {
+                return Json(Common.ToJsonResult("Success", "删除成功"), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(Common.ToJsonResult("Fail", "删除失败"), JsonRequestBehavior.AllowGet);
+            }
         }
         //物性收藏
         public ActionResult MaterialCollection()

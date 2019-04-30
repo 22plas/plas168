@@ -1,28 +1,27 @@
 ﻿@model PlasModel.DeliveryAddress
 @{
-    ViewBag.Title = "新增收货地址";
+    ViewBag.Title = "新增公司资料";
     Layout = "~/Views/Shared/MemberCenterShared.cshtml";
-    SelectList province = new SelectList((List<string>)ViewBag.Province, "name");
-    SelectList city = new SelectList((List<string>)ViewBag.City, "name");
-    SelectList district = new SelectList((List<string>)ViewBag.District, "name");
+    SelectList province = new SelectList((List<string>)ViewBag.Province, selectedValue: Model.Province);
+    SelectList city = new SelectList((List<string>)ViewBag.City, selectedValue: Model.City);
+    SelectList district = new SelectList((List<string>)ViewBag.District, selectedValue:Model.Count);
 }
-
 <div class="tpl-content-wrapper">
     <div class="tpl-content-wrapper-bg">
         <ol class="am-breadcrumb">
             <li><a href="#" class="am-icon-home">首页</a></li>
             <li>会员中心</li>
-            <li class="am-active">新增收货地址</li>
+            <li class="am-active">编辑收货地址</li>
         </ol>
         <div class="tpl-portlet-components">
-            @* <form class="am-form tpl-form-line-form">*@
-            @using (Html.BeginForm("DeliveryAddressCreate", "MemberCenter", FormMethod.Post, new { @class = "am-form tpl-form-line-form" }))
+            @*<form class="am-form tpl-form-line-form"> Html.BeginForm()*@
+            @using (Html.BeginForm("DeliveryAddressEdit", "MemberCenter", FormMethod.Post, new { @class = "am-form tpl-form-line-form" }))
             {
                 @Html.AntiForgeryToken()
                 <div class="am-form-group">
                     <label for="user-name" class="am-u-sm-3 am-form-label ">收货人</label>
                     <div class="am-u-sm-9">
-                        <input type="text" class="tpl-form-input" id="Contacts" name="Contacts" placeholder="收货人">
+                        <input type="text" class="tpl-form-input" id="Name" value="@Model.Contacts" name="Name" placeholder="收货人">
                         @Html.ValidationMessageFor(model => model.Contacts, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -30,17 +29,15 @@
                 <div class="am-form-group">
                     <label for="user-tax" class="am-u-sm-3 am-form-label">联系手机</label>
                     <div class="am-u-sm-9">
-                        <input type="text" class="tpl-form-input" id="ContactsMobile" name="ContactsMobile" placeholder="联系手机" />
-                        @Html.ValidationMessageFor(model => model.ContactsMobile, "", new { @class = "text-danger" })
+                        <input type="text" class="tpl-form-input" id="ContactsMobile" value="@Model.ContactsMobile" name="ContactsMobile" placeholder="联系手机" />
                     </div>
                 </div>
                 <div class="am-form-group">
                     <label for="user-tax" class="am-u-sm-3 am-form-label">联系电话</label>
                     <div class="am-u-sm-9">
-                        <input type="text" class="tpl-form-input" id="Tel" name="Tel" placeholder="联系电话" />
+                        <input type="text" class="tpl-form-input" id="Tel" value="@Model.Tel" name="Tel" placeholder="联系电话" />
                     </div>
                 </div>
-
                 <div class="am-form-group">
                     <label class="am-u-sm-3 am-form-label">收货地址 </label>
                     <table width="100%" border="0">
@@ -48,31 +45,43 @@
                             <td style="width: 33.333333%;">
                                 <div class="am-u-sm-9">
                                     @*<select data-am-selected="{searchBox: 1}">
-            <option value="a">请选择省</option>
-
-        </select>*@
-                                    @Html.DropDownListFor(model => model.Province, province, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.Province, "", new { @class = "text-danger" })
+                                    <option value="a">请选择省</option>
+                                </select>*@
+                                    <select id="Province" name="Province" class="form-control">
+                                        @foreach (var item in (List<string>)ViewBag.Province)
+                                        {
+                                            var selected = item == Model.Province ? "selected" : "";
+                                            <option @selected value="@item">@item</option>
+                                        }
+                                    </select>
                                 </div>
                             </td>
                             <td style="width: 33.333333%;">
                                 <div class="am-u-sm-9">
                                     @*<select data-am-selected="{searchBox: 1}">
-            <option value="a">请选择市</option>
-
-        </select>*@
-                                    @Html.DropDownListFor(model => model.City, city, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                                    <option value="a">请选择市</option>
+                                </select>*@
+                                    <select id="City" name="City" class="form-control">
+                                        @foreach (var item in (List<string>)ViewBag.City)
+                                        {
+                                            var selected = item == Model.City ? "selected" : "";
+                                            <option @selected value="@item">@item</option>
+                                        }
+                                    </select>
                                 </div>
                             </td>
                             <td style="width: 33.333333%;">
                                 <div class="am-u-sm-9">
                                     @*<select data-am-selected="{searchBox: 1}">
-            <option value="a">请选择区</option>
-
-        </select>*@
-                                    @Html.DropDownListFor(model => model.Count, district, new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.Count, "", new { @class = "text-danger" })
+                                    <option value="a">请选择区</option>
+                                </select>*@
+                                    <select id="Count" name="Count" class="form-control">
+                                        @foreach (var item in (List<string>)ViewBag.District)
+                                        {
+                                            var selected = item == Model.Count ? "selected" : "";
+                                            <option @selected value="@item">@item</option>
+                                        }
+                                    </select>
                                 </div>
                             </td>
                         </tr>
@@ -81,14 +90,13 @@
                 <div class="am-form-group">
                     <label for="user-addr1" class="am-u-sm-3 am-form-label">详细地址</label>
                     <div class="am-u-sm-9">
-                        <input type="text" class="tpl-form-input" id="Address" name="Address" placeholder="">
-                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                        <input type="text" class="tpl-form-input" id="Address" value="@Model.Address" name="Address" placeholder="详细地址">
                     </div>
                 </div>
                 <div class="am-form-group">
                     <label class="am-u-sm-3 am-form-label"></label>
                     <div class="am-u-sm-9" style="cursor: pointer;color: #555;font-size: 14px;">
-                        @*<input type="checkbox" id="IsDefault" name="IsDefault" />设为默认地址*@
+                        @*<input type="checkbox" id="IsDefault" value="@Model.IsDefault" name="IsDefault" />*@
                         @Html.CheckBoxFor(m => m.IsDefault)设为默认地址
                     </div>
                 </div>
@@ -106,3 +114,4 @@
 <script src="~/Content/js/jquery-2.1.1.js"></script>
 <script src="~/Content/js/Area.js"></script>
 <script src="~/Content/js/business/DeliveryAddress.js"></script>
+
