@@ -47,8 +47,77 @@ namespace PlasModel.Controllers
                 }
                 if (ds.Tables.Contains("ds1") && ds.Tables[1].Rows.Count > 0)
                 {
-                    dt = ds.Tables[1];///此数据要过滤
-                   
+                        //< !--卿思明:
+                        //产品说明；注射; 注射说明; 备注 这些都不参与对比
+                        //，说明，加工方法，备注不允许选择-- >
+                        //< !--总体参与对比的有（（RoHS 合规性；供货地区；加工方法；树脂ID(ISO 1043)；特性；添加剂；填料 / 增强材料；用途 ）这个是总体里要参与对比的）-->
+                     var dr = ds.Tables[1];///此数据要过滤
+
+                    DataTable tblDatas = new DataTable("Datas");
+                    DataColumn dc = null;
+                    dc = tblDatas.Columns.Add("lev", Type.GetType("System.Int32"));
+                    dc = tblDatas.Columns.Add("Attribute1", Type.GetType("System.String"));
+                    dc = tblDatas.Columns.Add("Attribute2", Type.GetType("System.String"));
+                    dc = tblDatas.Columns.Add("Attribute3", Type.GetType("System.String"));
+                    dc = tblDatas.Columns.Add("Attribute4", Type.GetType("System.String"));
+                    dc = tblDatas.Columns.Add("Attribute5", Type.GetType("System.String"));
+                    string lev = string.Empty;
+                    DataRow newRow;
+                    for (var i = 0; i<dr.Rows.Count; i++)
+                    {
+                        if ((string.IsNullOrEmpty(dr.Rows[i]["Attribute2"].ToString())
+                            && string.IsNullOrEmpty(dr.Rows[i]["Attribute3"].ToString())
+                            && string.IsNullOrEmpty(dr.Rows[i]["Attribute4"].ToString())
+                            && string.IsNullOrEmpty(dr.Rows[i]["Attribute5"].ToString()) && dr.Rows[i]["Attribute1"].ToString().Trim()!= "总体")
+                            ||
+                            (dr.Rows[i]["Attribute1"].ToString().Trim() == "加工方法"
+                            || dr.Rows[i]["Attribute1"].ToString().Trim() == "材料状态"
+                            || dr.Rows[i]["Attribute1"].ToString().Trim().Replace(" ", "") == "资料 1".Replace(" ", "")
+                            || dr.Rows[i]["Attribute1"].ToString().Trim().Replace(" ", "") == "搜索 UL 黄卡".Replace(" ", "")))
+                        {
+                        }
+                        else
+                        {
+                            
+                            //单独过滤注射
+                            if (dr.Rows[i]["Attribute1"].ToString().Trim() == "注射")
+                            {
+                                //int.TryParse(dr.Rows[i]["lev"].ToString().Trim(), out lev);//记住注射
+                                lev = "injection";
+                            }
+                            else
+                            {
+                                
+                                int count = (1 + Convert.ToInt32(dr.Rows[i]["lev"].ToString().Trim()));
+                                if (count == 3 && lev == "injection")
+                                {
+
+                                }
+                                else
+                                {
+                                    if (count == 2)//后续其他，必须清除，不然会有异常
+                                    {
+                                        lev = "";
+                                    }
+                                    newRow = tblDatas.NewRow();
+                                    newRow["lev"] = dr.Rows[i]["lev"].ToString().Trim();
+                                    newRow["Attribute1"] = dr.Rows[i]["Attribute1"].ToString().Trim();
+                                    newRow["Attribute2"] = dr.Rows[i]["Attribute2"].ToString().Trim();
+                                    newRow["Attribute3"] = dr.Rows[i]["Attribute3"].ToString().Trim();
+                                    newRow["Attribute4"] = dr.Rows[i]["Attribute4"].ToString().Trim();
+                                    newRow["Attribute5"] = dr.Rows[i]["Attribute5"].ToString().Trim();
+                                    tblDatas.Rows.Add(newRow);
+                                }
+                                
+                            }
+                            
+                        }
+                        
+                    }
+                    dt = tblDatas;
+                //var spdr=dr.Select("Attribute1<>'产品说明' and Attribute1 <> '注射' and Attribute1 <> '备注'")
+
+
                 }
                 if (ds.Tables.Count > 2)
                 {
