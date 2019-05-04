@@ -485,8 +485,9 @@ namespace PlasModel.Controllers
         /// </summary>
         /// <param name="phone"></param>
         /// <returns></returns>
-        [AllowCrossSiteJson]
+        
         [HttpGet]
+        [AllowCrossSiteJson]
         public ActionResult SetCode(string phone)
         {
             string returncode = Common.GenerateCheckCodeNum(6);
