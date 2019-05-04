@@ -188,6 +188,7 @@
     <Compile Include="App_Start\Qiniu\Base64.cs" />
     <Compile Include="App_Start\Qiniu\QinQiuApi.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="CommonClass\PdfHelper.cs" />
     <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\ContrastController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -423,6 +424,8 @@
     <Content Include="Content\layui\font\iconfont.eot" />
     <Content Include="Content\layui\font\iconfont.ttf" />
     <Content Include="Content\layui\font\iconfont.woff" />
+    <Content Include="pdfFooter.html" />
+    <Content Include="pdfHeader.html" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\ChinesePY.js" />
@@ -449,6 +452,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <None Include="Scripts\_references.js" />
+    <Content Include="viewpdf.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -500,9 +504,11 @@
     <Content Include="Views\Shared\DisplayTemplates\FileUpload.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\FileUpload.cshtml" />
     <Content Include="Views\MemberCenter\DeliveryAddressEdit.cshtml" />
+    <Content Include="Views\PhysicalProducts\ViewDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="pdf\" />
     <Folder Include="Views\Area\" />
     <Folder Include="Views\EditorFoText\" />
     <Folder Include="Views\Uploader\" />

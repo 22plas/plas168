@@ -127,6 +127,12 @@
         color: #CCCCCC;
         outline: none;
     }
+    .xiangshidu a{
+        color:#000;
+    }
+        .xiangshidu a:hover {
+            color:#f95c00;
+        }
 </style>
 @Html.Partial("~/Views/Public/SubPageNav.cshtml")
 @{
@@ -140,7 +146,7 @@
 ，说明，加工方法，备注不允许选择-->
 <!--总体参与对比的有（（RoHS 合规性；供货地区；加工方法；树脂ID (ISO 1043)；特性；添加剂；填料/增强材料；用途 ）这个是总体里要参与对比的）-->
 <div style="font-size: 14px;">
-    <p class="contrast_remark" style="text-align: center;"><span style="font-size: 18px;">选中的型号：<span><a href='/PhysicalProducts/Index' style='color:#FF9933'>@Html.Raw(ViewBag.ProModel)</a></span><input name="" id="ProductGuid" type="hidden" value="@ViewBag.ProGuid" /></span><a class="btn btn-green" id="btn_contrast" style="float: right;margin-top: -5px;" onclick="submitContert();">提交对比</a></p>
+    <p class="contrast_remark" style="text-align: center;"><span style="font-size: 18px;">选中的型号：<span><a href='/Product/Index' style='color:#FF9933'>@Html.Raw(ViewBag.ProModel)</a></span><input name="" id="ProductGuid" type="hidden" value="@ViewBag.ProGuid" /></span><a class="btn btn-green" id="btn_contrast" style="float: right;margin-top: -5px;" onclick="submitContert();">提交对比</a></p>
     <p class="contrast_remark" style="border-bottom-color:#ccc;padding-right: 0;font-weight:700;">
         <table width="100%" border="0" style="height:45px; line-height:45px; font-weight:700;" cellspacing="0" cellpadding="0">
             <tr>
@@ -160,7 +166,7 @@
         </div>
         <div class="tabBody">
             <table class="table-list" border="0" cellspacing="0" cellpadding="0">
-                <tbody id="DataList">
+                <tbody>
                     @foreach (System.Data.DataRow dr in PhysicalData.Rows)
                     {
                         count++;
@@ -175,53 +181,24 @@
                                     samllName = dr["Attribute1"].ToString();
                                 }
 
-
-                                @if (string.IsNullOrWhiteSpace(dr["Attribute2"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
-                                {
-                                    <div class="f-l" style="width:100%;" name="isHideDiv">@dr["Attribute1"].ToString()</div>
-                                }
-                                else if (string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
-                                {
-                                    <div class="f-l" style="width:25%;">@dr["Attribute1"].ToString()</div>
-                                    <div class="f-l" style="width: 55%;">@dr["Attribute2"].ToString()</div>
-                                    if (dr["lev"].ToString() != "1")
-                                    {
-                                        <div class="f-l" style="width: 10%; text-align:center;"><input name="weight" bigName="@bigName" samllName="@samllName" id="weight_@count" class="inputClass" placeholder="请必须输入权重分" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" type="text" /></div>
-                                        <div class="f-l" style="width: 10%; text-align:center;"><input type="checkbox" class="ButCheckBox" bigName="@bigName" samllName="@samllName" value="@count" name="check-box" checked="checked" /></div>
-                                    }
-
-                                }
-                                else if (string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
-                                {
-                                    <div class="f-l" style="width: 25%;">@dr["Attribute1"].ToString()</div>
-                                    <div class="f-l" style="width: 25%;">@dr["Attribute2"].ToString()</div>
-                                    <div class="f-l" style="width: 30%;">@dr["Attribute3"].ToString()</div>
-                                    if (dr["lev"].ToString() != "1")
-                                    {
-                                        <div class="f-l" style="width: 10%; text-align:center;"><input name="weight" bigName="@bigName" samllName="@samllName" id="weight_@count" class="inputClass" placeholder="请必须输入权重分" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" type="text" /></div>
-                                        <div class="f-l" style="width: 10%; text-align:center;"><input type="checkbox" class="ButCheckBox" bigName="@bigName" samllName="@samllName" value="@count" name="check-box" checked="checked" /></div>
-                                    }
-                                }
-                                else
-                                {
-                                    int paddleft = 0;
+                                @{ int paddleft = 0;
                                     int.TryParse(dr["lev"].ToString(), out paddleft);
-                                    paddleft = paddleft * 10;
-                                    <div class="f-l" style="width:15%;"><span style="margin-right:5px; padding-left:@(paddleft)px;">@dr["Attribute1"].ToString()</span></div>
-                                    <div class="f-l" style="width:15%;">
-                                        @dr["Attribute2"].ToString()
-                                    </div>
-                                    <div class="f-l" style="width:25%;">@dr["Attribute3"].ToString()</div>
-                                    <div class="f-l" style="width:25%;">
-                                        @dr["Attribute4"].ToString()
-                                    </div>
-                                    if (dr["lev"].ToString() != "1")
-                                    {
-                                        <div class="f-l" style="width: 10%; text-align:center;"><input name="weight" bigName="@bigName" samllName="@samllName" id="weight_@count" class="inputClass" placeholder="请必须输入权重分" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" type="text" /></div>
-                                        <div class="f-l" style="width: 10%; text-align:center;"><input type="checkbox" class="ButCheckBox" bigName="@bigName" samllName="@samllName" value="@count" name="check-box" checked="checked" /></div>
-                                    }
-
+                                    paddleft = paddleft * 10;}
+                                <div class="f-l" style="width:15%;"><span style="margin-right:5px; padding-left:@(paddleft)px;">@dr["Attribute1"].ToString()</span></div>
+                                <div class="f-l" style="width:15%;">
+                                    &nbsp;@dr["Attribute2"].ToString()
+                                </div>
+                                <div class="f-l" style="width:25%;">&nbsp;@dr["Attribute3"].ToString()</div>
+                                <div class="f-l" style="width:25%;">
+                                    &nbsp; @dr["Attribute4"].ToString()
+                                </div>
+                                @if (dr["lev"].ToString() == "2")
+                                {
+                                    <div class="f-l" style="width: 10%; text-align:center;"><input name="weight" bigName="@bigName" samllName="@samllName" id="weight_@count" class="inputClass" placeholder="请必须输入权重分" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" type="text" /></div>
+                                    <div class="f-l" style="width: 10%; text-align:center;"><input type="checkbox" class="ButCheckBox" bigName="@bigName" samllName="@samllName" value="@count" name="check-box" checked="checked" /></div>
                                 }
+
+
                                 <div class="clear"></div>
                             </td>
                         </tr>
@@ -236,8 +213,8 @@
                     <thead>
                         <tr style="height:35px; line-height:35px;">
                             <th>牌号</th>
-                            <th>厂商</th>
-                            <th>各类</th>
+                            <th>类别</th>
+                            <th>相似度值</th>
                         </tr>
                     </thead>
                     <tbody id="DataList">
@@ -282,8 +259,8 @@
         for (var i = 0; i < $("input[name='check-box']").length; i++) {
             if ($("input[name='check-box']").eq(i).is(":checked")) {
                 var inputid = $("input[name='check-box']").eq(i).val();
-                if ($.trim($("#weight_" + inputid).val()) == "" || $.trim($("#weight_" + inputid).val())=="0") {
-                    layer.msg('请输入权重值，并且不能为0', { icon: 5 });
+                if ($.trim($("#weight_" + inputid).val()) == "" || $.trim($("#weight_" + inputid).val()) == "0" || parseInt($.trim($("#weight_" + inputid).val()))>100) {
+                    layer.msg('请输入权重值，并且 大于0小于等于100', { icon: 5 });
                     $("#weight_" + inputid).focus();
                     return false;
                     break;
@@ -298,8 +275,12 @@
                 }
             }
         })
-        WhereString = "{物理性能=)密度=>10}{机械性能=)伸长率=>10}";
-       // alert(WhereString + guidstr);
+       // WhereString = "{物理性能=)密度=>10}{机械性能=)伸长率=>10}";
+        if (WhereString == "") {
+            layer.msg('请选择对比项!', { icon: 5 });
+            return false;
+        }
+        //alert(WhereString);
         //return false;
         $.ajax({
             type: "POST",
@@ -315,10 +296,10 @@
                     if (rowcount != 0 && productData != "") {
                         $.each(JSON.parse(productData), function (i, n) {
                             //alert(n);
-                            tbodyui += "<tr>";
-                            tbodyui += "<td><a href='/PhysicalProducts/Detail/" + n.ProductId + ".html' target=\"_blank\">" + n.ALikePercent + "</a></td>";
-                            tbodyui += "<td>" + n.ProModel + "</td>";
+                            tbodyui += "<tr style='height:30px;line-height:30px;'>";
+                            tbodyui += "<td class='xiangshidu'><a href='/PhysicalProducts/Detail/" + n.ProductId + ".html' target=\"_blank\">" + n.ProModel + "</a></td>";
                             tbodyui += "<td>" + n.ShortName + "</td>";
+                            tbodyui += "<td>" + n.ALikePercent + "</td>";
                             tbodyui += "</tr>";
                         });
                     }

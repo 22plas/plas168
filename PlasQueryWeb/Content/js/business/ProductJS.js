@@ -46,63 +46,67 @@ function InitData(pageindx) {
         async: false,
         success: function (json) {
             //debugger;
-            var productData = json.data;
-            var strvar = "";
-            rowcount = json.totalCount;
-            $("#records").html(rowcount);
-            if (rowcount != 0 && productData != "") {
-                $.each(JSON.parse(productData), function (i, n) {
-                    tbodyui += "<tr>";
-                    tbodyui += "<td><a href=\"/PhysicalProducts/Detail/" + n.prodid + ".html\" target=\"_blank\">" + n.ProModel + "</a></td>";
-                    tbodyui += "<td>" + n.PlaceOrigin + "</td>";
-                    tbodyui += "<td>" + n.Name + "</td>";
-                    tbodyui += "<td>" + n.ProUse + "</td>";
-                    tbodyui += "<td>" + n.characteristic + "</td>";
-                    tbodyui += "<td><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.prodid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span> </td>";//<span class='layui-btn layui-btn-sm'><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>
-                    tbodyui += "</tr>";
-                });
-                if (json.BigType != "") {
-                    $.each(eval(json.BigType), function (index, item) {
-                        count++;
-                        typelist += '<div class="search-item">';
-                        typelist += '<div class="search-item-type">' + item.attribute + '：</div>';
-                        typelist += '<div class="search-item-content">';
-                        typelist += '<ul class="search-item-content" data-type="' + count + '" data-typename="' + item.attribute + '">';
-                        typelist += '<li data-guid="" data-value="0" class="active">全部</li>';
-                        var sammlCount = 0;
-                        if (json.SamllType != "") {
-                            $.each(eval(json.SamllType), function (a, b) {
-                                if (item.attribute == b.attribute) {
-                                    sammlCount++;
-                                    typelist += '<li ';
-                                    if (sammlCount > 8) {
-                                        typelist += ' style="display:none" name="SamllType_' + count + '"';
+            try {
+                var productData = json.data;
+                var strvar = "";
+                rowcount = json.totalCount;
+                $("#records").html(rowcount);
+                if (rowcount != 0 && productData != "") {
+                    $.each(JSON.parse(productData), function (i, n) {
+                        tbodyui += "<tr>";
+                        tbodyui += "<td><a href=\"/PhysicalProducts/Detail/" + n.prodid + ".html\" target=\"_blank\">" + n.ProModel + "</a></td>";
+                        tbodyui += "<td>" + n.PlaceOrigin + "</td>";
+                        tbodyui += "<td>" + n.Name + "</td>";
+                        tbodyui += "<td>" + n.ProUse + "</td>";
+                        tbodyui += "<td>" + n.characteristic + "</td>";
+                        tbodyui += "<td><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.prodid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span> </td>";//<span class='layui-btn layui-btn-sm'><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>
+                        tbodyui += "</tr>";
+                    });
+                    if (json.BigType != "") {
+                        $.each(eval(json.BigType), function (index, item) {
+                            count++;
+                            typelist += '<div class="search-item">';
+                            typelist += '<div class="search-item-type">' + item.attribute + '：</div>';
+                            typelist += '<div class="search-item-content">';
+                            typelist += '<ul class="search-item-content" data-type="' + count + '" data-typename="' + item.attribute + '">';
+                            typelist += '<li data-guid="" data-value="0" class="active">全部</li>';
+                            var sammlCount = 0;
+                            if (json.SamllType != "") {
+                                $.each(eval(json.SamllType), function (a, b) {
+                                    if (item.attribute == b.attribute) {
+                                        sammlCount++;
+                                        typelist += '<li ';
+                                        if (sammlCount > 8) {
+                                            typelist += ' style="display:none" name="SamllType_' + count + '"';
+                                        }
+                                        typelist += ' data-value="' + b.attributevalue + '"  data-guid="" >' + b.attributevalue + '</li>';
                                     }
-                                    typelist += ' data-value="' + b.attributevalue + '"  data-guid="" >' + b.attributevalue + '</li>';
-                                }
-                            })
-                        }
-                        typelist += '</ul> </div>';
-                        if (sammlCount > 8) {
-                            //∧
-                            typelist += '<div class="search-item-btn" data-type="' + count + '" data-typename="' + item.attribute + '">更多∨</div>';
-                        }
-                        typelist += '</div>';
-                    })
+                                })
+                            }
+                            typelist += '</ul> </div>';
+                            if (sammlCount > 8) {
+                                //∧
+                                typelist += '<div class="search-item-btn" data-type="' + count + '" data-typename="' + item.attribute + '">更多∨</div>';
+                            }
+                            typelist += '</div>';
+                        })
+                    }
+
+
                 }
-
-
+                else {
+                    tbodyui += "<tr>";
+                    tbodyui += "<td colspan=\"6\" align=\"center\" class='red'>未找到数据</td>";
+                    tbodyui += "</tr>";
+                }
+                if (typelist != "")//未塞选条件分页
+                {
+                    $("#selectTypeList").html(typelist);
+                }
+                $("#tempHtml_list").html(tbodyui);
+            } catch (e) {
+                layer.msg(e.msg, { icon: 5 });
             }
-            else {
-                tbodyui += "<tr>";
-                tbodyui += "<td colspan=\"6\" align=\"center\" class='red'>未找到数据</td>";
-                tbodyui += "</tr>";
-            }
-            if (typelist != "")//未塞选条件分页
-            {
-                $("#selectTypeList").html(typelist);
-            }
-            $("#tempHtml_list").html(tbodyui);
 
         },
         error: function () { layer.msg('Load the data failure!', { icon: 5 }); }
@@ -148,9 +152,42 @@ function InitData(pageindx) {
                 //alert($(this).parent().html());
                 $(this).parent().remove();
             })
-
-
         }
+        //重新检索
+        var Characteristic = "";//特性
+        var Use = "";//用途
+        var Kind = "";//种类
+        var Method = "";//方法
+        var Factory = "";//厂家
+        var Additive = "";//添加剂
+        var AddingMaterial = "";//增料
+
+        if ($("span[bigtitle='产品特性']").length > 0) {
+            Characteristic = $("span[bigtitle='产品特性']").attr("title");
+        }
+        if ($("span[bigtitle='产品用途']").length > 0) {
+            Use = $("span[bigtitle='产品用途']").attr("title");
+        }
+        if ($("span[bigtitle='产品种类']").length > 0) {
+            Kind = $("span[bigtitle='产品种类']").attr("title");
+        }
+        if ($("span[bigtitle='加工方法']").length > 0) {
+            Method = $("span[bigtitle='加工方法']").attr("title");
+        }
+        if ($("span[bigtitle='生产厂家']").length > 0) {
+            Factory = $("span[bigtitle='生产厂家']").attr("title");
+        }
+        if ($("span[bigtitle='添加剂']").length > 0) {
+            Additive = $("span[bigtitle='添加剂']").attr("title");
+        }
+        if ($("span[bigtitle='填料/增强']").length > 0) {
+            AddingMaterial = $("span[bigtitle='填料/增强']").attr("title");
+        }
+        datas = "&Characteristic=" + Characteristic + "&Use=" + Use + "&Kind=" + Kind + "&Method=" + Method + "&Factory=" + Factory + "&Additive=" + Additive + "&AddingMaterial=" + AddingMaterial;
+
+        InitData(0);
+
+
     })
 
     $(".fa-close").click(function () {

@@ -1,0 +1,90 @@
+﻿@{
+    ViewBag.Title = "塑蚁网-全国最精准永久免费塑胶和助剂材料物性搜索网站";
+    var PhysicalData = ViewBag.PhysicalInfo == null ? new System.Data.DataTable() : ViewBag.PhysicalInfo as System.Data.DataTable;
+}
+
+<style type="text/css">
+    .item-left {
+        width: 78%;
+        padding: 15px 10px;
+        box-sizing: border-box;
+    }
+
+    .icon-cycle-box {
+        display: inline-block;
+        border: 2px solid orange;
+        width: 16px;
+        height: 16px;
+        line-height: 16px;
+        border-radius: 12px;
+        text-align: center;
+        color: red;
+    }
+
+        .icon-cycle-box > .fa {
+            line-height: 16px;
+            font-size: 12px;
+        }
+
+    .l, .f-l {
+        float: left !important;
+        _display: inline;
+        font-size: 13px;
+    }
+
+    .r, .f-r {
+        float: right !important;
+        _display: inline;
+    }
+
+    .bold {
+        font-weight: bold;
+        padding: 8px 0;
+        border-bottom: 2px solid orange !important;
+        color: #009887 !important;
+        background: #e1e1e1;
+    }
+</style>
+
+<table class="table-list" border="0" cellspacing="0" cellpadding="0">
+    <tbody>
+        @foreach (System.Data.DataRow dr in PhysicalData.Rows)
+        {
+            <tr class="@(dr["lev"].ToString() == "1" ? "bold" : "pl-10")">
+                <td>
+                    @if (string.IsNullOrWhiteSpace(dr["Attribute2"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
+                    {
+                        <div class="f-l" style="width:100%;">@dr["Attribute1"].ToString()</div>
+                    }
+                    else if (string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
+                    {
+                        <div class="f-l" style="width:25%;">@dr["Attribute1"].ToString()</div>
+                        <div class="f-l" style="width: 75%;">@dr["Attribute2"].ToString()</div>
+                    }
+                    else if (string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
+                    {
+                        <div class="f-l" style="width: 25%;">@dr["Attribute1"].ToString()</div>
+                        <div class="f-l" style="width: 25%;">@dr["Attribute2"].ToString()</div>
+                        <div class="f-l" style="width: 50%;">@dr["Attribute3"].ToString()</div>
+                    }
+                    else
+                    {
+                        int paddleft = 0;
+                        int.TryParse(dr["lev"].ToString(), out paddleft);
+                        paddleft = paddleft * 10;
+                        <div class="f-l" style="width:25%;"><span style="margin-right:5px; padding-left:@(paddleft)px;">@dr["Attribute1"].ToString()</span></div>
+                        <div class="f-l" style="width:25%;">
+                            @dr["Attribute2"].ToString()
+                        </div>
+                        <div class="f-l" style="width:25%;">@dr["Attribute3"].ToString()</div>
+                        <div class="f-l" style="width:25%;">
+                            @dr["Attribute4"].ToString()
+                        </div>
+
+                    }
+                    <div class="clear"></div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

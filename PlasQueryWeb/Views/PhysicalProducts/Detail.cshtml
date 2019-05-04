@@ -46,7 +46,8 @@
         background: #e1e1e1;
     }
 </style>
-
+<link href="~/Content/css/iconfont/iconfont.css" rel="stylesheet" />
+<script src="~/Content/layui/lay/modules/layer.js" type="text/javascript"></script>
 @Html.Partial("~/Views/Public/SubPageNav.cshtml")
 
 @{Html.RenderAction("PubSearch", "Public");}
@@ -102,13 +103,21 @@
     </div>
     <div class="item-right" style="width: 18%;text-align: left;">
         <div class="small-list">
+            <p class="title">我的工具盒</p>
+            <ul class="ul-list">
+                <li><a href="javascript:void(0);" onclick="viewpdf('@ViewBag.ProdID','@ViewBag.ProModel')"><i class="Hui-iconfont">&#xe640;</i>&nbsp;下载PDF</a></li>
+                <li><a href="javascript:void(0);"><i class="Hui-iconfont">&#xe610;</i>&nbsp;添加收藏</a></li>
+                <li><a href="/Replace/Index?Rpt=@ViewBag.ProdID" target="_blank"><i class="Hui-iconfont">&#xe709;</i>&nbsp;寻找相识</a></li>
+             </ul>
+            <hr />
+            <br />
             <p class="title">猜你喜欢的产品</p>
             <ul class="ul-list">
-                @for (var i = 0; i < liveds.Tables[1].Rows.Count; i++)
-                {
-                    <li title="@liveds.Tables[1].Rows[i]["ProModel"].ToString()"><span class="fa fa-caret-right"></span><a href="/PhysicalProducts/Detail/@(liveds.Tables[1].Rows[i]["ProductGuid"].ToString()).html" target="_blank">@liveds.Tables[1].Rows[i]["ProModel"].ToString()</a></li>
-                }
-            </ul>
+                    @for (var i = 0; i < liveds.Tables[1].Rows.Count; i++)
+                    {
+                        <li title="@liveds.Tables[1].Rows[i]["ProModel"].ToString()"><span class="fa fa-caret-right"></span><a href="/PhysicalProducts/Detail/@(liveds.Tables[1].Rows[i]["ProductGuid"].ToString()).html" target="_blank">@liveds.Tables[1].Rows[i]["ProModel"].ToString()</a></li>
+                    }
+                </ul>
         </div>
         <div class="small-list">
             <p class="title">同厂家产品</p>
@@ -127,5 +136,24 @@
     $(function () {
         $(".navBox").find(".nav").find("li").eq(2).children("a").addClass("active");
     })
+    function viewpdf(prodid, prodModel) {
+        var index = layer.load(2, { shade: false });
+        var url = location.href;
+
+        //打开一个不被拦截的新窗口
+        var newWindow = window.open('/viewpdf.html');
+        $.ajax({
+            type: "get",
+            url: '/PhysicalProducts/ViewPdf',
+            data: { prodid: prodid, prodModel: prodModel },
+            success: function (data) {
+                //生成pdf成功，返回pdf路径
+                layer.close(index);
+                newWindow.location.href = '/' + data;
+            }
+
+        });
+
+    }
 </script>
 @Html.Partial("~/Views/Public/Bottom.cshtml")
