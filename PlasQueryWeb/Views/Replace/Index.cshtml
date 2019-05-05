@@ -294,7 +294,7 @@
                  debugger;
                 if (json.msg == "") {
                     var productData = json.data;
-                    var rowcount = json.count;
+                    rowcount = json.count;
                     if (rowcount != 0 && productData != "") {
                         $.each(JSON.parse(productData), function (i, n) {
                             //alert(n);
@@ -337,7 +337,7 @@
 
     function pageselectCallback(page_id, jq) {
         isLink = "1";
-        InitData(page_id);
+        SubmitComparison(page_id);
     }
 
     //选项卡
