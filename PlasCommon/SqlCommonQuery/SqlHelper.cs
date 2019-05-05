@@ -30,6 +30,7 @@ namespace PlasCommon.SqlCommonQuery
                 if (values != null) cmd.Parameters.AddRange(values);
                 object obj = cmd.ExecuteScalar();
                 int result = Convert.ToInt32(obj);
+                con.Dispose();
                 con.Close();
                 return result;
 
@@ -58,6 +59,7 @@ namespace PlasCommon.SqlCommonQuery
                 }
                 // cmd.Parameters.AddRange(values);
                 int result = cmd.ExecuteNonQuery();
+                con.Dispose();
                 con.Close();
                 return result;
             }
@@ -73,6 +75,7 @@ namespace PlasCommon.SqlCommonQuery
             }
             cmd.Transaction = trans;
             int result = cmd.ExecuteNonQuery();
+            conn.Dispose();
             conn.Close();
             return result;
 
@@ -92,6 +95,7 @@ namespace PlasCommon.SqlCommonQuery
                 SqlCommand cmd = new SqlCommand(sql, con);
                 if (values != null) cmd.Parameters.AddRange(values);
                 object result = cmd.ExecuteScalar();
+                con.Dispose();
                 con.Close();
                 return result;
             }
@@ -102,6 +106,7 @@ namespace PlasCommon.SqlCommonQuery
             SqlCommand cmd = new SqlCommand();
             PrepareCommand(cmd, connection, trans, CommandType.Text, cmdText, parameter);
             object val = cmd.ExecuteScalar();
+            connection.Dispose();
             connection.Close();
             return val;
         }
@@ -115,6 +120,8 @@ namespace PlasCommon.SqlCommonQuery
             SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             //清除参数
             cmd.Parameters.Clear();
+            con.Dispose();
+            con.Close();
             return reader;
         }
 
@@ -153,7 +160,11 @@ namespace PlasCommon.SqlCommonQuery
             finally
             {
                 if (connection.State == ConnectionState.Open)
+                {
+                    connection.Dispose();
                     connection.Close();
+                }
+                  
             }
 
         }
@@ -192,7 +203,10 @@ namespace PlasCommon.SqlCommonQuery
             finally
             {
                 if (connection.State == ConnectionState.Open)
+                {
+                    connection.Dispose();
                     connection.Close();
+                }
             }
         }
 
@@ -214,6 +228,7 @@ namespace PlasCommon.SqlCommonQuery
             }
             finally
             {
+                connection.Dispose();
                 connection.Close();
             }
             return val;
@@ -268,11 +283,14 @@ namespace PlasCommon.SqlCommonQuery
                 SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                 //清除参数
                 cmd.Parameters.Clear();
+                conn.Dispose();
+                conn.Close();
                 return reader;
             }
             catch
             {
                 //关闭连接，抛出异常
+                conn.Dispose();
                 conn.Close();
                 throw;
             }
@@ -414,6 +432,8 @@ namespace PlasCommon.SqlCommonQuery
                     connection.Open();
                     SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                     adapter.Fill(ds, "ds");
+                    connection.Dispose();
+                    connection.Close();
                     return ds.Tables[0];
                 }
 
@@ -437,6 +457,8 @@ namespace PlasCommon.SqlCommonQuery
                     connection.Open();
                     SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                     adapter.Fill(ds, "ds");
+                    connection.Dispose();
+                    connection.Close();
                     return ds;
                 }
 
@@ -489,6 +511,8 @@ namespace PlasCommon.SqlCommonQuery
                 {
                     connection.Open();
                     SqlDataAdapter command = new SqlDataAdapter(SQLString, connection);
+                    connection.Dispose();
+                    connection.Close();
                     command.Fill(ds, "ds");
                 }
                 catch (System.Data.SqlClient.SqlException ex)
