@@ -108,13 +108,13 @@ namespace PlasDal
         //    return ds;
         //}
 
-        public DataSet GetReplace(string SourceId, string ver, string UserId, string WhereString, int pageno = 1, int pagesize = 20)
+        public DataSet GetReplace(string SourceId, string ver, string UserId, string WhereString, int pageno = 1, int pagesize = 20,string isLink="0")
         {
             //计算一个产品的相似度
-           // SourceId = "1DDAEB1F-2EAA-4BF6-AD20-B2D1CB525D2A";// "2D1636B6-9548-4790-8F14-66DCD5879F2A";// "D161293C-4A8C-4267-B38A-D19A19B89682";// "2350C07B-D47C-46FD-88FF-00A903EF4594"; //TextProductId.Text.Trim();//
+            // SourceId = "1DDAEB1F-2EAA-4BF6-AD20-B2D1CB525D2A";// "2D1636B6-9548-4790-8F14-66DCD5879F2A";// "D161293C-4A8C-4267-B38A-D19A19B89682";// "2350C07B-D47C-46FD-88FF-00A903EF4594"; //TextProductId.Text.Trim();//
 
             ////本次执行运算的唯一版本号
-          //  ver = Guid.NewGuid().ToString();
+            //  ver = Guid.NewGuid().ToString();
             ////用户ID，应该从Session中取得
             //string UserId = "张三或李四";
             ////@WhereString: 要求参与相似度计算的所有属性及权重列表，这个是你前端用JS拼装出来的。
@@ -122,40 +122,44 @@ namespace PlasDal
             //string WhereString = "{物理性能=)密度=>10}{机械性能=)伸长率=>10}{物理性能=)熔流率=>15}{可燃性=)阻燃等级=>15}";
             ////采用多少个任务来处理本次相似度运算，我们的SQL服务器有32个逻辑内核，这里采用30个任务来处理，
             ////当需要处理的目标物料较少时，由SQL存储过程会自动任务个数来保持执行效率
-            int tasks = 30;//Environment.ProcessorCount;
-            string parm1 = string.Format("exec AlikeCountPara_User '{0}','{1}','{2}','{3}',{4}", ver, UserId, SourceId, WhereString, tasks);
-            SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, parm1, null);
-
-            //以上代码是执行整个运算的第一步：解析出参与相似度运算的目标物料，并根据目标物料的个数多少分配出每个任务要运算哪些目标物料。
-
-
-            //以下代码是执行整个运算的第二步：由前端调用多任务来计算每个任务中列出目标物料属性的相似度得分并写入到表ProductAlikeDetails_User中
-
-            //先找出存储过程将本次参与运算的实际任务个数
-            string sql = "select max(tasks) from ProductAlikeTargetList_User where ver=@ver";
-            SqlParameter[] parm2 = { new SqlParameter("@ver", ver) };
-            tasks = SqlHelper.ExecuteScalar(SqlHelper.ConnectionStrings, sql, parm2);
-
-
-            if (tasks > 1) //采用多任务执行 
+            if (isLink == "0")
             {
-                TaskFactory taskfactory = new TaskFactory();
-                List<Task> taskList = new List<Task>();
-                while (tasks > 0)
+                int tasks = 60;//Environment.ProcessorCount;
+                string parm1 = string.Format("exec AlikeCountPara_User '{0}','{1}','{2}','{3}',{4}", ver, UserId, SourceId, WhereString, tasks);
+                SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, parm1, null);
+
+                //以上代码是执行整个运算的第一步：解析出参与相似度运算的目标物料，并根据目标物料的个数多少分配出每个任务要运算哪些目标物料。
+
+
+                //以下代码是执行整个运算的第二步：由前端调用多任务来计算每个任务中列出目标物料属性的相似度得分并写入到表ProductAlikeDetails_User中
+
+                //先找出存储过程将本次参与运算的实际任务个数
+                string sql = "select max(tasks) from ProductAlikeTargetList_User where ver=@ver";
+                SqlParameter[] parm2 = { new SqlParameter("@ver", ver) };
+                tasks = SqlHelper.ExecuteScalar(SqlHelper.ConnectionStrings, sql, parm2);
+
+
+                if (tasks > 1) //采用多任务执行 
                 {
-                    string sqlparm = string.Format("exec AlikeCount_User '{0}',{1}", ver, tasks);
-                    taskList.Add(taskfactory.StartNew(() =>
+                    TaskFactory taskfactory = new TaskFactory();
+                    List<Task> taskList = new List<Task>();
+                    while (tasks > 0)
                     {
-                        SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sqlparm, null);
-                    }));
-                    tasks -= 1;
+                        string sqlparm = string.Format("exec AlikeCount_User '{0}',{1}", ver, tasks);
+                        taskList.Add(taskfactory.StartNew(() =>
+                        {
+                            SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sqlparm, null);
+                        }));
+                        tasks -= 1;
+                    }
+                    Task.WaitAll(taskList.ToArray());
                 }
-                Task.WaitAll(taskList.ToArray());
-            }
-            else
-            {
-                string sqlparm4 = string.Format("exec AlikeCount_User '{0}',{1}", ver, tasks);
-                SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sqlparm4, null);
+                else
+                {
+                    string sqlparm4 = string.Format("exec AlikeCount_User '{0}',{1}", ver, tasks);
+                    SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sqlparm4, null);
+                }
+
             }
             //以上代码执行完成第二步,分多任务（目标物料较少时采用单线程执行）完成所有目标物料的相似度运算明细内容
 

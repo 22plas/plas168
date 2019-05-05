@@ -153,7 +153,7 @@
                 <td width="20%" align="center">选择你需要对比的参数：</td>
                 <td width="55%;" align="center">&nbsp;</td>
                 <td width="10%" align="center">权重[1-100]</td>
-                <td width="10%" align="center"  ><label>比较选择项：<input type="checkbox" id="checkbox-new" align="absmiddle" class="ButCheckBox" name="checkbox-new" checked="checked" /></label></td>
+                <td width="10%" align="center"  ><label>比较选择项：<input type="checkbox" id="checkbox-new" align="absmiddle" class="ButCheckBox" name="checkbox-new" /></label></td>
             </tr>
         </table>
     </p>
@@ -195,7 +195,7 @@
                                 @if (dr["lev"].ToString() == "2")
                                 {
                                     <div class="f-l" style="width: 10%; text-align:center;"><input name="weight" bigName="@bigName" samllName="@samllName" id="weight_@count" class="inputClass" placeholder="请必须输入权重分" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" type="text" /></div>
-                                    <div class="f-l" style="width: 10%; text-align:center;"><input type="checkbox" class="ButCheckBox" bigName="@bigName" samllName="@samllName" value="@count" name="check-box" checked="checked" /></div>
+                                    <div class="f-l" style="width: 10%; text-align:center;"><input type="checkbox" class="ButCheckBox" bigName="@bigName" samllName="@samllName" value="@count" name="check-box"  /></div>
                                 }
 
 
@@ -242,6 +242,7 @@
     var datas = "";
     var page_indx = 0;
     var guidstr = guid();
+    var isLink = "0";
     //string WhereString = "{物理性能=)密度=>10}{机械性能=)伸长率=>10}{物理性能=)熔流率=>15}{可燃性=)阻燃等级=>15}";
     //提交对比
     function submitContert() {
@@ -280,13 +281,14 @@
             layer.msg('请选择对比项!', { icon: 5 });
             return false;
         }
+        //alert(isLink);
         //alert(WhereString);
         //return false;
         $.ajax({
             type: "POST",
             dataType: "JSON",
             url: '/Replace/GetReplaceList',
-            data: "pageindex=" + (pageindx + 1) + "&pagesize=" + pagesize + "&guidstr=" + guidstr + "&proid=" + proid + "&WhereString=" + WhereString +  datas,
+            data: "pageindex=" + (pageindx + 1) + "&pagesize=" + pagesize + "&guidstr=" + guidstr + "&proid=" + proid + "&isLink=" + isLink+"&WhereString=" + WhereString +  datas,
             async: false,
             success: function (json) {
                  debugger;
@@ -334,6 +336,7 @@
     }
 
     function pageselectCallback(page_id, jq) {
+        isLink = "1";
         InitData(page_id);
     }
 
