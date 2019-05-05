@@ -18,5 +18,11 @@ namespace PlasBll
             return dal.GetReplace(SourceId, ver, UserId, WhereString, pageindex, pagesize);
         }
 
+
+        //查找替换里面的RealKey
+        public DataTable GetAttributeAliasList_RealKey()
+        {
+            return dal.GetAttributeAliasList_RealKey();
+        }
     }
 }

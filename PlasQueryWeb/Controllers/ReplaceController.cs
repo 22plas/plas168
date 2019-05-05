@@ -36,9 +36,14 @@ namespace PlasModel.Controllers
                 Rpt = Request["Rpt"].ToString();
             }
             var dt = new DataTable();
+            var pt = new DataTable();//替换属性RealKey
+            string bigName = string.Empty;
+            string samllName = string.Empty;
+            string RealKey = string.Empty;
             if (!string.IsNullOrEmpty(Rpt))
             {
                 var ds = bll.GetModelInfo(Rpt);
+                pt = plbll.GetAttributeAliasList_RealKey();//替换属性RealKey
                 if (ds.Tables.Contains("ds") && ds.Tables[0].Rows.Count > 0)
                 {
                     ProTitle = ds.Tables[0].Rows[0]["proModel"].ToString();
@@ -61,6 +66,7 @@ namespace PlasModel.Controllers
                     dc = tblDatas.Columns.Add("Attribute3", Type.GetType("System.String"));
                     dc = tblDatas.Columns.Add("Attribute4", Type.GetType("System.String"));
                     dc = tblDatas.Columns.Add("Attribute5", Type.GetType("System.String"));
+                    dc = tblDatas.Columns.Add("RealKey", Type.GetType("System.String"));
                     string lev = string.Empty;
                     DataRow newRow;
                     for (var i = 0; i<dr.Rows.Count; i++)
@@ -104,12 +110,26 @@ namespace PlasModel.Controllers
                                         lev = "";
                                     }
                                     newRow = tblDatas.NewRow();
+                                    if (dr.Rows[i]["lev"].ToString() == "1")
+                                    {
+                                        bigName = dr.Rows[i]["Attribute1"].ToString().Trim();
+                                    }
+                                    else
+                                    {
+                                        samllName = dr.Rows[i]["Attribute1"].ToString().Trim();
+                                    }
+                                    DataRow[] rows = pt.Select("Attribute1='"+ bigName + "' and Attribute2Alias = '"+ samllName + "'");
+                                    if (rows.Count() > 0)
+                                    {
+                                        RealKey = rows[0]["RealKey"].ToString();
+                                    }
                                     newRow["lev"] = dr.Rows[i]["lev"].ToString().Trim();
                                     newRow["Attribute1"] = dr.Rows[i]["Attribute1"].ToString().Trim();
                                     newRow["Attribute2"] = dr.Rows[i]["Attribute2"].ToString().Trim();
                                     newRow["Attribute3"] = dr.Rows[i]["Attribute3"].ToString().Trim();
                                     newRow["Attribute4"] = dr.Rows[i]["Attribute4"].ToString().Trim();
                                     newRow["Attribute5"] = dr.Rows[i]["Attribute5"].ToString().Trim();
+                                    newRow["RealKey"] = RealKey;
                                     tblDatas.Rows.Add(newRow);
                                 }
                                 

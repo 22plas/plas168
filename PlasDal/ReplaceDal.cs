@@ -108,5 +108,17 @@ namespace PlasDal
             return ds;
         }
 
+
+        /// <summary>
+        /// 获取替换中的RealKey
+        /// </summary>
+        /// <returns></returns>
+
+        public DataTable GetAttributeAliasList_RealKey()
+        {
+            string sql = "select * from AttributeAliasList";
+            var dt = SqlHelper.GetSqlDataTable(sql.ToString());
+            return dt;
+        }
     }
 }
