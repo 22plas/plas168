@@ -2,90 +2,196 @@
 <link href="~/Content/css/Pagination.css" rel="stylesheet" />
 <script src="~/Content/layui/lay/modules/layer.js" type="text/javascript"></script>
 <script src="~/Scripts/jquery.pagination.js" type="text/javascript"></script>
+<link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+<style type="text/css">
+    .btn {
+        border-radius:0px !important;
+    }
+</style>
 @Html.Partial("~/Views/Public/SubPageNav.cshtml")
 @{
     Html.RenderAction("PubSearch", "Public");
 }
 
 
+
+<div class="search-item-box">
+
+    <Div style="font-size:26px; font-weight:bold; color:#333;  text-align: center;">可替代 POLYLAC® PA-757 的牌号列表</Div>
+
+    <div class="search-item">
+
+        <div class="search-item-content">
+            <ul class="search-item-content">
+                <li style="font-size:16px; font-weight:bold; color:#F60">是否过滤掉同 SINDUSTRISPP 品牌下的替代物:</li>
+                <li><input name="" type="radio" value="">过滤</li>
+                <li><input name="" type="radio" value="">不过滤</li>
+                <li> <!--<a class="btn btn-orange btn-sm">用户自定义权重</a>--><button class="layui-btn layui-btn-sm">小型按钮</button></li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="search-item">
+        <div class="search-item-type">生产厂家：</div>
+        <div class="search-item-content" style="height: auto;">
+            <ul>
+                <li>全部</li>
+                <li class="active">EA</li>
+                <li>FEP</li>
+                <li>film,PE/PCTFE</li>
+                <li>MMS</li>
+                <li>PBT</li>
+                <li>PE,未指定</li>
+                <li>SEBS+SBS</li>
+                <li>佛橡胶</li>
+                <li>尼龙1010</li>
+                <li>尼龙6弹性体</li>
+                <li>MMS</li>
+                <li>PBT</li>
+                <li>PE,未指定</li>
+                <li>SEBS+SBS</li>
+                <li>佛橡胶</li>
+                <li>尼龙1010</li>
+                <li>尼龙6弹性体</li>
+                <li>MMS</li>
+            </ul>
+        </div>
+        <div class="search-item-btn">展开</div>
+    </div>
+
+
+    <p>  <hr style="color:#F60"></p>
+</div>
+
 <div class="search-content-box">
-    <div class="search-content-page">
+    <div style=" display:inline; padding-left:30px; "><!--<a class="btn btn-orange btn-sm">物性对比</a> --><button class="layui-btn layui-btn-danger">物性对比</button></div>
+    <div style=" display:inline; "><!--<a class="btn btn-orange btn-sm" style=" background-color:#0C6">添加到收藏夹</a>--><button class="layui-btn">添加到收藏夹</button></div>
+    <div style=" display:inline;float:right; margin-left:20px ">
         共搜索到<span style="color: red;">200</span>条相关商品信息
     </div>
     <div class="search-content">
         <table>
             <thead>
                 <tr>
+                    <th>选取</th>
                     <th>牌号</th>
                     <th>厂商</th>
-                    <th>各类</th>
+                    <th>种类</th>
                     <th>用途</th>
                     <th>特性</th>
+                    <th>相似度</th>
+                    <th>操作</th>
                 </tr>
             </thead>
             <tbody>
+
                 <tr>
+                    <td><input type="checkbox" name="checkbox" id="checkbox"></td>
                     <td>abceD@ff.com</td>
                     <td>Ravago Manufactuing Americas,LLC</td>
                     <td>ABS</td>
                     <td>{ProUse}</td>
                     <td>{Absdd Deee}</td>
+                    <td style="padding-left: 0;">
+                        <div class="progress-box"><div class="progress" style="width: 88%;">88%</div></div>
+                    </td>
+                    <td><a class="btn btn-orange btn-sm">查看对比详情</a></td>
                 </tr>
                 <tr>
+                    <td><input type="checkbox" name="checkbox" id="checkbox"></td>
                     <td>abceD@ff.com</td>
                     <td>Ravago Manufactuing Americas,LLC</td>
                     <td>ABS</td>
                     <td>{ProUse}</td>
                     <td>{Absdd Deee}</td>
+                    <td style="padding-left: 0;">
+                        <div class="progress-box"><div class="progress" style="width: 80%;">80%</div></div>
+                    </td>
+                    <td><a class="btn btn-orange btn-sm">查看对比详情</a></td>
                 </tr>
                 <tr>
+                    <td><input type="checkbox" name="checkbox" id="checkbox"></td>
                     <td>abceD@ff.com</td>
                     <td>Ravago Manufactuing Americas,LLC</td>
                     <td>ABS</td>
                     <td>{ProUse}</td>
                     <td>{Absdd Deee}</td>
+                    <td style="padding-left: 0;">
+                        <div class="progress-box"><div class="progress" style="width: 70%;">70%</div></div>
+                    </td>
+                    <td><a class="btn btn-orange btn-sm">查看对比详情</a></td>
                 </tr>
                 <tr>
+                    <td><input type="checkbox" name="checkbox" id="checkbox"></td>
                     <td>abceD@ff.com</td>
                     <td>Ravago Manufactuing Americas,LLC</td>
                     <td>ABS</td>
                     <td>{ProUse}</td>
                     <td>{Absdd Deee}</td>
+                    <td style="padding-left: 0;">
+                        <div class="progress-box"><div class="progress" style="width: 70%;">70%</div></div>
+                    </td>
+                    <td><a class="btn btn-orange btn-sm">查看对比详情</a></td>
                 </tr>
                 <tr>
+                    <td><input type="checkbox" name="checkbox" id="checkbox"></td>
                     <td>abceD@ff.com</td>
                     <td>Ravago Manufactuing Americas,LLC</td>
                     <td>ABS</td>
                     <td>{ProUse}</td>
                     <td>{Absdd Deee}</td>
+                    <td style="padding-left: 0;">
+                        <div class="progress-box"><div class="progress" style="width: 70%;">70%</div></div>
+                    </td>
+                    <td><a class="btn btn-orange btn-sm">查看对比详情</a></td>
                 </tr>
                 <tr>
+                    <td><input type="checkbox" name="checkbox" id="checkbox"></td>
                     <td>abceD@ff.com</td>
                     <td>Ravago Manufactuing Americas,LLC</td>
                     <td>ABS</td>
                     <td>{ProUse}</td>
                     <td>{Absdd Deee}</td>
+                    <td style="padding-left: 0;">
+                        <div class="progress-box"><div class="progress" style="width: 70%;">70%</div></div>
+                    </td>
+                    <td><a class="btn btn-orange btn-sm">查看对比详情</a></td>
                 </tr>
                 <tr>
+                    <td><input type="checkbox" name="checkbox" id="checkbox"></td>
                     <td>abceD@ff.com</td>
                     <td>Ravago Manufactuing Americas,LLC</td>
                     <td>ABS</td>
                     <td>{ProUse}</td>
                     <td>{Absdd Deee}</td>
+                    <td style="padding-left: 0;">
+                        <div class="progress-box"><div class="progress" style="width: 70%;">70%</div></div>
+                    </td>
+                    <td><a class="btn btn-orange btn-sm">查看对比详情</a></td>
                 </tr>
                 <tr>
+                    <td><input type="checkbox" name="checkbox" id="checkbox"></td>
                     <td>abceD@ff.com</td>
                     <td>Ravago Manufactuing Americas,LLC</td>
                     <td>ABS</td>
                     <td>{ProUse}</td>
                     <td>{Absdd Deee}</td>
+                    <td style="padding-left: 0;">
+                        <div class="progress-box"><div class="progress" style="width: 70%;">70%</div></div>
+                    </td>
+                    <td><a class="btn btn-orange btn-sm">查看对比详情</a></td>
                 </tr>
                 <tr>
+                    <td><input type="checkbox" name="checkbox" id="checkbox"></td>
                     <td>abceD@ff.com</td>
                     <td>Ravago Manufactuing Americas,LLC</td>
                     <td>ABS</td>
                     <td>{ProUse}</td>
                     <td>{Absdd Deee}</td>
+                    <td style="padding-left: 0;">
+                        <div class="progress-box"><div class="progress" style="width: 60%;">60%</div></div>
+                    </td>
+                    <td><a class="btn btn-orange btn-sm">查看对比详情</a></td>
                 </tr>
             </tbody>
         </table>

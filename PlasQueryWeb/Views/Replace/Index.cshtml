@@ -139,6 +139,7 @@
     Html.RenderAction("PubSearch", "Public");
 }
 <link href="~/Content/css/Pagination.css" rel="stylesheet" />
+<link href="~/Content/layui/css/layui.css" rel="stylesheet" />
 <script src="~/Content/layui/lay/modules/layer.js" type="text/javascript"></script>
 <script src="~/Scripts/jquery.pagination.js" type="text/javascript"></script>
 <!--卿思明:
@@ -212,9 +213,10 @@
                 <table class="table-list">
                     <thead>
                         <tr style="height:35px; line-height:35px;">
-                            <th>牌号</th>
-                            <th>类别</th>
-                            <th>相似度值</th>
+                            <th width="25%">牌号</th>
+                            <th width="25%">类别</th>
+                            <th width="25%">相似度值</th>
+                            <th width="25%"></th>
                         </tr>
                     </thead>
                     <tbody id="DataList">
@@ -301,7 +303,8 @@
                             tbodyui += "<tr style='height:30px;line-height:30px;'>";
                             tbodyui += "<td class='xiangshidu'><a href='/PhysicalProducts/Detail/" + n.ProductId + ".html' target=\"_blank\">" + n.ProModel + "</a></td>";
                             tbodyui += "<td>" + n.ShortName + "</td>";
-                            tbodyui += "<td>" + n.ALikePercent + "</td>";
+                            tbodyui += "<td><div class=\"layui-progress layui-progress-big\" lay-showpercent=\"true\"><div class=\"layui-progress-bar\" lay-percent=\"" + parseInt(n.ALikePercent) + "%\" style=\"width:" + parseInt(n.ALikePercent) + "%;\"><span class=\"layui-progress-text\">" + n.ALikePercent + "%</span></div></div></td>";
+                            tbodyui += "<td><button class=\"layui-btn layui-btn-normal\" onClick=\"window.location.href='/PhysicalProducts/Detail/" + n.ProductId + ".html'\">相识度详情</button><button class=\"layui-btn layui-btn-normal\">加入收藏</button></td>";
                             tbodyui += "</tr>";
                         });
                     }
@@ -315,6 +318,7 @@
                 }
                 else {
                     layer.msg(json.msg, { icon: 5 });
+                    
                 }
                
 

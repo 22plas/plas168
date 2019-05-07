@@ -124,7 +124,7 @@ namespace PlasDal
             ////当需要处理的目标物料较少时，由SQL存储过程会自动任务个数来保持执行效率
             if (isLink == "0")
             {
-                int tasks = 60;//Environment.ProcessorCount;
+                int tasks = 120;//Environment.ProcessorCount;
                 string parm1 = string.Format("exec AlikeCountPara_User '{0}','{1}','{2}','{3}',{4}", ver, UserId, SourceId, WhereString, tasks);
                 SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, parm1, null);
 
