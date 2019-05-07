@@ -1,4 +1,7 @@
-﻿@{ViewBag.Title = "塑料和弹性体-替换列表"; }
+﻿@{
+    ViewBag.Title = "塑料和弹性体-替换列表";
+    var company = (ViewBag.company) as System.Data.DataTable;
+    }
 <link href="~/Content/css/Pagination.css" rel="stylesheet" />
 <script src="~/Content/layui/lay/modules/layer.js" type="text/javascript"></script>
 <script src="~/Scripts/jquery.pagination.js" type="text/javascript"></script>
@@ -17,7 +20,7 @@
 
 <div class="search-item-box">
 
-    <Div style="font-size:26px; font-weight:bold; color:#333;  text-align: center;">可替代 POLYLAC® PA-757 的牌号列表</Div>
+    <Div style="font-size:26px; font-weight:bold; color:#333;  text-align: center;">可替代 ( @ViewBag.ProModel ) 的牌号列表</Div>
 
     <div class="search-item">
 
@@ -26,37 +29,24 @@
                 <li style="font-size:16px; font-weight:bold; color:#F60">是否过滤掉同 SINDUSTRISPP 品牌下的替代物:</li>
                 <li><input name="" type="radio" value="">过滤</li>
                 <li><input name="" type="radio" value="">不过滤</li>
-                <li> <!--<a class="btn btn-orange btn-sm">用户自定义权重</a>--><button class="layui-btn layui-btn-sm">小型按钮</button></li>
+                <li> <!--<a class="btn btn-orange btn-sm">用户自定义权重</a>--><button class="layui-btn layui-btn-sm">自定义权重</button></li>
             </ul>
         </div>
 
     </div>
     <div class="search-item">
-        <div class="search-item-type">生产厂家：</div>
+        <div class="search-item-type">生产厂商：</div>
         <div class="search-item-content" style="height: auto;">
             <ul>
-                <li>全部</li>
-                <li class="active">EA</li>
-                <li>FEP</li>
-                <li>film,PE/PCTFE</li>
-                <li>MMS</li>
-                <li>PBT</li>
-                <li>PE,未指定</li>
-                <li>SEBS+SBS</li>
-                <li>佛橡胶</li>
-                <li>尼龙1010</li>
-                <li>尼龙6弹性体</li>
-                <li>MMS</li>
-                <li>PBT</li>
-                <li>PE,未指定</li>
-                <li>SEBS+SBS</li>
-                <li>佛橡胶</li>
-                <li>尼龙1010</li>
-                <li>尼龙6弹性体</li>
-                <li>MMS</li>
+                <li class="active">全部</li>
+                @for (var i = 0; i < company.Rows.Count; i++)
+                {
+                    <li data-guid="@company.Rows[i]["SmallGuid"].ToString()" data-value="@company.Rows[i]["Name"].ToString()">@company.Rows[i]["Name"].ToString()</li>
+                }
             </ul>
         </div>
-        <div class="search-item-btn">展开</div>
+        <!--∧-->
+        <div class="search-item-btn">展开 ∨</div>
     </div>
 
 
@@ -66,7 +56,7 @@
 <div class="search-content-box">
     <div style=" display:inline; padding-left:30px; "><!--<a class="btn btn-orange btn-sm">物性对比</a> --><button class="layui-btn layui-btn-danger">物性对比</button></div>
     <div style=" display:inline; "><!--<a class="btn btn-orange btn-sm" style=" background-color:#0C6">添加到收藏夹</a>--><button class="layui-btn">添加到收藏夹</button></div>
-    <div style=" display:inline;float:right; margin-left:20px ">
+    <div style=" display:inline;float:right; margin-right:20px ">
         共搜索到<span style="color: red;">200</span>条相关商品信息
     </div>
     <div class="search-content">

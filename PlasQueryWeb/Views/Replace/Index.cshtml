@@ -147,7 +147,7 @@
 ，说明，加工方法，备注不允许选择-->
 <!--总体参与对比的有（（RoHS 合规性；供货地区；加工方法；树脂ID (ISO 1043)；特性；添加剂；填料/增强材料；用途 ）这个是总体里要参与对比的）-->
 <div style="font-size: 14px;">
-    <p class="contrast_remark" style="text-align: center;"><span style="font-size: 18px;">选中的型号：<span><a href='/Product/Index' style='color:#FF9933'>@Html.Raw(ViewBag.ProModel)</a></span><input name="" id="ProductGuid" type="hidden" value="@ViewBag.ProGuid" /></span><a class="btn btn-green" id="btn_contrast" style="float: right;margin-top: -5px;" onclick="submitContert();">提交对比</a></p>
+    <p class="contrast_remark" style="text-align: center;"><span style="font-size: 18px;">选中的型号：<span><a href='/Product/Index' style='color:#FF9933' id="ProModel">@Html.Raw(ViewBag.ProModel)</a></span><input name="" id="ProductGuid" type="hidden" value="@ViewBag.ProGuid" /></span><a class="btn btn-green" id="btn_contrast" style="float: right;margin-top: -5px;" onclick="submitContert();">提交对比</a></p>
     <p class="contrast_remark" style="border-bottom-color:#ccc;padding-right: 0;font-weight:700;">
         <table width="100%" border="0" style="height:45px; line-height:45px; font-weight:700;" cellspacing="0" cellpadding="0">
             <tr>
@@ -160,11 +160,13 @@
     </p>
 
     <div class="borderfiter">
-        <div class="checkedtitle">
-            <div class="tabTitle active">对比参数</div>
-            <div class="tabTitle">吻合结果</div>
-            <div style="clear:both;"></div>
-        </div>
+        <!--
+    <div class="checkedtitle">
+        <div class="tabTitle active">对比参数</div>
+        <div class="tabTitle">吻合结果</div>
+        <div style="clear:both;"></div>
+    </div>
+    -->
         <div class="tabBody">
             <table class="table-list" border="0" cellspacing="0" cellpadding="0">
                 <tbody>
@@ -196,7 +198,7 @@
                                 @if (dr["lev"].ToString() == "2")
                                 {
                                     <div class="f-l" style="width: 10%; text-align:center;"><input name="weight" bigName="@bigName" samllName="@samllName" id="weight_@count" class="inputClass" placeholder="请必须输入权重分" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" type="text" /></div>
-                                    <div class="f-l" style="width: 10%; text-align:center;"><input type="checkbox" class="ButCheckBox" bigName="@bigName" samllName="@samllName" value="@count" name="check-box"  /></div>
+                                    <div class="f-l" style="width: 10%; text-align:center;"><input type="checkbox" class="ButCheckBox" bigName="@bigName" samllName="@samllName" value="@count" name="check-box" /></div>
                                 }
 
 
@@ -207,27 +209,27 @@
                 </tbody>
             </table>
         </div>
-        <div class="tabBody none">
-            <span id="records"></span>
-            <div class="search-content">
-                <table class="table-list">
-                    <thead>
-                        <tr style="height:35px; line-height:35px;">
-                            <th width="25%">牌号</th>
-                            <th width="25%">类别</th>
-                            <th width="25%">相似度值</th>
-                            <th width="25%"></th>
-                        </tr>
-                    </thead>
-                    <tbody id="DataList">
-                        <tr>
-                            <td colspan="3" align="center">对比后显示吻合数据信息！</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="black2" id="Pagination"></div>
+        <!--<div class="tabBody none">
+        <span id="records"></span>
+        <div class="search-content">
+            <table class="table-list">
+                <thead>
+                    <tr style="height:35px; line-height:35px;">
+                        <th width="25%">牌号</th>
+                        <th width="25%">类别</th>
+                        <th width="25%">相似度值</th>
+                        <th width="25%"></th>
+                    </tr>
+                </thead>
+                <tbody id="DataList">
+                    <tr>
+                        <td colspan="3" align="center">对比后显示吻合数据信息！</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+        <div class="black2" id="Pagination"></div>
+    </div>-->
 
     </div>
 
@@ -248,9 +250,57 @@
     //string WhereString = "{物理性能=)密度=>10}{机械性能=)伸长率=>10}{物理性能=)熔流率=>15}{可燃性=)阻燃等级=>15}";
     //提交对比
     function submitContert() {
-        guidstr = guid();
-        SubmitComparison(0);
+        //guidstr = guid();
+        //SubmitComparison(0);
+        var proid = $("#ProductGuid").val();
+        var WhereString = "";
+        for (var i = 0; i < $("input[name='check-box']").length; i++) {
+            if ($("input[name='check-box']").eq(i).is(":checked")) {
+                var inputid = $("input[name='check-box']").eq(i).val();
+                if ($.trim($("#weight_" + inputid).val()) == "" || $.trim($("#weight_" + inputid).val()) == "0" || parseInt($.trim($("#weight_" + inputid).val())) > 100) {
+                    layer.msg('请输入权重值，并且 大于0小于等于100', { icon: 5 });
+                    $("#weight_" + inputid).focus();
+                    return false;
+                    break;
+                }
+            }
+        }
+        $.each($("[name='check-box']"), function (index, item) {
+            if ($(this).is(":checked")) {
+                var idx = $(this).val();
+                if ($.trim($("#weight_" + idx).val()) != "") {
+                    WhereString += "{" + $(this).attr("bigname") + "=)" + $(this).attr("samllname") + "=>" + $.trim($("#weight_" + idx).val()) + "}";
+                }
+            }
+        })
+        // WhereString = "{物理性能=)密度=>10}{机械性能=)伸长率=>10}";
+        if (WhereString == "") {
+            layer.msg('请选择对比项!', { icon: 5 });
+            return false;
+        }
+     //   alert(WhereString);
+        //$.post("/Replace/ReplaceList", { WhereString: WhereString})
+        StandardPost("/Replace/ReplaceList", { name: WhereString, ProductGuid: $("#ProductGuid").val(), ProModel: $("#ProModel").html() });
     }
+
+    function StandardPost(url, args) {
+        debugger;
+        var body = $(document.body),
+            form = $("<form method='post'></form>"),
+            input;
+        form.attr({ "action": url });
+        $.each(args, function (key, value) {
+            input = $("<input type='hidden'>");
+            input.attr({ "name": key });
+            input.val(value);
+            form.append(input);
+        });
+        form.appendTo(document.body);
+        form.submit();
+        document.body.removeChild(form[0]);
+    }
+
+
     ///提交对比
     function SubmitComparison(pageindx) {
         page_indx = pageindx;

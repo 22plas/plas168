@@ -11,7 +11,7 @@ namespace PlasModel.Controllers
 {
     public class ReplaceController : Controller
     {
-
+        private PlasBll.ProductBll bll = new PlasBll.ProductBll();
         //获取当前登录的用户信息
         AccountData AccountData
         {
@@ -165,6 +165,26 @@ namespace PlasModel.Controllers
         /// <returns></returns>
         public ActionResult ReplaceList()
         {
+            string WhereString = string.Empty;
+            if (!string.IsNullOrWhiteSpace(Request["name"]))
+            {
+                WhereString = Request["name"].ToString();
+            }
+            string ProductGuid = string.Empty;//产品编号
+            if (!string.IsNullOrEmpty(Request["ProductGuid"]))
+            {
+                ProductGuid = Request["ProductGuid"].ToString();
+            }
+            string ProModel = "，请先选择产品";//牌号
+            if (!string.IsNullOrEmpty(Request["ProModel"]))
+            {
+                ProModel = Request["ProModel"].ToString();
+            }
+            var company = new DataTable();
+            //生产厂家
+            company = bll.GetSearchParam(4,15);
+            ViewBag.company = company;
+            ViewBag.ProModel = ProModel;
             return View();
         }
 
