@@ -206,5 +206,106 @@
 </div>
 
 @Html.Partial("~/Views/Public/Bottom.cshtml")
+<script type="text/javascript">
+    ///查询数据
+    var pagesize = 20;
+    var rowcount = 0;
+    var datas = "";
+    var page_indx = 0;
+    var guidstr = guid();
+    var isLink = "0";
+    ///提交对比
+    function SubmitComparison(pageindx) {
+        page_indx = pageindx;
+        var proid = $("#ProductGuid").val();
+        var chaeckvalue = "";
+        var tbodyui = "";
+        var isinput = true;
+        var WhereString = "";
+        //for (var i = 0; i < $("input[name='check-box']").length; i++) {
+        //    if ($("input[name='check-box']").eq(i).is(":checked")) {
+        //        var inputid = $("input[name='check-box']").eq(i).val();
+        //        if ($.trim($("#weight_" + inputid).val()) == "" || $.trim($("#weight_" + inputid).val()) == "0" || parseInt($.trim($("#weight_" + inputid).val())) > 100) {
+        //            layer.msg('请输入权重值，并且 大于0小于等于100', { icon: 5 });
+        //            $("#weight_" + inputid).focus();
+        //            return false;
+        //            break;
+        //        }
+        //    }
+        //}
+        //$.each($("[name='check-box']"), function (index, item) {
+        //    if ($(this).is(":checked")) {
+        //        var idx = $(this).val();
+        //        if ($.trim($("#weight_" + idx).val()) != "") {
+        //            WhereString += "{" + $(this).attr("bigname") + "=)" + $(this).attr("samllname") + "=>" + $.trim($("#weight_" + idx).val()) + "}";
+        //        }
+        //    }
+        //})
+        //// WhereString = "{物理性能=)密度=>10}{机械性能=)伸长率=>10}";
+        //if (WhereString == "") {
+        //    layer.msg('请选择对比项!', { icon: 5 });
+        //    return false;
+        //}
+        //alert(isLink);
+        //alert(WhereString);
+        //return false;
+        $.ajax({
+            type: "POST",
+            dataType: "JSON",
+            url: '/Replace/GetReplaceList',
+            data: "pageindex=" + (pageindx + 1) + "&pagesize=" + pagesize + "&guidstr=" + guidstr + "&proid=" + proid + "&isLink=" + isLink + "&WhereString=" + WhereString + datas,
+            async: false,
+            success: function (json) {
+                debugger;
+                if (json.msg == "") {
+                    var productData = json.data;
+                    rowcount = json.count;
+                    if (rowcount != 0 && productData != "") {
+                        $.each(JSON.parse(productData), function (i, n) {
+                            //alert(n);
+                            tbodyui += "<tr style='height:30px;line-height:30px;'>";
+                            tbodyui += "<td class='xiangshidu'><a href='/PhysicalProducts/Detail/" + n.ProductId + ".html' target=\"_blank\">" + n.ProModel + "</a></td>";
+                            tbodyui += "<td>" + n.ShortName + "</td>";
+                            tbodyui += "<td><div class=\"layui-progress layui-progress-big\" lay-showpercent=\"true\"><div class=\"layui-progress-bar\" lay-percent=\"" + parseInt(n.ALikePercent) + "%\" style=\"width:" + parseInt(n.ALikePercent) + "%;\"><span class=\"layui-progress-text\">" + n.ALikePercent + "%</span></div></div></td>";
+                            tbodyui += "<td><button class=\"layui-btn layui-btn-normal\" onClick=\"window.location.href='/PhysicalProducts/Detail/" + n.ProductId + ".html'\">相识度详情</button><button class=\"layui-btn layui-btn-normal\">加入收藏</button></td>";
+                            tbodyui += "</tr>";
+                        });
+                    }
+                    else {
+                        tbodyui += "<tr>";
+                        tbodyui += "<td colspan=\"3\" align=\"center\" class='red'>未找到数据</td>";
+                        tbodyui += "</tr>";
+                    }
+                    $("#DataList").html(tbodyui);
+                    tablReplace(1);
+                }
+                else {
+                    layer.msg(json.msg, { icon: 5 });
 
+                }
+
+
+            },
+            error: function () { layer.msg('Load the data failure!', { icon: 5 }); }
+        });
+
+        $("#Pagination").pagination(rowcount, {
+            callback: pageselectCallback,
+            prev_text: '上一页',
+            next_text: '下一页',
+            items_per_page: pagesize,
+            num_display_entries: 8,
+            current_page: pageindx,
+            num_edge_entries: 1
+        });
+        $("html, body").stop().animate({ scrollTop: $("#records").offset().top - 200 }, 400);
+
+    }
+
+    function pageselectCallback(page_id, jq) {
+        isLink = "1";
+        SubmitComparison(page_id);
+    }
+
+</script>
 
