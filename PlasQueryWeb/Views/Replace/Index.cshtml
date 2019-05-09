@@ -262,7 +262,8 @@
         $.each($("[name='check-box']"), function (index, item) {
             if ($(this).is(":checked")) {
                 var idx = $(this).val();
-                if ($.trim($("#weight_" + idx).val()) != "") {
+                ///排除不能为空，并且不能重复
+                if ($.trim($("#weight_" + idx).val()) != "" && WhereString.indexOf("{" + $(this).attr("bigname") + "=)" + $(this).attr("samllname"))==-1) {
                     WhereString += "{" + $(this).attr("bigname") + "=)" + $(this).attr("samllname") + "=>" + $.trim($("#weight_" + idx).val()) + "}";
                 }
             }

@@ -183,6 +183,8 @@ namespace PlasModel.Controllers
             var company = new DataTable();
             //生产厂家
             company = bll.GetSearchParam(4,15);
+            ViewBag.ProGuid = ProductGuid;
+            ViewBag.WhereString = WhereString;
             ViewBag.company = company;
             ViewBag.ProModel = ProModel;
             return View();
@@ -227,7 +229,7 @@ namespace PlasModel.Controllers
                 var ds = new DataSet();
                 //if (!string.IsNullOrWhiteSpace(UserId))
                 //{
-                if (!string.IsNullOrWhiteSpace(WhereString))
+                if (!string.IsNullOrWhiteSpace(WhereString) && !string.IsNullOrWhiteSpace(SourceId))
                 {
                     ds = plbll.GetReplace(SourceId, ver, UserId, WhereString, pageindex, pagesize, isLink);
                     if (ds.Tables.Contains("ds") && ds.Tables[0].Rows.Count > 0)
