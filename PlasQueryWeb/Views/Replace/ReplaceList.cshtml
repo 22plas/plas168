@@ -27,8 +27,8 @@
         <div class="search-item-content">
             <ul class="search-item-content">
                 <li style="font-size:16px; font-weight:bold; color:#F60">是否过滤掉同 SINDUSTRISPP 品牌下的替代物:</li>
-                <li><input name="" type="radio" value="">过滤</li>
-                <li><input name="" type="radio" value="">不过滤</li>
+                <li><label><input name="isFiter" type="radio" value="">过滤</label></li>
+                <li><label><input name="isFiter" type="radio" value="">不过滤</label></li>
                 <li> <!--<a class="btn btn-orange btn-sm">用户自定义权重</a>--><button class="layui-btn layui-btn-sm" onclick="window.location.href='/Replace/Index?Rpt=@ViewBag.ProGuid'">自定义权重</button></li>
             </ul>
         </div>
@@ -105,7 +105,8 @@
         var tbodyui = "";
         var isinput = true;
         if (proid == "" || WhereString == "") {
-            layer.msg('请先选择产品和参数!', { icon: 5 });
+            layer.alert("请先选择产品和参数!");
+           // layer.msg('请先选择产品和参数!', { icon: 5 });
             return false;
         }
      
@@ -129,7 +130,7 @@
                             tbodyui += "<td class='xiangshidu'><a href='/PhysicalProducts/Detail/" + n.ProductId + ".html' target=\"_blank\">" + n.ProModel + "</a></td>";
                             tbodyui += "<td>" + n.ShortName + "</td>";
                             tbodyui += "<td><div class=\"layui-progress layui-progress-big\" lay-showpercent=\"true\"><div class=\"layui-progress-bar\" lay-percent=\"" + parseInt(n.ALikePercent) + "%\" style=\"width:" + parseInt(n.ALikePercent) + "%;\"><span class=\"layui-progress-text\">" + n.ALikePercent + "%</span></div></div></td>";
-                            tbodyui += "<td><a class=\"btn btn-orange btn-sm\" onClick=\"window.location.href='/PhysicalProducts/Detail/" + n.ProductId + ".html'\">查看对比详情</a></td>";//<button class=\"layui-btn layui-btn-normal\" onClick=\"window.location.href='/PhysicalProducts/Detail/" + n.ProductId + ".html'\">相识度详情</button><button class=\"layui-btn layui-btn-normal\">加入收藏</button>
+                            tbodyui += "<td><a class=\"btn btn-orange btn-sm\" onClick=\"window.open('/PhysicalProducts/Detail/" + n.ProductId + ".html')\">查看对比详情</a></td>";//<button class=\"layui-btn layui-btn-normal\" onClick=\"window.location.href='/PhysicalProducts/Detail/" + n.ProductId + ".html'\">相识度详情</button><button class=\"layui-btn layui-btn-normal\">加入收藏</button>
                             tbodyui += "</tr>";
                         });
                     }
