@@ -196,6 +196,7 @@ namespace PlasModel.Controllers
             string sErr = string.Empty;
             string jsonstr = string.Empty;
             string isLink = string.Empty;//分页
+            string isfilter = "0";//是否过滤
             int count = 0;
             try
             {
@@ -207,6 +208,10 @@ namespace PlasModel.Controllers
                 if (!string.IsNullOrWhiteSpace(Request["isLink"]))
                 {
                     isLink = Request["isLink"].ToString();
+                }
+                if (!string.IsNullOrEmpty(Request["isfilter"]))
+                {
+                    isfilter = Request["isfilter"].ToString();
                 }
                 // GetReplace(string SourceId, string ver, string UserId, string WhereString)
                 //计算一个产品的相似度
@@ -231,7 +236,7 @@ namespace PlasModel.Controllers
                 //{
                 if (!string.IsNullOrWhiteSpace(WhereString) && !string.IsNullOrWhiteSpace(SourceId))
                 {
-                    ds = plbll.GetReplace(SourceId, ver, UserId, WhereString, pageindex, pagesize, isLink);
+                    ds = plbll.GetReplace(SourceId, ver, UserId, WhereString, pageindex, pagesize, isLink, isfilter);
                     if (ds.Tables.Contains("ds") && ds.Tables[0].Rows.Count > 0)
                     {
                         jsonstr = ToolHelper.DataTableToJson(ds.Tables[0]);
