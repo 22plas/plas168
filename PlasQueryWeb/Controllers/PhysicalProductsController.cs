@@ -63,6 +63,7 @@ namespace PlasModel.Controllers
         //产品详情
         public ActionResult Detail(string prodid)
         {
+            
             #region 产品详情
             var ds = bll.GetModelInfo(prodid);
             if (ds != null && ds.Tables.Contains("ds") && ds.Tables.Count > 0)
@@ -107,8 +108,15 @@ namespace PlasModel.Controllers
             var LiveDs = bll.GetCompanyAndLiveProduct(10, prodid);
             #endregion
 
+            var pdfdt = new DataTable();
+            if (!string.IsNullOrEmpty(prodid))
+            {
+                pdfdt = bll.GetProductPdf(prodid);
+            }
+
             ViewBag.ProdID = prodid;
             ViewBag.LiveProdcut = LiveDs;
+            ViewBag.pdfdt = pdfdt;
             return View();
         }
 

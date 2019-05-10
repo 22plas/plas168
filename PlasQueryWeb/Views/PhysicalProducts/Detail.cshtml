@@ -3,6 +3,7 @@
     ViewBag.HideSearch = true;//隐藏搜索框
     var PhysicalData = ViewBag.PhysicalInfo == null ? new System.Data.DataTable() : ViewBag.PhysicalInfo as System.Data.DataTable;
     var liveds = (ViewBag.LiveProdcut) as System.Data.DataSet;//第一表：同一个厂家，第二表：感兴趣的产品
+    var pdf = (ViewBag.pdfdt) as System.Data.DataTable;//产品下面的pdf
 }
 <style type="text/css">
     .item-left {
@@ -105,10 +106,15 @@
         <div class="small-list">
             <p class="title">我的工具盒</p>
             <ul class="ul-list">
-                <li><a href="javascript:void(0);" onclick="viewpdf('@ViewBag.ProdID','@ViewBag.ProModel')"><i class="Hui-iconfont">&#xe640;</i>&nbsp;下载PDF</a></li>
                 <li><a href="javascript:void(0);"><i class="Hui-iconfont">&#xe610;</i>&nbsp;添加收藏</a></li>
                 <li><a href="/Replace/Index?Rpt=@ViewBag.ProdID" target="_blank"><i class="Hui-iconfont">&#xe709;</i>&nbsp;寻找相识</a></li>
-             </ul>
+                <li><a href="javascript:void(0);" style="border-top:solid 1px #ff6a00;display:block;" onclick="viewpdf('@ViewBag.ProdID','@ViewBag.ProModel')"><i class="Hui-iconfont">&#xe640;</i>&nbsp;下载PDF</a></li>
+                @for (var i = 0; i < pdf.Rows.Count; i++)
+                {
+                    <li><a href="@pdf.Rows[i]["pdfPath"].ToString()" style="display:block;color:@(pdf.Rows[i]["ImagesColor"].ToString() ==""? "#e58906" : pdf.Rows[i]["ImagesColor"])"><i class="Hui-iconfont">&#xe640;</i>&nbsp;@pdf.Rows[i]["TypeName"]</a></li>
+                }
+                
+            </ul>
             <hr />
             <br />
             <p class="title">猜你喜欢的产品</p>

@@ -112,5 +112,11 @@ namespace PlasBll
         }
         #endregion
 
+
+        //查询产品下面
+        public DataTable GetProductPdf(string proguid)
+        {
+            return dal.GetProductPdf(proguid);
+        }
     }
 }
