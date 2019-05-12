@@ -6,7 +6,7 @@ $(function () {
 })
 function LookLoadingIcon(obj) {
     //alert("调用到了e");
-    window.location.href = "/Replace/Index?Rpt=" + obj;
+    window.location.href = "/Replace/ProductReplace?PGuid=" + obj;
 }
 //展开更多
 $(".search-more-btn").click(function () {

@@ -187,5 +187,15 @@ namespace PlasDal
             var dt = SqlHelper.GetSqlDataTable(sql.ToString());
             return dt;
         }
+
+        //根据产品来获取数据信息
+        public DataSet GetProductReplace(string ver,string proGuid,int pageno,int pagesize,int isfilter)
+        {
+            string sqlparm5 = string.Format("exec AlikeReadByGuid '{0}','{1}',{2},{3},{4}", ver, proGuid, pageno, pagesize, isfilter);
+            var ds = SqlHelper.GetSqlDataSet(sqlparm5);
+            return ds;
+        }
+
+
     }
 }

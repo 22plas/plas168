@@ -118,5 +118,11 @@ namespace PlasBll
         {
             return dal.GetProductPdf(proguid);
         }
+
+        //获取产品信息
+        public DataTable GetProductMessage(string guid)
+        {
+            return dal.GetProductMessage(guid);
+        }
     }
 }

@@ -24,5 +24,11 @@ namespace PlasBll
         {
             return dal.GetAttributeAliasList_RealKey();
         }
+
+        //根据产品获取替换数据
+        public DataSet GetProductReplace(string ver, string proGuid, int pageno, int pagesize, int isfilter)
+        {
+            return dal.GetProductReplace(ver, proGuid, pageno, pagesize, isfilter);
+        }
     }
 }

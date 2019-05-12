@@ -107,11 +107,11 @@
             <p class="title">我的工具盒</p>
             <ul class="ul-list">
                 <li><a href="javascript:void(0);"><i class="Hui-iconfont">&#xe610;</i>&nbsp;添加收藏</a></li>
-                <li><a href="/Replace/Index?Rpt=@ViewBag.ProdID" target="_blank"><i class="Hui-iconfont">&#xe709;</i>&nbsp;寻找相识</a></li>
+                <li><a href="/Replace/ReplaceList?Rpt=@ViewBag.ProdID" target="_blank"><i class="Hui-iconfont">&#xe709;</i>&nbsp;寻找相识</a></li>
                 <li><a href="javascript:void(0);" style="border-top:solid 1px #ff6a00;display:block;" onclick="viewpdf('@ViewBag.ProdID','@ViewBag.ProModel')"><i class="Hui-iconfont">&#xe640;</i>&nbsp;下载PDF</a></li>
                 @for (var i = 0; i < pdf.Rows.Count; i++)
                 {
-                    <li><a href="@pdf.Rows[i]["pdfPath"].ToString()" style="display:block;color:@(pdf.Rows[i]["ImagesColor"].ToString() ==""? "#e58906" : pdf.Rows[i]["ImagesColor"])"><i class="Hui-iconfont">&#xe640;</i>&nbsp;@pdf.Rows[i]["TypeName"]</a></li>
+                    <li><a href="@pdf.Rows[i]["pdfPath"].ToString()" ><span style="border:solid 1px @(pdf.Rows[i]["ImagesColor"].ToString()); padding:3px 5px;background:@(pdf.Rows[i]["ImagesColor"].ToString());color:#fff;">@(pdf.Rows[i]["TypeName"].ToString().Length > 0 ? pdf.Rows[i]["TypeName"].ToString().Substring(0,1) : "")</span>&nbsp;@pdf.Rows[i]["TypeName"]</a></li>
                 }
                 
             </ul>

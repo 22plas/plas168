@@ -133,6 +133,12 @@
         .xiangshidu a:hover {
             color:#f95c00;
         }
+    .duibichanshu {
+        height: 100px;
+        line-height: 100px;
+        padding-left: 13%;
+        font-size: 18px;
+    }
 </style>
 @Html.Partial("~/Views/Public/SubPageNav.cshtml")
 @{
@@ -147,90 +153,15 @@
 ，说明，加工方法，备注不允许选择-->
 <!--总体参与对比的有（（RoHS 合规性；供货地区；加工方法；树脂ID (ISO 1043)；特性；添加剂；填料/增强材料；用途 ）这个是总体里要参与对比的）-->
 <div style="font-size: 14px;">
-    <p class="contrast_remark" style="text-align: center;"><span style="font-size: 18px;">选中的型号：<span><a href='/Product/Index' style='color:#FF9933' id="ProModel">@Html.Raw(ViewBag.ProModel)</a></span><input name="" id="ProductGuid" type="hidden" value="@ViewBag.ProGuid" /></span><a class="btn btn-green" id="btn_contrast" style="float: right;margin-top: -5px;" onclick="submitContert();">提交对比</a></p>
-    <p class="contrast_remark" style="border-bottom-color:#ccc;padding-right: 0;font-weight:700;">
-        <table width="100%" border="0" style="height:45px; line-height:45px; font-weight:700;" cellspacing="0" cellpadding="0">
-            <tr>
-                <td width="20%" align="center">选择你需要对比的参数：</td>
-                <td width="55%;" align="center">&nbsp;</td>
-                <td width="10%" align="center">权重[1-100]</td>
-                <td width="10%" align="center"  ><label>比较选择项：<input type="checkbox" id="checkbox-new" align="absmiddle" class="ButCheckBox" name="checkbox-new" /></label></td>
-            </tr>
-        </table>
-    </p>
-
+    <p class="contrast_remark" style="text-align: center;"></p>
     <div class="borderfiter">
-        <!--
-    <div class="checkedtitle">
-        <div class="tabTitle active">对比参数</div>
-        <div class="tabTitle">吻合结果</div>
-        <div style="clear:both;"></div>
-    </div>
-    -->
-        <div class="tabBody">
-            <table class="table-list" border="0" cellspacing="0" cellpadding="0">
-                <tbody>
-                    @foreach (System.Data.DataRow dr in PhysicalData.Rows)
-                    {
-                        count++;
-                        <tr class="@(dr["lev"].ToString() == "1" ? "bold" : "pl-10")">
-                            <td>
-                                @if (dr["lev"].ToString() == "1")
-                                {
-                                    bigName = dr["Attribute1"].ToString();
-                                }
-                                else
-                                {
-                                    samllName = dr["RealKey"].ToString();
-                                }
+        <div style="height:50px;"></div>
+        <div class="duibichanshu">请检索出您需要替换的产品</div>
+        <div class="header-search-box" style="margin-left:13%;">
+            <input type="text" class="search-input-orange" style="border: 2px solid #1593ff;" id="search_input_Replace" placeholder="请输入任意塑料类型、型号、厂家、性能、用途进行智能搜索"><span onclick="onSearch_Replace_select();" class="fa fa-search search-icon search-icon-orange" style="background-color: #1593ff;">搜索</span>
 
-                                @{ int paddleft = 0;
-                                    int.TryParse(dr["lev"].ToString(), out paddleft);
-                                    paddleft = paddleft * 10;}
-                                <div class="f-l" style="width:15%;"><span style="margin-right:5px; padding-left:@(paddleft)px;">@dr["Attribute1"].ToString()</span></div>
-                                <div class="f-l" style="width:15%;">
-                                    &nbsp;@dr["Attribute2"].ToString()
-                                </div>
-                                <div class="f-l" style="width:25%;">&nbsp;@dr["Attribute3"].ToString()</div>
-                                <div class="f-l" style="width:25%;">
-                                    &nbsp; @dr["Attribute4"].ToString()
-                                </div>
-                                @if (dr["lev"].ToString() == "2")
-                                {
-                                    <div class="f-l" style="width: 10%; text-align:center;"><input name="weight" bigName="@bigName" samllName="@samllName" id="weight_@count" class="inputClass" placeholder="请必须输入权重分" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" type="text" /></div>
-                                    <div class="f-l" style="width: 10%; text-align:center;"><input type="checkbox" class="ButCheckBox" bigName="@bigName" samllName="@samllName" value="@count" name="check-box" /></div>
-                                }
-
-
-                                <div class="clear"></div>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
         </div>
-        <!--<div class="tabBody none">
-        <span id="records"></span>
-        <div class="search-content">
-            <table class="table-list">
-                <thead>
-                    <tr style="height:35px; line-height:35px;">
-                        <th width="25%">牌号</th>
-                        <th width="25%">类别</th>
-                        <th width="25%">相似度值</th>
-                        <th width="25%"></th>
-                    </tr>
-                </thead>
-                <tbody id="DataList">
-                    <tr>
-                        <td colspan="3" align="center">对比后显示吻合数据信息！</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="black2" id="Pagination"></div>
-    </div>-->
-
+        <div style="height:150px;"></div>
     </div>
 
 
@@ -241,111 +172,17 @@
         $("div[name='isHideDiv']").parent().parent().remove();//删除单行数据
     })
 
-    //string WhereString = "{物理性能=)密度=>10}{机械性能=)伸长率=>10}{物理性能=)熔流率=>15}{可燃性=)阻燃等级=>15}";
-    //提交对比
-    function submitContert() {
-        //guidstr = guid();
-        //SubmitComparison(0);
-        var proid = $("#ProductGuid").val();
-        var WhereString = "";
-        for (var i = 0; i < $("input[name='check-box']").length; i++) {
-            if ($("input[name='check-box']").eq(i).is(":checked")) {
-                var inputid = $("input[name='check-box']").eq(i).val();
-                if ($.trim($("#weight_" + inputid).val()) == "" || $.trim($("#weight_" + inputid).val()) == "0" || parseInt($.trim($("#weight_" + inputid).val())) > 100) {
-                    layer.msg('请输入权重值，并且 大于0小于等于100', { icon: 5 });
-                    $("#weight_" + inputid).focus();
-                    return false;
-                    break;
-                }
-            }
-        }
-        $.each($("[name='check-box']"), function (index, item) {
-            if ($(this).is(":checked")) {
-                var idx = $(this).val();
-                ///排除不能为空，并且不能重复
-                if ($.trim($("#weight_" + idx).val()) != "" && WhereString.indexOf("{" + $(this).attr("bigname") + "=)" + $(this).attr("samllname"))==-1) {
-                    WhereString += "{" + $(this).attr("bigname") + "=)" + $(this).attr("samllname") + "=>" + $.trim($("#weight_" + idx).val()) + "}";
-                }
-            }
-        })
-        // WhereString = "{物理性能=)密度=>10}{机械性能=)伸长率=>10}";
-        if (WhereString == "") {
-            layer.msg('请选择对比项!', { icon: 5 });
+ 
+    function onSearch_Replace_select() {
+        var keyword = $.trim($("#search_input_Replace").val());
+        if (keyword == "") {
+            alert("请输入任意塑料类型、型号、厂家、性能、用途!");
+            $("#search_input_Replace").focus();
             return false;
         }
-     //   alert(WhereString);
-        //$.post("/Replace/ReplaceList", { WhereString: WhereString})
-        StandardPost("/Replace/ReplaceList", { name: WhereString, ProductGuid: $("#ProductGuid").val(), ProModel: $("#ProModel").html() });
-    }
-
-    function StandardPost(url, args) {
-        //debugger;
-        var body = $(document.body),
-            form = $("<form method='post'></form>"),
-            input;
-        form.attr({ "action": url });
-        $.each(args, function (key, value) {
-            input = $("<input type='hidden'>");
-            input.attr({ "name": key });
-            input.val(value);
-            form.append(input);
-        });
-        form.appendTo(document.body);
-        form.submit();
-        document.body.removeChild(form[0]);
-    }
-
-
-
-    //选项卡
-    $(".tabTitle").click(function () {
-        var idx = $(this).index();
-        tablReplace(idx);
-    })
-
-    //切换
-    function tablReplace(idx) {
-        $.each($(".tabTitle"), function (index, item) {
-            $(this).removeClass("active");
-        })
-        $.each($(".tabBody"), function (index, item) {
-            $(this).removeClass("none").addClass("none");
-        })
-        $(".tabTitle").eq(idx).addClass("active");
-        $(".tabBody").eq(idx).removeClass("none");
-    }
-
-    //全选
-    //$(".check-box").find("i").find("input[name='checkbox-new']").click(function () {
-    //    alert("调用");
-    //    if ($(this).is(":checked")) {
-    //        $.each($("input[name='check-box']"), function (index, item) {
-    //            $(this).attr("checked", true);
-    //        })
-    //    }
-    //    else {
-    //        $.each($("input[name='check-box']"), function (index, item) {
-    //            $(this).attr("checked", false);
-    //        })
-    //    }
-    //})
-
-    $("#checkbox-new").click(function () {
-        if ($(this).is(":checked")) {
-           // alert("yes")
-            $.each($("input[name='check-box']"), function (index, item) {
-                $(this).prop("checked", true);
-            })
-        }
         else {
-          //  alert("no")
-            $.each($("input[name='check-box']"), function (index, item) {
-                $(this).prop("checked", false);
-            })
+            window.location.href = "/Product/Index?key=" + encodeURI(encodeURI(keyword));
         }
-       
-    }) 
-
-
+    }
 </script>
 @Html.Partial("~/Views/Public/Bottom.cshtml")

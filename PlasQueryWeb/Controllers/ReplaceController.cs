@@ -21,13 +21,25 @@ namespace PlasModel.Controllers
             }
         }
 
+
+
         private PlasBll.ReplaceBll plbll = new PlasBll.ReplaceBll();
         // GET: 替换
 
         public ActionResult Index()
         {
+            return View();
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ReplaceGetList()
+        {
             PlasBll.ProductBll bll = new PlasBll.ProductBll();
-          //产品编号
+            //产品编号
             string Rpt = string.Empty;
             string ProTitle = "请选择产品";
             string ProGuid = string.Empty;
@@ -52,11 +64,11 @@ namespace PlasModel.Controllers
                 }
                 if (ds.Tables.Contains("ds1") && ds.Tables[1].Rows.Count > 0)
                 {
-                        //< !--卿思明:
-                        //产品说明；注射; 注射说明; 备注 这些都不参与对比
-                        //，说明，加工方法，备注不允许选择-- >
-                        //< !--总体参与对比的有（（RoHS 合规性；供货地区；加工方法；树脂ID(ISO 1043)；特性；添加剂；填料 / 增强材料；用途 ）这个是总体里要参与对比的）-->
-                     var dr = ds.Tables[1];///此数据要过滤
+                    //< !--卿思明:
+                    //产品说明；注射; 注射说明; 备注 这些都不参与对比
+                    //，说明，加工方法，备注不允许选择-- >
+                    //< !--总体参与对比的有（（RoHS 合规性；供货地区；加工方法；树脂ID(ISO 1043)；特性；添加剂；填料 / 增强材料；用途 ）这个是总体里要参与对比的）-->
+                    var dr = ds.Tables[1];///此数据要过滤
 
                     DataTable tblDatas = new DataTable("Datas");
                     DataColumn dc = null;
@@ -69,12 +81,12 @@ namespace PlasModel.Controllers
                     dc = tblDatas.Columns.Add("RealKey", Type.GetType("System.String"));
                     string lev = string.Empty;
                     DataRow newRow;
-                    for (var i = 0; i<dr.Rows.Count; i++)
+                    for (var i = 0; i < dr.Rows.Count; i++)
                     {
                         if ((string.IsNullOrEmpty(dr.Rows[i]["Attribute2"].ToString())
                             && string.IsNullOrEmpty(dr.Rows[i]["Attribute3"].ToString())
                             && string.IsNullOrEmpty(dr.Rows[i]["Attribute4"].ToString())
-                            && string.IsNullOrEmpty(dr.Rows[i]["Attribute5"].ToString()) && dr.Rows[i]["Attribute1"].ToString().Trim()!= "总体")
+                            && string.IsNullOrEmpty(dr.Rows[i]["Attribute5"].ToString()) && dr.Rows[i]["Attribute1"].ToString().Trim() != "总体")
                             ||
                             (dr.Rows[i]["Attribute1"].ToString().Trim() == "加工方法"
                             || dr.Rows[i]["Attribute1"].ToString().Trim() == "材料状态"
@@ -88,7 +100,7 @@ namespace PlasModel.Controllers
                         }
                         else
                         {
-                            
+
                             //单独过滤注射
                             if (dr.Rows[i]["Attribute1"].ToString().Trim() == "注射")
                             {
@@ -97,7 +109,7 @@ namespace PlasModel.Controllers
                             }
                             else
                             {
-                                
+
                                 int count = (1 + Convert.ToInt32(dr.Rows[i]["lev"].ToString().Trim()));
                                 if (count == 3 && lev == "injection")
                                 {
@@ -118,7 +130,7 @@ namespace PlasModel.Controllers
                                     {
                                         samllName = dr.Rows[i]["Attribute1"].ToString().Trim();
                                     }
-                                    DataRow[] rows = pt.Select("Attribute1='"+ bigName + "' and Attribute2Alias = '"+ samllName + "'");
+                                    DataRow[] rows = pt.Select("Attribute1='" + bigName + "' and Attribute2Alias = '" + samllName + "'");
                                     if (rows.Count() > 0)
                                     {
                                         RealKey = rows[0]["RealKey"].ToString();
@@ -132,14 +144,14 @@ namespace PlasModel.Controllers
                                     newRow["RealKey"] = RealKey;
                                     tblDatas.Rows.Add(newRow);
                                 }
-                                
+
                             }
-                            
+
                         }
-                        
+
                     }
                     dt = tblDatas;
-                //var spdr=dr.Select("Attribute1<>'产品说明' and Attribute1 <> '注射' and Attribute1 <> '备注'")
+                    //var spdr=dr.Select("Attribute1<>'产品说明' and Attribute1 <> '注射' and Attribute1 <> '备注'")
 
 
                 }
@@ -157,6 +169,7 @@ namespace PlasModel.Controllers
             ViewBag.ProGuid = ProGuid;
             return View();
         }
+
 
 
         /// <summary>
@@ -182,7 +195,7 @@ namespace PlasModel.Controllers
             }
             var company = new DataTable();
             //生产厂家
-            company = bll.GetSearchParam(4,15);
+            company = bll.GetSearchParam(4, 15);
             ViewBag.ProGuid = ProductGuid;
             ViewBag.WhereString = WhereString;
             ViewBag.company = company;
@@ -191,7 +204,7 @@ namespace PlasModel.Controllers
         }
 
 
-        public JsonResult GetReplaceList(int pageindex, int pagesize, string guidstr,string proid)
+        public JsonResult GetReplaceList(int pageindex, int pagesize, string guidstr, string proid)
         {
             string sErr = string.Empty;
             string jsonstr = string.Empty;
@@ -259,11 +272,99 @@ namespace PlasModel.Controllers
             {
                 sErr = ex.Message.ToString();
             }
-          
-            
-            return Json(new { data = jsonstr , count = count,msg= sErr },JsonRequestBehavior.AllowGet);
+
+
+            return Json(new { data = jsonstr, count = count, msg = sErr }, JsonRequestBehavior.AllowGet);
 
         }
+
+
+        /// <summary>
+        /// 通过产品
+        ///GUID查询产品
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ProductReplace()
+        {
+            string ProductGuid = string.Empty;
+            string ProductName = string.Empty;
+            if (!string.IsNullOrEmpty(Request["PGuid"]))
+            {
+                ProductGuid = Request["PGuid"].ToString();
+                var dt = bll.GetProductMessage(ProductGuid);
+                if (dt.Rows.Count > 0)
+                {
+                    ProductName = dt.Rows[0]["ProModel"].ToString();
+                    dt.Dispose();
+                }
+                
+            }
+            
+            var company = new DataTable();
+            //生产厂家
+            company = bll.GetSearchParam(4, 15);
+            ViewBag.ProGuid = ProductGuid;
+            ViewBag.company = company;
+            ViewBag.ProductName = ProductName;
+            return View();
+        }
+
+        //获取产品列表数据信息
+        public JsonResult ProductReplaceList(int pageindex, int pagesize, string guidstr, string proid)
+        {
+            string sErr = string.Empty;
+            string jsonstr = string.Empty;
+            int isfilter=0;//是否过滤
+            int count = 0;
+            try
+            {
+      
+                if (!string.IsNullOrEmpty(Request["isfilter"]))
+                {
+                       int.TryParse(Request["isfilter"].ToString(),out isfilter);
+                }
+                //本次执行运算的唯一版本号
+                string ver = guidstr;//Guid.NewGuid().ToString();
+                                     //用户ID，应该从Session中取得
+                string UserId = string.Empty;
+                if (AccountData != null)
+                {
+                    UserId = AccountData.UserName;//"张三或李四";
+                }
+
+                var ds = new DataSet();
+                //if (!string.IsNullOrWhiteSpace(UserId))
+                //{
+                if (!string.IsNullOrWhiteSpace(proid) && !string.IsNullOrWhiteSpace(guidstr))
+                {
+                    ds = plbll.GetProductReplace(ver, proid, pageindex, pagesize, isfilter);
+                    if (ds.Tables.Contains("ds") && ds.Tables[0].Rows.Count > 0)
+                    {
+                        jsonstr = ToolHelper.DataTableToJson(ds.Tables[0]);
+                    }
+                    if (ds.Tables.Contains("ds1") && ds.Tables[1] != null && ds.Tables[1].Rows.Count > 0)
+                    {
+                        int.TryParse(ds.Tables[1].Rows[0]["counts"].ToString(), out count);
+                    }
+                }
+                else
+                {
+                    sErr = "违法操作，筛选数据异常！";
+                }
+                //}
+                //else {
+                //    sErr = "请先登陆！";
+                //}
+            }
+            catch (Exception ex)
+            {
+                sErr = ex.Message.ToString();
+            }
+
+
+            return Json(new { data = jsonstr, count = count, msg = sErr }, JsonRequestBehavior.AllowGet);
+        }
+
 
     }
 }

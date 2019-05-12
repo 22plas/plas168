@@ -297,5 +297,14 @@ namespace PlasDal
             return dt;
         }
 
+
+        //获取产品信息
+        public DataTable GetProductMessage(string guid)
+        {
+            string sql = string.Format("select * from product where ProductGuid='{0}'", guid);
+            var dt = SqlHelper.GetSqlDataTable(sql.ToString());
+            return dt;
+        }
+
     }
 }

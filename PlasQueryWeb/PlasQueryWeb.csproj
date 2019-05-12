@@ -505,6 +505,8 @@
     <Content Include="Views\Shared\EditorTemplates\FileUpload.cshtml" />
     <Content Include="Views\MemberCenter\DeliveryAddressEdit.cshtml" />
     <Content Include="Views\PhysicalProducts\ViewDetail.cshtml" />
+    <Content Include="Views\Replace\ReplaceGetList.cshtml" />
+    <Content Include="Views\Replace\ProductReplace.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
