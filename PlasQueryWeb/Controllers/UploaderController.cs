@@ -2,6 +2,8 @@
 using PlasModel.App_Start;
 using PlasModel.App_Start.Qiniu;
 using PlasQueryWeb.Models.Common;
+using Qiniu.IO.Model;
+using Qiniu.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -192,6 +194,22 @@ namespace PlasQueryWeb.Controllers
             {
                 return View();
             }
+        }
+        //获取七牛token
+        [HttpGet]
+        [AllowCrossSiteJson]
+        public ActionResult GetToken()
+        {
+            Mac mac = new Mac(QinQiuApi.AccessKey, QinQiuApi.SecretKey);
+            PutPolicy putPolicy = new PutPolicy();
+            putPolicy.Scope = QinQiuApi.Bucket;
+            putPolicy.SetExpires(7200);
+            string token = Auth.CreateUploadToken(mac, putPolicy.ToJsonString());
+            var returnstr = new
+            {
+                tokenstr = token
+            };
+            return Json(Common.ToJsonResult("Success", "成功", returnstr), JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -66,6 +66,20 @@ namespace PlasModel.Controllers
         {
             return View();
         }
+        /// <summary>
+        /// 修改用户信息
+        /// </summary>
+        /// <param name="filestr"></param>
+        /// <param name="values"></param>
+        /// <param name="usid"></param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpPost]
+        public ActionResult UpdateUserInfo(string filestr, string values, string usid)
+        {
+            string resultstr= mbll.UpdateUserInfobll(filestr, values, usid);
+            return Json(Common.ToJsonResult(resultstr, "返回信息"), JsonRequestBehavior.AllowGet);
+        }
         //用户信息
         //public ActionResult UserInfo()
         //{
@@ -543,15 +557,118 @@ namespace PlasModel.Controllers
                         HeadImage = resultstr[3]
 
                     });
+                    var returndata = new
+                    {
+                        usid = resultstr[1]
+                    };
+                    return Json(Common.ToJsonResult("Success", "登录成功", returndata), JsonRequestBehavior.AllowGet);
                 }
-                tempstr = resultstr[0];
+                else
+                {
+                    return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+                }
             }
             else
             {
-                tempstr = returnstr;
+                return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
             }
-            return Json(Common.ToJsonResult(tempstr, "返回结果"), JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// 短信登录(只用手机号登录)
+        /// </summary>
+        /// <param name="account">手机号</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetAccountLogin(string account)
+        {
+            string returnstr = mbll.AccountLoginBll(account);
+            string[] resultstr = returnstr.Split(',');
+            string tempstr = string.Empty;
+            if (resultstr.Length > 0)
+            {
+                if (resultstr[0].Equals("Success"))
+                {
+                    //把重要的用户信息进行加密，存放到cookie
+                    this.SetAccountData(new AccountData
+                    {
+                        UserID = resultstr[1],
+                        UserName = resultstr[2],
+                        HeadImage = resultstr[3]
+
+                    });
+                    var returndata = new
+                    {
+                        usid = resultstr[1]
+                    };
+                    return Json(Common.ToJsonResult("Success", "登录成功", returndata), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+            }
+        }
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="account">手机号</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpPost]
+        public ActionResult UpdateUserPwd(string phone, string newpwd)
+        {
+            string returnstr = mbll.UpdateUserPwd(phone, newpwd);
+            string[] resultstr = returnstr.Split(',');
+            string tempstr = string.Empty;
+            if (returnstr == "NoFind")
+            {
+                return Json(Common.ToJsonResult("NoFind", "用户不存在"), JsonRequestBehavior.AllowGet);
+            }
+            else if (returnstr == "Fail")
+            {
+                return Json(Common.ToJsonResult("Fail", "修改失败"), JsonRequestBehavior.AllowGet);
+            }
+            else if (returnstr == "Success")
+            {
+                return Json(Common.ToJsonResult("Success", "修改成功"), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(Common.ToJsonResult("Fail", "修改失败"), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// 获取用户信息
+        /// </summary>
+        /// <param name="account">账号</param>
+        /// <param name="password">密码</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetUserInfo(string usid)
+        {
+            DataTable usdt = mbll.GetUserInfo(usid);
+            if (usdt.Rows.Count > 0)
+            {
+                var returndata = new
+                {
+                    usname = usdt.Rows[0]["Phone"].ToString(),
+                    headimage = usdt.Rows[0]["HeadImage"].ToString()
+                };
+                return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败"), JsonRequestBehavior.AllowGet);
+            }
+        }
+
         /// <summary>
         /// 个人中心母版页获取用户信息
         /// </summary>

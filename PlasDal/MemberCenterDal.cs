@@ -90,7 +90,26 @@ namespace PlasDal
                 con.Dispose();
             }
         }
-
+        /// <summary>
+        /// 修改用户信息
+        /// </summary>
+        /// <param name="filestr">字段名</param>
+        /// <param name="values">值</param>
+        /// <param name="usid">用户id</param>
+        /// <returns></returns>
+        public string UpdateUserInfodal(string filestr,string values,string usid)
+        {
+            try
+            {
+                string sqlstr = string.Format(@"update cp_user set {0}='{1}' where ID='{2}'", filestr, values, usid);
+                int row=SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings,sqlstr,null);
+                return "Success";
+            }
+            catch (Exception)
+            {
+                return "Fail";
+            }
+        }
         /// <summary>
         /// 执行登录方法
         /// </summary>
@@ -104,6 +123,37 @@ namespace PlasDal
             DataTable usdt = SqlHelper.GetSqlDataTable(execsql2);
             return usdt;
         }
+        /// <summary>
+        /// 执行登录方法
+        /// </summary>
+        /// <param name="account">账号</param>
+        /// <returns></returns>
+        public DataTable AccountLgoinDal(string account)
+        {
+            string execsql2 = string.Format(@"select * from cp_user where phone ='{0}'", account);
+            DataTable usdt = SqlHelper.GetSqlDataTable(execsql2);
+            return usdt;
+        }
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        public string UpdateUserPwd(string phone, string newpwd)
+        {
+            try
+            {
+                string temppwd = ToolHelper.MD5_SET(newpwd);
+                string execsql2 = string.Format(@"UPDATE dbo.cp_user SET UserPwd='{0}' WHERE Phone='{1}'", temppwd, phone);
+                int row = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, execsql2, null);
+                return "Success";
+            }
+            catch (Exception)
+            {
+                return "Fail";
+            }
+        }
+        
         /// <summary>
         /// 获取公司列表信息
         /// </summary>
