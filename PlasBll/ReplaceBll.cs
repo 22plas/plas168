@@ -13,9 +13,9 @@ namespace PlasBll
         private PlasDal.ReplaceDal dal = new PlasDal.ReplaceDal();
 
         //查找替换产品
-        public DataSet GetReplace(string SourceId, string ver, string UserId, string WhereString,int pageindex=1,int pagesize=20, string isLink = "0",string isfilter="0")
+        public DataSet GetReplace(string SourceId, string ver, string UserId, string WhereString,int pageindex=1,int pagesize=20, string isLink = "0",string isfilter="0",string companys="")
         {
-            return dal.GetReplace(SourceId, ver, UserId, WhereString, pageindex, pagesize, isLink, isfilter);
+            return dal.GetReplace(SourceId, ver, UserId, WhereString, pageindex, pagesize, isLink, isfilter, companys);
         }
 
 
@@ -26,9 +26,9 @@ namespace PlasBll
         }
 
         //根据产品获取替换数据
-        public DataSet GetProductReplace(string ver, string proGuid, int pageno, int pagesize, int isfilter)
+        public DataSet GetProductReplace(string ver, string proGuid, int pageno, int pagesize, int isfilter, string companys)
         {
-            return dal.GetProductReplace(ver, proGuid, pageno, pagesize, isfilter);
+            return dal.GetProductReplace(ver, proGuid, pageno, pagesize, isfilter, companys);
         }
     }
 }

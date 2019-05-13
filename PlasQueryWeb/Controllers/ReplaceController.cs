@@ -232,7 +232,12 @@ namespace PlasModel.Controllers
 
                 //本次执行运算的唯一版本号
                 string ver = guidstr;//Guid.NewGuid().ToString();
-                                     //用户ID，应该从Session中取得
+                string Companys = string.Empty;
+                if (!string.IsNullOrWhiteSpace(Request["Companys"]))
+                {
+                    Companys = Request["Companys"].ToString();
+                }
+                //用户ID，应该从Session中取得
                 string UserId = string.Empty;
                 if (AccountData != null)
                 {
@@ -249,7 +254,7 @@ namespace PlasModel.Controllers
                 //{
                 if (!string.IsNullOrWhiteSpace(WhereString) && !string.IsNullOrWhiteSpace(SourceId))
                 {
-                    ds = plbll.GetReplace(SourceId, ver, UserId, WhereString, pageindex, pagesize, isLink, isfilter);
+                    ds = plbll.GetReplace(SourceId, ver, UserId, WhereString, pageindex, pagesize, isLink, isfilter, Companys);
                     if (ds.Tables.Contains("ds") && ds.Tables[0].Rows.Count > 0)
                     {
                         jsonstr = ToolHelper.DataTableToJson(ds.Tables[0]);
@@ -331,13 +336,18 @@ namespace PlasModel.Controllers
                 {
                     UserId = AccountData.UserName;//"张三或李四";
                 }
+                string Companys = string.Empty;
+                if (!string.IsNullOrWhiteSpace(Request["Companys"]))
+                {
+                    Companys = Request["Companys"].ToString();
+                }
 
                 var ds = new DataSet();
                 //if (!string.IsNullOrWhiteSpace(UserId))
                 //{
                 if (!string.IsNullOrWhiteSpace(proid) && !string.IsNullOrWhiteSpace(guidstr))
                 {
-                    ds = plbll.GetProductReplace(ver, proid, pageindex, pagesize, isfilter);
+                    ds = plbll.GetProductReplace(ver, proid, pageindex, pagesize, isfilter, Companys);
                     if (ds.Tables.Contains("ds") && ds.Tables[0].Rows.Count > 0)
                     {
                         jsonstr = ToolHelper.DataTableToJson(ds.Tables[0]);

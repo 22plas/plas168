@@ -119,7 +119,7 @@
             data: "pageindex=" + (pageindx + 1) + "&pagesize=" + pagesize + "&guidstr=" + guidstr + "&proid=" + proid + "&isLink=" + isLink + "&WhereString=" + WhereString + datas,
             async: false,
             success: function (json) {
-              //  debugger;
+                debugger;
                 if (json.msg == "") {
                     var productData = json.data;
                     rowcount = json.count;
@@ -129,18 +129,18 @@
                             //alert(n);
                             tbodyui += "<tr style='height:30px;line-height:30px;'>";
                             tbodyui += "<td><input type=\"checkbox\" name=\"checkbox\" id=\"checkbox_" + n.ProductId +"\"></td>";
-                            tbodyui += "<td class='xiangshidu'><a href='/PhysicalProducts/Detail/" + n.ProductId + ".html' target=\"_blank\">" + n.promodel + "</a></td>";
-                            tbodyui += "<td>" + n.placeorigin + "</td>";
+                            tbodyui += "<td class='xiangshidu'><a href='/PhysicalProducts/Detail/" + n.ProductId + ".html' target=\"_blank\">" + n.ProModel + "</a></td>";
+                            tbodyui += "<td>" + n.PlaceOrigin + "</td>";
                             tbodyui += "<td>" + n.characteristic + "</td>";
                             tbodyui += "<td>" + n.ProUse + "</td>";
-                            tbodyui += "<td><div class=\"layui-progress layui-progress-big\" lay-showpercent=\"true\"><div class=\"layui-progress-bar\" lay-percent=\"" + parseInt(n.ALikePercent) + "%\" style=\"width:" + parseInt(n.ALikePercent) + "%;\"><span class=\"layui-progress-text\">" + n.ALikePercent + "%</span></div></div></td>";
+                            tbodyui += "<td><div class=\"layui-progress layui-progress-big\" lay-showpercent=\"true\"><div class=\"layui-progress-bar\" lay-percent=\"" + parseInt(n.ALikePercent) + "%\" style=\"width:" + parseInt(n.ALikePercent) + "%;\"><span class=\"layui-progress-text\">" + parseFloat(n.ALikePercent).toFixed(2) + "%</span></div></div></td>";
                             tbodyui += "<td><a class=\"btn btn-orange btn-sm\" onClick=\"window.open('/PhysicalProducts/Detail/" + n.ProductId + ".html')\">查看对比详情</a></td>";//<button class=\"layui-btn layui-btn-normal\" onClick=\"window.location.href='/PhysicalProducts/Detail/" + n.ProductId + ".html'\">相识度详情</button><button class=\"layui-btn layui-btn-normal\">加入收藏</button>
                             tbodyui += "</tr>";
                         });
                     }
                     else {
                         tbodyui += "<tr>";
-                        tbodyui += "<td colspan=\"5\" align=\"center\" class='red'>未找到数据</td>";
+                        tbodyui += "<td colspan=\"7\" align=\"center\" class='red'>未找到数据</td>";
                         tbodyui += "</tr>";
                     }
                     $("#DataList").html(tbodyui);
@@ -176,10 +176,31 @@
     //点击筛选
     //data-guid="0" data-value="0"
     $("#CoompanyList").find("li").click(function () {
+        var thisval = $(this).attr("data-guid");
+        if (thisval == "0") {
+            $.each($("#CoompanyList").find("li"), function (index, item) {
+                $(this).removeClass("active");
+            })
+            $(this).addClass("active");//替换所有
+        }
+        else {
+            $("#CoompanyList").find("li").eq(0).removeClass("active");
+            $(this).addClass("active");
+        }
+
+        var companys = "";
         $.each($("#CoompanyList").find("li"), function (index, item) {
-            $(this).removeClass("active");
+            if ($(this).attr("data-value") != "0" && $(this).hasClass("active")) {
+                companys += $(this).attr("data-value") + ";";
+            }
         })
-        $(this).addClass("active");
+        alert(companys);
+        if (companys != "") {
+            companys = companys.substring(0, companys.length - 1);
+        }
+        isLink = "1";
+        datas = "&Companys=" + companys;
+        SubmitComparison(0)
     })
 
     //是否过滤

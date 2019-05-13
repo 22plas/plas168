@@ -108,7 +108,7 @@ namespace PlasDal
         //    return ds;
         //}
 
-        public DataSet GetReplace(string SourceId, string ver, string UserId, string WhereString, int pageno = 1, int pagesize = 20,string isLink="0",string isfilter="0")
+        public DataSet GetReplace(string SourceId, string ver, string UserId, string WhereString, int pageno = 1, int pagesize = 20,string isLink="0",string isfilter="0", string companys="")
         {
             //计算一个产品的相似度
             // SourceId = "1DDAEB1F-2EAA-4BF6-AD20-B2D1CB525D2A";// "2D1636B6-9548-4790-8F14-66DCD5879F2A";// "D161293C-4A8C-4267-B38A-D19A19B89682";// "2350C07B-D47C-46FD-88FF-00A903EF4594"; //TextProductId.Text.Trim();//
@@ -166,7 +166,7 @@ namespace PlasDal
             //以下代码实现第三步：最终相似度得分与排序，并实现分页显示 存储过程名称为：AlikeMerge_User
             //int pageno = 1;  //分页显示时的页码编号
             //int pagesize = 20;//分页显示时每页要求显示的记录条数
-            string sqlparm5 = string.Format("exec AlikeMerge_User '{0}',{1},{2},{3}", ver, pageno, pagesize, isfilter);
+            string sqlparm5 = string.Format("exec AlikeMerge_User '{0}',{1},{2},{3},{4},'{5}'", ver, pageno, pagesize, isfilter, 2052, companys);
             var ds = SqlHelper.GetSqlDataSet(sqlparm5);
             // SqlParameter[] parm5 = { new SqlParameter("@ver", ver), new SqlParameter("@pageno", pageno), new SqlParameter("@pagesize", pagesize) };
             // DataTable dt = SqlHelper.ExecProcSqlQuery_Param("AlikeMerge_User", parm5);
@@ -189,9 +189,9 @@ namespace PlasDal
         }
 
         //根据产品来获取数据信息
-        public DataSet GetProductReplace(string ver,string proGuid,int pageno,int pagesize,int isfilter)
+        public DataSet GetProductReplace(string ver,string proGuid,int pageno,int pagesize,int isfilter,string companys)
         {
-            string sqlparm5 = string.Format("exec AlikeReadByGuid '{0}','{1}',{2},{3},{4}", ver, proGuid, pageno, pagesize, isfilter);
+            string sqlparm5 = string.Format("exec AlikeReadByGuid '{0}','{1}',{2},{3},{4},{5},'{6}'", ver, proGuid, pageno, pagesize, isfilter, 2052, companys);
             var ds = SqlHelper.GetSqlDataSet(sqlparm5);
             return ds;
         }
