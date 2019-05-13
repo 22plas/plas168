@@ -17,13 +17,13 @@ namespace PlasModel.App_Start.Qiniu
 {
     public class QinQiuApi
     {
-        private static string AccessKey = ConfigurationManager.AppSettings["qiniuAccessKey"].ToString(); //"jMrLqQG-vKkJZpUC2aAJcuJPEy-QRNmU0js0rDJ1";
+        public static string AccessKey = ConfigurationManager.AppSettings["qiniuAccessKey"].ToString(); //"jMrLqQG-vKkJZpUC2aAJcuJPEy-QRNmU0js0rDJ1";
 
-        private static string SecretKey = ConfigurationManager.AppSettings["qiniuSecretKey"].ToString();//"aS5GPLu7_i63sI4ZpBK52rymlVKGFpqCwgMpz8yk";
+        public static string SecretKey = ConfigurationManager.AppSettings["qiniuSecretKey"].ToString();//"aS5GPLu7_i63sI4ZpBK52rymlVKGFpqCwgMpz8yk";
 
-        private const string Bucket = "test";
+        public const string Bucket = "suyi";
 
-        public static string ServerLink = ConfigurationManager.AppSettings["qiniuServerLink"].ToString();// "http://qiniu.rpshoping.com/";
+        public static string ServerLink = ConfigurationManager.AppSettings["qiniuServerLink"].ToString();// "http://qiniu.168plas.com/";
         private Mac mac;
 
         public QinQiuApi()

@@ -86,6 +86,79 @@ namespace PlasBll
                 return "Fail";
             }
         }
+        //短信登录
+        public string AccountLoginBll(string account)
+        {
+            try
+            {
+                //检测用户手机号是否被注册
+                DataTable usdt1 = mdal.GetUserDt(account, "phone");
+                if (usdt1.Rows.Count <= 0)
+                {
+                    return "NoFind";
+                }
+                else
+                {
+                    //根据手机号和密码查询用户信息
+                    DataTable usdt = mdal.AccountLgoinDal(account);
+                    if (usdt.Rows.Count > 0)
+                    {
+                        string returns = string.Format(@"Success,{0},{1},{2}", usdt.Rows[0]["ID"].ToString(), usdt.Rows[0]["UserName"].ToString(), usdt.Rows[0]["HeadImage"]);
+                        return returns;
+                    }
+                    else
+                    {
+                        return "Fail";
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return "Fail";
+            }
+        }
+        //修改密码
+        public string UpdateUserPwd(string phone, string newpwd)
+        {
+            try
+            {
+                //检测用户手机号是否被注册
+                DataTable usdt1 = mdal.GetUserDt(phone, "phone");
+                if (usdt1.Rows.Count <= 0)
+                {
+                    return "NoFind";
+                }
+                else
+                {
+                    //根据手机号和密码查询用户信息
+                    string returnstr = mdal.UpdateUserPwd(phone, newpwd);
+                    if (returnstr == "Success")
+                    {
+                        return "Success";
+                    }
+                    else
+                    {
+                        return "Fail";
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return "Fail";
+            }
+        }
+        /// <summary>
+        /// 修改用户信息
+        /// </summary>
+        /// <param name="filestr">字段名</param>
+        /// <param name="values">字段值</param>
+        /// <param name="usid">用户id</param>
+        /// <returns></returns>
+        public string UpdateUserInfobll(string filestr, string values, string usid)
+        {
+            return mdal.UpdateUserInfodal(filestr, values,usid);
+        }
+
         /// <summary>
         /// 根据用户id获取用户信息
         /// </summary>
