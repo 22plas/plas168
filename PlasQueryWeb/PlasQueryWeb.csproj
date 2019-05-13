@@ -507,6 +507,7 @@
     <Content Include="Views\PhysicalProducts\ViewDetail.cshtml" />
     <Content Include="Views\Replace\ReplaceGetList.cshtml" />
     <Content Include="Views\Replace\ProductReplace.cshtml" />
+    <Content Include="Views\Replace\More.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

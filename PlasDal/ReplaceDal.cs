@@ -196,6 +196,15 @@ namespace PlasDal
             return ds;
         }
 
+        //获取详情
+        public DataTable GetReplaceDetail(string productID,string Evn)
+        {
+            var dt = new DataTable();
+            string sql = string.Format(@"select * from ProductAlikeDetails where Sourprodid='{0}' 
+                                       and TargetProdid= '{1}'", productID, Evn);
+            dt = SqlHelper.GetSqlDataTable(sql.ToString());
+            return dt;
+        }
 
     }
 }

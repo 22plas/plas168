@@ -376,5 +376,20 @@ namespace PlasModel.Controllers
         }
 
 
+        /// <summary>
+        /// 显示详情
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult More(string ProductID,string Ven)
+        {
+            var dt = new DataTable();
+            if (!string.IsNullOrWhiteSpace(ProductID) && !string.IsNullOrWhiteSpace(Ven))
+            {
+                dt = plbll.GetReplaceDetail(ProductID, Ven);
+            }
+            ViewBag.allData = dt;
+            return View();
+        }
+
     }
 }

@@ -30,5 +30,10 @@ namespace PlasBll
         {
             return dal.GetProductReplace(ver, proGuid, pageno, pagesize, isfilter, companys);
         }
+        //获取详情
+        public DataTable GetReplaceDetail(string productID, string Evn)
+        {
+            return dal.GetReplaceDetail(productID, Evn);
+        }
     }
 }
