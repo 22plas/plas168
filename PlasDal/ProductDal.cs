@@ -282,5 +282,29 @@ namespace PlasDal
         #endregion
 
 
+        /// <summary>
+        /// 查询产品下面的PDF
+        /// </summary>
+        /// <param name="proguid"></param>
+        /// <returns></returns>
+        public DataTable GetProductPdf(string proguid)
+        {
+            DataTable dt = new DataTable();
+            string sql = string.Format(@"select a.*,b.* from Product_TestPdf as a 
+                                        left join Product_TypePdf as b on a.testtype = b.id
+                                        where a.ProductGuid = '{0}'", proguid);
+            dt = SqlHelper.GetSqlDataTable(sql);
+            return dt;
+        }
+
+
+        //获取产品信息
+        public DataTable GetProductMessage(string guid)
+        {
+            string sql = string.Format("select * from product where ProductGuid='{0}'", guid);
+            var dt = SqlHelper.GetSqlDataTable(sql.ToString());
+            return dt;
+        }
+
     }
 }
