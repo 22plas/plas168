@@ -29,7 +29,7 @@
                 <li style="font-size:16px; font-weight:bold; color:#F60">是否过滤掉同 SINDUSTRISPP 品牌下的替代物:</li>
                 <li><label><input name="isFiter" type="radio" value="1">过滤</label></li>
                 <li><label><input name="isFiter" type="radio" value="0">不过滤</label></li>
-                <li> <!--<a class="btn btn-orange btn-sm">用户自定义权重</a>--><button class="layui-btn layui-btn-sm" onclick="window.location.href='/Replace/ReplaceList?Rpt=@ViewBag.ProGuid'">自定义权重</button></li>
+                <li> <!--<a class="btn btn-orange btn-sm">用户自定义权重</a>--><button class="layui-btn layui-btn-sm" onclick="window.location.href='/Replace/ReplaceGetList?Rpt=@ViewBag.ProGuid'">自定义权重</button></li>
             </ul>
         </div>
 
@@ -64,10 +64,12 @@
             <thead>
                 <tr>
                     <th width="10%">选取</th>
-                    <th width="25%">牌号</th>
-                    <th width="25%">厂商</th>
-                    <th width="25%">相似度</th>
-                    <th width="15%">操作</th>
+                    <th width="15%">牌号</th>
+                    <th width="15%">厂商</th>
+                    <th width="15%">产品特性</th>
+                    <th width="20%">用途</th>
+                    <th width="15%">相似度</th>
+                    <th width="10%">操作</th>
                 </tr>
             </thead>
             <tbody id="DataList">
@@ -129,6 +131,8 @@
                             tbodyui += "<td><input type=\"checkbox\" name=\"checkbox\" id=\"checkbox_" + n.ProductId +"\"></td>";
                             tbodyui += "<td class='xiangshidu'><a href='/PhysicalProducts/Detail/" + n.ProductId + ".html' target=\"_blank\">" + n.promodel + "</a></td>";
                             tbodyui += "<td>" + n.placeorigin + "</td>";
+                            tbodyui += "<td>" + n.characteristic + "</td>";
+                            tbodyui += "<td>" + n.ProUse + "</td>";
                             tbodyui += "<td><div class=\"layui-progress layui-progress-big\" lay-showpercent=\"true\"><div class=\"layui-progress-bar\" lay-percent=\"" + parseInt(n.ALikePercent) + "%\" style=\"width:" + parseInt(n.ALikePercent) + "%;\"><span class=\"layui-progress-text\">" + n.ALikePercent + "%</span></div></div></td>";
                             tbodyui += "<td><a class=\"btn btn-orange btn-sm\" onClick=\"window.open('/PhysicalProducts/Detail/" + n.ProductId + ".html')\">查看对比详情</a></td>";//<button class=\"layui-btn layui-btn-normal\" onClick=\"window.location.href='/PhysicalProducts/Detail/" + n.ProductId + ".html'\">相识度详情</button><button class=\"layui-btn layui-btn-normal\">加入收藏</button>
                             tbodyui += "</tr>";

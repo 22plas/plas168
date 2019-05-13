@@ -107,7 +107,7 @@
             <p class="title">我的工具盒</p>
             <ul class="ul-list">
                 <li><a href="javascript:void(0);"><i class="Hui-iconfont">&#xe610;</i>&nbsp;添加收藏</a></li>
-                <li><a href="/Replace/ReplaceList?Rpt=@ViewBag.ProdID" target="_blank"><i class="Hui-iconfont">&#xe709;</i>&nbsp;寻找相识</a></li>
+                <li><a href="/Replace/ProductReplace?PGuid=@ViewBag.ProdID" target="_blank"><i class="Hui-iconfont">&#xe709;</i>&nbsp;寻找相识</a></li>
                 <li><a href="javascript:void(0);" style="border-top:solid 1px #ff6a00;display:block;" onclick="viewpdf('@ViewBag.ProdID','@ViewBag.ProModel')"><i class="Hui-iconfont">&#xe640;</i>&nbsp;下载PDF</a></li>
                 @for (var i = 0; i < pdf.Rows.Count; i++)
                 {

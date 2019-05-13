@@ -423,7 +423,7 @@ namespace PlasCommon.SqlCommonQuery
                 {
                     DataSet ds = new DataSet();
 
-                    cmd.CommandTimeout = 10;
+                    cmd.CommandTimeout = 100;
                     connection.Open();
                     if (param != null)
                         cmd.Parameters.AddRange(param); //添加参数集
@@ -452,7 +452,7 @@ namespace PlasCommon.SqlCommonQuery
                 {
                     DataSet ds = new DataSet();
 
-                    cmd.CommandTimeout = 10;
+                    cmd.CommandTimeout = 100;
                     connection.Open();
                     SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                     adapter.Fill(ds, "ds");
@@ -477,7 +477,7 @@ namespace PlasCommon.SqlCommonQuery
                 {
                     DataSet ds = new DataSet();
 
-                    cmd.CommandTimeout = 10;
+                    cmd.CommandTimeout = 100;
                     connection.Open();
                     SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                     adapter.Fill(ds, "ds");
@@ -564,7 +564,7 @@ namespace PlasCommon.SqlCommonQuery
                     try
                     {
                         connection.Open();
-                        cmd.CommandTimeout = 10;
+                        cmd.CommandTimeout = 100;
                         cmd.Connection = connection;
                         cmd.CommandType = CommandType.StoredProcedure;
                         cmd.CommandText = ProcName;
