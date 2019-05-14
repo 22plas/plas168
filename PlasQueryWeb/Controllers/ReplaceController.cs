@@ -195,7 +195,8 @@ namespace PlasModel.Controllers
             }
             var company = new DataTable();
             //生产厂家
-            company = bll.GetSearchParam(4, 15);
+            var com = bll.GetSearchParam(4, 10000);
+            company = com.DefaultView.ToTable(true, "Name");
             ViewBag.ProGuid = ProductGuid;
             ViewBag.WhereString = WhereString;
             ViewBag.company = company;
@@ -307,7 +308,8 @@ namespace PlasModel.Controllers
             
             var company = new DataTable();
             //生产厂家
-            company = bll.GetSearchParam(4, 15);
+            var com = bll.GetSearchParam(4, 10000);
+            company = com.DefaultView.ToTable(true, "Name");
             ViewBag.ProGuid = ProductGuid;
             ViewBag.company = company;
             ViewBag.ProductName = ProductName;

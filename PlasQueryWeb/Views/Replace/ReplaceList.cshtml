@@ -10,6 +10,9 @@
     .btn {
         border-radius:0px !important;
     }
+    .none {
+        display: none !important;
+    }
 </style>
 @Html.Partial("~/Views/Public/SubPageNav.cshtml")
 @{
@@ -41,7 +44,7 @@
                 <li class="active" data-guid="0" data-value="0">全部</li>
                 @for (var i = 0; i < company.Rows.Count; i++)
                 {
-                    <li data-guid="@company.Rows[i]["SmallGuid"].ToString()" data-value="@company.Rows[i]["Name"].ToString()">@company.Rows[i]["Name"].ToString()</li>
+                    <li data-guid="1" data-value="@company.Rows[i]["Name"].ToString()"  @(i>12?"name=liHide class=none":"")>@company.Rows[i]["Name"].ToString()</li>
                 }
             </ul>
         </div>
@@ -134,7 +137,7 @@
                             tbodyui += "<td>" + n.characteristic + "</td>";
                             tbodyui += "<td>" + n.ProUse + "</td>";
                             tbodyui += "<td><div class=\"layui-progress layui-progress-big\" lay-showpercent=\"true\"><div class=\"layui-progress-bar\" lay-percent=\"" + parseInt(n.ALikePercent) + "%\" style=\"width:" + parseInt(n.ALikePercent) + "%;\"><span class=\"layui-progress-text\">" + parseFloat(n.ALikePercent).toFixed(2) + "%</span></div></div></td>";
-                            tbodyui += "<td><a class=\"btn btn-orange btn-sm\" onClick=\"LookDetail('9C37DC9C-E867-46A2-97DF-32A9489BCDC4','4ff1ccec-fe48-4a62-9db9-5ee2f64b1bc4');\">查看对比详情</a></td>";//<button class=\"layui-btn layui-btn-normal\" onClick=\"window.location.href='/PhysicalProducts/Detail/" + n.ProductId + ".html'\">相识度详情</button><button class=\"layui-btn layui-btn-normal\">加入收藏</button>
+                            tbodyui += "<td><a class=\"btn btn-orange btn-sm\" onClick=\"LookDetail('" + proid + "','" + n.ProductId+"');\">查看对比详情</a></td>";//<button class=\"layui-btn layui-btn-normal\" onClick=\"window.location.href='/PhysicalProducts/Detail/" + n.ProductId + ".html'\">相识度详情</button><button class=\"layui-btn layui-btn-normal\">加入收藏</button>
                             tbodyui += "</tr>";
                         });
                     }
@@ -226,6 +229,22 @@
 
     }
 
+
+
+    $(".search-item-btn").click(function () {
+        if ($("li[name='liHide']").hasClass("none")) {
+            $.each($("li[name='liHide']"), function (index, item) {
+                $(this).removeClass("none");
+            })
+            $(".search-item-btn").html("隐藏 ∧");
+        }
+        else {
+            $.each($("li[name='liHide']"), function (index, item) {
+                $(this).addClass("none");
+            })
+            $(".search-item-btn").html("展开 ∨");
+        }
+    })
 
 </script>
 
