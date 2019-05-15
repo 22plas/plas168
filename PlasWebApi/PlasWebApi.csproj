@@ -247,6 +247,20 @@
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PlasBll\PlasBll.csproj">
+      <Project>{260e7af6-f95a-4e09-9fda-526ab0750906}</Project>
+      <Name>PlasBll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlasCommon\PlasCommon.csproj">
+      <Project>{eac881dd-c7dd-419c-bca9-6286d7545ff5}</Project>
+      <Name>PlasCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlasModel\PlasModel.csproj">
+      <Project>{8d6bbea3-233c-402d-9611-904b9a656644}</Project>
+      <Name>PlasModel</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
