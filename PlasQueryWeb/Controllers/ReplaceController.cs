@@ -195,11 +195,11 @@ namespace PlasModel.Controllers
             }
             var company = new DataTable();
             //生产厂家
-            var com = bll.GetSearchParam(4, 10000);
-            company = com.DefaultView.ToTable(true, "Name");
+            //var com = bll.GetSearchParam(4, 10000);
+            //company = com.DefaultView.ToTable(true, "Name");
             ViewBag.ProGuid = ProductGuid;
             ViewBag.WhereString = WhereString;
-            ViewBag.company = company;
+            //ViewBag.company = company;
             ViewBag.ProModel = ProModel;
             return View();
         }
@@ -308,10 +308,10 @@ namespace PlasModel.Controllers
             
             var company = new DataTable();
             //生产厂家
-            var com = bll.GetSearchParam(4, 10000);
-            company = com.DefaultView.ToTable(true, "Name");
+         //   var com = bll.GetSearchParam(4, 10000);
+         //   company = com.DefaultView.ToTable(true, "Name");
             ViewBag.ProGuid = ProductGuid;
-            ViewBag.company = company;
+            //ViewBag.company = company;
             ViewBag.ProductName = ProductName;
             return View();
         }
@@ -323,6 +323,7 @@ namespace PlasModel.Controllers
             string jsonstr = string.Empty;
             int isfilter=0;//是否过滤
             int count = 0;
+            string companys = string.Empty;
             try
             {
       
@@ -358,6 +359,11 @@ namespace PlasModel.Controllers
                     {
                         int.TryParse(ds.Tables[1].Rows[0]["counts"].ToString(), out count);
                     }
+                    if (ds.Tables.Contains("ds2") && ds.Tables[2].Rows.Count > 0)
+                    {
+                        companys = ToolHelper.DataTableToJson(ds.Tables[2]);
+                    }
+                    
                 }
                 else
                 {
@@ -374,7 +380,7 @@ namespace PlasModel.Controllers
             }
 
 
-            return Json(new { data = jsonstr, count = count, msg = sErr }, JsonRequestBehavior.AllowGet);
+            return Json(new { data = jsonstr, count = count, companys= companys, msg = sErr }, JsonRequestBehavior.AllowGet);
         }
 
 

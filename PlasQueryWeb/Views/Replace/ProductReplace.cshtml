@@ -41,11 +41,8 @@
         <div class="search-item-type">生产厂商：</div>
         <div class="search-item-content" style="height: auto;">
             <ul id="CoompanyList">
-                <li class="active" data-guid="0" data-value="0">全部</li>
-                @for (var i = 0; i < company.Rows.Count; i++)
-                {
-                    <li data-guid="1" data-value="@company.Rows[i]["Name"].ToString()" @(i > 12 ? "name=liHide class=none" : "")>@company.Rows[i]["Name"].ToString()</li>
-                }
+                
+               
             </ul>
         </div>
         <!--∧-->
@@ -104,6 +101,7 @@
         page_indx = pageindx;
         var chaeckvalue = "";
         var tbodyui = "";
+        var com_pany = "";
         var isinput = true;
         if (proid == "" ) {
             layer.alert("请先选择产品和参数!");
@@ -142,7 +140,23 @@
                         tbodyui += "</tr>";
                     }
                     $("#DataList").html(tbodyui);
+                    var comcount = 0;
+                    if (json.companys != "") {
+                        comcount++;
+                        com_pany += "<li class=\"active\" data-guid=\"0\" data-value=\"0\">全部</li>";
+                        $.each(JSON.parse(json.companys), function (a, b) {
+                            com_pany += " <li data-guid=\"1\" data-value=\"\"  ";
+                            if (comcount > 12) {
+                                com_pany += "name='liHide' class='none'";
+                            }
+                            com_pany += " >" + b.PlaceOrigin+"</li>";
+                        })
+                        $("#CoompanyList").html(com_pany);
+                    }
+
                 }
+
+
                 else {
                     layer.msg(json.msg, { icon: 5 });
 
@@ -163,7 +177,33 @@
             num_edge_entries: 1
         });
         $("html, body").stop().animate({ scrollTop: $("#records").offset().top - 200 }, 400);
+        $("#CoompanyList").find("li").click(function () {
+            var thisval = $(this).attr("data-guid");
+            if (thisval == "0") {
+                $.each($("#CoompanyList").find("li"), function (index, item) {
+                    $(this).removeClass("active");
+                })
+                $(this).addClass("active");//替换所有
+            }
+            else {
+                $("#CoompanyList").find("li").eq(0).removeClass("active");
+                $(this).addClass("active");
+            }
 
+            var companys = "";
+            $.each($("#CoompanyList").find("li"), function (index, item) {
+                if ($(this).attr("data-value") != "0" && $(this).hasClass("active")) {
+                    companys += $(this).attr("data-value") + ";";
+                }
+            })
+            // alert(companys);
+            if (companys != "") {
+                companys = companys.substring(0, companys.length - 1);
+            }
+            isLink = "1";
+            datas = "&Companys=" + companys;
+            SubmitComparison(0)
+        })
     }
 
     function pageselectCallback(page_id, jq) {
@@ -173,33 +213,7 @@
 
     //点击筛选
     //data-guid="0" data-value="0"
-    $("#CoompanyList").find("li").click(function () {
-        var thisval = $(this).attr("data-guid");
-        if (thisval == "0") {
-            $.each($("#CoompanyList").find("li"), function (index, item) {
-                $(this).removeClass("active");
-            })
-            $(this).addClass("active");//替换所有
-        }
-        else {
-            $("#CoompanyList").find("li").eq(0).removeClass("active");
-            $(this).addClass("active");
-        }
-
-        var companys = "";
-        $.each($("#CoompanyList").find("li"), function (index, item) {
-            if ($(this).attr("data-value") != "0" && $(this).hasClass("active")) {
-                companys += $(this).attr("data-value")+";";
-            }
-        })
-       // alert(companys);
-        if (companys != "") {
-            companys = companys.substring(0, companys.length - 1);
-        }
-        isLink = "1";
-        datas = "&Companys=" + companys;
-        SubmitComparison(0)
-    })
+    
 
     //是否过滤
     $("input[name='isFiter']").click(function () {
