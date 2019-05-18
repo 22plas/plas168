@@ -82,7 +82,7 @@
 
         <div class="search-content-box">
             <div class="search-content-page">
-                共搜索到<span style="color: red;">100万</span>条相关商品信息
+                共搜索到<span style="color: red;" id="counts">100万</span>条相关商品信息
             </div>
             <div class="search-content">
                 <table>
@@ -142,6 +142,7 @@
                 var productData = json.data;
                 var strvar = "";
                 rowcount = json.totalCount;
+                $("#counts").html(rowcount);
                 if (rowcount != 0 && productData != "") {
                     $.each(JSON.parse(productData), function (i, n) {
                         tbodyui += "<tr onclick=\"selectradio('" + n.ProductGuid + "');\" ondblclick=\"shartProduct('" + n.ProductGuid + "','" + n.ProModel+"')\">";

@@ -111,7 +111,7 @@
                 <li><a href="javascript:void(0);" style="border-top:solid 1px #ff6a00;display:block;" onclick="viewpdf('@ViewBag.ProdID','@ViewBag.ProModel')"><i class="Hui-iconfont">&#xe640;</i>&nbsp;下载PDF</a></li>
                 @for (var i = 0; i < pdf.Rows.Count; i++)
                 {
-                    <li><a href="@pdf.Rows[i]["pdfPath"].ToString()" ><span style="border:solid 1px @(pdf.Rows[i]["ImagesColor"].ToString()); padding:3px 5px;background:@(pdf.Rows[i]["ImagesColor"].ToString());color:#fff;">@(pdf.Rows[i]["TypeName"].ToString().Length > 0 ? pdf.Rows[i]["TypeName"].ToString().Substring(0,1) : "")</span>&nbsp;@pdf.Rows[i]["TypeName"]</a></li>
+                    <li><a href="@((ViewBag.PdfUrl)+pdf.Rows[i]["pdfPath"].ToString())" ><span style="border:solid 1px @(pdf.Rows[i]["ImagesColor"].ToString()); padding:3px 5px;background:@(pdf.Rows[i]["ImagesColor"].ToString());color:#fff;">@(pdf.Rows[i]["TypeName"].ToString().Length > 0 ? pdf.Rows[i]["TypeName"].ToString().Substring(0,1) : "")</span>&nbsp;@pdf.Rows[i]["TypeName"]</a></li>
                 }
                 
             </ul>

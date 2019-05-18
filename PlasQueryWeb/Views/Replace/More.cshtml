@@ -23,7 +23,7 @@
                         <tr style="height:35px; line-height:35px;">
                             <th style="padding:0px 5px;">@(all.Rows[i]["Attribute1"].ToString())</th>
                             <th style="padding:0px 5px;">@(all.Rows[i]["Attribute2"].ToString())</th>
-                            <th style="padding:0px 5px;"><div class="layui-progress layui-progress-big" lay-showpercent="true"><div class="layui-progress-bar" lay-percent="@(all.Rows[i]["AlikePercent"].ToString())" style="width:@(all.Rows[i]["AlikePercent"].ToString());"><span class="layui-progress-text">@(decimal.Round(decimal.Parse(all.Rows[i]["AlikePercent"].ToString()),2))</span></div></div></th>
+                            <th style="padding:0px 5px;"><div class="layui-progress layui-progress-big" lay-showpercent="true"><div class="layui-progress-bar" lay-percent="@(all.Rows[i]["AlikePercent"].ToString())" style="width:@(all.Rows[i]["AlikePercent"].ToString());"><span class="layui-progress-text">@(all.Rows[i]["AlikePercent"].ToString())</span></div></div></th>
                             @*<th  style="padding:0px 5px;"><div class="layui-progress layui-progress-big" lay-showpercent="true"><div class="layui-progress-bar" lay-percent="@(all.Rows[i]["AttributeValueResult"].ToString())%" style="width:@(all.Rows[i]["AttributeValueResult"].ToString())%;"><span class="layui-progress-text">@(decimal.Round(decimal.Parse(all.Rows[i]["AttributeValueResult"].ToString()), 2))%</span></div></div></th>*@
                         </tr>
                     }

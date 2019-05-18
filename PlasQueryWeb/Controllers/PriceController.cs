@@ -19,8 +19,9 @@ namespace PlasModel.Controllers
             //在Pri_DayAvgPrice 取
             //种类
             //生产厂家
-            companyAndtype = bll.GetPriceType(10);
 
+            companyAndtype = bll.GetPriceType(0);
+ 
             ViewBag.company = companyAndtype;
             return View();
         }

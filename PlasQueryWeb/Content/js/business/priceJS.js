@@ -30,15 +30,29 @@
     $(".search-item-btn").click(function () {
         var dataval = $(this).attr("data-type");
         var datatile = $(this).attr("data-typename");
-        layer.open({
-            type: 2,
-            title: 'MORE-' + datatile,
-            shadeClose: true,
-            shade: 0.8,
-            maxmin: true,
-            area: ['90%', '90%'],
-            content: '/Price/More?rid=' + dataval + "&rname=" + datatile + "&more=1"
-        });
+
+        if ($("li[name='cailiaotype_" + dataval + "']").hasClass("none")) {
+            $.each($("li[name='cailiaotype_" + dataval + "']"), function (index, item) {
+                $(this).removeClass("none");
+            })
+            $(this).html("隐藏 ∧");
+        }
+        else {
+            $.each($("li[name='cailiaotype_" + dataval + "']"), function (index, item) {
+                $(this).addClass("none");
+            })
+            $(this).html("更多 ∨");
+        }
+
+        //layer.open({
+        //    type: 2,
+        //    title: 'MORE-' + datatile,
+        //    shadeClose: true,
+        //    shade: 0.8,
+        //    maxmin: true,
+        //    area: ['90%', '90%'],
+        //    content: '/Price/More?rid=' + dataval + "&rname=" + datatile + "&more=1"
+        //});
     })
 
 
@@ -46,6 +60,7 @@
     $(".search-item-content").find("li").click(function () {
         var dataname = $(this).parent().attr("data-typename");//名称
         var datatype = $(this).parent().attr("data-type");//类型
+        var dataguid = $(this).attr("data-guid");
         var dataval = $(this).attr("data-value");
         var str = "";
         var istrue = false;
@@ -55,24 +70,40 @@
                 $(this).removeClass("active");
             })
             $("ul[data-type='" + datatype + "']").find("li").eq(0).addClass("active");
+            datas = "";
+            InitData(0);
             ///删除条件同类条件
-            $(".search_condition_wrap").find("span[datatype='" + datatype + "']").remove();
+            //$(".search_condition_wrap").find("span[datatype='" + datatype + "']").remove();
         }
         else {
             $("ul[data-type='" + datatype + "']").find("li").removeClass("active");
             $(this).removeClass("active").addClass("active");
             //首次添加
             $(".search_condition_wrap").find("span[datatype='" + datatype + "']").remove();
-            str = '<span class="search-select-item" title="' + dataval + '"  datatype="' + datatype + '" bigTitle="' + dataname + '">' + dataname + ':' + dataval + '<span class="fa fa-close" title="删除"></span></span>'
-            $(".search_condition_wrap").append(str);
+            //str = '<span class="search-select-item" title="' + dataval + '"  datatype="' + datatype + '" bigTitle="' + dataname + '">' + dataname + ':' + dataval + '<span class="fa fa-close" title="删除"></span></span>'
+            //$(".search_condition_wrap").append(str);
             ///删除已经选择的
-            $(".fa-close").click(function () {
-                //alert($(this).parent().html());
-                $(this).parent().remove();
+      
+            var strwhere = "";
+            $.each($("ul[data-type='1']").find("li"), function (index, item) {
+                if ($(this).hasClass("active") && $(this).attr("data-value") != "0") {
+                    strwhere += '&SmallClass=' + $(this).attr("data-value");
+                }
             })
-
+            $.each($("ul[data-type='4']").find("li"), function (index, item) {
+                if ($(this).hasClass("active") && $(this).attr("data-value")!="0") {
+                    strwhere += '&Manufacturer=' + $(this).attr("data-value");
+                }
+            })
+            datas = strwhere;
+            strwhere = "";
+            InitData(0);
 
         }
+
+
+
+
 
     })
 
@@ -88,6 +119,7 @@
     function InitData(pageindx) {
         page_indx = pageindx;
         var tbodyui = "";
+      //  alert(datas);
         $.ajax({
             type: "POST",
             dataType: "JSON",

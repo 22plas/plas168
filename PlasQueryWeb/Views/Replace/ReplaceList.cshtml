@@ -39,14 +39,8 @@
     </div>
     <div class="search-item">
         <div class="search-item-type">生产厂商：</div>
-        <div class="search-item-content"  style="height: auto;">
-            <ul id="CoompanyList">
-                <li class="active" data-guid="0" data-value="0">全部</li>
-                @for (var i = 0; i < company.Rows.Count; i++)
-                {
-                    <li data-guid="1" data-value="@company.Rows[i]["Name"].ToString()"  @(i>12?"name=liHide class=none":"")>@company.Rows[i]["Name"].ToString()</li>
-                }
-            </ul>
+        <div class="search-item-content3"  style="height: auto;">
+            <ul id="CoompanyList"></ul>
         </div>
         <!--∧-->
         <div class="search-item-btn">展开 ∨</div>
@@ -95,7 +89,9 @@
     var datas = "";
     var page_indx = 0;
     var guidstr = guid();
+    var com_pany = "";
     var isLink = "0";
+    var iscompany = "0";
     var proid = "@ViewBag.ProGuid";
     var WhereString = "@Html.Raw(ViewBag.WhereString)";
     $().ready(function () {
@@ -147,6 +143,25 @@
                         tbodyui += "</tr>";
                     }
                     $("#DataList").html(tbodyui);
+
+
+                    var comcount = 0;
+                    if (json.companys != "" && iscompany == "0") {
+
+                        com_pany += "<li class=\"active\" id=\"NameCompany_0\" onclick=\"selectComapny('0','NameCompany_0')\" data-guid=\"0\" data-value=\"0\">全部</li>";
+                        $.each(JSON.parse(json.companys), function (a, b) {
+                            comcount++;
+                            com_pany += " <li data-guid=\"1\" id=\"NameCompany_" + comcount + "\" onclick=\"selectComapny('" + b.PlaceOrigin + "','NameCompany_" + comcount + "')\" data-value=\"" + b.PlaceOrigin + "\"  ";
+                            if (comcount > 12) {
+                                com_pany += "name='liHide' class='none'";
+                            }
+                            com_pany += " >" + b.PlaceOrigin + "</li>";
+                        })
+                        $("#CoompanyList").html(com_pany);
+
+
+                    }
+
                 }
                 else {
                     layer.msg(json.msg, { icon: 5 });
@@ -229,7 +244,33 @@
 
     }
 
-
+    function selectComapny(objval, IdName) {
+        iscompany = "1";
+        var thisval = objval;
+        if (thisval == "0") {
+            $.each($("#CoompanyList").find("li"), function (index, item) {
+                $(this).removeClass("active");
+            })
+            $("#CoompanyList").find("li").eq(0).addClass("active");//替换所有
+        }
+        else {
+            $("#CoompanyList").find("li").eq(0).removeClass("active");
+            $("#" + IdName).addClass("active");
+        }
+        var companys = "";
+        $.each($("#CoompanyList").find("li"), function (index, item) {
+            if ($(this).attr("data-value") != "0" && $(this).hasClass("active")) {
+                companys += $(this).attr("data-value") + ";";
+            }
+        })
+        // alert(companys);
+        if (companys != "") {
+            companys = companys.substring(0, companys.length - 1);
+        }
+        isLink = "1";
+        datas = "&Companys=" + companys;
+        SubmitComparison(0);
+    }
 
     $(".search-item-btn").click(function () {
         if ($("li[name='liHide']").hasClass("none")) {
