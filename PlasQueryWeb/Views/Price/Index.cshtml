@@ -173,7 +173,7 @@
         <div class="search-item-type">材料类别：</div>
         <div class="search-item-content3">
             <ul  data-type="1" data-typename="材料类别">
-                <li data-guid="" data-value="0" class="active">全部</li>
+                <li data-guid="" class="search_item_contentList" data-value="0" class="active">全部</li>
                 @if (company.Tables.Contains("ds") && company.Tables[0].Rows.Count > 0)
                 {
                     for (var i = 0; i < company.Tables[0].Rows.Count; i++)
@@ -188,7 +188,7 @@
     <div class="search-item">
         <div class="search-item-type">厂家选择：</div>
         <div class="search-item-content3">
-            <ul  data-type="4" data-typename="生产厂家">
+            <ul  data-type="4" class="search_item_contentList" data-typename="生产厂家">
                 <li data-guid="" data-value="0" class="active">全部</li>
                 @if (company.Tables.Contains("ds1") && company.Tables[1].Rows.Count > 0)
                 {

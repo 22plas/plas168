@@ -57,7 +57,7 @@
 
 
     ///选中值，只能单选
-    $(".search-item-content").find("li").click(function () {
+$(".search_item_contentList").find("li").click(function () {
         var dataname = $(this).parent().attr("data-typename");//名称
         var datatype = $(this).parent().attr("data-type");//类型
         var dataguid = $(this).attr("data-guid");

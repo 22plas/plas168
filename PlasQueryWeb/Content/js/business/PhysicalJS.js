@@ -45,6 +45,7 @@ $(".orange-border").find("li").click(function () {
     $(this).addClass("active");
     var id = $(this).attr("id");
     $("table[name='AttrRightList']").hide();
+    $("#Attr_" + id).removeClass("none");
     $("#Attr_" + id).show();
 })
 ///选中值，可多选择
