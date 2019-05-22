@@ -203,16 +203,21 @@ $(".search_item_contentList").find("li").click(function () {
 
     //搜索
     $("#shartPrice").click(function () {
-        var strwhere = "";
-        var strmodel = "";
-        if ($(".search_condition_wrap").find("span[datatype='4']").length > 0) {
-            strwhere = '&Manufacturer=' + $(".search_condition_wrap").find("span[datatype='4']").attr("title");
-        }
+        //var strwhere = "";
+        //var strmodel = "";
+        //if ($(".search_condition_wrap").find("span[datatype='4']").length > 0) {
+        //    strwhere = '&Manufacturer=' + $(".search_condition_wrap").find("span[datatype='4']").attr("title");
+        //}
 
-        if ($(".search_condition_wrap").find("span[datatype='1']").length > 0) {
-            strmodel = '&SmallClass=' + $(".search_condition_wrap").find("span[datatype='1']").attr("title");
+        //if ($(".search_condition_wrap").find("span[datatype='1']").length > 0) {
+        //    strmodel = '&SmallClass=' + $(".search_condition_wrap").find("span[datatype='1']").attr("title");
+        //}
+        //datas = strwhere + strmodel;
+        if ($.trim($("#ProdcutModle").val()) == '') {
+            layer.msg('请输入产品型号!', { icon: 5 });
+            return false;
         }
-        datas = strwhere + strmodel;
+        datas = "&SmallClass=" + $.trim($("#ProdcutModle").val());
         InitData(0);
     })
 
