@@ -45,7 +45,7 @@ function InitData(pageindx) {
         data: "pageindex=" + (pageindx + 1) + "&pagesize=" + pagesize + "&key=" + keywork + "&strGuid=" + strGuid + "" + datas,
         async: false,
         success: function (json) {
-            //debugger;
+            debugger;
             try {
                 var productData = json.data;
                 var strvar = "";
