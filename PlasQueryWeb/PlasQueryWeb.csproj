@@ -227,6 +227,9 @@
     <Content Include="Content\images\360server-icon6.png" />
     <Content Include="Content\images\360server-icon7.png" />
     <Content Include="Content\images\360server-line.png" />
+    <Content Include="Content\images\news-001.png" />
+    <Content Include="Content\images\news-002.png" />
+    <Content Include="Content\images\news-003.png" />
     <Content Include="Content\images\tserver-ad-icon1.png" />
     <Content Include="Content\images\tserver-ad-icon2.png" />
     <Content Include="Content\images\tserver-ad-icon3.png" />

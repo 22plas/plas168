@@ -20,7 +20,7 @@
             padding-bottom: 10px;
         }
 
-        .item2 > .text-gray{
+        .item2 > .text-gray {
             padding: 10px 0;
             font-size: 14px;
             line-height: 25px;
@@ -65,6 +65,7 @@
         padding: 4px 10px;
         color: #777;
     }
+
 </style>
 
 @Html.Partial("~/Views/Public/Header.cshtml")
@@ -99,7 +100,7 @@
                         <!-- <a href="/Price/Index">查看详情</a>-->
                     </font>
                 </span>
-                </a>
+            </a>
         </li>
 
         <li>
@@ -113,7 +114,7 @@
                         <!--  <a href="/PhysicalProducts/Index">查看详情</a>-->
                     </font>
                 </span>
-                </a>
+            </a>
         </li>
 
         <li>
@@ -127,7 +128,7 @@
                         <!--  <a href="/Replace/Index">查看详情</a>-->
                     </font>
                 </span>
-                </a>
+            </a>
         </li>
 
         <li>
@@ -159,9 +160,65 @@
         </li>
 
     </ul>
-    </div>
+</div>
 
-    <div style=" margin:20px 35px;  box-sizing: border-box;overflow: hidden;">
+
+<div class="info-container">
+    <div class="info-container-title">
+        <h2>新闻资讯</h2>
+    </div>
+    <div class="info-container-list clearfix">
+        <div class="info-listItem">
+            <div class="info-listItem-title">知识堂</div>
+            <dl class="info-listItem-list">
+                <dt>
+                    <a href="javascript:void(0)">
+                        <img src="/Content/images/news-001.png" alt="">
+                        <span>模板合集版下载 最新版本</span>
+                    </a>
+                </dt>
+                <dd><a href="javascript:void(0)">【使用教程】商品类型属性设置简述</a></dd>
+                <dd><a href="javascript:void(0)">【使用教程】添加商品之地区模式</a></dd>
+                <dd><a href="javascript:void(0)">【微信被劫持显示】空白页面解决方法</a></dd>
+            </dl>
+            <a href="javascript:void(0)" class="info-more">查看更多</a>
+        </div>
+        <div class="info-listItem">
+            <div class="info-listItem-title">资讯堂</div>
+            <dl class="info-listItem-list">
+                <dt>
+                    <a href="javascript:void(0)">
+                        <img src="/Content/images/news-002.png" alt="">
+                        <span>腾讯致谢360发现漏洞</span>
+                    </a>
+                </dt>
+                <dd><a href="javascript:void(0)">OPPO与支付宝合作，开启3D人脸支付技术！</a></dd>
+                <dd><a href="javascript:void(0)">对比小米8SE，“吓人的技术”荣耀play要凉了？</a></dd>
+                <dd><a href="javascript:void(0)">阿里京东掀起“无人物流”电商大战！</a></dd>
+            </dl>
+            <a href="javascript:void(0)" class="info-more">查看更多</a>
+        </div>
+        <div class="info-listItem">
+            <div class="info-listItem-title">快报堂</div>
+            <dl class="info-listItem-list">
+                <dt>
+                    <a href="javascript:void(0)">
+                        <img src="/Content/images/news-003.png" alt="">
+                     
+                        <span>CEO仲华俊做客第一财经《金融译时代》，畅谈未来新零售时代！</span>
+                    </a>
+                </dt>
+                <dd><a href="javascript:void(0)">多用户商城系统版本升级2.6.2版正式发布</a></dd>
+                <dd><a href="javascript:void(0)">多用户商城系统版本升级2.6版正式发布</a></dd>
+                <dd><a href="javascript:void(0)">多用户商城系统版本升级2.6</a></dd>
+            </dl>
+            <a href="javascript:void(0)" class="info-more">查看更多</a>
+        </div>
+    </div>
+</div>
+
+
+@*<div style=" margin:20px 35px;  box-sizing: border-box;overflow: hidden;">
         <a class="item2">
             <p class="title">通用塑料频道</p>
             <p class="text-gray">通用塑料主要包括聚乙烯、聚丙烯、聚氯乙烯、聚苯乙烯、ABS（丙烯酸-丁二烯-苯乙烯）、聚甲基苯烯酸甲酯和氨基塑料等,其产量占整个塑料产量的90%以上,故又称之为大宗塑料品种。</p>
@@ -183,19 +240,19 @@
                 <button class="btn btn-blue">更多资讯</button>
             </div>
         </a>
-    </div>
+    </div>*@
 
-    <script type="text/javascript">
-        function onSearch_Top_select() {
-            var keyword = $.trim($("#search_input_top").val());
-            if (keyword == "") {
-                alert("请输入任意塑料类型、型号、厂家、性能、用途!");
-                $("#search_input_top").focus();
-                return false;
-            }
-            else {
-                window.location.href = "/Product/Index?key=" + encodeURI(encodeURI(keyword));
-            }
+<script type="text/javascript">
+    function onSearch_Top_select() {
+        var keyword = $.trim($("#search_input_top").val());
+        if (keyword == "") {
+            alert("请输入任意塑料类型、型号、厂家、性能、用途!");
+            $("#search_input_top").focus();
+            return false;
         }
-    </script>
-    @Html.Partial("~/Views/Public/Bottom.cshtml")
+        else {
+            window.location.href = "/Product/Index?key=" + encodeURI(encodeURI(keyword));
+        }
+    }
+</script>
+@Html.Partial("~/Views/Public/Bottom.cshtml")
