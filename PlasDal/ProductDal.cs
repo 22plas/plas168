@@ -18,7 +18,11 @@ namespace PlasDal
             var ds = SqlHelper.GetSqlDataSet(string.Format(@"exec PROC_GetInfoByPguid '{0}' ", pguid));
             return ds;
         }
-
+        public DataSet NewGetModelInfo(string pguid)
+        {
+            var ds = SqlHelper.GetSqlDataSet(string.Format(@"exec readproduct '{0}' ", pguid));
+            return ds;
+        }
         #endregion
 
 
@@ -219,7 +223,7 @@ namespace PlasDal
         /// 
         /// </summary>
         /// <returns></returns>
-        public DataSet getPriceFile(string SmallClass ,string Manufacturer,string  Model, int pageindex = 1, int pagesize = 8)
+        public DataSet getPriceFile(string SmallClass ,string Manufacturer,string  Model,int pageindex = 1, int pagesize = 8)
         {
             string sql = string.Format("exec QueryPriceProc {0},{1},'{2}','{3}','{4}'", pageindex, pagesize, SmallClass, Manufacturer, Model);
             var ds = SqlHelper.GetSqlDataSet(sql);
@@ -262,6 +266,22 @@ namespace PlasDal
             sql.Append("Manufacturer as Name from Pri_DayAvgPrice group by Manufacturer ");
             var ds = SqlHelper.GetSqlDataSet(sql.ToString());
             return ds;
+        }
+
+        //获取行情走势中的分类\厂家
+        public DataSet GetPagePriceTypeOrFactory(string key, string type, int? pageindex = 1, int? pagesize = 10)
+        {
+            string sql = string.Format("exec QueryPriceProcClassAndFactory {0},{1},'{2}',{3}", pageindex.Value, pagesize.Value, key, Convert.ToInt32(type));
+            var ds = SqlHelper.GetSqlDataSet(sql);
+            return ds;
+        }
+        //获取产品所属厂家等信息
+        public DataTable GetProductFactoryInfo(string pid)
+        {
+            string sql = string.Format(@"select b.AliasName,c.Name from Product a inner join Sys_Manufacturer b on a.PlaceOrigin=b.EnglishName inner join Prd_SmallClass_l c on a.SmallClassId=c.parentguid
+                                        where a.ProductGuid = '{0}' and c.LanguageId = 2052", pid);
+            var dt = SqlHelper.GetSqlDataTable(sql);
+            return dt;
         }
 
         #endregion

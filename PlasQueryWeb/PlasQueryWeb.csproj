@@ -189,6 +189,7 @@
     <Compile Include="App_Start\Qiniu\QinQiuApi.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="CommonClass\PdfHelper.cs" />
+    <Compile Include="Controllers\AppApiController.cs" />
     <Compile Include="Controllers\AreaController.cs" />
     <Compile Include="Controllers\ContrastController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -526,6 +527,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="pdf\" />
+    <Folder Include="Views\AppApi\" />
     <Folder Include="Views\Area\" />
     <Folder Include="Views\EditorFoText\" />
     <Folder Include="Views\Uploader\" />

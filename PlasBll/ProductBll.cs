@@ -17,6 +17,10 @@ namespace PlasBll
         {
             return dal.GetModelInfo(pguid);
         }
+        public DataSet NewGetModelInfo(string pguid)
+        {
+            return dal.NewGetModelInfo(pguid);
+        }
 
         /// <summary>
         /// 热门产品
@@ -102,6 +106,17 @@ namespace PlasBll
         public DataSet GetPriceType(int numtop = 10)
         {
             return dal.GetPriceType(numtop);
+        }
+
+        //价格趋势分类\厂家列表
+        public DataSet GetPagePriceTypeOrFactory(string key, string type, int? pageindex = 1, int? pagesize = 10)
+        {
+            return dal.GetPagePriceTypeOrFactory(key, type, pageindex, pagesize);
+        }
+        //获取产品所属厂家等信息
+        public DataTable GetProductFactoryInfo(string pid)
+        {
+            return dal.GetProductFactoryInfo(pid);
         }
         #endregion
 

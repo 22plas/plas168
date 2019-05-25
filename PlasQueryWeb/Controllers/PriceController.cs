@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Text;
+using PlasModel.App_Start;
 
 namespace PlasModel.Controllers
 {
@@ -24,7 +25,6 @@ namespace PlasModel.Controllers
             ViewBag.company = companyAndtype;
             return View();
         }
-
 
         public JsonResult GetPriceList(int pageindex, int pagesize)
         {
@@ -45,7 +45,6 @@ namespace PlasModel.Controllers
             {
                 Model = Request["Model"].ToString();
             }
-
             ds = bll.getPriceFile(SmallClass, Manufacturer, Model, pageindex, pagesize);
             string jsonstr = string.Empty;
             int count = 0;
@@ -59,7 +58,6 @@ namespace PlasModel.Controllers
             }
             return Json(new { data = jsonstr, totalCount = count }, JsonRequestBehavior.AllowGet);
         }
-
 
 
         public JsonResult GetPriceDateList()
