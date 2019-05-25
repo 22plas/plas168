@@ -1,210 +1,258 @@
-﻿@{ViewBag.Title = "首页"; }
+﻿@{ViewBag.Title = "塑料和弹性体"; }
+@{var hotProducts = ViewBag.HotList == null ? (new List<PlasModel.ProductViewModel>()) : (ViewBag.HotList as List<PlasModel.ProductViewModel>);}
 <style type="text/css">
+    .item2 {
+        display: inline-block;
+        width: 30%;
+        /*height: 220px;*/
+        vertical-align: top;
+        margin: 30px 30px 0px 10px;
+        border: 1px solid #ddd;
+        background-color: #fff;
+        padding: 10px 20px;
+        box-sizing: border-box;
+    }
+
+        .item2 > .title {
+            font-size: 18px;
+            letter-spacing: 2px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .item2 > .text-gray {
+            padding: 10px 0;
+            font-size: 14px;
+            line-height: 25px;
+            min-height: 120px;
+        }
+
+    .index-more-btn {
+        padding: 10px 15px 0;
+        box-sizing: border-box;
+        text-align: right;
+        border-top: 1px solid #ddd;
+    }
+
     a {
         color: #000;
         text-decoration: none;
     }
 
-    #banner {
-        width: 100%;
-        height: 280px;
-        overflow: hidden;
+    .item-box > .item {
+        height: 210px;
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-left: 2.3%;
+        box-sizing: border-box;
+        background-color: #fff;
+        border-left: 5px solid #eaeaea;
+        border-right: 5px solid #eaeaea;
     }
 
-    .sections, .section {
-        height: 100%;
+    .item > .title {
+        font-weight: bold;
     }
 
-    #banner, .sections {
-        position: relative;
-    }
-
-    .section {
-        background-color: #000;
-        background-size: cover;
-        background-position: 50% 50%;
+    .item > .text-gray {
+        position: absolute;
+        width: 92%;
         text-align: center;
-        color: white;
     }
 
-    #section0 {
-        background-image: url('/Content/img/banner/1.jpg');
+    .search-common-item {
+        font-size: 12px;
+        padding: 4px 10px;
+        color: #777;
     }
 
-    #section1 {
-        background-image: url('/Content/img/banner/2.jpg');
-    }
-
-    #section2 {
-        background-image: url('/Content/img/banner/3.jpg');
-    }
-
-    #section3 {
-        background-image: url('/Content/img/banner/4.jpg');
-    }
-
-    #section4 {
-        background-image: url('/Content/img/banner/5.jpg');
-    }
-
-    #section5 {
-        background-image: url('/Content/img/banner/6.jpg');
-    }
 </style>
 
-<div class="header-white" style="justify-content: space-between">
+@Html.Partial("~/Views/Public/Header.cshtml")
+<link href="~/Content/css/iconfont/iconfont.css" rel="stylesheet" />
+<div class="header-orange">
     <div class="logo">
-        <a href="/"><img src="~/Content/img/logo.png" width="120" alt="塑蚁网-全国最精准永久免费塑胶和助剂材料物性搜索网站" title="塑蚁网-全国最精准永久免费塑胶和助剂材料物性搜索网站"></a>
+        <a href="/"><img src="/Content/img/logo-withe.png" alt="塑蚁网-全国最精准永久免费塑胶和助剂材料物性搜索网站" title="塑蚁网-全国最精准永久免费塑胶和助剂材料物性搜索网站"></a>
     </div>
-    <div class="navBox">
-        <ul class="nav" style="margin-right: 25px;">
-            <!--<li class="active">首页</li>-->
-            <!--<li><a href="search_height.html" target="_blank">高级搜索</a></li>
-        <li>材料替换</li>
-        <li><a href="contrast_detail.html" target="_blank">物性对比</a></li>
-        <li>应用案例</li>-->
-        </ul>
-        @if (ViewBag.username == "" || ViewBag.username == null)
-        {
-            <div class="logo-register-btn" style="margin-top: 22px;">
-                <a class="btn text-orange" href="/MemberCenter/Login">登录</a> | <a class="btn text-orange" href="/MemberCenter/Register">注册</a>
-            </div>
+    <div class="header-search-box" style="margin-top: 28px;">
+        <input type="text" class="search-input-orange" id="search_input_top" placeholder="请输入任意塑料类型、型号、厂家、性能、用途进行智能搜索"><span onclick="onSearch_Top_select();" class="fa fa-search search-icon text-orange">搜索</span>
+        <div class="common-models common-models-suliao-index">
+            常用型号：
+            @foreach (var item in hotProducts)
+            {
+                <span class="item"><a href="/PhysicalProducts/Detail/@(item.ProductGuid).html" style="color:#fff;" target="_blank">@item.ProModel</a></span>
             }
-        @if(ViewBag.username != ""&& ViewBag.username != null)
-        {
-            <div class="logo-register-btn" style="margin-top: 22px;border:none;">
-                <span>您好！ @ViewBag.username</span>
-                <a class="btn text-orange" href="/MemberCenter/Index">个人中心</a>
+        </div>
+    </div>
+</div>
+<div class="meal-cut">
+    <ul>
+
+        <li>
+            <a href="/Price/Index">
+                <span>
+                    <i class="fa fa-service fa-line-chart">
+                    </i>
+                    <h3>价格走势</h3>
+                    <p>种类 型号 厂家 用途 特性 熔脂 硬度等智能搜索</p>
+                    <b></b>
+                    <font>
+                        <!-- <a href="/Price/Index">查看详情</a>-->
+                    </font>
+                </span>
+            </a>
+        </li>
+
+        <li>
+            <a href="/PhysicalProducts/Index">
+                <span>
+                    <i class="fa fa-search"></i>
+                    <h3>高级搜索</h3>
+                    <p>各类多条件综合搜索</p>
+                    <b></b>
+                    <font>
+                        <!--  <a href="/PhysicalProducts/Index">查看详情</a>-->
+                    </font>
+                </span>
+            </a>
+        </li>
+
+        <li>
+            <a href="/Replace/Index">
+                <span>
+                    <i class="fa fa-compress"></i>
+                    <h3>材料替换</h3>
+                    <p>查找综合性能最接近的型号</p>
+                    <b></b>
+                    <font>
+                        <!--  <a href="/Replace/Index">查看详情</a>-->
+                    </font>
+                </span>
+            </a>
+        </li>
+
+        <li>
+            <a href="/Contrast/Index">
+                <span>
+                    <i class="fa fa-sign-language"></i>
+                    <h3>物性对比</h3>
+                    <p>各种类型号参数对比</p>
+                    <b></b>
+                    <font>
+                        <!--   <a href="/Contrast/Index">查看详情</a>-->
+                    </font>
+                </span>
+            </a>
+        </li>
+
+        <li>
+            <a href="javascript:void(0)" onclick="alert('暂未开放，敬请期待！');">
+                <span>
+                    <i class="fa fa-window-restore"></i>
+                    <h3>应用案例</h3>
+                    <p>使用案例查看</p>
+                    <b></b>
+                    <font>
+                        <!--    <a href="javascript:void(0)" onclick="alert('暂未开放，敬请期待！');">查看详情</a>-->
+                    </font>
+                </span>
+            </a>
+        </li>
+
+    </ul>
+</div>
+
+
+<div class="info-container">
+    <div class="info-container-title">
+        <h2>新闻资讯</h2>
+    </div>
+    <div class="info-container-list clearfix">
+        <div class="info-listItem">
+            <div class="info-listItem-title">知识堂</div>
+            <dl class="info-listItem-list">
+                <dt>
+                    <a href="javascript:void(0)">
+                        <img src="/Content/images/news-001.png" alt="">
+                        <span>模板合集版下载 最新版本</span>
+                    </a>
+                </dt>
+                <dd><a href="javascript:void(0)">【使用教程】商品类型属性设置简述</a></dd>
+                <dd><a href="javascript:void(0)">【使用教程】添加商品之地区模式</a></dd>
+                <dd><a href="javascript:void(0)">【微信被劫持显示】空白页面解决方法</a></dd>
+            </dl>
+            <a href="javascript:void(0)" class="info-more">查看更多</a>
+        </div>
+        <div class="info-listItem">
+            <div class="info-listItem-title">资讯堂</div>
+            <dl class="info-listItem-list">
+                <dt>
+                    <a href="javascript:void(0)">
+                        <img src="/Content/images/news-002.png" alt="">
+                        <span>腾讯致谢360发现漏洞</span>
+                    </a>
+                </dt>
+                <dd><a href="javascript:void(0)">OPPO与支付宝合作，开启3D人脸支付技术！</a></dd>
+                <dd><a href="javascript:void(0)">对比小米8SE，“吓人的技术”荣耀play要凉了？</a></dd>
+                <dd><a href="javascript:void(0)">阿里京东掀起“无人物流”电商大战！</a></dd>
+            </dl>
+            <a href="javascript:void(0)" class="info-more">查看更多</a>
+        </div>
+        <div class="info-listItem">
+            <div class="info-listItem-title">快报堂</div>
+            <dl class="info-listItem-list">
+                <dt>
+                    <a href="javascript:void(0)">
+                        <img src="/Content/images/news-003.png" alt="">
+                     
+                        <span>CEO仲华俊做客第一财经《金融译时代》，畅谈未来新零售时代！</span>
+                    </a>
+                </dt>
+                <dd><a href="javascript:void(0)">多用户商城系统版本升级2.6.2版正式发布</a></dd>
+                <dd><a href="javascript:void(0)">多用户商城系统版本升级2.6版正式发布</a></dd>
+                <dd><a href="javascript:void(0)">多用户商城系统版本升级2.6</a></dd>
+            </dl>
+            <a href="javascript:void(0)" class="info-more">查看更多</a>
+        </div>
+    </div>
+</div>
+
+
+@*<div style=" margin:20px 35px;  box-sizing: border-box;overflow: hidden;">
+        <a class="item2">
+            <p class="title">通用塑料频道</p>
+            <p class="text-gray">通用塑料主要包括聚乙烯、聚丙烯、聚氯乙烯、聚苯乙烯、ABS（丙烯酸-丁二烯-苯乙烯）、聚甲基苯烯酸甲酯和氨基塑料等,其产量占整个塑料产量的90%以上,故又称之为大宗塑料品种。</p>
+            <div class="index-more-btn">
+                <button class="btn btn-blue">更多资讯</button>
             </div>
+        </a>
+        <a class="item2">
+            <p class="title">工程塑料频道</p>
+            <p class="text-gray">工程塑料分为通用工程塑料和特种工程塑料两类.前者主要品种有聚酰胺、聚碳酸酯、聚甲醛、改性聚苯醚和热塑性聚酯五大通用工程塑料;后者主要是指耐热达150℃以上的工程塑料,主要品种有聚酰亚胺、聚苯硫醚、聚砜类、芳香族聚酰胺、聚芳酯、聚苯酯、聚芳醚酮、液晶聚合物和氟树脂等。</p>
+            <div class="index-more-btn">
+                <button class="btn btn-blue">更多资讯</button>
+            </div>
+        </a>
+        <a class="item2" style="margin-right:0px;">
+            <p class="title">弹性体/降解塑料</p>
+            <p class="text-gray">弹性体泛指在除去外力后能恢复原状的材料，然而具有弹性的材料并不一定是弹性体。主要品种有TPU,TPV,TPE,TPR,POE,TPEE。生物降解材料是指在适当和可表明期限的自然环境条件下，能够被微生物（如细菌、真菌和藻类等）完全分解变成低分子化合物的材料</p>
+            <div class="index-more-btn">
+                <button class="btn btn-blue">更多资讯</button>
+            </div>
+        </a>
+    </div>*@
+
+<script type="text/javascript">
+    function onSearch_Top_select() {
+        var keyword = $.trim($("#search_input_top").val());
+        if (keyword == "") {
+            alert("请输入任意塑料类型、型号、厂家、性能、用途!");
+            $("#search_input_top").focus();
+            return false;
         }
-
-    </div>
-</div>
-<div id="banner">
-    <div class="sections">
-        <div class="section" id="section0"><h3></h3></div>
-        <div class="section" id="section1"><h3></h3></div>
-        <div class="section" id="section2"><h3></h3></div>
-        <div class="section" id="section3"><h3></h3></div>
-        <div class="section" id="section4"><h3></h3></div>
-        <div class="section" id="section5"><h3></h3></div>
-    </div>
-</div>
-<div class="box" style="margin-top: 0;">
-    <div class="module-title">
-        服务行业
-    </div>
-    <div class="item-box">
-        <a class="item" style="background-color: #f0f0f0;" href="/Home/Home">
-            <p class="icon"><span class="fa fa-graduation-cap"></span></p>
-            <p class="title">塑料和弹性体</p>
-            <p><img src="~/Content/img/tanxingti.jpg" alt=""></p>
-        </a>
-        <a class="item" style="background-color: #ddd;" onclick="javascript: alert('暂未开放，请耐心等待！');">
-            <p class="icon"><span class="fa fa-star-half-o"></span></p>
-            <p class="title" style="color:#b5b1b1">涂料配料</p>
-            <p><img src="~/Content/img/tanxingti.jpg" alt=""></p>
-        </a>
-        <a class="item" style="background-color: #f0f0f0;" onclick="javascript: alert('暂未开放，请耐心等待！');">
-            <p class="icon"><span class="fa fa-bitbucket"></span></p>
-            <p class="title" style="color:#b5b1b1">胶粘剂成份</p>
-            <p><img src="~/Content/img/tanxingti.jpg" alt=""></p>
-        </a>
-        <a class="item" style="background-color: #ddd;" onclick="javascript: alert('暂未开放，请耐心等待！');">
-            <p class="icon"><span class="fa fa-reddit"></span></p>
-            <p class="title" style="color:#b5b1b1">化妆品成分</p>
-            <p><img src="~/Content/img/tanxingti.jpg" alt=""></p>
-        </a>
-        <a class="item" style="background-color: #f0f0f0;" onclick="javascript: alert('暂未开放，请耐心等待！');">
-            <p class="icon"><span class="fa fa-recycle"></span></p>
-            <p class="title" style="color:#b5b1b1">聚合物添加剂</p>
-            <p><img src="~/Content/img/tanxingti.jpg" alt=""></p>
-        </a>
-    </div>
-</div>
-<div class="box">
-    <div class="module-title">
-        塑蚁网: 您可信赖的全球原料和配料搜索引擎
-        <p class="child-title">汇集全球塑胶原料塑胶助剂新产品技术信息，含物性表TDS,UL黄卡，MSDS,ROHS,REACH报告等</p>
-    </div>
-    <div style="width: 90%;margin:0 auto;">
-        <div class="item-left">
-            <p style="font-size: 17px;letter-spacing: 1px;padding-left: 40px;">Spanning 10 industries, UL's Prospector offers accurate, reliable technical information for hundreds of thousands of products from suppliers around the world.</p>
-            <div style="text-align:center;margin-top:12px;">
-                <button class="btn btn-blue" type="button" onclick="window.location.href = '/MemberCenter/Register'" style="border-radius: 0;padding: 5px 15px;height: auto;font-size: 17px;">CREATE YOUR FREE ACCOUNT</button>
-            </div>
-        </div>
-        <div class="item-right">
-            <ul class="ul-remark1">
-                <li><span class="fa fa-copy icon"></span>享有对上成份技术文档的访问权</li>
-                <li><span class="fa fa-database icon" style="color: green;"></span>评估材料数据表和技术规格说明书</li>
-                <li><span class="fa fa-comments-o icon" style="color: orange;"></span>询价及获取产品技术支持</li>
-            </ul>
-        </div>
-    </div>
-</div>
-<div class="box">
-    <div class="module-title">
-        Universal Selector<sup>TM</sup>：世界上所有产品
-        <p class="child-title">通过我们的Universal Selector<sup>TM</sup>工具，我们可以访问 我们的化学品和材料数据库</p>
-    </div>
-    <div style="width: 90%;margin:0 auto;">
-        <div class="item-left">
-            <ul class="ul-remark2">
-                <li>
-                    <div class="icon-img">
-                        <img src="~/Content/img/detail.png" style="width: 80%;">
-                    </div>
-                    <div class="function-introduce">
-                        <p class="weight-title">详细</p>
-                        <p class="remark">我们的目标是提供上所有供应商的化学品和材料的技术数据</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="icon-img">
-                        <img src="~/Content/img/standard.png" style="width: 80%;">
-                    </div>
-                    <div class="function-introduce">
-                        <p class="weight-title">标准化</p>
-                        <p class="remark">我们努力使供应商在产品应用、产品系列或性能上发布数据的异构方式上标准化，以简化产品搜索和比较</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="icon-img">
-                        <img src="~/Content/img/search.png" style="width: 80%;">
-                    </div>
-                    <div class="function-introduce">
-                        <p class="weight-title">多重搜索</p>
-                        <p class="remark">按属性、按应用程序、按供应商、按品牌、按功能、按自由文本搜索...如果产品可以以某种方式搜索，你可以在我们的Universal Selector<sup>TM</sup>中找到它</p>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <div class="item-right">
-            <ul class="ul-remark2">
-                <li>
-                    <div class="icon-img">
-                        <img src="/Content/img/zhongbao.png" style="width: 80%;">
-                    </div>
-                    <div class="function-introduce">
-                        <p class="weight-title">众包</p>
-                        <p class="remark">协作：为了普及，我们依靠500,000多名会员报告新供应商缺少产品，并分享我们选择者所需的任何更新</p>
-                    </div>
-                </li>
-                <li>
-                    <div class="icon-img">
-                        <img src="/Content/img/zhongbao.png" style="width: 80%;">
-                    </div>
-                    <div class="function-introduce">
-                        <p class="weight-title">更新</p>
-                        <p class="remark">产品一推出，我们的目标就是将其添加到Universal Selector<sup>TM</sup>中</p>
-                    </div>
-                </li>
-                <li>
-
-                </li>
-            </ul>
-        </div>
-    </div>
-</div>
+        else {
+            window.location.href = "/Product/Index?key=" + encodeURI(encodeURI(keyword));
+        }
+    }
+</script>
 @Html.Partial("~/Views/Public/Bottom.cshtml")

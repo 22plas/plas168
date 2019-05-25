@@ -211,6 +211,7 @@ namespace PlasModel.Controllers
             string jsonstr = string.Empty;
             string isLink = string.Empty;//分页
             string isfilter = "0";//是否过滤
+            string companys = string.Empty;
             int count = 0;
             try
             {
@@ -251,6 +252,7 @@ namespace PlasModel.Controllers
                 //采用多少个任务来处理本次相似度运算，我们的SQL服务器有32个逻辑内核，这里采用30个任务来处理，
                 //当需要处理的目标物料较少时，由SQL存储过程会自动任务个数来保持执行效率
                 var ds = new DataSet();
+                
                 //if (!string.IsNullOrWhiteSpace(UserId))
                 //{
                 if (!string.IsNullOrWhiteSpace(WhereString) && !string.IsNullOrWhiteSpace(SourceId))
@@ -264,6 +266,12 @@ namespace PlasModel.Controllers
                     {
                         int.TryParse(ds.Tables[1].Rows[0]["ts"].ToString(), out count);
                     }
+
+                    if (ds.Tables.Contains("ds2") && ds.Tables[2].Rows.Count > 0)
+                    {
+                        companys = ToolHelper.DataTableToJson(ds.Tables[2]);
+                    }
+
                 }
                 else
                 {
@@ -280,7 +288,7 @@ namespace PlasModel.Controllers
             }
 
 
-            return Json(new { data = jsonstr, count = count, msg = sErr }, JsonRequestBehavior.AllowGet);
+            return Json(new { data = jsonstr, count = count, companys= companys, msg = sErr }, JsonRequestBehavior.AllowGet);
 
         }
 

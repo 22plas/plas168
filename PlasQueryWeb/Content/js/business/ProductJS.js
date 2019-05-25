@@ -24,6 +24,7 @@ $(".search-more-btn").click(function () {
 
 
 var strGuid = guid();
+var istow = "0";
 var pagesize = 20;
 var rowcount = 0;
 var datas = "";
@@ -34,6 +35,7 @@ $().ready(function () {
 });
 
 function InitData(pageindx) {
+    // alert(datas);
     page_indx = pageindx;
     var tbodyui = "";
     var typelist = "";
@@ -45,7 +47,7 @@ function InitData(pageindx) {
         data: "pageindex=" + (pageindx + 1) + "&pagesize=" + pagesize + "&key=" + keywork + "&strGuid=" + strGuid + "" + datas,
         async: false,
         success: function (json) {
-            //debugger;
+            // debugger;
             try {
                 var productData = json.data;
                 var strvar = "";
@@ -62,14 +64,15 @@ function InitData(pageindx) {
                         tbodyui += "<td><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.prodid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span> </td>";//<span class='layui-btn layui-btn-sm'><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>
                         tbodyui += "</tr>";
                     });
-                    if (json.BigType != "") {
+
+                    if (json.BigType != "" && istow == "0") {
                         $.each(eval(json.BigType), function (index, item) {
                             count++;
                             typelist += '<div class="search-item">';
                             typelist += '<div class="search-item-type">' + item.attribute + '：</div>';
                             typelist += '<div class="search-item-content">';
                             typelist += '<ul class="search-item-content" data-type="' + count + '" data-typename="' + item.attribute + '">';
-                            typelist += '<li data-guid="" data-value="0" class="active">全部</li>';
+                            typelist += "<li data-guid=\"\" data-value=\"0\" id=\"" + count + "_SamllType_0\" onClick=\"onselectobj('" + count + "', '0', '" + count + "_SamllType_0','" + item.attribute + "')\" class=\"active\">全部</li>";
                             var sammlCount = 0;
                             if (json.SamllType != "") {
                                 $.each(eval(json.SamllType), function (a, b) {
@@ -79,7 +82,7 @@ function InitData(pageindx) {
                                         if (sammlCount > 8) {
                                             typelist += ' style="display:none" name="SamllType_' + count + '"';
                                         }
-                                        typelist += ' data-value="' + b.attributevalue + '"  data-guid="" >' + b.attributevalue + '</li>';
+                                        typelist += " data-value=" + b.attributevalue + " id=\"" + count + "_SamllType_" + sammlCount + "\" onClick=\"onselectobj('" + count + "', '" + b.attributevalue + "','" + count + "_SamllType_" + sammlCount + "','" + item.attribute + "');\"  data-guid=\"\" >" + b.attributevalue + "</li>";
                                     }
                                 })
                             }
@@ -124,76 +127,8 @@ function InitData(pageindx) {
     $("html, body").stop().animate({ scrollTop: $("#records").offset().top - 200 }, 400);
 
 
-    ///选中值，只能单选
-    $(".search-item-content").find("li").click(function () {
-        var dataname = $(this).parent().attr("data-typename");//名称
-        var datatype = $(this).parent().attr("data-type");//类型
-        var dataval = $(this).attr("data-value");
-        var str = "";
-        var istrue = false;
-        ///添加样式
-        if (dataval == "0") {
-            $.each($("ul[data-type='" + datatype + "']").find("li"), function (index, item) {
-                $(this).removeClass("active");
-            })
-            $("ul[data-type='" + datatype + "']").find("li").eq(0).addClass("active");
-            ///删除条件同类条件
-            $(".search_condition_wrap").find("span[datatype='" + datatype + "']").remove();
-        }
-        else {
-            $("ul[data-type='" + datatype + "']").find("li").removeClass("active");
-            $(this).removeClass("active").addClass("active");
-            //首次添加
-            $(".search_condition_wrap").find("span[datatype='" + datatype + "']").remove();
-            str = '<span class="search-select-item" title="' + dataval + '"  datatype="' + datatype + '" bigTitle="' + dataname + '">' + dataname + ':' + dataval + '<span class="fa fa-close" title="删除"></span></span>'
-            $(".search_condition_wrap").append(str);
-            ///删除已经选择的
-            $(".fa-close").click(function () {
-                //alert($(this).parent().html());
-                $(this).parent().remove();
-            })
-        }
-        //重新检索
-        var Characteristic = "";//特性
-        var Use = "";//用途
-        var Kind = "";//种类
-        var Method = "";//方法
-        var Factory = "";//厂家
-        var Additive = "";//添加剂
-        var AddingMaterial = "";//增料
-
-        if ($("span[bigtitle='产品特性']").length > 0) {
-            Characteristic = $("span[bigtitle='产品特性']").attr("title");
-        }
-        if ($("span[bigtitle='产品用途']").length > 0) {
-            Use = $("span[bigtitle='产品用途']").attr("title");
-        }
-        if ($("span[bigtitle='产品种类']").length > 0) {
-            Kind = $("span[bigtitle='产品种类']").attr("title");
-        }
-        if ($("span[bigtitle='加工方法']").length > 0) {
-            Method = $("span[bigtitle='加工方法']").attr("title");
-        }
-        if ($("span[bigtitle='生产厂家']").length > 0) {
-            Factory = $("span[bigtitle='生产厂家']").attr("title");
-        }
-        if ($("span[bigtitle='添加剂']").length > 0) {
-            Additive = $("span[bigtitle='添加剂']").attr("title");
-        }
-        if ($("span[bigtitle='填料/增强']").length > 0) {
-            AddingMaterial = $("span[bigtitle='填料/增强']").attr("title");
-        }
-        datas = "&Characteristic=" + Characteristic + "&Use=" + Use + "&Kind=" + Kind + "&Method=" + Method + "&Factory=" + Factory + "&Additive=" + Additive + "&AddingMaterial=" + AddingMaterial;
-
-        InitData(0);
 
 
-    })
-
-    $(".fa-close").click(function () {
-        //alert($(this).parent().html());
-        $(this).parent().remove();
-    })
     ///重置结束
 
     ///点击更多显示
@@ -215,34 +150,36 @@ function pageselectCallback(page_id, jq) {
     InitData(page_id);
 }
 
-//查询
-$("#Query_btnData").click(function () {
-    //如果无查询条件必须输入查询条件
-    var key = $.trim($("#Txtkeyword").val());
-    if (key != '') {
-        //重新搜索，条件必须清零
-        keywork = key;
-        strGuid = guid();
-        for (var i = 0; i < 10; i++) {
-            $(".search_condition_wrap").find("span[datatype='" + i + "']").remove();
-        }
-        $(".search_condition_wrap").find("span[datatype='66']").remove();
-        $(".search_condition_wrap").append('<span class="search-select-item" title="搜索" datatype="66" bigtitle="搜索">搜索:' + keywork + '</span>');
+
+///选中值，只能单选
+function onselectobj(datatype, dataval, obj, dataname) {
+    istow = "1";
+    //alert(objtype + "+" + objval);
+    if (dataval == "0") {
+        $.each($("ul[data-type='" + datatype + "']").find("li"), function (index, item) {
+            $(this).removeClass("active");
+        })
+        $("ul[data-type='" + datatype + "']").find("li").eq(0).addClass("active");
+        ///删除条件同类条件
+        $(".search_condition_wrap").find("span[datatype='" + datatype + "']").remove();
     }
-    else if ($("span[datatype='66']").length == 0) {
-        if (key == '' || $.trim(key) == '') {
-            layer.alert("请输入关键字进行搜索", { closeBtn: 0 }, function (index) {
-                $("#Txtkeyword").focus();
-                layer.close(index);
-            });
-            return false;
-        }
-        keywork = key;
-        strGuid = guid();
-        $(".search_condition_wrap").find("span[datatype='66']").remove();
-        $(".search_condition_wrap").append('<span class="search-select-item" title="搜索" datatype="66" bigtitle="搜索">搜索:' + keywork + '</span>');
+    else {
+        $("ul[data-type='" + datatype + "']").find("li").removeClass("active");
+        // alert(obj);
+        $("#" + obj).removeClass("active").addClass("active");
+        //首次添加
+        $(".search_condition_wrap").find("span[datatype='" + datatype + "']").remove();
+        str = '<span class="search-select-item" title="' + dataval + '"  datatype="' + datatype + '" bigTitle="' + dataname + '">' + dataname + ':' + dataval + "<span class=\"fa fa-close\" onClick=\"romve(this,'" + obj + "');\" title=\"删除\"></span></span>"
+        $(".search_condition_wrap").append(str);
+
     }
 
+    sharet();
+}
+
+
+function sharet() {
+    //重新检索
     var Characteristic = "";//特性
     var Use = "";//用途
     var Kind = "";//种类
@@ -251,28 +188,56 @@ $("#Query_btnData").click(function () {
     var Additive = "";//添加剂
     var AddingMaterial = "";//增料
 
+    var strdatas = "";
+
+    //产品特性
     if ($("span[bigtitle='产品特性']").length > 0) {
         Characteristic = $("span[bigtitle='产品特性']").attr("title");
+        strdatas += "&Characteristic=" + Characteristic;
     }
+    //产品用途
     if ($("span[bigtitle='产品用途']").length > 0) {
         Use = $("span[bigtitle='产品用途']").attr("title");
+        strdatas += "&Use=" + Use;
     }
+    //产品种类
     if ($("span[bigtitle='产品种类']").length > 0) {
         Kind = $("span[bigtitle='产品种类']").attr("title");
+        strdatas += "&Kind=" + Kind;
     }
+    //加工方法
     if ($("span[bigtitle='加工方法']").length > 0) {
         Method = $("span[bigtitle='加工方法']").attr("title");
+        strdatas += "&Method=" + Method;
     }
+    //生产厂家
     if ($("span[bigtitle='生产厂家']").length > 0) {
         Factory = $("span[bigtitle='生产厂家']").attr("title");
+        strdatas += "&Factory=" + Factory;
     }
+    //添加剂
     if ($("span[bigtitle='添加剂']").length > 0) {
         Additive = $("span[bigtitle='添加剂']").attr("title");
+        strdatas += "&Additive=" + Additive;
     }
+    //填料/增强
     if ($("span[bigtitle='填料/增强']").length > 0) {
         AddingMaterial = $("span[bigtitle='填料/增强']").attr("title");
+        strdatas += "&AddingMaterial=" + AddingMaterial;
     }
-    datas = "&Characteristic=" + Characteristic + "&Use=" + Use + "&Kind=" + Kind + "&Method=" + Method + "&Factory=" + Factory + "&Additive=" + Additive + "&AddingMaterial=" + AddingMaterial;
+
+    datas = strdatas;
 
     InitData(0);
-})
+}
+
+function romve(self, obj) {
+    $(self).parent().remove();
+    if (obj.length > 0) {
+        $("#" + obj).removeClass("active");
+        var splitval = obj.substring(0, obj.length - 1) + "0";
+        $("#" + splitval).addClass("active");
+    }
+
+    sharet();
+}

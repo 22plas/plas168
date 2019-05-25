@@ -11,6 +11,8 @@ namespace PlasModel.Controllers
     {
         private PlasBll.ProductBll bll = new PlasBll.ProductBll();
         protected string MainHost = System.Web.Configuration.WebConfigurationManager.AppSettings["MainHost"];
+        protected string PdfUrl = System.Web.Configuration.WebConfigurationManager.AppSettings["PdfUrl"];
+        
         // GET:超级搜索
         public ActionResult Index()
         {
@@ -113,7 +115,7 @@ namespace PlasModel.Controllers
             {
                 pdfdt = bll.GetProductPdf(prodid);
             }
-
+            ViewBag.PdfUrl = PdfUrl;
             ViewBag.ProdID = prodid;
             ViewBag.LiveProdcut = LiveDs;
             ViewBag.pdfdt = pdfdt;

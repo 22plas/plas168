@@ -39,8 +39,8 @@
     </div>
     <div class="search-item">
         <div class="search-item-type">生产厂商：</div>
-        <div class="search-item-content" style="height: auto;">
-            <ul id="CoompanyList">
+        <div class="search-item-content3" style="height: auto;">
+            <ul id="CoompanyList" >
                 
                
             </ul>
@@ -89,6 +89,7 @@
     var page_indx = 0;
     var guidstr = guid();
     var isLink = "0";
+    var iscompany = "0";
     var proid = "@ViewBag.ProGuid";
     $().ready(function () {
         $(".navBox").find(".nav").find("li").eq(3).children("a").addClass("active");
@@ -141,18 +142,26 @@
                     }
                     $("#DataList").html(tbodyui);
                     var comcount = 0;
-                    if (json.companys != "") {
-                        comcount++;
-                        com_pany += "<li class=\"active\" data-guid=\"0\" data-value=\"0\">全部</li>";
+                    if (json.companys != "" && iscompany=="0") {
+                        
+                        com_pany += "<li class=\"active\" id=\"NameCompany_0\" onclick=\"selectComapny('0','NameCompany_0')\" data-guid=\"0\" data-value=\"0\">全部</li>";
                         $.each(JSON.parse(json.companys), function (a, b) {
-                            com_pany += " <li data-guid=\"1\" data-value=\"\"  ";
+                            comcount++;
+                            com_pany += " <li data-guid=\"1\" id=\"NameCompany_" + comcount + "\" onclick=\"selectComapny('" + b.PlaceOrigin+"','NameCompany_" + comcount +"')\" data-value=\"" + b.PlaceOrigin+"\"  ";
                             if (comcount > 12) {
                                 com_pany += "name='liHide' class='none'";
                             }
                             com_pany += " >" + b.PlaceOrigin+"</li>";
                         })
                         $("#CoompanyList").html(com_pany);
+
+                        
                     }
+
+
+                    
+
+
 
                 }
 
@@ -177,33 +186,7 @@
             num_edge_entries: 1
         });
         $("html, body").stop().animate({ scrollTop: $("#records").offset().top - 200 }, 400);
-        $("#CoompanyList").find("li").click(function () {
-            var thisval = $(this).attr("data-guid");
-            if (thisval == "0") {
-                $.each($("#CoompanyList").find("li"), function (index, item) {
-                    $(this).removeClass("active");
-                })
-                $(this).addClass("active");//替换所有
-            }
-            else {
-                $("#CoompanyList").find("li").eq(0).removeClass("active");
-                $(this).addClass("active");
-            }
-
-            var companys = "";
-            $.each($("#CoompanyList").find("li"), function (index, item) {
-                if ($(this).attr("data-value") != "0" && $(this).hasClass("active")) {
-                    companys += $(this).attr("data-value") + ";";
-                }
-            })
-            // alert(companys);
-            if (companys != "") {
-                companys = companys.substring(0, companys.length - 1);
-            }
-            isLink = "1";
-            datas = "&Companys=" + companys;
-            SubmitComparison(0)
-        })
+        
     }
 
     function pageselectCallback(page_id, jq) {
@@ -211,6 +194,64 @@
         SubmitComparison(page_id);
     }
 
+
+    function selectComapny(objval, IdName) {
+        iscompany = "1";
+        var thisval = objval;
+        if (thisval == "0") {
+            $.each($("#CoompanyList").find("li"), function (index, item) {
+                $(this).removeClass("active");
+            })
+            $("#CoompanyList").find("li").eq(0).addClass("active");//替换所有
+        }
+        else {
+            $("#CoompanyList").find("li").eq(0).removeClass("active");
+            $("#" + IdName).addClass("active");
+        }
+        var companys = "";
+        $.each($("#CoompanyList").find("li"), function (index, item) {
+            if ($(this).attr("data-value") != "0" && $(this).hasClass("active")) {
+                companys += $(this).attr("data-value") + ";";
+            }
+        })
+        // alert(companys);
+        if (companys != "") {
+            companys = companys.substring(0, companys.length - 1);
+        }
+        isLink = "1";
+        datas = "&Companys=" + companys;
+        SubmitComparison(0);
+    }
+
+
+
+    //$("#CoompanyList").find("li").click(function () {
+    //    var thisval = $(this).attr("data-guid");
+    //    if (thisval == "0") {
+    //        $.each($("#CoompanyList").find("li"), function (index, item) {
+    //            $(this).removeClass("active");
+    //        })
+    //        $(this).addClass("active");//替换所有
+    //    }
+    //    else {
+    //        $("#CoompanyList").find("li").eq(0).removeClass("active");
+    //        $(this).addClass("active");
+    //    }
+
+    //    var companys = "";
+    //    $.each($("#CoompanyList").find("li"), function (index, item) {
+    //        if ($(this).attr("data-value") != "0" && $(this).hasClass("active")) {
+    //            companys += $(this).attr("data-value") + ";";
+    //        }
+    //    })
+    //    // alert(companys);
+    //    if (companys != "") {
+    //        companys = companys.substring(0, companys.length - 1);
+    //    }
+    //    isLink = "1";
+    //    datas = "&Companys=" + companys;
+    //    SubmitComparison(0)
+    //})
     //点击筛选
     //data-guid="0" data-value="0"
     

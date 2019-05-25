@@ -20,7 +20,7 @@ namespace PlasQueryWeb.Controllers
             }
         }
         //首页
-        public ActionResult Index()
+        public ActionResult Index2()
         {
             if (AccountData != null)
             {
@@ -29,6 +29,17 @@ namespace PlasQueryWeb.Controllers
             else
             {
                 ViewBag.username = "";
+            }
+            return View();
+        }
+
+        public ActionResult Index()
+        {
+            var ds = bll.HotProducts(5);
+            if (ds != null && ds.Rows.Count > 0)
+            {
+                var list = PlasCommon.ToolClass<PlasModel.ProductViewModel>.ConvertDataTableToModel(ds);
+                ViewBag.HotList = list;
             }
             return View();
         }
