@@ -44,10 +44,10 @@ namespace PlasCommon
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
-        public static IList<T> ConvertDataTableToModel(DataTable dt)
+        public static List<T> ConvertDataTableToModel(DataTable dt)
         {
             // 定义集合    
-            IList<T> ts = new List<T>();
+            List<T> ts = new List<T>();
 
             // 获得此模型的类型   
             Type type = typeof(T);

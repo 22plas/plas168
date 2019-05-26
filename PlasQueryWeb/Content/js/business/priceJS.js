@@ -217,7 +217,7 @@ $(".search_item_contentList").find("li").click(function () {
             layer.msg('请输入产品型号!', { icon: 5 });
             return false;
         }
-        datas = "&SmallClass=" + $.trim($("#ProdcutModle").val());
+        datas = "&Model=" + $.trim($("#ProdcutModle").val());
         InitData(0);
     })
 

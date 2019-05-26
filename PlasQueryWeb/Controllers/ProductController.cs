@@ -81,11 +81,11 @@ namespace PlasModel.Controllers
                 isTow = true;
             }
 
-            string jsonstr = string.Empty;
+            var jsonstr = new List<ProductSharet>();//产品结果集合
             int count = 0;
             //产品属性分为两个
-            string BigType = string.Empty;
-            string SamllType = string.Empty;
+            var  BigType = new List<ProductAttr>();
+            var SamllType = new List<ProductAttr>();
 
             if (!string.IsNullOrWhiteSpace(key))
             {
@@ -100,7 +100,7 @@ namespace PlasModel.Controllers
                 }
                 if (ds.Tables.Contains("ds") && ds.Tables[0] != null)
                 {
-                    jsonstr = ToolHelper.DataTableToJson(ds.Tables[0]);
+                    jsonstr = ToolClass<ProductSharet>.ConvertDataTableToModel(ds.Tables[0]); //ToolHelper.DataTableToJson(ds.Tables[0]);
                 }
                 if (ds.Tables.Contains("ds1") && ds.Tables[1] != null && ds.Tables[1].Rows.Count > 0)
                 {
@@ -112,8 +112,10 @@ namespace PlasModel.Controllers
                 {
                     DataView dv = ds.Tables[2].DefaultView;
                     dt = dv.ToTable(true, "attribute");
-                    BigType = ToolHelper.DataTableToJson(dt);
-                    SamllType = ToolHelper.DataTableToJson(ds.Tables[2]);
+                    //返回list数据，可以解决特殊字符问题
+                    BigType = ToolClass<ProductAttr>.ConvertDataTableToModel(dt);//ToolHelper.DataTableToJson(dt);
+                    
+                    SamllType = ToolClass<ProductAttr>.ConvertDataTableToModel(ds.Tables[2]);// ToolHelper.DataTableToJson(ds.Tables[2]);
                 }
             }
             return Json(new { data = jsonstr, totalCount = count, BigType = BigType, SamllType = SamllType }, JsonRequestBehavior.AllowGet);

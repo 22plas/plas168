@@ -52,6 +52,8 @@
     <Compile Include="cp_user.cs" />
     <Compile Include="DeliveryAddress.cs" />
     <Compile Include="PriceModle.cs" />
+    <Compile Include="ProductAttr.cs" />
+    <Compile Include="ProductSharet.cs" />
     <Compile Include="ProductViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

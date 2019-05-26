@@ -225,7 +225,7 @@ namespace PlasDal
         /// <returns></returns>
         public DataSet getPriceFile(string SmallClass ,string Manufacturer,string  Model,int pageindex = 1, int pagesize = 8)
         {
-            string sql = string.Format("exec QueryPriceProc {0},{1},'{2}','{3}','{4}'", pageindex, pagesize, SmallClass, Manufacturer, Model);
+            string sql = string.Format("exec QueryPriceProc {0},{1},'{2}','{3}','{4}',''", pageindex, pagesize, SmallClass, Manufacturer, Model);
             var ds = SqlHelper.GetSqlDataSet(sql);
             return ds;
         }
