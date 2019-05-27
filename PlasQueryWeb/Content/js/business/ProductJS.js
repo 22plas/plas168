@@ -98,6 +98,10 @@ function InitData(pageindx) {
                             }
                             typelist += '</div>';
                         })
+
+
+                   
+
                     }
 
 
@@ -136,7 +140,6 @@ function InitData(pageindx) {
 
 
     ///重置结束
-
     ///点击更多显示
     $("div[name='search-item-btn']").click(function () {
         var ty = $(this).attr("data-type");
@@ -149,6 +152,7 @@ function InitData(pageindx) {
             $(this).html("更多∨");
         }
     });
+ 
 
 }
 
@@ -179,7 +183,18 @@ function onselectobj(datatype, dataval, obj, dataname) {
         $(".search_condition_wrap").append(str);
 
     }
-
+    ///点击更多显示
+    $("div[name='search-item-btn']").click(function () {
+        var ty = $(this).attr("data-type");
+        if ($("li[name='SamllType_" + ty + "']").css("display") == "none") {
+            $("li[name='SamllType_" + ty + "']").show();
+            $(this).html("隐藏∧");
+        }
+        else {
+            $("li[name='SamllType_" + ty + "']").hide();
+            $(this).html("更多∨");
+        }
+    });
     sharet();
 }
 
