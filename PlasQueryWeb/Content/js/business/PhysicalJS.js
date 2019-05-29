@@ -289,10 +289,12 @@ $("td[name='samllHit']").click(function () {
     var idx = $(this).attr("number");
     if ($("tr[name='samll_" + idx + "']").css("display") == "none") {
         $("tr[name='samll_" + idx + "']").show();
+        $("tr[name='samll_" + idx + "']").removeClass("none");
         $(this).html("点击收起&nbsp;↑");
     }
     else {
         $("tr[name='samll_" + idx + "']").hide();
+        $("tr[name='samll_" + idx + "']").addClass("none");
         $(this).html("点击更多&nbsp;↓");
     }
 })

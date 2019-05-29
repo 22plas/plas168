@@ -35,6 +35,7 @@ $().ready(function () {
 });
 
 function InitData(pageindx) {
+    //   debugger;
     // alert(datas);
     page_indx = pageindx;
     var tbodyui = "";
@@ -47,14 +48,16 @@ function InitData(pageindx) {
         data: "pageindex=" + (pageindx + 1) + "&pagesize=" + pagesize + "&key=" + keywork + "&strGuid=" + strGuid + "" + datas,
         async: false,
         success: function (json) {
-            // debugger;
+            //   debugger;
             try {
                 var productData = json.data;
+                var bigData = json.BigType;
+                var smaillData = json.SamllType;
                 var strvar = "";
                 rowcount = json.totalCount;
                 $("#records").html(rowcount);
                 if (rowcount != 0 && productData != "") {
-                    $.each(JSON.parse(productData), function (i, n) {
+                    $.each(productData, function (i, n) {
                         tbodyui += "<tr>";
                         tbodyui += "<td><a href=\"/PhysicalProducts/Detail/" + n.prodid + ".html\" target=\"_blank\">" + n.ProModel + "</a></td>";
                         tbodyui += "<td>" + n.PlaceOrigin + "</td>";
@@ -65,17 +68,19 @@ function InitData(pageindx) {
                         tbodyui += "</tr>";
                     });
 
-                    if (json.BigType != "" && istow == "0") {
-                        $.each(eval(json.BigType), function (index, item) {
+                    if (bigData != "" && istow == "0") {
+                        $.each(bigData, function (index, item) {
                             count++;
                             typelist += '<div class="search-item">';
                             typelist += '<div class="search-item-type">' + item.attribute + '：</div>';
-                            typelist += '<div class="search-item-content">';
+                            typelist += '<div class="search-item-content3">';
                             typelist += '<ul class="search-item-content" data-type="' + count + '" data-typename="' + item.attribute + '">';
                             typelist += "<li data-guid=\"\" data-value=\"0\" id=\"" + count + "_SamllType_0\" onClick=\"onselectobj('" + count + "', '0', '" + count + "_SamllType_0','" + item.attribute + "')\" class=\"active\">全部</li>";
                             var sammlCount = 0;
-                            if (json.SamllType != "") {
-                                $.each(eval(json.SamllType), function (a, b) {
+                            if (smaillData != "") {
+                                //    debugger;
+                                //alert(eval("(" + json.SamllType + ")"));
+                                $.each(smaillData, function (a, b) {
                                     if (item.attribute == b.attribute) {
                                         sammlCount++;
                                         typelist += '<li ';
@@ -89,10 +94,14 @@ function InitData(pageindx) {
                             typelist += '</ul> </div>';
                             if (sammlCount > 8) {
                                 //∧
-                                typelist += '<div class="search-item-btn" data-type="' + count + '" data-typename="' + item.attribute + '">更多∨</div>';
+                                typelist += '<div class="search-item-btn" name="search-item-btn" data-type="' + count + '" data-typename="' + item.attribute + '">更多∨</div>';
                             }
                             typelist += '</div>';
                         })
+
+
+                   
+
                     }
 
 
@@ -108,7 +117,8 @@ function InitData(pageindx) {
                 }
                 $("#tempHtml_list").html(tbodyui);
             } catch (e) {
-                layer.msg(e.msg, { icon: 5 });
+                alert(e.msg);
+                // layer.msg(e.msg, { icon: 5 });
             }
 
         },
@@ -130,9 +140,8 @@ function InitData(pageindx) {
 
 
     ///重置结束
-
     ///点击更多显示
-    $(".search-item-btn").click(function () {
+    $("div[name='search-item-btn']").click(function () {
         var ty = $(this).attr("data-type");
         if ($("li[name='SamllType_" + ty + "']").css("display") == "none") {
             $("li[name='SamllType_" + ty + "']").show();
@@ -143,6 +152,7 @@ function InitData(pageindx) {
             $(this).html("更多∨");
         }
     });
+ 
 
 }
 
@@ -173,7 +183,18 @@ function onselectobj(datatype, dataval, obj, dataname) {
         $(".search_condition_wrap").append(str);
 
     }
-
+    ///点击更多显示
+    $("div[name='search-item-btn']").click(function () {
+        var ty = $(this).attr("data-type");
+        if ($("li[name='SamllType_" + ty + "']").css("display") == "none") {
+            $("li[name='SamllType_" + ty + "']").show();
+            $(this).html("隐藏∧");
+        }
+        else {
+            $("li[name='SamllType_" + ty + "']").hide();
+            $(this).html("更多∨");
+        }
+    });
     sharet();
 }
 

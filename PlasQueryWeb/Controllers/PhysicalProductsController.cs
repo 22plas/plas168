@@ -34,7 +34,39 @@ namespace PlasModel.Controllers
             //阻燃等级
             zuran = bll.GetSearchParam(3);
             //生产厂家
-            company = bll.GetSearchParam(4);
+           var  comp = bll.GetSearchParam(4);
+            if (comp != null && comp.Rows.Count > 0)
+            {
+                DataTable tblDatas = new DataTable("Datas");
+                DataColumn dc = null;
+                dc = tblDatas.Columns.Add("SmallGuid", Type.GetType("System.String"));
+                dc = tblDatas.Columns.Add("Name", Type.GetType("System.String"));
+                DataRow newRow;
+                for (var k = 0; k < comp.Rows.Count; k++)
+                {
+                    var isadd = true;
+                    for (var j = 0; j < tblDatas.Rows.Count; j++)
+                    {
+                        if (comp.Rows[k]["Name"].ToString()== tblDatas.Rows[j]["Name"].ToString())
+                        {
+                            isadd = false;
+                            break;
+                        }
+                    }
+                    if (isadd)
+                    {
+                        newRow = tblDatas.NewRow();
+                        newRow["SmallGuid"] = comp.Rows[k]["SmallGuid"].ToString();
+                        newRow["Name"] = comp.Rows[k]["Name"].ToString();
+                        tblDatas.Rows.Add(newRow);
+                    }
+                    
+
+                }
+                company = tblDatas;
+                ///DataView dv = new DataView(comp);
+                //company = dv.ToTable(true, new string[] { "max(SmallGuid)", "Name" });// comp.Select("max(SmallGuid) as SmallGuid,Name");
+            }
             //加工方法
             jiagong = bll.GetSearchParam(5);
             //产品用途
