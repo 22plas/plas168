@@ -187,6 +187,7 @@ namespace PlasQueryWeb.Controllers
             {
                 #region 产品详情
                 var ds = bll.NewGetModelInfo(prodid);//"9C37DC9C-E867-46A2-97DF-32A9489BCDC4"
+                //var ds = bll.GetModelInfo(prodid);
                 string descriptionjsonstr = string.Empty;//说明
                 List<tempinfo> listinfo = new List<tempinfo>();
                 if (ds != null && ds.Tables.Contains("ds") && ds.Tables.Count > 0)
@@ -364,7 +365,7 @@ namespace PlasQueryWeb.Controllers
                 }
                 else
                 {
-                    ds = bll.GetGeneralSearch(key, pageindex, pagesize, ver);
+                    ds = bll.GetGeneralSearch(key.Trim(), pageindex, pagesize, ver);
                 }
                 if (ds.Tables.Contains("ds") && ds.Tables[0] != null)
                 {

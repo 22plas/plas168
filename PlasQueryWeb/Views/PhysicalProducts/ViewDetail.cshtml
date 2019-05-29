@@ -54,7 +54,7 @@
                 <td>
                     @if (string.IsNullOrWhiteSpace(dr["Attribute2"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
                     {
-                        <div class="f-l" style="width:100%;">@dr["Attribute1"].ToString()</div>
+                        <div class="f-l" style="width:100%;color:red;">@dr["Attribute1"].ToString()</div>
                     }
                     else if (string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
                     {
