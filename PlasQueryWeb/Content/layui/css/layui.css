@@ -360,7 +360,7 @@ a {
 .layui-progress-big .layui-progress-text {
     position: static;
     padding: 0 10px;
-    color: #fff;
+    /*color: #fff;*/
 }
 
 .layui-collapse {

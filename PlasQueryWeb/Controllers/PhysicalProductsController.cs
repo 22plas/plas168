@@ -225,7 +225,7 @@ namespace PlasModel.Controllers
         }
 
         /// <summary>
-        /// 用于生成pdf的页面，只保留产品信息
+        /// 用于生成pdf的页面，只保留产品信息 
         /// </summary>
         /// <param name="prodid"></param>
         /// <returns></returns>
@@ -237,6 +237,8 @@ namespace PlasModel.Controllers
                 if ( ds.Tables[0].Rows.Count > 0)
                 {
                     ViewBag.ProModel = ds.Tables[0].Rows[0]["proModel"];
+                    ViewBag.PlaceOrigin = ds.Tables[0].Rows[0]["PlaceOrigin"];
+                    ViewBag.Brand = ds.Tables[0].Rows[0]["Brand"];
                 }
                 if ( ds.Tables.Count > 1)
                 {
