@@ -2,6 +2,7 @@
 using PlasModel.App_Start;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -54,6 +55,39 @@ namespace PlasQueryWeb.Controllers
             }
             return View();
         }
+
+        /// <summary>
+        /// 生成JS
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SetJs()
+        {
+            string path = Server.MapPath("../Scripts/SearchKeywordsJs.js");
+
+            // Delete the file if it exists. 
+            if (System.IO.File.Exists(path))
+            {
+                System.IO.File.Delete(path);
+            }
+            var dt = new PlasCommon.Common().Getsys_Autokey();
+            // Create the file. 
+            StreamWriter sr = System.IO.File.CreateText(path);
+            if (dt.Rows.Count > 0)
+            {
+                sr.WriteLine("'data':[");
+                for (var i = 0; i < dt.Rows.Count; i++)
+                {
+                    sr.WriteLine("{'id':'"+ i + "','word':'"+dt.Rows[i]["Word"].ToString()+"','description':''}");
+                }
+                sr.WriteLine("]");
+            }
+            //// 这里是f1的内容 
+            //// …… 
+
+            sr.Close();
+            return View();
+        }
+
 
     }
 }
