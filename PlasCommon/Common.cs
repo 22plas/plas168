@@ -344,6 +344,20 @@ namespace PlasCommon
         #endregion
 
 
+        #region 获取关键词
 
+        /// <summary>
+        /// 获取检索关键词
+        /// </summary>
+        /// <returns></returns>
+        public DataTable Getsys_Autokey()
+        {
+            string sql = "select Word from sys_autokey nolock";
+            return SqlCommonQuery.SqlHelper.GetSqlDataTable(sql);
+        }
+
+        #endregion
+
+        
     }
 }

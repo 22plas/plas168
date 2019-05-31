@@ -41,21 +41,47 @@
         font-weight: bold;
         padding: 8px 0;
         border: none;
-        border-bottom: 2px solid red !important;
+        font-size: 16px;
         color: red !important;
         background: #e1e1e1;
+    }
+        .bold td div {
+            border-bottom: 1px solid #945657 !important;
+            border-top: 1px solid #945657 !important;
+            font-size: 16px;
+            height: 40px;
+            background: #f2f2f2;
+            line-height: 40px;
+        }
+        .bold td div {
+            color: #945657;
+        }
+    .pl-10 {
+        border-bottom:none;
+    }
+    .table-list tr td {
+        border:none !important;
     }
 </style>
 
 <table class="table-list" border="0" cellspacing="0" cellpadding="0">
     <tbody>
+        <tr>
+            <td style="font-size:24px; height:40px; line-height:40px; font-weight:700;color: #945657; text-align:left;">@(ViewBag.ProModel)</td>
+        </tr>
+        <tr>
+            <td style="font-size:20px; color: #535353; text-align:left;">@(ViewBag.PlaceOrigin)</td>
+        </tr>
+        <tr>
+            <td style="font-size:20px; font-weight:700;color: #535353; text-align:left;">@(ViewBag.Brand)</td>
+        </tr>
         @foreach (System.Data.DataRow dr in PhysicalData.Rows)
         {
             <tr class="@(dr["lev"].ToString() == "1" ? "bold" : "pl-10")">
                 <td>
                     @if (string.IsNullOrWhiteSpace(dr["Attribute2"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
                     {
-                        <div class="f-l" style="width:100%;color:red;">@dr["Attribute1"].ToString()</div>
+                        <div class="f-l" style="width:100%;">@dr["Attribute1"].ToString()</div>
                     }
                     else if (string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
                     {

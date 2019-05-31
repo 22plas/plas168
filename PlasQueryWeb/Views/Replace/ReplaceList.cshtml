@@ -248,6 +248,7 @@
     function selectComapny(objval, IdName) {
         iscompany = "1";
         var thisval = objval;
+        var companys = "";
         if (thisval == "0") {
             $.each($("#CoompanyList").find("li"), function (index, item) {
                 $(this).removeClass("active");
@@ -256,18 +257,24 @@
         }
         else {
             $("#CoompanyList").find("li").eq(0).removeClass("active");
+            $.each($("#CoompanyList").find("li"), function (index, item) {
+                $(this).removeClass("active");
+            })
             $("#" + IdName).addClass("active");
+            companys = $("#" + IdName).attr("data-value");
+            //$("#CoompanyList").find("li").eq(0).removeClass("active");
+            //$("#" + IdName).addClass("active");
         }
-        var companys = "";
-        $.each($("#CoompanyList").find("li"), function (index, item) {
-            if ($(this).attr("data-value") != "0" && $(this).hasClass("active")) {
-                companys += $(this).attr("data-value") + ";";
-            }
-        })
-        // alert(companys);
-        if (companys != "") {
-            companys = companys.substring(0, companys.length - 1);
-        }
+      
+        //$.each($("#CoompanyList").find("li"), function (index, item) {
+        //    if ($(this).attr("data-value") != "0" && $(this).hasClass("active")) {
+        //        companys += $(this).attr("data-value") + ";";
+        //    }
+        //})
+        //// alert(companys);
+        //if (companys != "") {
+        //    companys = companys.substring(0, companys.length - 1);
+        //}
         isLink = "1";
         datas = "&Companys=" + companys;
         SubmitComparison(0);
