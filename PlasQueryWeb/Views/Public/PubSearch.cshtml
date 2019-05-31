@@ -19,10 +19,11 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" src="/Content/src/js/search-suggest.js"></script>
+
 <script type="text/javascript">
-    function onSearch_Top_select()
-    {
-        var keyword=$.trim($("#search_input_top").val());
+    function onSearch_Top_select() {
+        var keyword = $.trim($("#search_input_top").val());
         if (keyword == "") {
             alert("请输入任意塑料类型、型号、厂家、性能、用途!");
             $("#search_input_top").focus();
@@ -32,4 +33,44 @@
             window.location.href = "/Product/Index?key=" + encodeURI(encodeURI(keyword));
         }
     }
+
+
+
+    //自定义list风格
+    $("#search_input_top").searchSuggest({
+        url: 'http://localhost:31117/home/setjs?keyword=' + $.trim($("#search_input_top").val()), /*优先从url ajax 请求 json 帮助数据*/
+        json: {
+            'data': [{
+                'id': '0',
+                'word': 'ABS',
+                'description': ''
+            }, {
+                'id': '1',
+                    'word': 'ABS/PVC',
+                'description': ''
+            }, {
+                'id': '2',
+                    'word': 'Absolac® 140',
+                'description': ''
+            }, {
+                'id': '3',
+                    'word': '阻燃性',
+                'description': ''
+            }, {
+                'id': '4',
+                    'word': 'Epalex® 7572',
+                'description': ''
+            }],
+            'defaults': ''
+        }, //*/
+        width: 400,
+        /*提示框的宽度，缺省为输入框的宽度相同*/
+        topoffset: 14,
+        /*提示框与输入框的距离，缺省为5*/
+        style: 'list',
+        cssFile: '/Content/src/css/search-suggest.css'
+
+    });
+
+
 </script>

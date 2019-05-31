@@ -352,7 +352,7 @@ namespace PlasCommon
         /// <returns></returns>
         public DataTable Getsys_Autokey()
         {
-            string sql = "select row_number()over(order by Word) as id,Word from sys_autokey nolockselect Word from sys_autokey nolock";
+            string sql = "select row_number()over(order by Word) as id,Word,'' as [description]  from sys_autokey nolock";
             return SqlCommonQuery.SqlHelper.GetSqlDataTable(sql);
         }
 

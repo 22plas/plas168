@@ -62,7 +62,7 @@ namespace PlasQueryWeb.Controllers
         /// 生成JS
         /// </summary>
         /// <returns></returns>
-        public JsonResult SetJs()
+        public ActionResult SetJs()
         {
             string keyword = string.Empty;
             string strJson = string.Empty;//Json数据
@@ -70,8 +70,20 @@ namespace PlasQueryWeb.Controllers
             {
                 keyword = Request["keyword"].ToString();
                 var list = FindSearchsWord();
+                System.Text.StringBuilder str = new System.Text.StringBuilder();
+                if (list != null && list.Count()>0)
+                {
+                    foreach (var item in list)
+                    {
+                        str.Append("[\"" + item.id + "\",\"" + item.Word + "\"],");
+                    }
+                }
+                if (str.ToString().Length > 0)
+                {
+                    strJson = str.ToString().Substring(0, str.Length - 1);
+                }
+                //strJson = //Newtonsoft.Json.JsonConvert.SerializeObject(list.Where(p => p.Word.Contains(keyword)).ToList());
 
-                strJson = Newtonsoft.Json.JsonConvert.SerializeObject(list.Where(p => p.Word.Contains(keyword)).ToList());
             }
             //string path = Server.MapPath("../Scripts/SearchKeywordsJs.js");
 
@@ -96,7 +108,9 @@ namespace PlasQueryWeb.Controllers
             ////// …… 
 
             //sr.Close();
-            return Json(new { data = strJson }, JsonRequestBehavior.AllowGet);
+            Response.Write(strJson);
+           // Response.End();
+            return View();//Json(new { result = strJson }, JsonRequestBehavior.AllowGet);
         }
 
 

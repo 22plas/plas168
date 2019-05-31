@@ -19,5 +19,10 @@ namespace PlasModel
         /// 提取关键词
         /// </summary>
         public string Word { get; set; }
+
+        /// <summary>
+        /// 映照前端JS
+        /// </summary>
+        public string description { get; set; }
     }
 }
