@@ -4,6 +4,7 @@ using PlasModel.App_Start;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
@@ -13,6 +14,8 @@ namespace PlasQueryWeb.Controllers
 {
     public class AppApiController : Controller
     {
+        protected string PdfUrl = System.Web.Configuration.WebConfigurationManager.AppSettings["PdfUrl"];
+        protected string MainHost = System.Web.Configuration.WebConfigurationManager.AppSettings["MainHost"];
         private PlasBll.ProductBll bll = new PlasBll.ProductBll();
         private PlasBll.ReplaceBll plbll = new PlasBll.ReplaceBll();
 
@@ -246,17 +249,95 @@ namespace PlasQueryWeb.Controllers
                         }
                     }
                 }
+                DataTable pdfdt = new DataTable();
+                List<pdfinfo> pdfinfolist = new List<pdfinfo>();
+                if (!string.IsNullOrEmpty(prodid))
+                {
+                    pdfdt = bll.GetProductPdf(prodid);
+                    if (pdfdt.Rows.Count>0)
+                    {
+                        for (int i = 0; i < pdfdt.Rows.Count; i++)
+                        {
+                            pdfinfo tm = new pdfinfo();
+                            tm.BefromName = pdfdt.Rows[i]["BefromName"].ToString();
+                            tm.Guid = pdfdt.Rows[i]["Guid"].ToString();
+                            tm.ID = pdfdt.Rows[i]["ID"].ToString();
+                            tm.ImagesColor = pdfdt.Rows[i]["ImagesColor"].ToString();
+                            tm.PdfPath = PdfUrl+ pdfdt.Rows[i]["PdfPath"].ToString();
+                            tm.ProductGuid = pdfdt.Rows[i]["ProductGuid"].ToString();
+                            tm.TestType = pdfdt.Rows[i]["TestType"].ToString();
+                            tm.TypeName = pdfdt.Rows[i]["TypeName"].ToString();
+                            pdfinfolist.Add(tm);
+                        }
+                    }
+                    //pdfinfolist = Comm.ToDataList<pdfinfo>(pdfdt);
+                }
+                
                 //新增点击次数
                 //bll.ProductHit(prodid);
+                var returndata = new {
+                    prodata= listinfo,
+                    pdfdata= pdfinfolist
+                };
                 #endregion
-                return Json(Common.ToJsonResult("Success", "获取成功", listinfo), JsonRequestBehavior.AllowGet);
+                return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
-
+        /// <summary>
+        /// 获取产品的pdf文档
+        /// </summary>
+        /// <param name="prodid">产品id</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetProductPDF(string prodid)
+        {
+            try
+            {
+                string pdfUrl = "pdf/" + prodid + ".pdf";
+                bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewDetail?prodid=" + prodid, pdfUrl);
+                if (success)
+                {
+                    string path = MainHost+"/"+pdfUrl;
+                    return Json(Common.ToJsonResult("Success", "获取成功", path), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(Common.ToJsonResult("Fail", "获取失败"), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        //生成关键词json文件
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult SaveJson()
+        {
+            string jsonstr = "";
+            try
+            {
+                //sys_autokey
+                DataTable dt = bll.GetSetJsonInfo();
+                jsonstr = ToolHelper.DataTableToJson(dt);
+                FileStream fs1 = new FileStream("D:\\keyword.json", FileMode.Create, FileAccess.Write);//创建写入文件 
+                StreamWriter sw = new StreamWriter(fs1);
+                sw.Write(jsonstr);
+                sw.Flush();
+                sw.Close();
+                return Json(Common.ToJsonResult("Success", "生成成功"), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "生成失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
         /// <summary>
         /// 获取产品列表数据信息
         /// </summary>
@@ -453,6 +534,17 @@ namespace PlasQueryWeb.Controllers
                 otherdata = otherlist
             };
             return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);
+        }
+        //pdf数据
+        public class pdfinfo {
+            public string TypeName { get; set; }
+            public string Guid { get; set; }
+            public string ProductGuid { get; set; }
+            public string TestType { get; set; }
+            public string PdfPath { get; set; }
+            public string BefromName { get; set; }
+            public string ID { get; set; }
+            public string ImagesColor { get; set; }
         }
         //大类
         public class bigtype {
