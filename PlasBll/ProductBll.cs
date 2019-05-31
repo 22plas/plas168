@@ -139,5 +139,9 @@ namespace PlasBll
         {
             return dal.GetProductMessage(guid);
         }
+        //获取封装关键词json的数据信息
+        public DataTable GetSetJsonInfo() {
+            return dal.GetSetJsonInfo();
+        }
     }
 }
