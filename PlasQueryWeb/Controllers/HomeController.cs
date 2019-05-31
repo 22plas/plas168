@@ -77,7 +77,7 @@ namespace PlasQueryWeb.Controllers
                 sr.WriteLine("'data':[");
                 for (var i = 0; i < dt.Rows.Count; i++)
                 {
-                    sr.WriteLine("{'id':'"+ i + "','word':'"+dt.Rows[i]["Word"].ToString()+"','description':''}");
+                    sr.WriteLine("{'id':'"+ i + "','word':'"+dt.Rows[i]["Word"].ToString().Trim()+"','description':''}");
                 }
                 sr.WriteLine("]");
             }
