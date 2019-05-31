@@ -326,9 +326,9 @@ namespace PlasDal
             return dt;
         }
         //获取封装关键词json的数据信息
-        public DataTable GetSetJsonInfo()
+        public DataTable GetSetJsonInfo(string key)
         {
-            string sql = string.Format("select * from sys_autokey");
+            string sql = string.Format("select top 15 * from sys_autokey WHERE Word like '%{0}%'", key.Trim());
             DataTable dt = SqlHelper.GetSqlDataTable(sql.ToString());
             return dt;
         }
