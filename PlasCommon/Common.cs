@@ -352,9 +352,22 @@ namespace PlasCommon
         /// <returns></returns>
         public DataTable Getsys_Autokey()
         {
-            string sql = "select row_number()over(order by Word) as id,Word,'' as [description]  from sys_autokey nolock";
+            string sql = "select id,TWord as Word,'' as [description]  from sys_autokey nolock order by HitCount desc";
             return SqlCommonQuery.SqlHelper.GetSqlDataTable(sql);
         }
+
+        /// <summary>
+        /// 添加点击次数
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public int Addsys_AutokeyHit(int id)
+        {
+            string sql = "update sys_autokey set HitCount=isnull(HitCount,0)+1 where id=@id";
+            SqlParameter[] parm = { new SqlParameter("@id", id) };
+            return SqlCommonQuery.SqlHelper.ExectueNonQuery(SqlCommonQuery.SqlHelper.ConnectionStrings, sql.ToString(), parm);
+        }
+
 
         #endregion
 
