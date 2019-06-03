@@ -65,38 +65,18 @@ namespace PlasQueryWeb.Controllers
         public JsonResult SetJs()
         {
             string keyword = string.Empty;
-            string strJson = string.Empty;//Json数据
+            //string strJson = string.Empty;//Json数据
+            int count = 0;
+            var strJson =new List<wordModel>();
             if (!string.IsNullOrEmpty(Request["keyword"]))
             {
                 keyword = Request["keyword"].ToString();
                 var list = Comm.FindSearchsWord();
 
-                strJson = Newtonsoft.Json.JsonConvert.SerializeObject(list.Where(p => p.Word.Contains(keyword)).ToList());
+                strJson = list.Where(p => p.Word.ToLower().Contains(keyword.ToLower())).Take(15).ToList();
+                count = strJson.Count();
             }
-            //string path = Server.MapPath("../Scripts/SearchKeywordsJs.js");
-
-            //// Delete the file if it exists. 
-            //if (System.IO.File.Exists(path))
-            //{
-            //    System.IO.File.Delete(path);
-            //}
-            //var dt = new PlasCommon.Common().Getsys_Autokey();
-            //// Create the file. 
-            //StreamWriter sr = System.IO.File.CreateText(path);
-            //if (dt.Rows.Count > 0)
-            //{
-            //    sr.WriteLine("'data':[");
-            //    for (var i = 0; i < dt.Rows.Count; i++)
-            //    {
-            //        sr.WriteLine("{'id':'"+ i + "','word':'"+dt.Rows[i]["Word"].ToString().Trim()+"','description':''}");
-            //    }
-            //    sr.WriteLine("]");
-            //}
-            ////// 这里是f1的内容 
-            ////// …… 
-
-            //sr.Close();
-            return Json(new { data = strJson }, JsonRequestBehavior.AllowGet);
+            return Json(new { result = strJson, count= count }, JsonRequestBehavior.AllowGet);
         }
 
 

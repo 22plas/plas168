@@ -10,7 +10,7 @@ function guid() {
 
 //Modification
 $(document).ajaxStart(function () {
-    if ($.LoadingOverlay != undefined) {
+    if ($.LoadingOverlay != undefined && $("#search_input_top").val()=="") {
         $.LoadingOverlay("show");
     }
 });

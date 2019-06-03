@@ -531,7 +531,6 @@
     <Content Include="Views\Replace\ProductReplace.cshtml" />
     <Content Include="Views\Replace\More.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\SetJs.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
