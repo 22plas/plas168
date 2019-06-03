@@ -1,5 +1,8 @@
-﻿using PlasCommon;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using PlasCommon;
 using PlasCommon.SqlCommonQuery;
+using PlasModel;
 using PlasModel.App_Start;
 using System;
 using System.Collections.Generic;
@@ -324,14 +327,37 @@ namespace PlasQueryWeb.Controllers
             try
             {
                 //sys_autokey
-                DataTable dt = bll.GetSetJsonInfo();
+                DataTable dt = bll.GetSetJsonInfo("");
                 jsonstr = ToolHelper.DataTableToJson(dt);
-                FileStream fs1 = new FileStream("D:\\keyword.json", FileMode.Create, FileAccess.Write);//创建写入文件 
+                FileStream fs1 = new FileStream("D:\\keyword.txt", FileMode.Create, FileAccess.Write);//创建写入文件 
                 StreamWriter sw = new StreamWriter(fs1);
                 sw.Write(jsonstr);
                 sw.Flush();
                 sw.Close();
                 return Json(Common.ToJsonResult("Success", "生成成功"), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "生成失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetJsonByKey(string key)
+        {
+            try
+            {
+                string keyword = string.Empty;
+                string strJson = string.Empty;//Json数据
+                List<wordModel> listkeyinfo = new List<wordModel>();
+                if (!string.IsNullOrEmpty(key))
+                {
+                    keyword = key;
+                    var list = Comm.FindSearchsWord();
+                    //listkeyinfo 
+                    listkeyinfo = list.Where(s => s.Word.Contains(keyword)).Take(10).ToList();
+                }
+                return Json(Common.ToJsonResult("Success", "生成成功", listkeyinfo), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

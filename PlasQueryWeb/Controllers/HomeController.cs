@@ -62,28 +62,16 @@ namespace PlasQueryWeb.Controllers
         /// 生成JS
         /// </summary>
         /// <returns></returns>
-        public ActionResult SetJs()
+        public JsonResult SetJs()
         {
             string keyword = string.Empty;
             string strJson = string.Empty;//Json数据
             if (!string.IsNullOrEmpty(Request["keyword"]))
             {
                 keyword = Request["keyword"].ToString();
-                var list = FindSearchsWord();
-                System.Text.StringBuilder str = new System.Text.StringBuilder();
-                if (list != null && list.Count()>0)
-                {
-                    foreach (var item in list)
-                    {
-                        str.Append("[\"" + item.id + "\",\"" + item.Word + "\"],");
-                    }
-                }
-                if (str.ToString().Length > 0)
-                {
-                    strJson = str.ToString().Substring(0, str.Length - 1);
-                }
-                //strJson = //Newtonsoft.Json.JsonConvert.SerializeObject(list.Where(p => p.Word.Contains(keyword)).ToList());
+                var list = Comm.FindSearchsWord();
 
+                strJson = Newtonsoft.Json.JsonConvert.SerializeObject(list.Where(p => p.Word.Contains(keyword)).ToList());
             }
             //string path = Server.MapPath("../Scripts/SearchKeywordsJs.js");
 
@@ -108,26 +96,11 @@ namespace PlasQueryWeb.Controllers
             ////// …… 
 
             //sr.Close();
-            Response.Write(strJson);
-           // Response.End();
-            return View();//Json(new { result = strJson }, JsonRequestBehavior.AllowGet);
+            return Json(new { data = strJson }, JsonRequestBehavior.AllowGet);
         }
 
 
-        public IEnumerable<wordModel> FindSearchsWord()
-        {
-            var cache = CacheHelper.GetCache("commonData_Search");//先读取
-            if (cache == null)//如果没有该缓存
-            {
-                var dt = new PlasCommon.Common().Getsys_Autokey();
-                var enumerable = ToolClass<wordModel>.ConvertDataTableToModel(dt);
-                CacheHelper.SetCache("commonData_Search", enumerable);//添加缓存
-                return enumerable;
-            }
-            var result = (List<wordModel>)cache;//有就直接返回该缓存
-            return result;
-
-        }
+     
 
 
 

@@ -1,4 +1,5 @@
-﻿using PlasModel.App_Start.Qiniu;
+﻿using PlasCommon;
+using PlasModel.App_Start.Qiniu;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -179,6 +180,20 @@ namespace PlasModel.App_Start
                 list.Add(s);
             }
             return list;
+        }
+        public static IEnumerable<wordModel> FindSearchsWord()
+        {
+            var cache = CacheHelper.GetCache("commonData_Search");//先读取
+            if (cache == null)//如果没有该缓存
+            {
+                var dt = new PlasCommon.Common().Getsys_Autokey();
+                var enumerable = ToolClass<wordModel>.ConvertDataTableToModel(dt);
+                CacheHelper.SetCache("commonData_Search", enumerable);//添加缓存
+                return enumerable;
+            }
+            var result = (List<wordModel>)cache;//有就直接返回该缓存
+            return result;
+
         }
     }
 }

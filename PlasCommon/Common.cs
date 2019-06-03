@@ -352,12 +352,11 @@ namespace PlasCommon
         /// <returns></returns>
         public DataTable Getsys_Autokey()
         {
-            string sql = "select row_number()over(order by Word) as id,Word,'' as [description]  from sys_autokey nolock";
+            string sql = "select CONVERT(INT,row_number()over(order by Word),32) as id,Word from sys_autokey nolock";
             return SqlCommonQuery.SqlHelper.GetSqlDataTable(sql);
         }
 
         #endregion
 
-        
     }
 }
