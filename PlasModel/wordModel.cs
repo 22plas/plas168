@@ -24,5 +24,15 @@ namespace PlasModel
         /// 映照前端JS
         /// </summary>
         public string description { get; set; }
+
+        /// <summary>
+        /// 分类，根据型号跳转页面
+        /// </summary>
+        public string category { get; set; }
+
+        /// <summary>
+        /// 产品ID
+        /// </summary>
+        public string ProductGuid { get; set; }
     }
 }

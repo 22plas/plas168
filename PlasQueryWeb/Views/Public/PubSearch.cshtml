@@ -71,14 +71,14 @@
         topoffset: 16, //提示框与输入框的距离，缺省为5
         style: 'list',
         cssFile: '/Content/src/css/search-suggest.css',
-        tpl: "<div class=\"list\"><div class=\"word\" rel_id=\"st_{id}\" onclick=\"DropDownSearch({id},'{word}');\">{word}</div></div>",
+        tpl: "<div class=\"list\"><div class=\"word\" rel_id=\"st_{id}\" onclick=\"DropDownSearch({id},'{word}','{category}','{ProductGuid}');\">{word}</div></div>",
         processData: function (json) { // url 获取数据时，对数据的处理，作为 getData 的回调函数
             //debugger;
             if (!json || json.length == 0) return false;
 
             var jsonStr = "{'data':[";
             $.each(json, function (index, item) {
-                jsonStr += "{'id':'" + item.id + "','word':'" + item.Word + "', 'description': '" + item.description + "'},";
+                jsonStr += "{'id':'" + item.id + "','word':'" + item.Word + "', 'category': '" + item.category + "','ProductGuid': '" + item.ProductGuid + "'},";
             })
              jsonStr += "],'defaults':'塑蚁网'}";
 
@@ -109,9 +109,15 @@
         }
     });
 
-    function DropDownSearch(obj,keyword) {
+    function DropDownSearch(obj, keyword, category,productid) {
         //alert(obj);
-        onSearch_Top_select(obj, keyword);
+        if (category == "产品型号") {
+            window.location.href = '/PhysicalProducts/Detail/' + productid+".html";
+        }
+        else {
+            onSearch_Top_select(obj, keyword);
+        }
+        
     }
 
 
