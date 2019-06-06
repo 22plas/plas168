@@ -188,6 +188,7 @@
     <Compile Include="App_Start\Qiniu\Base64.cs" />
     <Compile Include="App_Start\Qiniu\QinQiuApi.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\UserAttribute.cs" />
     <Compile Include="CommonClass\PdfHelper.cs" />
     <Compile Include="Controllers\AppApiController.cs" />
     <Compile Include="Controllers\AreaController.cs" />
@@ -217,6 +218,7 @@
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\css\iconfont\iconfont.css" />
     <Content Include="Content\css\iconfont\iconfont.svg" />
+    <Content Include="Content\css\PaginationCenter.css" />
     <Content Include="Content\css\replace.css" />
     <Content Include="Content\css\site.css" />
     <Content Include="Content\css\uploader.css" />
