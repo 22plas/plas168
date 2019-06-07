@@ -4,10 +4,13 @@
 }
 
 <div class="header-gray text-gray" style="line-height: 38px;">
-    <div class="logo-register-btn" style="border: none;margin-top: 6px;">
-        <a class="btn" href="/MemberCenter/Login" style="color: #ff4200;">登录</a> | <a class="btn" href="/MemberCenter/Register" style="color: #ff4200;">注册</a>
-    </div>
+
     <div><span id="Time_Show"></span>，欢迎来到塑料和弹性体页面！</div>
+    <div class="logo-register-btn" style="border: none;margin-top: 6px;">
+        <span id="isLogin_0"><a class="btn" href="/MemberCenter/Login" style="color: #ff4200;">登录</a> | <a class="btn" href="/MemberCenter/Register" style="color: #ff4200;">注册</a></span>
+        <span id="isLogin_1"><a class="btn" href="/MemberCenter/Index" style="color: #ff4200;">会员中心</a></span>
+        <div style="clear:both;"></div>
+    </div>
 </div>
 
 <script type="text/javascript">
@@ -23,5 +26,16 @@
         else if (hour < 22) { str_time = "晚上好";  }
         else { str_time = "夜里好"; }
         $("#Time_Show").html(str_time);
+        var isval = '0';
+        if ('@(Request.Cookies["AccountData"] != null)'=="True") {
+            isval = "1";
+        }
+        if (isval == "1") {
+            $("#isLogin_0").remove();
+        }
+        else {
+            $("#isLogin_1").remove();
+        }
+        //alert(isval);
     })
 </script>

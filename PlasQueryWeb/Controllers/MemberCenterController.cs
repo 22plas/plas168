@@ -3,6 +3,7 @@ using PlasCommon;
 using PlasCommon.SqlCommonQuery;
 using PlasModel;
 using PlasModel.App_Start;
+using PlasQueryWeb.App_Start;
 using PlasQueryWeb.Models;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,7 @@ namespace PlasModel.Controllers
      
         //
         // GET: /会员中心首页/
+        [UserAttribute]
         public ActionResult Index()
         {
             ViewBag.username = AccountData.UserName;
@@ -75,6 +77,7 @@ namespace PlasModel.Controllers
         /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpPost]
+        [UserAttribute]
         public ActionResult UpdateUserInfo(string filestr, string values, string usid)
         {
             string resultstr= mbll.UpdateUserInfobll(filestr, values, usid);
@@ -87,6 +90,7 @@ namespace PlasModel.Controllers
         //    return View();
         //}
         //公司资料
+        [UserAttribute]
         public ActionResult CompanyInfo(string filter, int? page = 1)
         {
             Sidebar("公司资料");
@@ -155,6 +159,7 @@ namespace PlasModel.Controllers
             return View(listcompany);
         }
         //新增公司资料
+        [UserAttribute]
         public ActionResult CompanyInfoCreate()
         {
             AreaBll abll = new AreaBll();
@@ -167,6 +172,7 @@ namespace PlasModel.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [UserAttribute]
         public ActionResult CompanyInfoCreate(cp_CompanyView model)
         {
             ////var model = new cp_CompanyView();
@@ -208,6 +214,7 @@ namespace PlasModel.Controllers
             return View(model);
         }
         //编辑公司资料
+        [UserAttribute]
         public ActionResult CompanyInfoEdit(string Id)
         {
 
@@ -248,6 +255,7 @@ namespace PlasModel.Controllers
         //保存编辑公司信息
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [UserAttribute]
         public ActionResult CompanyInfoEdit(cp_CompanyView model)
         {
             if (ModelState.IsValid)

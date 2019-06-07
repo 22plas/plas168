@@ -248,8 +248,7 @@ $('input').searchSuggest('destroy');
 
             /**检测 ajax 返回成功数据或 json 参数数据是否有效**/
             var checkData = function(json) {
-                var isEmpty = !$.isArray(json.data);
-                debugger;
+                var isEmpty = ! $.isArray(json.data);
                 if (isEmpty) {
                     showError("返回数据格式错误!");
                     return false;
