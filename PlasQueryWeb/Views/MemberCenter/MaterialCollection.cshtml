@@ -1,8 +1,9 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "物料收藏";
-    Layout = "~/Views/Shared/MemberCenterShared.cshtml";
+    Layout = "~/Views/Shared/MemberOtherShared.cshtml";
 }
+
+<link href="~/Content/css/PaginationCenter.css" rel="stylesheet" />
 
 <div class="tpl-content-wrapper">
     <div class="tpl-content-wrapper-bg">
@@ -54,7 +55,7 @@
                             <table class="am-table am-table-striped am-table-hover table-main">
                                 <thead>
                                     <tr>
-                                        <th style="width: 5%;" class="table-check"><span class="am-icon-square" style="color: #aaa;"></span></th>
+                                        <th style="width: 5%;" class="table-check"><input name="checkAll" type="checkbox" value="" /></th>
                                         <th style="width: 5%;" class="table-id">ID</th>
                                         <th style="width: 20%;" class="table-title">型号</th>
                                         <th style="width: 10%;" class="table-author am-hide-sm-only">类别</th>
@@ -65,60 +66,11 @@
                                         <th style="width: 8%;" class="table-set">操作</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td><span class="am-icon-check-square-o" style="color: #0093dd;"></span></td>
-                                        <td>14</td>
-                                        <td>Business management</td>
-                                        <td class="am-hide-sm-only">default</td>
-                                        <td class="am-hide-sm-only">测试1号</td>
-                                        <td class="am-hide-sm-only">用途1，用途2，用途13</td>
-                                        <td class="am-hide-sm-only">特性1，特性2</td>
-                                        <td class="am-hide-sm-only">2014-9-4 7:28</td>
-                                        <td>
-                                            <a href="#" class="am-text-danger" style="display: inline-block;"><span class="am-icon-trash-o"></span>删除</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="am-icon-square" style="color: #aaa;"></span></td>
-                                        <td>14</td>
-                                        <td>Business management</td>
-                                        <td class="am-hide-sm-only">default</td>
-                                        <td class="am-hide-sm-only">测试1号</td>
-                                        <td class="am-hide-sm-only">用途1，用途2，用途13</td>
-                                        <td class="am-hide-sm-only">特性1，特性2</td>
-                                        <td class="am-hide-sm-only">2014-9-4 7:28</td>
-                                        <td>
-                                            <a href="#" class="am-text-danger" style="display: inline-block;"><span class="am-icon-trash-o"></span>删除</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><span class="am-icon-square" style="color: #aaa;"></span></td>
-                                        <td>14</td>
-                                        <td>Business management</td>
-                                        <td class="am-hide-sm-only">default</td>
-                                        <td class="am-hide-sm-only">测试1号</td>
-                                        <td class="am-hide-sm-only">用途1，用途2</td>
-                                        <td class="am-hide-sm-only">特性1，特性2</td>
-                                        <td class="am-hide-sm-only">2014-9-4 7:28</td>
-                                        <td>
-                                            <a href="#" class="am-text-danger" style="display: inline-block;"><span class="am-icon-trash-o"></span>删除</a>
-                                        </td>
-                                    </tr>
-                                </tbody>
+                                <tbody id="DataList"></tbody>
                             </table>
                             <div class="am-cf">
+                                <div class="am-fr black2" id="Pagination">
 
-                                <div class="am-fr">
-                                    <ul class="am-pagination tpl-pagination">
-                                        <li class="am-disabled"><a href="#">«</a></li>
-                                        <li class="am-active"><a href="#">1</a></li>
-                                        <li><a href="#">2</a></li>
-                                        <li><a href="#">3</a></li>
-                                        <li><a href="#">4</a></li>
-                                        <li><a href="#">5</a></li>
-                                        <li><a href="#">»</a></li>
-                                    </ul>
                                 </div>
                             </div>
                             <hr>
@@ -133,3 +85,93 @@
     </div>
 </div>
 
+<script type="text/javascript">
+
+    var pagesize = 10;
+    var rowcount = 0;
+    var datas = "";
+
+
+    $().ready(function () {
+        InitData(0);
+    });
+
+
+    function InitData(pageindx) {
+        var tbodyui = "";
+        $.ajax({
+            type: "POST",
+            dataType: "JSON",
+            url: '/MemberCenter/GetMaterialCollection',
+            data: "pageindex=" + (pageindx + 1) + "&pagesize=" + pagesize + "" + datas,
+            async: false,
+            success: function (json) {
+                //debugger;
+                var productData = json.data;
+                rowcount = json.totalCount;
+                var columnscount = 0;
+                if (rowcount != 0) {
+                    $.each(productData, function (i, n) {
+                        columnscount++;
+                        tbodyui += "<tr>";
+                        tbodyui += "<td><input name=\"checkList\" type=\"checkbox\" value=\"" + n.Id + "\"></td >";
+                        tbodyui += "<td>" + columnscount + "</td>";
+                        tbodyui += "<td>" + n.ProModel + "</td>";
+                        tbodyui += "<td class=\"am-hide-sm-only\">" + n.Name + "</td>";
+                        tbodyui += "<td class=\"am-hide-sm-only\">" + n.ProModel + "</td>";
+                        tbodyui += "<td class=\"am-hide-sm-only\">" + n.ProUse + "</td>";
+                        tbodyui += "<td class=\"am-hide-sm-only\">" + n.characteristic + "</td>";
+                        tbodyui += "<td class=\"am-hide-sm-only\">" + ChangeDateFormat(n.CreateDate) + "</td>";
+                        tbodyui += "<td >";
+                        tbodyui += "<a href=\"javascript:void(0);\" class=\"am-text-danger\" style=\"display: inline-block;\"><span class=\"am-icon-trash-o\"></span>删除</a>";
+                        tbodyui += "</td >";
+                        tbodyui += "</tr >";
+                    });
+                }
+                if (tbodyui == "")
+                    tbodyui = "<div  style=\"height:50px; color:red; text-align:center;line-height:50px;\">暂无信息！</div>";
+                $("#DataList").html(tbodyui);
+
+
+            },
+            error: function () { alert("数据请求异常") }
+        });
+
+        $("#Pagination").pagination(rowcount, {
+            callback: pageselectCallback,
+            prev_text: '上一页',
+            next_text: '下一页',
+            items_per_page: pagesize,
+            num_display_entries: 8,
+            current_page: pageindx,
+            num_edge_entries: 1
+        });
+        //$("html, body").stop().animate({ scrollTop: $("#records").offset().top - 200 }, 400);
+
+    }
+    
+
+    function pageselectCallback(page_id, jq) {
+
+        InitData(page_id);
+    }
+
+    ///多选
+    $("input[name='checkAll']").click(function () {
+        if ($(this).is(":checked")) {
+            $.each($("input[name='checkList']"), function (index, item) {
+                $(this).prop("checked", true);
+            })
+        }
+        else {
+            $.each($("input[name='checkList']"), function (index, item) {
+                $(this).prop("checked", false);
+            })
+        }
+    })
+
+
+    //删除
+    
+
+</script>

@@ -371,13 +371,53 @@ namespace PlasDal
 
         #region 黄远林--我的物性
 
+
+        /// <summary>
+        /// 添加收藏
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public bool AddPhysics_Collection(Physics_CollectionModel model, ref string errMsg)
+        {
+            bool isAdd = false;
+            try
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.Append("insert into Physics_Collection(ProductGuid,UserId,CreateDate)");
+                sql.Append(" values(@ProductGuid,@UserId,@CreateDate)");
+                SqlParameter[] parm = {
+                   new SqlParameter("@ProductGuid",model.ProductGuid),
+                   new SqlParameter("@UserId",model.UserId),
+                   new SqlParameter("@CreateDate",DateTime.Now)
+                };
+                isAdd = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), parm) > 0;
+            }
+            catch (Exception ex)
+            {
+
+                errMsg = ex.Message.ToString();
+            }
+            return isAdd;
+        }
+
         /// <summary>
         /// 收藏
         /// </summary>
-        public DataTable GetPhysics_Collection(string userId,int pageindex, int pagesize, ref int pagecout, ref string errMsg)
+        public DataTable GetPhysics_Collection(string userId,string SmallClassID,int pageindex, int pagesize, ref int pagecout, ref string errMsg)
         {
-            
-            return null;
+            StringBuilder sql = new StringBuilder();
+            sql.Append("select a.Id,a.ProductGuid,a.UserId,a.CreateDate,b.ProModel,b.PlaceOrigin,c.ProUse,c.characteristic,d.Name from Physics_Collection as a ");
+            sql.Append(" left join Product as b on a.ProductGuid=b.ProductGuid");
+            sql.Append(" left join Product_l as c on c.ParentGuid=a.ProductGuid");
+            sql.Append(" left join Prd_SmallClass_l as d on d.parentguid=b.SmallClassId");
+            sql.Append(" where 1=1 ");
+            if (!string.IsNullOrEmpty(SmallClassID))
+            {
+                sql.Append(" and b.SmallClassId='" + SmallClassID + "'");
+            }
+            var dt = GetPhysicsAttr(sql.ToString(), "id desc", pageindex, pagesize, ref pagecout, ref errMsg);
+            return dt;
         }
 
         /// <summary>
@@ -423,7 +463,7 @@ namespace PlasDal
                 bigsql.Append(" ) tn");
                 bigsql.Append(" where tn.rn between " + pageBegin + " and " + pageEnd);
 
-                string sqlcout = string.Format("select count(1) as counts from ({0})", sql.ToString());
+                string sqlcout = string.Format("select count(1) as counts from ({0}) as t", sql.ToString());
                 var dt = SqlHelper.GetSqlDataTable(sqlcout);
                 if (dt.Rows.Count > 0)
                 {

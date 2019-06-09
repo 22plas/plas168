@@ -310,6 +310,7 @@ namespace PlasModel.Controllers
             }
         }
         //收货地址
+        [UserAttribute]
         public ActionResult DeliveryAddress(string filter, int? page = 1)
         {
             Sidebar("收货地址");
@@ -368,6 +369,7 @@ namespace PlasModel.Controllers
             return View(list);
         }
         //收货地址
+        [UserAttribute]
         public ActionResult DeliveryAddressCreate()
         {
             Sidebar("收货地址");
@@ -380,6 +382,7 @@ namespace PlasModel.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [UserAttribute]
         public ActionResult DeliveryAddressCreate(DeliveryAddress model)
         {
             if (ModelState.IsValid)
@@ -398,8 +401,9 @@ namespace PlasModel.Controllers
             ViewBag.District = abll.pliststrbll("北京市", "2");//街道
             return View(model);
         }
-        
+
         //编辑公司资料
+        [UserAttribute]
         public ActionResult DeliveryAddressEdit(string Id)
         {
 
@@ -415,6 +419,7 @@ namespace PlasModel.Controllers
         //保存编辑公司信息
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [UserAttribute]
         public ActionResult DeliveryAddressEdit(DeliveryAddress model)
         {
             if (ModelState.IsValid)
@@ -433,6 +438,7 @@ namespace PlasModel.Controllers
         //删除收货地址
         [AllowCrossSiteJson]
         [HttpPost]
+        [UserAttribute]
         public ActionResult DeleteDeliverAddress(string id)
         {
             bool returns = mbll.DeleteCommon(id, "cp_CompanyAddress");
@@ -446,12 +452,37 @@ namespace PlasModel.Controllers
             }
         }
         //物性收藏
+        [UserAttribute]
         public ActionResult MaterialCollection()
         {
+
+
+
             Sidebar("物性收藏");
             return View();
         }
+
+        [UserAttribute]
+        public JsonResult GetMaterialCollection(string pageindex,string pagesize)
+        {
+            int beginPage = 1;
+            int.TryParse(pageindex, out beginPage);
+            int endPage = 10;
+            int.TryParse(pagesize, out endPage);
+            string smallid = string.Empty;
+            int totalCount = 0;
+            string note = string.Empty;
+            if (!string.IsNullOrWhiteSpace(Request["smallid"]))
+            {
+                smallid = Request["smallid"].ToString();
+            }
+            var list = mbll.GetPhysics_Collection(AccountData.UserID, smallid, beginPage, endPage, ref totalCount, ref note);
+            return Json(new { data = list, totalCount = totalCount }, JsonRequestBehavior.AllowGet);
+        }
+
+
         //物性浏览记录
+        [UserAttribute]
         public ActionResult MaterialLook()
         {
             Sidebar("物性浏览记录");
