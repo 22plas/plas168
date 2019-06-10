@@ -50,9 +50,9 @@ namespace PlasBll
         /// <param name="type"></param>
         /// <param name="showNum"></param>
         /// <returns></returns>
-        public DataTable GetSearchParam(int type, int showNum = 10)
+        public DataTable GetSearchParam(int type,string wherekey, int showNum = 10,int? pageindex=1)
         {
-            return dal.GetSearchParam(type, showNum);
+            return dal.GetSearchParam(type, wherekey, showNum, pageindex.Value);
         }
 
         public DataSet Sys_GetSearchParam(string tableName, int pageSize = 10, string filterColumns = "", string whereStr = "", string orderBy = "weight desc", int pageIndex = 1)
@@ -69,6 +69,11 @@ namespace PlasBll
         {
             return dal.Sys_GetSuperSearchParam(parentID);
         }
+        //app获取搜索属性值
+        public DataTable Sys_GetSuperSearchParamForApp(int parentID = -1)
+        {
+            return dal.Sys_GetSuperSearchParamForApp(parentID);
+        }
 
         //超级搜索
         public DataSet Sys_SuperSearch(string searchStr = "", int languageid = 2052, int pageCount = 0, int pageSize = 20, string guidstr = "",string isNavLink="")
@@ -79,9 +84,9 @@ namespace PlasBll
         #endregion
 
         //普通搜索
-        public DataSet GetGeneralSearch(string key = "", int pageIndex = 1, int pageSize = 20, string strGuid = "")
+        public DataSet GetGeneralSearch(string key = "", int pageIndex = 1, int pageSize = 20, string strGuid = "",int? isapp=0)
         {
-            return dal.GetGeneralSearch(key, pageIndex, pageSize, strGuid);
+            return dal.GetGeneralSearch(key, pageIndex, pageSize, strGuid, isapp);
         }
         //二次检索
         public DataSet GetTwoSearch(int pageIndex, int pageSize, string ver, string Characteristic, string Used, string Kind, string Method, string Factory, string Additive, string AddingMaterial)
@@ -139,9 +144,16 @@ namespace PlasBll
         {
             return dal.GetProductMessage(guid);
         }
-        //获取封装关键词json的数据信息
-        public DataTable GetSetJsonInfo(string key) {
-            return dal.GetSetJsonInfo(key);
+
+        /// <summary>
+        /// 获取产品特性
+        /// </summary>
+        /// <param name="ver">版本号</param>
+        /// <param name="tx">特性名称</param>
+        /// <returns></returns>
+        public DataTable GetProductAttribute(string ver, string tx)
+        {
+            return dal.GetProductAttribute(ver, tx);
         }
     }
 }

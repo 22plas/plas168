@@ -70,14 +70,47 @@ namespace PlasQueryWeb.Controllers
         {
             try
             {
-                DataSet ds = bll.GetPagePriceTypeOrFactory(key, typestr, pageindex, pagesize);
-                string jsonstr = string.Empty;
-                //获取类别\厂家
-                if (ds.Tables[0] != null && ds.Tables[0].Rows.Count > 0)
+                List<parminfo> list = new List<parminfo>();
+                if (typestr == "0" || typestr == "1")
                 {
-                    jsonstr = ToolHelper.DataTableToJson(ds.Tables[0]);
+                    DataSet ds = bll.GetPagePriceTypeOrFactory(key, typestr, pageindex, pagesize);
+                    string jsonstr = string.Empty;
+                    //获取类别\厂家
+                    if (ds.Tables[0] != null && ds.Tables[0].Rows.Count > 0)
+                    {
+                        //jsonstr = ToolHelper.DataTableToJson(ds.Tables[0]);
+                        list = Comm.ToDataList<parminfo>(ds.Tables[0]);
+                    }
+                    return Json(Common.ToJsonResult("Success", "获取成功", list), JsonRequestBehavior.AllowGet);
                 }
-                return Json(Common.ToJsonResult("Success", "获取成功", jsonstr), JsonRequestBehavior.AllowGet);
+                else
+                {
+                    DataTable dt = new DataTable();
+                    int selecttype = Convert.ToInt32(typestr);
+                    if (typestr == "11")
+                    {
+                        selecttype = 1;
+                        dt = bll.GetSearchParam(selecttype, key, pagesize.Value, pageindex.Value);
+                        if (dt.Rows.Count > 0)
+                        {
+                            for (int i = 0; i < dt.Rows.Count; i++)
+                            {
+                                parminfo tm = new parminfo();
+                                tm.Guid = dt.Rows[i]["guid"].ToString();
+                                tm.Name = dt.Rows[i]["Name"].ToString();
+                                tm.rownum = 0;
+                                list.Add(tm);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        selecttype = Convert.ToInt32(typestr);
+                        dt = bll.GetSearchParam(selecttype, key, pagesize.Value, pageindex.Value);
+                        list = Comm.ToDataList<parminfo>(dt);
+                    }
+                    return Json(Common.ToJsonResult("Success", "获取成功", list), JsonRequestBehavior.AllowGet);
+                }
             }
             catch (Exception ex)
             {
@@ -318,44 +351,25 @@ namespace PlasQueryWeb.Controllers
                 return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
-        //生成关键词json文件
-        [AllowCrossSiteJson]
-        [HttpGet]
-        public ActionResult SaveJson()
-        {
-            string jsonstr = "";
-            try
-            {
-                //sys_autokey
-                DataTable dt = bll.GetSetJsonInfo("");
-                jsonstr = ToolHelper.DataTableToJson(dt);
-                FileStream fs1 = new FileStream("D:\\keyword.txt", FileMode.Create, FileAccess.Write);//创建写入文件 
-                StreamWriter sw = new StreamWriter(fs1);
-                sw.Write(jsonstr);
-                sw.Flush();
-                sw.Close();
-                return Json(Common.ToJsonResult("Success", "生成成功"), JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return Json(Common.ToJsonResult("Fail", "生成失败", ex.Message), JsonRequestBehavior.AllowGet);
-            }
-        }
+
+        /// <summary>
+        /// 获取下拉关键词数据
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpGet]
         public ActionResult GetJsonByKey(string key)
         {
             try
             {
-                string keyword = string.Empty;
                 string strJson = string.Empty;//Json数据
                 List<wordModel> listkeyinfo = new List<wordModel>();
-                if (!string.IsNullOrEmpty(key))
+                string newkey = Comm.ToLower(key);
+                if (!string.IsNullOrEmpty(newkey))
                 {
-                    keyword = key;
                     var list = Comm.FindSearchsWord();
-                    //listkeyinfo 
-                    listkeyinfo = list.Where(s => s.Word.Contains(keyword)).Take(10).ToList();
+                    listkeyinfo = list.Where(s => s.Word.Contains(newkey.Trim())).Take(10).ToList();
                 }
                 return Json(Common.ToJsonResult("Success", "生成成功", listkeyinfo), JsonRequestBehavior.AllowGet);
             }
@@ -472,94 +486,195 @@ namespace PlasQueryWeb.Controllers
                 }
                 else
                 {
-                    ds = bll.GetGeneralSearch(key.Trim(), pageindex, pagesize, ver);
+                    ds = bll.GetGeneralSearch(key.Trim(), pageindex, pagesize, ver,1);
                 }
                 if (ds.Tables.Contains("ds") && ds.Tables[0] != null)
                 {
                     jsonstr = ToolHelper.DataTableToJson(ds.Tables[0]);
                 }
-                DataTable dt = new DataTable();
-                if (ds.Tables.Contains("ds2") && ds.Tables[2] != null && ds.Tables[2].Rows.Count > 0)
-                {
-                    DataView dv = ds.Tables[2].DefaultView;
-                    dt = dv.ToTable(true, "attribute");
-                    if (dt.Rows.Count > 0)
-                    {
-                        for (int i = 0; i < dt.Rows.Count; i++)
-                        {
-                            string tempstr = dt.Rows[i]["attribute"].ToString();
-                            if (tempstr == "生产厂家")
-                            {
-                                DataTable tempfactory = ds.Tables[2].Select("attribute='生产厂家'").CopyToDataTable();
-                                if (tempfactory.Rows.Count > 0)
-                                {
-                                    for (int j = 0; j < tempfactory.Rows.Count; j++)
-                                    {
-                                        FactoryInfo tfmodel = new FactoryInfo();
-                                        tfmodel.ManuFacturer = tempfactory.Rows[j]["attributevalue"].ToString();
-                                        factoryjsonstr.Add(tfmodel);
-                                    }
-                                    //factoryjsonstr = ToolHelper.DataTableToJson(tempfactory);
-                                }
-                            }
-                            else if (tempstr == "产品种类")
-                            {
-                                DataTable tempclass = ds.Tables[2].Select("attribute='产品种类'").CopyToDataTable();
-                                if (tempclass.Rows.Count > 0)
-                                {
-                                    for (int s = 0; s < tempclass.Rows.Count; s++)
-                                    {
-                                        ClassInfo tcmodel = new ClassInfo();
-                                        tcmodel.SmallClass = tempclass.Rows[s]["attributevalue"].ToString();
-                                        classjsonstr.Add(tcmodel);
-                                    }
-                                    //classjsonstr = ToolHelper.DataTableToJson(tempclass);
-                                }
-                            }
-                            else
-                            {
-                                bigtype bigmodel = new bigtype();
-                                bigmodel.Name = tempstr;
-                                bigtypelist.Add(bigmodel);
-                                DataRow[] dr = ds.Tables[2].Select("attribute='" + tempstr + "'");
-                                if (dr.Length > 0)
-                                {
-                                    for (int r = 0; r < dr.Length; r++)
-                                    {
-                                        attributeinfo tamodel = new attributeinfo();
-                                        tamodel.attribute= dr[r]["attribute"].ToString();
-                                        tamodel.attributevalue = dr[r]["attributevalue"].ToString();
-                                        otherlist.Add(tamodel);
-                                    }
-                                }
-                                //DataTable tempdt = dr.CopyToDataTable();
-                                //if (tempdt.Rows.Count > 0)
-                                //{
-                                //    if (otherjsonstr == "")
-                                //    {
-                                //        otherjsonstr = ToolHelper.DataTableToJson(tempdt);
-                                //    }
-                                //    else
-                                //    {
-                                //        otherjsonstr = otherjsonstr + "," + ToolHelper.DataTableToJson(tempdt);
-                                //    }
-                                //}
-                            }
-                        }
-                    }
-                }
+                //DataTable dt = new DataTable();
+                //if (ds.Tables.Contains("ds2") && ds.Tables[2] != null && ds.Tables[2].Rows.Count > 0)
+                //{
+                //    DataView dv = ds.Tables[2].DefaultView;
+                //    dt = dv.ToTable(true, "attribute");
+                //    if (dt.Rows.Count > 0)
+                //    {
+                //        for (int i = 0; i < dt.Rows.Count; i++)
+                //        {
+                //            string tempstr = dt.Rows[i]["attribute"].ToString();
+                //            if (tempstr == "生产厂家")
+                //            {
+                //                DataTable tempfactory = ds.Tables[2].Select("attribute='生产厂家'").CopyToDataTable();
+                //                if (tempfactory.Rows.Count > 0)
+                //                {
+                //                    for (int j = 0; j < tempfactory.Rows.Count; j++)
+                //                    {
+                //                        FactoryInfo tfmodel = new FactoryInfo();
+                //                        tfmodel.ManuFacturer = tempfactory.Rows[j]["attributevalue"].ToString();
+                //                        factoryjsonstr.Add(tfmodel);
+                //                    }
+                //                    //factoryjsonstr = ToolHelper.DataTableToJson(tempfactory);
+                //                }
+                //            }
+                //            else if (tempstr == "产品种类")
+                //            {
+                //                DataTable tempclass = ds.Tables[2].Select("attribute='产品种类'").CopyToDataTable();
+                //                if (tempclass.Rows.Count > 0)
+                //                {
+                //                    for (int s = 0; s < tempclass.Rows.Count; s++)
+                //                    {
+                //                        ClassInfo tcmodel = new ClassInfo();
+                //                        tcmodel.SmallClass = tempclass.Rows[s]["attributevalue"].ToString();
+                //                        classjsonstr.Add(tcmodel);
+                //                    }
+                //                    //classjsonstr = ToolHelper.DataTableToJson(tempclass);
+                //                }
+                //            }
+                //            else
+                //            {
+                //                bigtype bigmodel = new bigtype();
+                //                bigmodel.Name = tempstr;
+                //                bigtypelist.Add(bigmodel);
+                //                DataRow[] dr = ds.Tables[2].Select("attribute='" + tempstr + "'");
+                //                if (dr.Length > 0)
+                //                {
+                //                    for (int r = 0; r < dr.Length; r++)
+                //                    {
+                //                        attributeinfo tamodel = new attributeinfo();
+                //                        tamodel.attribute= dr[r]["attribute"].ToString();
+                //                        tamodel.attributevalue = dr[r]["attributevalue"].ToString();
+                //                        otherlist.Add(tamodel);
+                //                    }
+                //                }
+                //                //DataTable tempdt = dr.CopyToDataTable();
+                //                //if (tempdt.Rows.Count > 0)
+                //                //{
+                //                //    if (otherjsonstr == "")
+                //                //    {
+                //                //        otherjsonstr = ToolHelper.DataTableToJson(tempdt);
+                //                //    }
+                //                //    else
+                //                //    {
+                //                //        otherjsonstr = otherjsonstr + "," + ToolHelper.DataTableToJson(tempdt);
+                //                //    }
+                //                //}
+                //            }
+                //        }
+                //    }
+                //}
             }
             var returndata = new
             {
                 datalist = jsonstr,
-                //bigtype = BigType,
-                //smalltype = samlltypelist
                 factorydata = factoryjsonstr,
                 classdata = classjsonstr,
                 bigtypedata= bigtypelist,
                 otherdata = otherlist
             };
             return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 获取产品属性
+        /// </summary>
+        /// <param name="ver">版本号</param>
+        /// <param name="txname">属性名称</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetAttribute(string ver, string txname)
+        {
+            try
+            {
+                DataTable dt = bll.GetProductAttribute(ver, txname);
+                List<ClassInfo> classjsonstr = new List<ClassInfo>();//类别json数据
+                List<FactoryInfo> factoryjsonstr = new List<FactoryInfo>();//厂家json数据
+                List<attributeinfo> list = new List<attributeinfo>();
+                if (txname == "生产厂家")
+                {
+                    if (dt.Rows.Count > 0)
+                    {
+                        for (int j = 0; j < dt.Rows.Count; j++)
+                        {
+                            FactoryInfo tfmodel = new FactoryInfo();
+                            tfmodel.ManuFacturer = dt.Rows[j]["attributevalue"].ToString();
+                            factoryjsonstr.Add(tfmodel);
+                        }
+                    }
+                    return Json(Common.ToJsonResult("Success", "成功", factoryjsonstr), JsonRequestBehavior.AllowGet);
+                }
+                else if (txname == "产品种类")
+                {
+                    if (dt.Rows.Count > 0)
+                    {
+                        for (int s = 0; s < dt.Rows.Count; s++)
+                        {
+                            ClassInfo tcmodel = new ClassInfo();
+                            tcmodel.SmallClass = dt.Rows[s]["attributevalue"].ToString();
+                            classjsonstr.Add(tcmodel);
+                        }
+                    }
+                    return Json(Common.ToJsonResult("Success", "成功", classjsonstr), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    list = Comm.ToDataList<attributeinfo>(dt);
+                    return Json(Common.ToJsonResult("Success", "成功", list), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// 获取超级搜索筛选参数
+        /// </summary>
+        /// <param name="parentid"></param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetSuperSearchParam(int parentid)
+        {
+            try
+            {
+                DataTable dt = bll.Sys_GetSuperSearchParamForApp(parentid);
+                string jsonstr = string.Empty;
+                if (dt.Rows.Count > 0)
+                {
+                    jsonstr = ToolHelper.DataTableToJson(dt);
+                    return Json(Common.ToJsonResult("Success", "获取成功", jsonstr), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(Common.ToJsonResult("Fail", "获取失败"), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        /// <summary>
+        /// 超级搜素
+        /// </summary>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult AppSuperMsgSearch(int pageindex, int pagesize, string guidstr, string searchstr)
+        {
+            try
+            {
+                string isNavLink = string.Empty;
+                var ds = bll.Sys_SuperSearch(searchstr, 2052, pageindex, pagesize, guidstr, isNavLink);
+                string jsonstr = PlasCommon.ToolHelper.DataTableToJson(ds.Tables[0]);
+                return Json(Common.ToJsonResult("Success", "获取成功", jsonstr), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
         }
         //pdf数据
         public class pdfinfo {
@@ -571,6 +686,13 @@ namespace PlasQueryWeb.Controllers
             public string BefromName { get; set; }
             public string ID { get; set; }
             public string ImagesColor { get; set; }
+        }
+        //选择参数类
+        public class parminfo
+        {
+            public int rownum { get; set; }
+            public string Name { get; set; }
+            public string Guid { get; set; }
         }
         //大类
         public class bigtype {

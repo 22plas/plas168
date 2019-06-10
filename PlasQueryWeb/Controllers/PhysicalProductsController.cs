@@ -28,13 +28,13 @@ namespace PlasModel.Controllers
 
 
             //种类
-            ys_character = bll.GetSearchParam(1);
+            ys_character = bll.GetSearchParam(1, "");
             //特性
-            texing = bll.GetSearchParam(2);
+            texing = bll.GetSearchParam(2, "");
             //阻燃等级
-            zuran = bll.GetSearchParam(3);
+            zuran = bll.GetSearchParam(3, "");
             //生产厂家
-           var  comp = bll.GetSearchParam(4);
+           var  comp = bll.GetSearchParam(4, "");
             if (comp != null && comp.Rows.Count > 0)
             {
                 DataTable tblDatas = new DataTable("Datas");
@@ -68,13 +68,13 @@ namespace PlasModel.Controllers
                 //company = dv.ToTable(true, new string[] { "max(SmallGuid)", "Name" });// comp.Select("max(SmallGuid) as SmallGuid,Name");
             }
             //加工方法
-            jiagong = bll.GetSearchParam(5);
+            jiagong = bll.GetSearchParam(5,"");
             //产品用途
-            used = bll.GetSearchParam(7);
+            used = bll.GetSearchParam(7, "");
             //填料/增强
-            addliao = bll.GetSearchParam(8);
+            addliao = bll.GetSearchParam(8, "");
             //添加剂
-            tianjiaji = bll.GetSearchParam(9);
+            tianjiaji = bll.GetSearchParam(9, "");
 
             //属性值
             var attr = new DataTable();
@@ -163,7 +163,7 @@ namespace PlasModel.Controllers
             var allData = new DataTable();
             if (rid > 0)
             {
-                allData = bll.GetSearchParam(rid, datatCount);
+                allData = bll.GetSearchParam(rid,"", datatCount);
             }
             ViewBag.allData = allData;
             ViewBag.rname = rname;

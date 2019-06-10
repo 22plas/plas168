@@ -195,5 +195,35 @@ namespace PlasModel.App_Start
             return result;
 
         }
+        /// <summary>
+        /// 大写转小写，其他都保留
+        /// </summary>
+        /// <param name="key">要转小写的字符串</param>
+        /// <returns>返回新的字符串</returns>
+        public static string ToLower(string key)
+        {
+            //string str = "Aa Bb 123!@#";     //测试字符串
+            string newStr = string.Empty;    //用于存放新字符串
+            //循环字符串
+            foreach (char item in key)
+            {
+                //if (item >= 'a' && item <= 'z')
+                //{
+                //    //小写字母转大写
+                //    newStr += item.ToString().ToUpper();
+                //}
+                if (item >= 'A' && item <= 'Z')
+                {
+                    //大写字母转小写
+                    newStr += item.ToString().ToLower();
+                }
+                else
+                {
+                    //不变
+                    newStr += item.ToString();
+                }
+            }
+            return newStr;
+        }
     }
 }
