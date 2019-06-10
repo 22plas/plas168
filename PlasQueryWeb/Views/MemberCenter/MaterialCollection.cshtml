@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "物料收藏";
     Layout = "~/Views/Shared/MemberOtherShared.cshtml";
+    var list = ViewBag.ProductList as List<PlasModel.ProductAttr>;
 }
 
 <link href="~/Content/css/PaginationCenter.css" rel="stylesheet" />
@@ -30,20 +31,19 @@
                         <div class="am-btn-toolbar" style="margin-top: 2px;">
                             <div class="am-btn-group am-btn-group-xs">
                                 <button type="button" class="am-btn am-btn-default am-btn-warning" style="margin-right: 5px;"><span class="am-icon-archive"></span> 对比</button>
-                                <button type="button" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删<span class="am-input-group am-input-group-sm"></span>除</button>
+                                <button type="button" class="am-btn am-btn-default am-btn-danger" onclick="allRemoveColl();"><span class="am-icon-trash-o"></span> 删<span class="am-input-group am-input-group-sm"></span>除</button>
                             </div>
                         </div>
                     </div>
                     <div class="am-u-sm-12 am-u-md-6">
                         <div class="am-form-group" style="margin-bottom: 0;float: right;">
-                            <select data-am-selected="{btnSize: 'sm'}">
-                                <option value="option1">所有类别</option>
-                                <option value="option2">IT业界</option>
-                                <option value="option3">数码产品</option>
-                                <option value="option3">笔记本电脑</option>
-                                <option value="option3">平板电脑</option>
-                                <option value="option3">只能手机</option>
-                                <option value="option3">超极本</option>
+                            <select id="ProductAttr">
+                                <option value="0">所有类别</option>
+                                @foreach (var item in list)
+                                {
+                                   <option value="@item.attribute">@item.attributevalue</option>
+                                }
+
                             </select>
                             <button class="am-btn  am-btn-default am-btn-success tpl-am-btn-success am-icon-search am-btn-sm" type="button"></button>
                         </div>
@@ -123,7 +123,7 @@
                         tbodyui += "<td class=\"am-hide-sm-only\">" + n.characteristic + "</td>";
                         tbodyui += "<td class=\"am-hide-sm-only\">" + ChangeDateFormat(n.CreateDate) + "</td>";
                         tbodyui += "<td >";
-                        tbodyui += "<a href=\"javascript:void(0);\" class=\"am-text-danger\" style=\"display: inline-block;\"><span class=\"am-icon-trash-o\"></span>删除</a>";
+                        tbodyui += "<a href=\"javascript:void(0);\" onclick=\"RomveOnlyColl('" + n.Id+"');\" class=\"am-text-danger\" style=\"display: inline-block;\"><span class=\"am-icon-trash-o\"></span>删除</a>";
                         tbodyui += "</td >";
                         tbodyui += "</tr >";
                     });
@@ -172,6 +172,53 @@
 
 
     //删除
-    
+
+    function RomveColl(aryy) {
+        if (aryy > 0) {
+            debugger;
+            $.ajax({
+                type: "POST",
+                dataType: "JSON",
+                url: '/MemberCenter/RomveMaterialCollection',
+                data: "arry=" + JSON.stringify(aryy),
+                async: false,
+                success: function (json) {
+                    if (json.count > 0) {
+                        InitData(0);
+                    }
+                    else {
+                        alert(json.message);
+                    }
+                },
+                error: function () { alert("数据请求异常") }
+            });
+        }
+
+    }
+    //点击单个删除
+    function RomveOnlyColl(obj) {
+        var arry = new Array();
+        debugger;
+        if (obj != "") {
+            arry.push(obj);
+            RomveColl(arry);
+        }
+    }
+
+    function allRemoveColl() {
+        debugger;
+        var arry = new Array();
+        if ($("input[name='checkList']").length > 0) {
+            $.each($("input[name='checkList']"), function (index, item) {
+                if ($(this).is(":checked")) {
+                    arry.push($(this).val());
+                }
+            })
+        }
+        if (arry.length > 0) {
+            RomveColl(arry);
+        }
+    }
+
 
 </script>

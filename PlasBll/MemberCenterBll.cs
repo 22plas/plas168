@@ -137,7 +137,7 @@ namespace PlasBll
         /// <returns></returns>
         public string UpdateUserInfobll(string filestr, string values, string usid)
         {
-            return mdal.UpdateUserInfodal(filestr, values,usid);
+            return mdal.UpdateUserInfodal(filestr, values, usid);
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace PlasBll
             return mdal.GetDeliveryAddressById(id);
         }
         //删除收货地址信息
-        public bool DeleteCommon(string id,string tbname)
+        public bool DeleteCommon(string id, string tbname)
         {
             return mdal.DeleteCommon(id, tbname);
         }
@@ -241,6 +241,33 @@ namespace PlasBll
             return null;
         }
 
+        /// <summary>
+        /// 删除收藏
+        /// </summary>
+        /// <param name="CollID">批量删除ID</param>
+        /// <param name="errMsg">错误信息</param>
+        /// <returns></returns>
+        public bool RomvePhysics_Collection(List<string> CollID, ref string errMsg)
+        {
+            return mdal.RomvePhysics_Collection(CollID, ref errMsg);
+        }
+
+
+        /// <summary>
+        /// 获取类别
+        /// </summary>
+        /// <param name="userId">用户信息</param>
+        /// <param name="errMsg">错误信息</param>
+        /// <returns></returns>
+        public List<ProductAttr> getProductAttr(string userId, ref string errMsg)
+        {
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                var dt = mdal.getProductAttr(userId, ref errMsg);
+                return PlasCommon.ToolClass<ProductAttr>.ConvertDataTableToModel(dt);
+            }
+            return null;
+        }
         #endregion
 
 

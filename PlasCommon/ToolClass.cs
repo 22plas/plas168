@@ -53,42 +53,50 @@ namespace PlasCommon
             Type type = typeof(T);
             string tempName = "";
 
-            foreach (DataRow dr in dt.Rows)
+            if (dt.Rows.Count > 0)
             {
-                T t = new T();
-                // 获得此模型的公共属性      
-                PropertyInfo[] propertys = t.GetType().GetProperties();
-                foreach (PropertyInfo pi in propertys)
+                foreach (DataRow dr in dt.Rows)
                 {
-                    tempName = pi.Name;  // 检查DataTable是否包含此列    
-
-                    if (dt.Columns.Contains(tempName))
+                    T t = new T();
+                    // 获得此模型的公共属性      
+                    PropertyInfo[] propertys = t.GetType().GetProperties();
+                    foreach (PropertyInfo pi in propertys)
                     {
-                        // 判断此属性是否有Setter      
-                        if (!pi.CanWrite) continue;
+                        tempName = pi.Name;  // 检查DataTable是否包含此列    
 
-                        object value = dr[tempName];
-
-                        if (value != DBNull.Value)
+                        if (dt.Columns.Contains(tempName))
                         {
-                            if (pi.GetMethod.ReturnParameter.ParameterType.Name == "Int32")
+                            // 判断此属性是否有Setter      
+                            if (!pi.CanWrite) continue;
+
+                            object value = dr[tempName];
+
+                            if (value != DBNull.Value)
                             {
-                                value = Convert.ToInt32(value);
+                                if (pi.GetMethod.ReturnParameter.ParameterType.Name == "Int32")
+                                {
+                                    value = Convert.ToInt32(value);
+                                }
+                                pi.SetValue(t, value, null);
                             }
-                            pi.SetValue(t, value, null);
+                            //if (pi.PropertyType.FullName == "System.Int32")//此处判断下Int32类型，如果是则强转
+                            //    value = Convert.ToInt32(value);
+                            //if (value != DBNull.Value)
+                            //    pi.SetValue(t, value, null);
+                            //object value = dr[tempName];
+                            //if (value != DBNull.Value)
+                            //    pi.SetValue(t, value, null);
                         }
-                        //if (pi.PropertyType.FullName == "System.Int32")//此处判断下Int32类型，如果是则强转
-                        //    value = Convert.ToInt32(value);
-                        //if (value != DBNull.Value)
-                        //    pi.SetValue(t, value, null);
-                        //object value = dr[tempName];
-                        //if (value != DBNull.Value)
-                        //    pi.SetValue(t, value, null);
                     }
+                    ts.Add(t);
                 }
-                ts.Add(t);
+                return ts;
             }
-            return ts;
+            else
+            {
+                return null;
+            }
+            
         }
 
     }
