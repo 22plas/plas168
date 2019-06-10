@@ -3,6 +3,7 @@ using PlasModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,26 +28,6 @@ namespace PlasBll
                 {
                     string parentid = string.Empty;//上上级用户id
                     string leaderuserid = string.Empty;//上级用户id
-                    if (!string.IsNullOrWhiteSpace(model.RecommendPhone))
-                    {
-                        DataTable ldt = mdal.GetUserDt(model.RecommendPhone, "phone");
-                        //如果有介绍人
-                        if (ldt.Rows.Count > 0)
-                        {
-                            leaderuserid = ldt.Rows[0]["ID"].ToString();//上级用户id
-                            parentid = ldt.Rows[0]["LeaderUserName"].ToString();//上上级用户id
-                            //如果上上级用户id不为空
-                            if (!string.IsNullOrWhiteSpace(parentid))
-                            {
-                                DataTable parentdt = mdal.GetUserDt(parentid, "ID");
-                                //根据上上级用户ID检验上上级用户是否存在
-                                if (parentdt.Rows.Count <= 0)
-                                {
-                                    parentid = string.Empty;
-                                }
-                            }
-                        }
-                    }
                     return mdal.SaveRegister(model, leaderuserid, parentid);
                 }
             }
@@ -227,5 +208,41 @@ namespace PlasBll
         {
             return mdal.DeleteCommon(id, tbname);
         }
+
+        #region 我的物性
+
+        /// 添加收藏
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public bool AddPhysics_Collection(Physics_CollectionModel model, ref string errMsg)
+        {
+            return mdal.AddPhysics_Collection(model, ref errMsg);
+        }
+
+        /// <summary>
+        /// 获取我的收藏
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="SmallClassID"></param>
+        /// <param name="pageindex"></param>
+        /// <param name="pagesize"></param>
+        /// <param name="pagecout"></param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public List<Physics_CollectionModel> GetPhysics_Collection(string userId, string SmallClassID, int pageindex, int pagesize, ref int pagecout, ref string errMsg)
+        {
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                var dt = mdal.GetPhysics_Collection(userId, SmallClassID, pageindex, pagesize, ref pagecout, ref errMsg);
+                return PlasCommon.ToolClass<Physics_CollectionModel>.ConvertDataTableToModel(dt);
+            }
+            return null;
+        }
+
+        #endregion
+
+
     }
 }

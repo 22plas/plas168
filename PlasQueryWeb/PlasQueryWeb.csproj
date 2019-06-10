@@ -188,6 +188,7 @@
     <Compile Include="App_Start\Qiniu\Base64.cs" />
     <Compile Include="App_Start\Qiniu\QinQiuApi.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\UserAttribute.cs" />
     <Compile Include="CommonClass\PdfHelper.cs" />
     <Compile Include="Controllers\AppApiController.cs" />
     <Compile Include="Controllers\AreaController.cs" />
@@ -217,6 +218,7 @@
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\css\iconfont\iconfont.css" />
     <Content Include="Content\css\iconfont\iconfont.svg" />
+    <Content Include="Content\css\PaginationCenter.css" />
     <Content Include="Content\css\replace.css" />
     <Content Include="Content\css\site.css" />
     <Content Include="Content\css\uploader.css" />
@@ -431,6 +433,9 @@
     <Content Include="Content\layui\module\dialog.js" />
     <Content Include="Content\layui\module\formate.js" />
     <Content Include="Content\layui\module\tool.js" />
+    <Content Include="Content\src\css\search-suggest-black.css" />
+    <Content Include="Content\src\css\search-suggest.css" />
+    <Content Include="Content\src\js\search-suggest.js" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -470,6 +475,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <None Include="Scripts\_references.js" />
+    <Content Include="Scripts\SearchKeywordsJs.js" />
     <Content Include="viewpdf.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -527,7 +533,7 @@
     <Content Include="Views\Replace\ProductReplace.cshtml" />
     <Content Include="Views\Replace\More.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\SetJs.cshtml" />
+    <Content Include="Views\Shared\MemberOtherShared.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

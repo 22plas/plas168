@@ -14,13 +14,14 @@ namespace PlasDal
 {
    public class MemberCenterDal
     {
+        #region 罗志强--会员中心模块
         /// <summary>
         /// 获取用户
         /// </summary>
         /// <param name="parmstr">参数值</param>
         /// <param name="fieldname">字段值</param>
         /// <returns></returns>
-        public DataTable GetUserDt(string parmstr,string fieldname)
+        public DataTable GetUserDt(string parmstr, string fieldname)
         {
             string execsql = string.Format(@"select * from cp_user where {0} ='{1}'", fieldname, parmstr);
             DataTable dt = SqlHelper.GetSqlDataTable(execsql);
@@ -97,12 +98,12 @@ namespace PlasDal
         /// <param name="values">值</param>
         /// <param name="usid">用户id</param>
         /// <returns></returns>
-        public string UpdateUserInfodal(string filestr,string values,string usid)
+        public string UpdateUserInfodal(string filestr, string values, string usid)
         {
             try
             {
                 string sqlstr = string.Format(@"update cp_user set {0}='{1}' where ID='{2}'", filestr, values, usid);
-                int row=SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings,sqlstr,null);
+                int row = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sqlstr, null);
                 return "Success";
             }
             catch (Exception)
@@ -153,7 +154,7 @@ namespace PlasDal
                 return "Fail";
             }
         }
-        
+
         /// <summary>
         /// 获取公司列表信息
         /// </summary>
@@ -166,7 +167,7 @@ namespace PlasDal
             DataSet returnds = new DataSet();
             try
             {
-                string tempstr= string.IsNullOrWhiteSpace(filter)  == false ? string.Format(@" and g.Name like '%{0}%'", filter) : "";
+                string tempstr = string.IsNullOrWhiteSpace(filter) == false ? string.Format(@" and g.Name like '%{0}%'", filter) : "";
                 int starpagesize = page.Value * pageSize.Value - pageSize.Value;
                 int endpagesize = page.Value * pageSize.Value;
                 //拼接参数
@@ -186,7 +187,7 @@ namespace PlasDal
                                                 FROM dbo.cp_Company g WHERE g.UserId='{0}' {1}
                                                 GROUP BY g.Name,g.Province,g.City,g.Area,g.[Address],g.Contacts,g.Tel,g.Fax,g.[image],g.WeChat,
                                                 g.Mobile,g.Email,g.AccountOpenBank,g.AccountOpening,g.OpenBank,g.TaxId,g.Id) t WHERE t.Ornumber > {2} AND t.Ornumber<={3}", userid, tempstr, starpagesize, endpagesize);
-                execsql2 = execsql2+ string.Format(@" SELECT COUNT(*) as totals FROM dbo.cp_Company g WHERE g.UserId='{0}' {1}", userid, tempstr);
+                execsql2 = execsql2 + string.Format(@" SELECT COUNT(*) as totals FROM dbo.cp_Company g WHERE g.UserId='{0}' {1}", userid, tempstr);
                 //DataTable returndt = SqlHelper.GetSqlDataTable_Param(execsql2, parameters);
 
                 //returnds.Tables.Add(returndt);
@@ -208,9 +209,9 @@ namespace PlasDal
             cp_Company m = new cp_Company();
             try
             {
-                string sql =string.Format(@"select * from cp_company where Id='{0}'",Id);
+                string sql = string.Format(@"select * from cp_company where Id='{0}'", Id);
                 DataTable dt = SqlHelper.GetSqlDataTable(sql);
-                if (dt.Rows.Count>0)
+                if (dt.Rows.Count > 0)
                 {
                     m.AccountOpenBank = dt.Rows[0]["AccountOpenBank"].ToString();
                     m.AccountOpening = dt.Rows[0]["AccountOpening"].ToString();
@@ -248,7 +249,7 @@ namespace PlasDal
                                       OpenBank ,CreateDate ,isdefault ,TaxId,image)
                             VALUES  ( N'{0}' ,N'{1}' , N'{2}' ,N'{3}' , N'{4}' ,N'{5}' ,N'{6}' ,N'{7}' ,N'{8}' ,'{9}' ,'{10}' ,N'{11}' ,N'{12}' ,N'{13}' ,N'{14}' ,N'{15}' ,N'{16}' ,N'{17}' , '{18}',{19} ,'{20}','{21}')",
                             model.Name, string.Empty, model.Province, model.City, model.Address, model.Contacts, model.Tel, model.Fax, string.Empty, model.logo,
-                                    model.UserId, model.WeChat, model.Mobile, model.Area, model.Email, model.AccountOpenBank, model.AccountOpening, model.OpenBank, DateTime.Now.ToString(), YesOrNo.No.GetHashCode(), model.TaxId,model.image);
+                                    model.UserId, model.WeChat, model.Mobile, model.Area, model.Email, model.AccountOpenBank, model.AccountOpening, model.OpenBank, DateTime.Now.ToString(), YesOrNo.No.GetHashCode(), model.TaxId, model.image);
             }
             //修改
             else
@@ -261,7 +262,7 @@ namespace PlasDal
             int rows = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql, null);
             return rows > 0 ? true : false;
         }
-        
+
 
         /// <summary>
         /// 获取收货地址列表信息
@@ -309,7 +310,7 @@ namespace PlasDal
                     m.Count = dt.Rows[0]["Count"].ToString();
                     m.City = dt.Rows[0]["City"].ToString();
                     m.Contacts = dt.Rows[0]["Contacts"].ToString();
-                    m.ContactsMobile= dt.Rows[0]["ContactsMobile"].ToString();
+                    m.ContactsMobile = dt.Rows[0]["ContactsMobile"].ToString();
                     m.Fax = dt.Rows[0]["Fax"].ToString();
                     m.Province = dt.Rows[0]["Province"].ToString();
                     m.Tel = dt.Rows[0]["Tel"].ToString();
@@ -346,14 +347,14 @@ namespace PlasDal
             {
                 sql = string.Format(@"update dbo.cp_CompanyAddress set UserId='{0}' ,Tel='{1}' ,Fax='{2}' ,Contacts='{3}' ,ContactsMobile='{4}' ,QQ='{5}' ,WeChat='{6}' ,Province='{7}' ,City='{8}' ,Count='{9}' ,Address='{10}' ,
                                     IsDefault='{11}'  where Id='{12}'",
-                           model.UserId, model.Tel, model.Fax, model.Contacts, model.ContactsMobile, model.QQ, model.WeChat, model.Province, model.City, model.Count, model.Address, model.IsDefault==false?0:1, model.Id);
+                           model.UserId, model.Tel, model.Fax, model.Contacts, model.ContactsMobile, model.QQ, model.WeChat, model.Province, model.City, model.Count, model.Address, model.IsDefault == false ? 0 : 1, model.Id);
 
             }
             int rows = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql, null);
             return rows > 0 ? true : false;
         }
         //公共删除方法
-        public bool DeleteCommon(string id,string tbname)
+        public bool DeleteCommon(string id, string tbname)
         {
             try
             {
@@ -366,5 +367,121 @@ namespace PlasDal
                 return false;
             }
         }
+        #endregion
+
+        #region 黄远林--我的物性
+
+
+        /// <summary>
+        /// 添加收藏
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public bool AddPhysics_Collection(Physics_CollectionModel model, ref string errMsg)
+        {
+            bool isAdd = false;
+            try
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.Append("insert into Physics_Collection(ProductGuid,UserId,CreateDate)");
+                sql.Append(" values(@ProductGuid,@UserId,@CreateDate)");
+                SqlParameter[] parm = {
+                   new SqlParameter("@ProductGuid",model.ProductGuid),
+                   new SqlParameter("@UserId",model.UserId),
+                   new SqlParameter("@CreateDate",DateTime.Now)
+                };
+                isAdd = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), parm) > 0;
+            }
+            catch (Exception ex)
+            {
+
+                errMsg = ex.Message.ToString();
+            }
+            return isAdd;
+        }
+
+        /// <summary>
+        /// 收藏
+        /// </summary>
+        public DataTable GetPhysics_Collection(string userId,string SmallClassID,int pageindex, int pagesize, ref int pagecout, ref string errMsg)
+        {
+            StringBuilder sql = new StringBuilder();
+            sql.Append("select a.Id,a.ProductGuid,a.UserId,a.CreateDate,b.ProModel,b.PlaceOrigin,c.ProUse,c.characteristic,d.Name from Physics_Collection as a ");
+            sql.Append(" left join Product as b on a.ProductGuid=b.ProductGuid");
+            sql.Append(" left join Product_l as c on c.ParentGuid=a.ProductGuid");
+            sql.Append(" left join Prd_SmallClass_l as d on d.parentguid=b.SmallClassId");
+            sql.Append(" where 1=1 ");
+            if (!string.IsNullOrEmpty(SmallClassID))
+            {
+                sql.Append(" and b.SmallClassId='" + SmallClassID + "'");
+            }
+            var dt = GetPhysicsAttr(sql.ToString(), "id desc", pageindex, pagesize, ref pagecout, ref errMsg);
+            return dt;
+        }
+
+        /// <summary>
+        /// 浏览
+        /// </summary>
+        public DataTable GetPhysics_Browse(string userId, int pageindex, int pagesize, ref int pagecout, ref string errMsg)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// 对比
+        /// </summary>
+        public DataTable GetPhysics_Contrast(string userId, int pageindex, int pagesize, ref int pagecout, ref string errMsg)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// 公用方法类
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetPhysicsAttr(string sql,string orderstr, int pageindex, int pagesize, ref int pagecout, ref string errMsg)
+        {
+            try
+            {
+                int pageBegin = 1;
+                int pageEnd = 1;
+                if (pageindex == 0)
+                {
+                    pageindex = 1;
+                }
+                if (pagesize == 0)
+                {
+                    pagesize = 1;
+                }
+                pageBegin = (pageindex - 1) * pagesize;
+                pageEnd = (pagesize * pageindex);
+                StringBuilder bigsql = new StringBuilder();
+                bigsql.Append("select * from (");
+                bigsql.Append(" select row_number()over(order by " + orderstr + ")as rn,* from ");
+                bigsql.Append(" (" + sql + ") t");
+                bigsql.Append(" ) tn");
+                bigsql.Append(" where tn.rn between " + pageBegin + " and " + pageEnd);
+
+                string sqlcout = string.Format("select count(1) as counts from ({0}) as t", sql.ToString());
+                var dt = SqlHelper.GetSqlDataTable(sqlcout);
+                if (dt.Rows.Count > 0)
+                {
+                    int.TryParse(dt.Rows[0]["counts"].ToString(), out pagecout);
+                    dt.Dispose();
+                }
+
+                return SqlHelper.GetSqlDataTable(bigsql.ToString());
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message.ToString();
+                return null;
+            }
+         
+        }
+
+        #endregion
+
     }
 }

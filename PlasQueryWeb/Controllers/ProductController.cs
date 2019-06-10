@@ -19,6 +19,17 @@ namespace PlasModel.Controllers
             {
                 key = Request["key"].ToString();
             }
+            int keyid = 0;
+            if (!string.IsNullOrWhiteSpace(Request["keyid"]))
+            {
+                int.TryParse(Request["keyid"].ToString(), out keyid);
+            }
+            //添加累计次数;
+            if (keyid > 0)
+            {
+                new PlasCommon.Common().Addsys_AutokeyHit(keyid);
+            }
+
             ViewBag.key = key;
             return View();
         }

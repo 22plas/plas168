@@ -68,8 +68,22 @@ namespace PlasCommon
                         if (!pi.CanWrite) continue;
 
                         object value = dr[tempName];
+
                         if (value != DBNull.Value)
+                        {
+                            if (pi.GetMethod.ReturnParameter.ParameterType.Name == "Int32")
+                            {
+                                value = Convert.ToInt32(value);
+                            }
                             pi.SetValue(t, value, null);
+                        }
+                        //if (pi.PropertyType.FullName == "System.Int32")//此处判断下Int32类型，如果是则强转
+                        //    value = Convert.ToInt32(value);
+                        //if (value != DBNull.Value)
+                        //    pi.SetValue(t, value, null);
+                        //object value = dr[tempName];
+                        //if (value != DBNull.Value)
+                        //    pi.SetValue(t, value, null);
                     }
                 }
                 ts.Add(t);
