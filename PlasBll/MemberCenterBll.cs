@@ -268,6 +268,50 @@ namespace PlasBll
             }
             return null;
         }
+
+
+
+        #region 浏览数据
+
+
+        /// <summary>
+        /// 删除浏览数据
+        /// </summary>
+        /// <param name="browsId">浏览编号</param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public bool RomvePhysics_Browse(List<string> browsId, ref string errMsg)
+        {
+            return mdal.RomvePhysics_Browse(browsId, ref errMsg);
+        }
+
+        /// <summary>
+        /// 浏览分页查询
+        /// </summary>
+        public List<Physics_BrowseModel> GetPhysics_Browse(string userId, int pageindex, int pagesize, ref int pagecout, ref string errMsg)
+        {
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                var dt = mdal.GetPhysics_Browse(userId,  pageindex, pagesize, ref pagecout, ref errMsg);
+                return PlasCommon.ToolClass<Physics_BrowseModel>.ConvertDataTableToModel(dt);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 添加浏览
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public bool AddPhysics_Browse(Physics_BrowseModel model,ref string errMsg)
+        {
+            return mdal.AddPhysics_Browse(model, ref errMsg);
+        }
+
+        #endregion
+
+
         #endregion
 
 

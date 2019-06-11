@@ -372,6 +372,7 @@ namespace PlasDal
         #region 黄远林--我的物性
 
 
+        #region 收藏
         /// <summary>
         /// 添加收藏
         /// </summary>
@@ -399,10 +400,10 @@ namespace PlasDal
                    new SqlParameter("@ProductGuid",model.ProductGuid),
                    new SqlParameter("@UserId",model.UserId),
                    new SqlParameter("@CreateDate",DateTime.Now)
-                };
+                    };
                     isAdd = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), parm) > 0;
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -432,7 +433,7 @@ namespace PlasDal
                         string sqlstr = string.Format(" delete from Physics_Collection where Id={0}", CollID[i]);
                         sql.Append(sqlstr);
                     }
-                    isdel= SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), null)>0;
+                    isdel = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), null) > 0;
                 }
             }
             catch (Exception ex)
@@ -448,7 +449,7 @@ namespace PlasDal
         /// <param name="userId">用户信息</param>
         /// <param name="errMsg">错误信息</param>
         /// <returns></returns>
-        public DataTable getProductAttr(string userId,ref string errMsg)
+        public DataTable getProductAttr(string userId, ref string errMsg)
         {
             try
             {
@@ -456,7 +457,7 @@ namespace PlasDal
                 sql.Append("select b.SmallClassId as attribute,c.Name as attributevalue from Physics_Collection a");
                 sql.Append(" left join product  b on a.ProductGuid=b.ProductGuid ");
                 sql.Append(" left join Prd_SmallClass_l c on c.parentguid=b.SmallClassId");
-                sql.Append(" where 1=1 and a.UserId='"+ userId + "'");
+                sql.Append(" where 1=1 and a.UserId='" + userId + "'");
                 sql.Append(" group by b.SmallClassId,c.Name");
                 return SqlHelper.GetSqlDataTable(sql.ToString());
             }
@@ -471,7 +472,7 @@ namespace PlasDal
         /// <summary>
         /// 收藏
         /// </summary>
-        public DataTable GetPhysics_Collection(string userId,string SmallClassID,int pageindex, int pagesize, ref int pagecout, ref string errMsg)
+        public DataTable GetPhysics_Collection(string userId, string SmallClassID, int pageindex, int pagesize, ref int pagecout, ref string errMsg)
         {
             if (!string.IsNullOrEmpty(userId))
             {
@@ -497,14 +498,98 @@ namespace PlasDal
                 return null;
             }
         }
+        #endregion
+
+        #region 浏览
+
 
         /// <summary>
-        /// 浏览
+        /// 添加浏览
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public bool AddPhysics_Browse(Physics_BrowseModel model,ref string errMsg)
+        {
+            bool isadd = false;
+            try
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.Append("insert into Physics_Browse(ProductGuid,UserId,Btype,BrowsCount,CreateDate)");
+                sql.Append("values(@ProductGuid,@UserId,@Btype,@BrowsCount,@CreateDate)");
+                SqlParameter[] parm = {
+                    new SqlParameter("@ProductGuid",model.ProductGuid),
+                    new SqlParameter("@UserId",model.UserId),
+                    new SqlParameter("@Btype",model.Btype),
+                    new SqlParameter("@BrowsCount",model.BrowsCount),
+                    new SqlParameter("@CreateDate",DateTime.Now)
+                };
+                isadd = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), parm) > 0;
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message.ToString();
+            }
+            return isadd;
+        }
+
+        /// <summary>
+        /// 浏览分页查询
         /// </summary>
         public DataTable GetPhysics_Browse(string userId, int pageindex, int pagesize, ref int pagecout, ref string errMsg)
         {
+            try
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.Append("select a.Id,a.ProductGuid,a.UserId,a.CreateDate,b.ProModel,b.PlaceOrigin,c.ProUse,c.characteristic,d.Name from Physics_Browse as a ");
+                sql.Append(" left join Product as b on a.ProductGuid=b.ProductGuid");
+                sql.Append(" left join Product_l as c on c.ParentGuid=a.ProductGuid");
+                sql.Append(" left join Prd_SmallClass_l as d on d.parentguid=b.SmallClassId");
+                sql.Append(" where 1=1 ");
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    sql.Append(" and a.UserId='" + userId + "'");
+                 }
+                var dt = GetPhysicsAttr(sql.ToString(), "id desc", pageindex, pagesize, ref pagecout, ref errMsg);
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message.ToString();
+            }
             return null;
         }
+
+        /// <summary>
+        /// 删除浏览数据
+        /// </summary>
+        /// <param name="browsId">浏览编号</param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public bool RomvePhysics_Browse(List<string> browsId, ref string errMsg)
+        {
+            bool isdel = false;
+            try
+            {
+                if (browsId.Count > 0)
+                {
+                    StringBuilder sql = new StringBuilder();
+                    for (var i = 0; i < browsId.Count; i++)
+                    {
+                        string sqlstr = string.Format(" delete from Physics_Browse where Id={0}", browsId[i]);
+                        sql.Append(sqlstr);
+                    }
+                    isdel = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), null) > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message.ToString();
+            }
+            return isdel;
+        }
+
+        #endregion
 
         /// <summary>
         /// 对比
