@@ -21,8 +21,19 @@ namespace PlasQueryWeb.Controllers
         protected string MainHost = System.Web.Configuration.WebConfigurationManager.AppSettings["MainHost"];
         private PlasBll.ProductBll bll = new PlasBll.ProductBll();
         private PlasBll.ReplaceBll plbll = new PlasBll.ReplaceBll();
+        private PlasBll.MemberCenterBll mbll = new PlasBll.MemberCenterBll();
+        private PlasBll.ContrastBll cbll = new PlasBll.ContrastBll();
 
-
+        #region 获取行情走势
+        /// <summary>
+        /// 获取行情走势
+        /// </summary>
+        /// <param name="smallclass">类别</param>
+        /// <param name="manufacturer">厂家</param>
+        /// <param name="model">型号</param>
+        /// <param name="pageindex">页码</param>
+        /// <param name="pagesize">每页数量</param>
+        /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpGet]
         public ActionResult GetPriceList(string smallclass, string manufacturer, string model, int? pageindex = 1, int? pagesize = 10)
@@ -59,6 +70,9 @@ namespace PlasQueryWeb.Controllers
                 return Json(Common.ToJsonResult("Fail", "获取失败"), JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
+
+        #region 获取行情走势里的类别或者厂家
         /// <summary>
         /// 获取行情走势里的类别或者厂家
         /// </summary>
@@ -117,6 +131,9 @@ namespace PlasQueryWeb.Controllers
                 return Json(Common.ToJsonResult("Fail", "获取失败"), JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
+
+        #region 获取价格走势信息
         /// <summary>
         /// 获取价格走势信息
         /// </summary>
@@ -181,6 +198,9 @@ namespace PlasQueryWeb.Controllers
                 return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
+
+        #region 根据产品id获取厂家和名称等信息
         /// <summary>
         /// 根据产品id获取厂家和名称等信息
         /// </summary>
@@ -212,7 +232,9 @@ namespace PlasQueryWeb.Controllers
                 return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
 
+        #region 获取商品详情
         /// <summary>
         /// 获取商品详情
         /// </summary>
@@ -323,6 +345,9 @@ namespace PlasQueryWeb.Controllers
                 return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
+
+        #region 获取产品的pdf文档
         /// <summary>
         /// 获取产品的pdf文档
         /// </summary>
@@ -351,7 +376,9 @@ namespace PlasQueryWeb.Controllers
                 return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
 
+        #region 获取下拉关键词数据
         /// <summary>
         /// 获取下拉关键词数据
         /// </summary>
@@ -378,6 +405,9 @@ namespace PlasQueryWeb.Controllers
                 return Json(Common.ToJsonResult("Fail", "生成失败", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
+
+        #region 获取产品列表数据信息
         /// <summary>
         /// 获取产品列表数据信息
         /// </summary>
@@ -432,6 +462,9 @@ namespace PlasQueryWeb.Controllers
             }
             //return Json(new { data = jsonstr, count = count, companys = companys, msg = sErr }, JsonRequestBehavior.AllowGet);
         }
+        #endregion
+
+        #region 获取5个热搜型号 
         /// <summary>
         /// 获取5个热搜型号
         /// </summary>
@@ -451,6 +484,9 @@ namespace PlasQueryWeb.Controllers
                 return Json(Common.ToJsonResult("Fail", "获取失败"), JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
+
+        #region 普通搜索
         /// <summary>
         /// 搜索
         /// </summary>
@@ -573,7 +609,9 @@ namespace PlasQueryWeb.Controllers
             };
             return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);
         }
+        #endregion
 
+        #region 获取产品属性
         /// <summary>
         /// 获取产品属性
         /// </summary>
@@ -627,7 +665,9 @@ namespace PlasQueryWeb.Controllers
                 return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
 
+        #region 获取超级搜索筛选参数
         /// <summary>
         /// 获取超级搜索筛选参数
         /// </summary>
@@ -656,6 +696,9 @@ namespace PlasQueryWeb.Controllers
                 return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
+
+        #region 超级搜素
         /// <summary>
         /// 超级搜素
         /// </summary>
@@ -676,6 +719,94 @@ namespace PlasQueryWeb.Controllers
                 return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
+
+        #region 添加物料收藏
+        /// <summary>
+        /// 添加物料收藏
+        /// </summary>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpPost]
+        public ActionResult AddMaterialCollection(Physics_CollectionModel model)
+        {
+            try
+            {
+                string msg = "";
+                bool returnresult = mbll.AddPhysics_Collection(model, ref msg);
+                if (returnresult)
+                {
+                    return Json(Common.ToJsonResult("Success", "收藏成功"), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(Common.ToJsonResult("Fail", "收藏失败"), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
+        #region 物性对比搜索材料
+        /// <summary>
+        /// 物性对比搜索材料
+        /// </summary>
+        /// <param name="txtQuery">查询值</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetProduct(int pageindex, int pagesize, string txtQuery)
+        {
+            try
+            {
+                string jsonstr = string.Empty;
+                string sql = string.Empty;
+                if (!string.IsNullOrEmpty(txtQuery))
+                {
+                    sql = " and ProModel like ''%" + txtQuery + "%''";
+                }
+                var ds = cbll.GetProductList(pagesize, pageindex, sql);
+                if (ds.Tables.Contains("ds") && ds.Tables[0] != null)
+                {
+                    jsonstr = ToolHelper.DataTableToJson(ds.Tables[0]);
+                }
+                return Json(Common.ToJsonResult("Success", "获取成功", jsonstr), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+        #region 物料对比搜索物料
+        /// <summary>
+        /// 物料对比搜索物料
+        /// </summary>
+        /// <param name="contsval">搜索关键词</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult AppContrastSearch(string contsval)
+        {
+            try
+            {
+                List<ContrastModel> jsonlist = new List<ContrastModel>();
+                if (!string.IsNullOrWhiteSpace(contsval))
+                {
+                    DataTable dt = cbll.GetContrastList(contsval);
+                    jsonlist = ToolClass<PlasModel.ContrastModel>.ConvertDataTableToModel(dt);
+                }
+                return Json(Common.ToJsonResult("Success", "获取成功", jsonlist), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
         //pdf数据
         public class pdfinfo {
             public string TypeName { get; set; }
