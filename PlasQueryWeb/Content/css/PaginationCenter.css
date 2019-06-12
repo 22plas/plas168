@@ -30,7 +30,7 @@ div.black2 {
         background-color: #23abf0
     }
     div.black2 span.disabled {
-        border: #999 1px solid;
+        border: #eee 1px solid;
         padding: 6px 8px;
         margin: 3px;
         font-size: 12px !important;

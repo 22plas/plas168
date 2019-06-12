@@ -372,6 +372,7 @@ namespace PlasDal
         #region 黄远林--我的物性
 
 
+        #region 收藏
         /// <summary>
         /// 添加收藏
         /// </summary>
@@ -383,15 +384,26 @@ namespace PlasDal
             bool isAdd = false;
             try
             {
-                StringBuilder sql = new StringBuilder();
-                sql.Append("insert into Physics_Collection(ProductGuid,UserId,CreateDate)");
-                sql.Append(" values(@ProductGuid,@UserId,@CreateDate)");
-                SqlParameter[] parm = {
+                string savesql = string.Format("select id from Physics_Collection where ProductGuid={0} and UserId={1}", model.ProductGuid, model.UserId);
+                var dt = SqlHelper.GetSqlDataTable(savesql.ToString());
+                if (dt.Rows.Count > 0)
+                {
+                    errMsg = "此产品已经收藏！";
+                    dt.Dispose();
+                }
+                else
+                {
+                    StringBuilder sql = new StringBuilder();
+                    sql.Append("insert into Physics_Collection(ProductGuid,UserId,CreateDate)");
+                    sql.Append(" values(@ProductGuid,@UserId,@CreateDate)");
+                    SqlParameter[] parm = {
                    new SqlParameter("@ProductGuid",model.ProductGuid),
                    new SqlParameter("@UserId",model.UserId),
                    new SqlParameter("@CreateDate",DateTime.Now)
-                };
-                isAdd = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), parm) > 0;
+                    };
+                    isAdd = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), parm) > 0;
+                }
+
             }
             catch (Exception ex)
             {
@@ -401,32 +413,183 @@ namespace PlasDal
             return isAdd;
         }
 
+
         /// <summary>
-        /// 收藏
+        /// 删除收藏
         /// </summary>
-        public DataTable GetPhysics_Collection(string userId,string SmallClassID,int pageindex, int pagesize, ref int pagecout, ref string errMsg)
+        /// <param name="CollID">批量删除ID</param>
+        /// <param name="errMsg">错误信息</param>
+        /// <returns></returns>
+        public bool RomvePhysics_Collection(List<string> CollID, ref string errMsg)
         {
-            StringBuilder sql = new StringBuilder();
-            sql.Append("select a.Id,a.ProductGuid,a.UserId,a.CreateDate,b.ProModel,b.PlaceOrigin,c.ProUse,c.characteristic,d.Name from Physics_Collection as a ");
-            sql.Append(" left join Product as b on a.ProductGuid=b.ProductGuid");
-            sql.Append(" left join Product_l as c on c.ParentGuid=a.ProductGuid");
-            sql.Append(" left join Prd_SmallClass_l as d on d.parentguid=b.SmallClassId");
-            sql.Append(" where 1=1 ");
-            if (!string.IsNullOrEmpty(SmallClassID))
+            bool isdel = false;
+            try
             {
-                sql.Append(" and b.SmallClassId='" + SmallClassID + "'");
+                if (CollID.Count > 0)
+                {
+                    StringBuilder sql = new StringBuilder();
+                    for (var i = 0; i < CollID.Count; i++)
+                    {
+                        string sqlstr = string.Format(" delete from Physics_Collection where Id={0}", CollID[i]);
+                        sql.Append(sqlstr);
+                    }
+                    isdel = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), null) > 0;
+                }
             }
-            var dt = GetPhysicsAttr(sql.ToString(), "id desc", pageindex, pagesize, ref pagecout, ref errMsg);
-            return dt;
+            catch (Exception ex)
+            {
+                errMsg = ex.Message.ToString();
+            }
+            return isdel;
         }
 
         /// <summary>
-        /// 浏览
+        /// 获取类别
+        /// </summary>
+        /// <param name="userId">用户信息</param>
+        /// <param name="errMsg">错误信息</param>
+        /// <returns></returns>
+        public DataTable getProductAttr(string userId, ref string errMsg)
+        {
+            try
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.Append("select b.SmallClassId as attribute,c.Name as attributevalue from Physics_Collection a");
+                sql.Append(" left join product  b on a.ProductGuid=b.ProductGuid ");
+                sql.Append(" left join Prd_SmallClass_l c on c.parentguid=b.SmallClassId");
+                sql.Append(" where 1=1 and a.UserId='" + userId + "'");
+                sql.Append(" group by b.SmallClassId,c.Name");
+                return SqlHelper.GetSqlDataTable(sql.ToString());
+            }
+            catch (Exception ex)
+            {
+
+                errMsg = ex.Message.ToString();
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 收藏
+        /// </summary>
+        public DataTable GetPhysics_Collection(string userId, string SmallClassID, int pageindex, int pagesize, ref int pagecout, ref string errMsg)
+        {
+            if (!string.IsNullOrEmpty(userId))
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.Append("select a.Id,a.ProductGuid,a.UserId,a.CreateDate,b.ProModel,b.PlaceOrigin,c.ProUse,c.characteristic,d.Name from Physics_Collection as a ");
+                sql.Append(" left join Product as b on a.ProductGuid=b.ProductGuid");
+                sql.Append(" left join Product_l as c on c.ParentGuid=a.ProductGuid");
+                sql.Append(" left join Prd_SmallClass_l as d on d.parentguid=b.SmallClassId");
+                sql.Append(" where 1=1 ");
+                if (!string.IsNullOrEmpty(SmallClassID))
+                {
+                    sql.Append(" and b.SmallClassId='" + SmallClassID + "'");
+                }
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    sql.Append(" and a.UserId='" + userId + "'");
+                }
+                var dt = GetPhysicsAttr(sql.ToString(), "id desc", pageindex, pagesize, ref pagecout, ref errMsg);
+                return dt;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        #endregion
+
+        #region 浏览
+
+
+        /// <summary>
+        /// 添加浏览
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public bool AddPhysics_Browse(Physics_BrowseModel model,ref string errMsg)
+        {
+            bool isadd = false;
+            try
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.Append("insert into Physics_Browse(ProductGuid,UserId,Btype,BrowsCount,CreateDate)");
+                sql.Append("values(@ProductGuid,@UserId,@Btype,@BrowsCount,@CreateDate)");
+                SqlParameter[] parm = {
+                    new SqlParameter("@ProductGuid",model.ProductGuid),
+                    new SqlParameter("@UserId",model.UserId),
+                    new SqlParameter("@Btype",model.Btype),
+                    new SqlParameter("@BrowsCount",model.BrowsCount),
+                    new SqlParameter("@CreateDate",DateTime.Now)
+                };
+                isadd = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), parm) > 0;
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message.ToString();
+            }
+            return isadd;
+        }
+
+        /// <summary>
+        /// 浏览分页查询
         /// </summary>
         public DataTable GetPhysics_Browse(string userId, int pageindex, int pagesize, ref int pagecout, ref string errMsg)
         {
+            try
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.Append("select a.Id,a.ProductGuid,a.UserId,a.CreateDate,b.ProModel,b.PlaceOrigin,c.ProUse,c.characteristic,d.Name from Physics_Browse as a ");
+                sql.Append(" left join Product as b on a.ProductGuid=b.ProductGuid");
+                sql.Append(" left join Product_l as c on c.ParentGuid=a.ProductGuid");
+                sql.Append(" left join Prd_SmallClass_l as d on d.parentguid=b.SmallClassId");
+                sql.Append(" where 1=1 ");
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    sql.Append(" and a.UserId='" + userId + "'");
+                 }
+                var dt = GetPhysicsAttr(sql.ToString(), "id desc", pageindex, pagesize, ref pagecout, ref errMsg);
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message.ToString();
+            }
             return null;
         }
+
+        /// <summary>
+        /// 删除浏览数据
+        /// </summary>
+        /// <param name="browsId">浏览编号</param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public bool RomvePhysics_Browse(List<string> browsId, ref string errMsg)
+        {
+            bool isdel = false;
+            try
+            {
+                if (browsId.Count > 0)
+                {
+                    StringBuilder sql = new StringBuilder();
+                    for (var i = 0; i < browsId.Count; i++)
+                    {
+                        string sqlstr = string.Format(" delete from Physics_Browse where Id={0}", browsId[i]);
+                        sql.Append(sqlstr);
+                    }
+                    isdel = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), null) > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message.ToString();
+            }
+            return isdel;
+        }
+
+        #endregion
 
         /// <summary>
         /// 对比

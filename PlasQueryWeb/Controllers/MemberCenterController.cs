@@ -1,4 +1,5 @@
-﻿using PlasBll;
+﻿using Newtonsoft.Json;
+using PlasBll;
 using PlasCommon;
 using PlasCommon.SqlCommonQuery;
 using PlasModel;
@@ -455,10 +456,10 @@ namespace PlasModel.Controllers
         [UserAttribute]
         public ActionResult MaterialCollection()
         {
-
-
-
+            string note = string.Empty;
+            var list = mbll.getProductAttr(AccountData.UserID, ref note);
             Sidebar("物性收藏");
+            ViewBag.ProductList = list;
             return View();
         }
 
@@ -480,6 +481,28 @@ namespace PlasModel.Controllers
             return Json(new { data = list, totalCount = totalCount }, JsonRequestBehavior.AllowGet);
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult RomveMaterialCollection()
+        {
+            string arry = string.Empty;
+            var list = new List<string>();
+            if (!string.IsNullOrWhiteSpace(Request["arry"]))
+            {
+                arry = Request["arry"].ToString();
+                list = JsonConvert.DeserializeObject<List<string>>(arry);
+            }
+            string note = string.Empty;
+            bool count = false;
+            if (list.Count > 0)
+            {
+                count= mbll.RomvePhysics_Collection(list, ref note);
+            }
+            return Json(new { count = count ,message= note },JsonRequestBehavior.AllowGet);
+        }
 
         //物性浏览记录
         [UserAttribute]

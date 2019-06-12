@@ -137,7 +137,7 @@ namespace PlasBll
         /// <returns></returns>
         public string UpdateUserInfobll(string filestr, string values, string usid)
         {
-            return mdal.UpdateUserInfodal(filestr, values,usid);
+            return mdal.UpdateUserInfodal(filestr, values, usid);
         }
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace PlasBll
             return mdal.GetDeliveryAddressById(id);
         }
         //删除收货地址信息
-        public bool DeleteCommon(string id,string tbname)
+        public bool DeleteCommon(string id, string tbname)
         {
             return mdal.DeleteCommon(id, tbname);
         }
@@ -240,6 +240,77 @@ namespace PlasBll
             }
             return null;
         }
+
+        /// <summary>
+        /// 删除收藏
+        /// </summary>
+        /// <param name="CollID">批量删除ID</param>
+        /// <param name="errMsg">错误信息</param>
+        /// <returns></returns>
+        public bool RomvePhysics_Collection(List<string> CollID, ref string errMsg)
+        {
+            return mdal.RomvePhysics_Collection(CollID, ref errMsg);
+        }
+
+
+        /// <summary>
+        /// 获取类别
+        /// </summary>
+        /// <param name="userId">用户信息</param>
+        /// <param name="errMsg">错误信息</param>
+        /// <returns></returns>
+        public List<ProductAttr> getProductAttr(string userId, ref string errMsg)
+        {
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                var dt = mdal.getProductAttr(userId, ref errMsg);
+                return PlasCommon.ToolClass<ProductAttr>.ConvertDataTableToModel(dt);
+            }
+            return null;
+        }
+
+
+
+        #region 浏览数据
+
+
+        /// <summary>
+        /// 删除浏览数据
+        /// </summary>
+        /// <param name="browsId">浏览编号</param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public bool RomvePhysics_Browse(List<string> browsId, ref string errMsg)
+        {
+            return mdal.RomvePhysics_Browse(browsId, ref errMsg);
+        }
+
+        /// <summary>
+        /// 浏览分页查询
+        /// </summary>
+        public List<Physics_BrowseModel> GetPhysics_Browse(string userId, int pageindex, int pagesize, ref int pagecout, ref string errMsg)
+        {
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                var dt = mdal.GetPhysics_Browse(userId,  pageindex, pagesize, ref pagecout, ref errMsg);
+                return PlasCommon.ToolClass<Physics_BrowseModel>.ConvertDataTableToModel(dt);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 添加浏览
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public bool AddPhysics_Browse(Physics_BrowseModel model,ref string errMsg)
+        {
+            return mdal.AddPhysics_Browse(model, ref errMsg);
+        }
+
+        #endregion
+
 
         #endregion
 
