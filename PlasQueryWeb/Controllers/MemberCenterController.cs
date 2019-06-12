@@ -483,7 +483,7 @@ namespace PlasModel.Controllers
 
 
         /// <summary>
-        /// 
+        /// 删除收藏
         /// </summary>
         /// <returns></returns>
         public JsonResult RomveMaterialCollection()
@@ -511,6 +511,30 @@ namespace PlasModel.Controllers
             Sidebar("物性浏览记录");
             return View();
         }
+
+        /// <summary>
+        /// 首页分页
+        /// </summary>
+        /// <param name="pageindex"></param>
+        /// <param name="pagesize"></param>
+        /// <returns></returns>
+        public JsonResult GetPhysics_Browse(string pageindex, string pagesize)
+        {
+            int beginPage = 1;
+            int.TryParse(pageindex, out beginPage);
+            int endPage = 10;
+            int.TryParse(pagesize, out endPage);
+            string smallid = string.Empty;
+            int totalCount = 0;
+            string note = string.Empty;
+            if (!string.IsNullOrWhiteSpace(Request["smallid"]))
+            {
+                smallid = Request["smallid"].ToString();
+            }
+            var list = mbll.GetPhysics_Browse(AccountData.UserID, beginPage, endPage, ref totalCount, ref note);
+            return Json(new { data = list, totalCount = totalCount }, JsonRequestBehavior.AllowGet);
+        }
+
         //我要报价
         public ActionResult SellerOffer()
         {
