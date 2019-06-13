@@ -53,9 +53,14 @@ namespace PlasModel.Controllers
                 for (var k = 0; k < comp.Rows.Count; k++)
                 {
                     var isadd = true;
+                    var kvalue = comp.Rows[k]["Name"].ToString();
+                    if (string.IsNullOrWhiteSpace(kvalue))
+                    {
+                        kvalue = comp.Rows[k]["EnglishName"].ToString();
+                    }
                     for (var j = 0; j < tblDatas.Rows.Count; j++)
                     {
-                        if (comp.Rows[k]["Name"].ToString()== tblDatas.Rows[j]["Name"].ToString())
+                        if (kvalue == tblDatas.Rows[j]["Name"].ToString())
                         {
                             isadd = false;
                             break;

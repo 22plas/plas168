@@ -504,6 +504,39 @@ namespace PlasModel.Controllers
             return Json(new { count = count ,message= note },JsonRequestBehavior.AllowGet);
         }
 
+
+        /// <summary>
+        /// 添加收藏
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult AddMaterialColl(string arry)
+        {
+            string errMsg = string.Empty;
+            bool isadd = false;
+            var list = new List<string>();
+            if (!string.IsNullOrWhiteSpace(arry))
+            {
+                 list = JsonConvert.DeserializeObject<List<string>>(arry);
+            }
+            var userName = AccountData.UserID;
+
+            PlasBll.MemberCenterBll mbll = new MemberCenterBll();
+
+            if (list.Count > 0)
+            {
+                for (var i=0;i<list.Count;i++)
+                {
+                    PlasModel.Physics_CollectionModel model = new Physics_CollectionModel();
+                    model.ProductGuid = list[i];
+                    model.UserId = userName;
+                    isadd= mbll.AddPhysics_Collection(model,ref errMsg);
+                }
+            }
+           
+            return Json(new { isadd = isadd , errMsg = errMsg },JsonRequestBehavior.AllowGet);
+        }
+
+
         //物性浏览记录
         [UserAttribute]
         public ActionResult MaterialLook()

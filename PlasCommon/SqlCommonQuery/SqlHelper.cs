@@ -471,21 +471,27 @@ namespace PlasCommon.SqlCommonQuery
         /// <returns></returns>
         public static DataSet GetSqlDataSet(string SQLString)
         {
-            using (SqlConnection connection = new SqlConnection(ConnectionStrings))
+            try
             {
-                using (SqlCommand cmd = new SqlCommand(SQLString, connection))
+                using (SqlConnection connection = new SqlConnection(ConnectionStrings))
                 {
-                    DataSet ds = new DataSet();
+                    using (SqlCommand cmd = new SqlCommand(SQLString, connection))
+                    {
+                        DataSet ds = new DataSet();
 
-                    cmd.CommandTimeout = 100;
-                    connection.Open();
-                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                    adapter.Fill(ds, "ds");
-                    connection.Close();
-                    connection.Dispose();
-                    return ds;
+                        cmd.CommandTimeout = 60000;
+                        connection.Open();
+                        SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                        adapter.Fill(ds, "ds");
+                        connection.Close();
+                        connection.Dispose();
+                        return ds;
+                    }
                 }
-
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
 

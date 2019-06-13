@@ -65,7 +65,7 @@ function InitData(pageindx) {
                         tbodyui += "<td>" + n.ProUse + "</td>";
                         tbodyui += "<td>" + n.characteristic + "</td>";
                         tbodyui += "<td><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.prodid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span>";
-                        if (n.Id == '0') {
+                        if (n.isColl == '0') {
                             tbodyui += "<span class='layui-btn layui-btn-sm'  style='background-color:#e1e1e1'><i class='Hui-iconfont'>&#xe61f;</i> 已参与对比</span>";
                         }
                         else {

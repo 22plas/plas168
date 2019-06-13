@@ -54,5 +54,7 @@ namespace PlasModel
         /// </summary>
         public string characteristic { get; set; }
 
+        public int isColl { get; set; }
+
     }
 }
