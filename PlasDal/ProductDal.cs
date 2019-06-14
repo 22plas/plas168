@@ -90,7 +90,7 @@ namespace PlasDal
                     break;
                 case 4://厂家
                     tempwherekey = string.IsNullOrWhiteSpace(wherekey) ? "" : " and ShortName like ''%" + wherekey + "%''";
-                    ds = Sys_GetSearchParam("Sys_Manufacturer", showNum, "  substring(dbo.[fn_ChineseToSpell](ShortName),1,1) as fw,aliasname as Name,*,[Guid] as SmallGuid", " and ShortName<>'''' and ShortName<>''--''" + tempwherekey, "weight desc, substring(dbo.[fn_ChineseToSpell](ShortName),1,1),ShortName ", pageindex.Value);
+                    ds = Sys_GetSearchParam("Sys_Manufacturer", showNum, "  substring(dbo.[fn_ChineseToSpell](ShortName),1,1) as fw,ShortName as Name,*,[Guid] as SmallGuid", " and ShortName<>'''' and ShortName<>''--''" + tempwherekey, "weight desc, substring(dbo.[fn_ChineseToSpell](ShortName),1,1),ShortName ", pageindex.Value);
                     break;
                 case 5://加工方法
                     tempwherekey = string.IsNullOrWhiteSpace(wherekey) ? "" : " and name like ''%" + wherekey + "%''";

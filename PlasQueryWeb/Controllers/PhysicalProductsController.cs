@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PlasBll;
+using PlasModel.App_Start;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -12,7 +14,13 @@ namespace PlasModel.Controllers
         private PlasBll.ProductBll bll = new PlasBll.ProductBll();
         protected string MainHost = System.Web.Configuration.WebConfigurationManager.AppSettings["MainHost"];
         protected string PdfUrl = System.Web.Configuration.WebConfigurationManager.AppSettings["PdfUrl"];
-        
+        AccountData AccountData
+        {
+            get
+            {
+                return this.GetAccountData();
+            }
+        }
         // GET:超级搜索
         public ActionResult Index()
         {
@@ -45,9 +53,14 @@ namespace PlasModel.Controllers
                 for (var k = 0; k < comp.Rows.Count; k++)
                 {
                     var isadd = true;
+                    var kvalue = comp.Rows[k]["Name"].ToString();
+                    if (string.IsNullOrWhiteSpace(kvalue))
+                    {
+                        kvalue = comp.Rows[k]["EnglishName"].ToString();
+                    }
                     for (var j = 0; j < tblDatas.Rows.Count; j++)
                     {
-                        if (comp.Rows[k]["Name"].ToString()== tblDatas.Rows[j]["Name"].ToString())
+                        if (kvalue == tblDatas.Rows[j]["Name"].ToString())
                         {
                             isadd = false;
                             break;
@@ -147,6 +160,21 @@ namespace PlasModel.Controllers
             {
                 pdfdt = bll.GetProductPdf(prodid);
             }
+
+            ///添加用户浏览
+            if (AccountData != null && !string.IsNullOrWhiteSpace(AccountData.UserID) && !string.IsNullOrWhiteSpace(prodid))
+            {
+                MemberCenterBll mbll = new MemberCenterBll();
+                PlasModel.Physics_BrowseModel mModels = new Physics_BrowseModel();
+                mModels.BrowsCount = 1;
+                mModels.Btype = 1;
+                mModels.CreateDate = DateTime.Now;
+                mModels.ProductGuid = prodid;
+                mModels.UserId = AccountData.UserID;
+                string errMsg = string.Empty;
+                mbll.AddPhysics_Browse(mModels, ref errMsg);
+            }
+
             ViewBag.PdfUrl = PdfUrl;
             ViewBag.ProdID = prodid;
             ViewBag.LiveProdcut = LiveDs;

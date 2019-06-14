@@ -557,10 +557,11 @@ namespace PlasDal
             try
             {
                 StringBuilder sql = new StringBuilder();
-                sql.Append("select a.Id,a.ProductGuid,a.UserId,a.CreateDate,b.ProModel,b.PlaceOrigin,c.ProUse,c.characteristic,d.Name from Physics_Browse as a ");
+                sql.Append("select a.Id,a.ProductGuid,a.UserId,a.CreateDate,b.ProModel,b.PlaceOrigin,c.ProUse,c.characteristic,d.Name,isnull(e.Id,0) as isColl from Physics_Browse as a ");
                 sql.Append(" left join Product as b on a.ProductGuid=b.ProductGuid");
                 sql.Append(" left join Product_l as c on c.ParentGuid=a.ProductGuid");
                 sql.Append(" left join Prd_SmallClass_l as d on d.parentguid=b.SmallClassId");
+                sql.Append(" left join Physics_Collection e on a.ProductGuid=e.ProductGuid and a.UserId=e.UserId");
                 sql.Append(" where 1=1 ");
                 if (!string.IsNullOrEmpty(userId))
                 {

@@ -284,6 +284,7 @@ namespace PlasBll
 
         #region 我的物性
 
+        /// <summary>
         /// 添加收藏
         /// </summary>
         /// <param name="model"></param>

@@ -5,7 +5,8 @@
 
 <div class="header-gray">
     <div class="logo-register-btn" style="border: none;margin-top: 6px;">
-        <a class="btn" href="/MemberCenter/Login" style="color: #ff4200;">登录</a> | <a class="btn" href="/MemberCenter/Register" style="color: #ff4200;">注册</a>
+        <span id="isLogin_0"> <a class="btn" href="/MemberCenter/Login" style="color: #ff4200;">登录</a> | <a class="btn" href="/MemberCenter/Register" style="color: #ff4200;">注册</a></span>
+        <span id="isLogin_1"><a class="btn" href="/MemberCenter/Index" style="color: #ff4200;">会员中心</a></span>
     </div>
     <div class="navBox">
         <ul class="nav">
@@ -19,3 +20,15 @@
     </div>
 </div>
 
+<script type="text/javascript">
+    var isval = '0';
+        if ('@(Request.Cookies["AccountData"] != null)'=="True") {
+            isval = "1";
+        }
+        if (isval == "1") {
+            $("#isLogin_0").remove();
+        }
+        else {
+            $("#isLogin_1").remove();
+        }
+</script>
