@@ -34,12 +34,28 @@ namespace PlasDal
         /// <param name="leaderuserid">上级用户id</param>
         /// <param name="parentid">上上级用户id</param>
         /// <returns></returns>
-        public string SaveRegister(cp_userview model, string leaderuserid, string parentid)
+        public string SaveRegister(cp_userview model, string leaderuserid, string parentid,string type)
         {
             string guid = Guid.NewGuid().ToString();
-            string addsql = string.Format(@"INSERT dbo.cp_user
+            string addsql = "";
+            if (type == "0")
+            {
+                addsql = string.Format(@"INSERT dbo.cp_user
+                ( UserName ,UserPwd ,Email ,Phone ,Address ,TestQQ ,CreateDate ,states ,ErrorDate ,ErrorCount ,WeChat ,ContentAddress ,LeaderUserName,HeadImage,InTotal,OutTotal,Balance,ID,wxopenid)
+                VALUES  ( '{0}' ,'{1}' ,'{2}' ,'{3}' ,'{4}' ,N'' ,GETDATE() ,0 ,null ,0 ,N'' ,N'' ,'{5}','{8}',100,0,100,'{6}','{7}')", model.UserName, "", string.Empty, "", string.Empty, leaderuserid, guid,model.wxopenid,model.HeadImage);
+            }
+            else if (type == "1")
+            {
+                addsql = string.Format(@"INSERT dbo.cp_user
+                ( UserName ,UserPwd ,Email ,Phone ,Address ,TestQQ ,CreateDate ,states ,ErrorDate ,ErrorCount ,WeChat ,ContentAddress ,LeaderUserName,HeadImage,InTotal,OutTotal,Balance,ID,qqopenid)
+                VALUES  ( '{0}' ,'{1}' ,'{2}' ,'{3}' ,'{4}' ,N'' ,GETDATE() ,0 ,null ,0 ,N'' ,N'' ,'{5}','{8}',100,0,100,'{6}','{7}')", model.UserName, "", string.Empty,"", string.Empty, leaderuserid, guid, model.wxopenid, model.HeadImage);
+            }
+            else
+            {
+                addsql = string.Format(@"INSERT dbo.cp_user
                 ( UserName ,UserPwd ,Email ,Phone ,Address ,TestQQ ,CreateDate ,states ,ErrorDate ,ErrorCount ,WeChat ,ContentAddress ,LeaderUserName,HeadImage,InTotal,OutTotal,Balance,ID)
                 VALUES  ( '{0}' ,'{1}' ,'{2}' ,'{3}' ,'{4}' ,N'' ,GETDATE() ,0 ,null ,0 ,N'' ,N'' ,'{5}','',100,0,100,'{6}')", model.UserName, ToolHelper.MD5_SET(model.UserPwd), string.Empty, model.Phone, string.Empty, leaderuserid, guid);
+            }
 
             SqlCommand sqlcmd = new SqlCommand();
             SqlConnection con = new SqlConnection(DataBase.ConnectionString);
@@ -384,7 +400,7 @@ namespace PlasDal
             bool isAdd = false;
             try
             {
-                string savesql = string.Format("select id from Physics_Collection where ProductGuid={0} and UserId={1}", model.ProductGuid, model.UserId);
+                string savesql = string.Format("select id from Physics_Collection where ProductGuid='{0}' and UserId='{1}'", model.ProductGuid, model.UserId);
                 var dt = SqlHelper.GetSqlDataTable(savesql.ToString());
                 if (dt.Rows.Count > 0)
                 {

@@ -44,5 +44,7 @@ namespace PlasModel
         public string LeaderUserName { get; set; }//上级联系人ID
         public string HeadImage { get; set; }//头像
         public string RecommendPhone { get; set; }//推荐人手机号
+        public string wxopenid { get; set; }//微信openid
+        public string qqopenid { get; set; }//qqopenid
     }
 }

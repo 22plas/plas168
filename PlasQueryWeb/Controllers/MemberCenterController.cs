@@ -593,6 +593,18 @@ namespace PlasModel.Controllers
             string returnstr = mbll.SaveRegister(model);
             return Json(Common.ToJsonResult(returnstr, "返回结果"), JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// 保存微信/qq注册数据
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpPost]
+        public ActionResult WxOrQQSaveRegister(cp_userview model,string type)
+        {
+            string returnstr = mbll.WxOrQQSaveRegister(model, type);
+            return Json(Common.ToJsonResult(returnstr, "返回结果"), JsonRequestBehavior.AllowGet);
+        }
 
         /// <summary>
         /// 登录
@@ -633,6 +645,94 @@ namespace PlasModel.Controllers
             else
             {
                 return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+            }
+        }
+        /// <summary>
+        /// 微信或者qq登录
+        /// </summary>
+        /// <param name="account">账号</param>
+        /// <param name="password">密码</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetWxOrQQLogin(cp_userview model, string type)
+        {
+            string tempopenid = "";
+            //微信登录
+            if (type == "0")
+            {
+                tempopenid = model.wxopenid;
+            }
+            //qq登录
+            else
+            {
+                tempopenid = model.qqopenid;
+            }
+            string returnstr = mbll.WxOrQQLoginBll(tempopenid, type);
+            if (returnstr!= "Fail")
+            {
+                string[] resultstr = returnstr.Split(',');
+                //如果微信或者qq已经存在则登录
+                if (resultstr.Length > 0)
+                {
+                    if (resultstr[0].Equals("Success"))
+                    {
+                        var returndata = new
+                        {
+                            usid = resultstr[1]
+                        };
+                        return Json(Common.ToJsonResult("Success", "登录成功", returndata), JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else {
+                    return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+                }
+            }
+            //不存在则注册,注册成功则返回用户id，注册失败则返回失败状态
+            else
+            {
+                string registerresultstr = mbll.WxOrQQSaveRegister(model, type);
+                //已经存在
+                if (registerresultstr == "AlreadyExist")
+                {
+                    return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+                }
+                else if (registerresultstr == "Fail")
+                {
+                    return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+                }
+                else if (registerresultstr == "Success")
+                {
+                    string returnstr2 = mbll.WxOrQQLoginBll(tempopenid, type);
+                    string[] resultstr2 = returnstr2.Split(',');
+                    if (resultstr2.Length > 0)
+                    {
+                        if (resultstr2[0].Equals("Success"))
+                        {
+                            var returndata2 = new
+                            {
+                                usid = resultstr2[1]
+                            };
+                            return Json(Common.ToJsonResult("Success", "登录成功", returndata2), JsonRequestBehavior.AllowGet);
+                        }
+                        else
+                        {
+                            return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+                        }
+                    }
+                    else
+                    {
+                        return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+                }
             }
         }
         /// <summary>
@@ -720,7 +820,8 @@ namespace PlasModel.Controllers
             {
                 var returndata = new
                 {
-                    usname = usdt.Rows[0]["Phone"].ToString(),
+                    usname = usdt.Rows[0]["UserName"].ToString(),
+                    phone= usdt.Rows[0]["phone"].ToString(),
                     headimage = usdt.Rows[0]["HeadImage"].ToString()
                 };
                 return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);

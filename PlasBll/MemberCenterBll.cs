@@ -28,7 +28,80 @@ namespace PlasBll
                 {
                     string parentid = string.Empty;//上上级用户id
                     string leaderuserid = string.Empty;//上级用户id
-                    return mdal.SaveRegister(model, leaderuserid, parentid);
+                    return mdal.SaveRegister(model, leaderuserid, parentid,"");
+                }
+            }
+            catch (Exception)
+            {
+                return "Fail";
+            }
+        }
+        //微信或者qq用户注册登录
+        public string WxOrQQSaveRegister(cp_userview model,string type)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                if (type=="0")
+                {
+                    dt = mdal.GetUserDt(model.wxopenid, "wxopenid");
+                    return AddUserInfo(dt, model, type);
+                }
+                else if (type == "1")
+                {
+                    dt = mdal.GetUserDt(model.qqopenid, "qqopenid");
+                    return AddUserInfo(dt, model, type);
+                }
+                else
+                {
+                    return "Fail";
+                }
+            }
+            catch (Exception)
+            {
+                return "Fail";
+            }
+        }
+        private string AddUserInfo(DataTable dt, cp_userview model,string type)
+        {
+            if (dt.Rows.Count > 0)
+            {
+                return "AlreadyExist";
+            }
+            else
+            {
+                string parentid = string.Empty;//上上级用户id
+                string leaderuserid = string.Empty;//上级用户id
+                return mdal.SaveRegister(model, leaderuserid, parentid, type);
+            }
+        }
+        /// <summary>
+        /// 微信或者qq登录
+        /// </summary>
+        /// <param name="openid">微信或者QQopenid</param>
+        /// <param name="type">登录类型 0：微信登录 1：qq登录</param>
+        /// <returns></returns>
+        public string WxOrQQLoginBll(string openid, string type)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                if (type == "0")
+                {
+                    dt = mdal.GetUserDt(openid, "wxopenid");
+                }
+                else
+                {
+                    dt = mdal.GetUserDt(openid, "qqopenid");
+                }
+                if (dt.Rows.Count > 0)
+                {
+                    string returns = string.Format(@"Success,{0},{1},{2}", dt.Rows[0]["ID"].ToString(), dt.Rows[0]["UserName"].ToString(), dt.Rows[0]["HeadImage"]);
+                    return returns;
+                }
+                else
+                {
+                    return "Fail";
                 }
             }
             catch (Exception)
