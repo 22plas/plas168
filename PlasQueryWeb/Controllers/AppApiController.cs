@@ -428,7 +428,7 @@ namespace PlasQueryWeb.Controllers
         /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpGet]
-        public ActionResult AppProductReplaceList(int pageindex, int pagesize, int isfilter, string factory, string proid, string ver)
+        public ActionResult AppProductReplaceList(int pageindex, int pagesize, int isfilter, string factory, string proid, string ver,string wherestring)
         {
             string sErr = string.Empty;
             string jsonstr = string.Empty;
@@ -442,14 +442,53 @@ namespace PlasQueryWeb.Controllers
                 //}
                 //本次执行运算的唯一版本号
                 //string ver = "b07f3ff6-ac47-48f4-c7dc-c8c9befbfd58";// Guid.NewGuid().ToString();
+                List<ReplaceResult> returnlist = new List<ReplaceResult>();
                 var ds = new DataSet();
                 if (!string.IsNullOrWhiteSpace(proid) && !string.IsNullOrWhiteSpace(ver))
                 {
-                    ds = plbll.GetProductReplace(ver, proid, pageindex, pagesize, isfilter, factory);
-                    if (ds.Tables.Contains("ds") && ds.Tables[0].Rows.Count > 0)
+                    if (!string.IsNullOrWhiteSpace(wherestring))
                     {
-                        jsonstr = ToolHelper.DataTableToJson(ds.Tables[0]);
+                        ds = plbll.GetReplace(proid, ver, "", wherestring, pageindex, pagesize, "0", "0", "");
+                        ReplaceResult tmodel = new ReplaceResult();
+                        if (ds.Tables.Contains("ds") && ds.Tables[0].Rows.Count > 0)
+                        {
+                            DataTable dt = ds.Tables[0];
+                            if (dt.Rows.Count>0)
+                            {
+                                for (int i = 0; i < dt.Rows.Count; i++)
+                                {
+                                    tmodel.AlikePercent = dt.Rows[i]["ALikePercent"].ToString();
+                                    tmodel.TargetGuid= dt.Rows[i]["ProductId"].ToString();
+                                    tmodel.Name= dt.Rows[i]["name"].ToString();
+                                    tmodel.PlaceOrigin= dt.Rows[i]["PlaceOrigin"].ToString();
+                                    tmodel.ProModel = dt.Rows[i]["ProModel"].ToString();
+                                    returnlist.Add(tmodel);
+                                }
+                            }
+                        }
                     }
+                    else
+                    {
+                        ds = plbll.GetProductReplace(ver, proid, pageindex, pagesize, isfilter, factory);
+                        ReplaceResult tmodel = new ReplaceResult();
+                        if (ds.Tables.Contains("ds") && ds.Tables[0].Rows.Count > 0)
+                        {
+                            DataTable dt = ds.Tables[0];
+                            if (dt.Rows.Count > 0)
+                            {
+                                for (int i = 0; i < dt.Rows.Count; i++)
+                                {
+                                    tmodel.AlikePercent = dt.Rows[i]["AlikePercent"].ToString();
+                                    tmodel.TargetGuid = dt.Rows[i]["TargetGuid"].ToString();
+                                    tmodel.Name = dt.Rows[i]["Name"].ToString();
+                                    tmodel.PlaceOrigin = dt.Rows[i]["PlaceOrigin"].ToString();
+                                    tmodel.ProModel = dt.Rows[i]["ProModel"].ToString();
+                                    returnlist.Add(tmodel);
+                                }
+                            }
+                        }
+                    }
+                    
                     //if (ds.Tables.Contains("ds1") && ds.Tables[1] != null && ds.Tables[1].Rows.Count > 0)
                     //{
                     //    int.TryParse(ds.Tables[1].Rows[0]["counts"].ToString(), out count);
@@ -458,7 +497,7 @@ namespace PlasQueryWeb.Controllers
                     //{
                     //    companys = ToolHelper.DataTableToJson(ds.Tables[2]);
                     //}
-                    return Json(Common.ToJsonResult("Success", "获取成功", jsonstr), JsonRequestBehavior.AllowGet);
+                    return Json(Common.ToJsonResult("Success", "获取成功", returnlist), JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
@@ -919,16 +958,16 @@ namespace PlasQueryWeb.Controllers
                         //，说明，加工方法，备注不允许选择-- >
                         //< !--总体参与对比的有（（RoHS 合规性；供货地区；加工方法；树脂ID(ISO 1043)；特性；添加剂；填料 / 增强材料；用途 ）这个是总体里要参与对比的）-->
                         var dr = ds.Tables[1];///此数据要过滤
-                        //DataTable tblDatas = new DataTable("Datas");
-                        
-                        //DataColumn dc = null;
-                        //dc = tblDatas.Columns.Add("lev", Type.GetType("System.Int32"));
-                        //dc = tblDatas.Columns.Add("Attribute1", Type.GetType("System.String"));
-                        //dc = tblDatas.Columns.Add("Attribute2", Type.GetType("System.String"));
-                        //dc = tblDatas.Columns.Add("Attribute3", Type.GetType("System.String"));
-                        //dc = tblDatas.Columns.Add("Attribute4", Type.GetType("System.String"));
-                        //dc = tblDatas.Columns.Add("Attribute5", Type.GetType("System.String"));
-                        //dc = tblDatas.Columns.Add("RealKey", Type.GetType("System.String"));
+                        DataTable tblDatas = new DataTable("Datas");
+
+                        DataColumn dc = null;
+                        dc = tblDatas.Columns.Add("lev", Type.GetType("System.Int32"));
+                        dc = tblDatas.Columns.Add("Attribute1", Type.GetType("System.String"));
+                        dc = tblDatas.Columns.Add("Attribute2", Type.GetType("System.String"));
+                        dc = tblDatas.Columns.Add("Attribute3", Type.GetType("System.String"));
+                        dc = tblDatas.Columns.Add("Attribute4", Type.GetType("System.String"));
+                        dc = tblDatas.Columns.Add("Attribute5", Type.GetType("System.String"));
+                        dc = tblDatas.Columns.Add("RealKey", Type.GetType("System.String"));
                         string lev = string.Empty;
                         DataRow newRow;
                         for (var i = 0; i < dr.Rows.Count; i++)
@@ -972,20 +1011,20 @@ namespace PlasQueryWeb.Controllers
                                         {
                                             lev = "";
                                         }
-                                        //newRow = tblDatas.NewRow();
-                                        //if (dr.Rows[i]["lev"].ToString() == "1")
-                                        //{
-                                        //    bigName = dr.Rows[i]["Attribute1"].ToString().Trim();
-                                        //}
-                                        //else
-                                        //{
-                                        //    samllName = dr.Rows[i]["Attribute1"].ToString().Trim();
-                                        //}
-                                        //DataRow[] rows = pt.Select("Attribute1='" + bigName + "' and Attribute2Alias = '" + samllName + "'");
-                                        //if (rows.Count() > 0)
-                                        //{
-                                        //    RealKey = rows[0]["RealKey"].ToString();
-                                        //}
+                                        newRow = tblDatas.NewRow();
+                                        if (dr.Rows[i]["lev"].ToString() == "1")
+                                        {
+                                            bigName = dr.Rows[i]["Attribute1"].ToString().Trim();
+                                        }
+                                        else
+                                        {
+                                            samllName = dr.Rows[i]["Attribute1"].ToString().Trim();
+                                        }
+                                        DataRow[] rows = pt.Select("Attribute1='" + bigName + "' and Attribute2Alias = '" + samllName + "'");
+                                        if (rows.Count() > 0)
+                                        {
+                                            RealKey = rows[0]["RealKey"].ToString();
+                                        }
                                         //newRow["lev"] = dr.Rows[i]["lev"].ToString().Trim();
                                         //newRow["Attribute1"] = dr.Rows[i]["Attribute1"].ToString().Trim();
                                         //newRow["Attribute2"] = dr.Rows[i]["Attribute2"].ToString().Trim();
@@ -1001,24 +1040,26 @@ namespace PlasQueryWeb.Controllers
                                         model.Attribute4 = dr.Rows[i]["Attribute4"].ToString().Trim();
                                         model.Attribute5 = dr.Rows[i]["Attribute5"].ToString().Trim();
                                         model.lev = dr.Rows[i]["lev"].ToString().Trim();
+                                        model.RealKey = RealKey;
+                                        model.bigName = bigName;
                                         listinfo.Add(model);
                                     }
                                 }
                             }
                         }
-                        //dt = tblDatas;
+                        dt = tblDatas;
                         //var spdr=dr.Select("Attribute1<>'产品说明' and Attribute1 <> '注射' and Attribute1 <> '备注'")
                     }
-                    if (ds.Tables.Count > 2)
-                    {
-                        //详情页标题：种类（Prd_SmallClass_l.Name）+型号（Product.ProModel）+产地（Product.PlaceOrigin）
-                        ViewBag.Title = ds.Tables[2].Rows[0]["Title"].ToString();
-                        //关键字：特性(product_l.characteristic)+用途(product_l.ProUse)
-                        ViewBag.Keywords = ds.Tables[2].Rows[0]["keyword"].ToString();
-                        //ViewBag.description2 =产品说明(只能用 exec readproduct '0004D924-5BD4-444F-A6D2-045D4EDB0DD3'命令中读出)
-                    }
+                    //if (ds.Tables.Count > 2)
+                    //{
+                    //    //详情页标题：种类（Prd_SmallClass_l.Name）+型号（Product.ProModel）+产地（Product.PlaceOrigin）
+                    //    ViewBag.Title = ds.Tables[2].Rows[0]["Title"].ToString();
+                    //    //关键字：特性(product_l.characteristic)+用途(product_l.ProUse)
+                    //    ViewBag.Keywords = ds.Tables[2].Rows[0]["keyword"].ToString();
+                    //    //ViewBag.description2 =产品说明(只能用 exec readproduct '0004D924-5BD4-444F-A6D2-045D4EDB0DD3'命令中读出)
+                    //}
                 }
-               //string jsonstr = ToolHelper.DataTableToJson(dt);
+                //string jsonstr = ToolHelper.DataTableToJson(dt);
                 var returndata = new
                 {
                     physicalinfo = listinfo,
@@ -1084,6 +1125,17 @@ namespace PlasQueryWeb.Controllers
             public string Attribute5 { get; set; }
             public int colspan { get; set; }
             public string stylestr { get; set; }
+            public string RealKey { get; set; }
+            public string bigName { get; set; }
+        }
+
+        //替换结果
+        public class ReplaceResult {
+            public string AlikePercent { get; set; }
+            public string ProModel { get; set; }
+            public string Name { get; set; }
+            public string PlaceOrigin { get; set; }
+            public string TargetGuid { get; set; }
         }
     }
 }
