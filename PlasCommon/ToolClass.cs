@@ -53,7 +53,7 @@ namespace PlasCommon
             Type type = typeof(T);
             string tempName = "";
 
-            if (dt.Rows.Count > 0)
+            if (dt !=null && dt.Rows.Count > 0)
             {
                 foreach (DataRow dr in dt.Rows)
                 {

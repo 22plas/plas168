@@ -63,14 +63,15 @@ function InitData(pageindx) {
                         tbodyui += "<td>" + n.PlaceOrigin + "</td>";
                         tbodyui += "<td>" + n.Name + "</td>";
                         tbodyui += "<td>" + n.ProUse + "</td>";
-                        tbodyui += "<td>" + n.characteristic + "</td>";
+                        tbodyui += "<td>" + n.characteristic +  "</td>";
                         tbodyui += "<td><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.prodid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span>";
-                        if (n.isColl == '0') {
-                            tbodyui += "<span class='layui-btn layui-btn-sm'  style='background-color:#e1e1e1'><i class='Hui-iconfont'>&#xe61f;</i> 已参与对比</span>";
-                        }
-                        else {
-                            tbodyui += "<span class='layui-btn layui-btn-sm'><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>";
-                        }
+                        //后期需要添加用户账户
+                        //if (n.isColl == '0') {
+                            tbodyui += "<span class='layui-btn layui-btn-sm' id=\"Contrast_" + n.prodid + "\" onClick=\"onColl('" + n.prodid + "');\"><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>";
+                        //}
+                        //else {
+                        //    tbodyui += "<span class='layui-btn layui-btn-sm'  style='background-color:#e1e1e1'><i class='Hui-iconfont'>&#xe61f;</i> 已参与</span>";
+                        //}
                         
                         tbodyui += " </td>";//<span class='layui-btn layui-btn-sm'><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>
                         tbodyui += "</tr>";
@@ -83,7 +84,7 @@ function InitData(pageindx) {
                             typelist += '<div class="search-item-type">' + item.attribute + '：</div>';
                             typelist += '<div class="search-item-content3">';
                             typelist += '<ul class="search-item-content" data-type="' + count + '" data-typename="' + item.attribute + '">';
-                            typelist += "<li data-guid=\"\" data-value=\"0\" id=\"" + count + "_SamllType_0\" onClick=\"onselectobj('" + count + "', '0', '" + count + "_SamllType_0','" + item.attribute + "')\" class=\"active\">全部</li>";
+                            typelist += "<li data-guid=\"\" data-value=\"0\" id=\"" + count + "_SamllType_0\" onlick=\"onselectobj('" + count + "', '0', '" + count + "_SamllType_0','" + item.attribute + "')\" class=\"active\">全部</li>";
                             var sammlCount = 0;
                             if (smaillData != "") {
                                 //    debugger;
@@ -106,9 +107,6 @@ function InitData(pageindx) {
                             }
                             typelist += '</div>';
                         })
-
-
-                   
 
                     }
 
@@ -166,6 +164,35 @@ function InitData(pageindx) {
 
 function pageselectCallback(page_id, jq) {
     InitData(page_id);
+}
+
+///添加对比
+function onColl(ProductId) {
+    $.ajax({
+        type: "POST",
+        dataType: "JSON",
+        url: '/MemberCenter/AddContrast',
+        data: "ProductId=" + ProductId,
+        async: false,
+        success: function (json) {
+            if (json != null && json != '') {
+                if (json.isContonl == true) {
+                    layer.msg('收藏成功！', { icon: 1 });
+                    //<i class='Hui-iconfont'>&#xe61f;</i> 已参与对比
+                    $("#Contrast_" + ProductId).removeAttr("onlick");
+                    $("#Contrast_" + ProductId).html("<i class='Hui-iconfont'>&#xe61f;</i> 已参与对比");
+                    $("#Contrast_" + ProductId).css("background-color", "#e1e1e1");
+                }
+                else {
+                    layer.msg(json.errmsg, { icon: 2 });
+                }
+            }
+        },
+        error: function () { layer.msg('数据请求异常', { icon: 2 }); }
+
+
+    });
+
 }
 
 

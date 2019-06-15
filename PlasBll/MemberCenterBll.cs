@@ -284,6 +284,10 @@ namespace PlasBll
 
         #region 我的物性
 
+
+
+        #region 收藏数据
+
         /// <summary>
         /// 添加收藏
         /// </summary>
@@ -342,6 +346,7 @@ namespace PlasBll
             }
             return null;
         }
+        #endregion
 
 
 
@@ -381,6 +386,49 @@ namespace PlasBll
         public bool AddPhysics_Browse(Physics_BrowseModel model,ref string errMsg)
         {
             return mdal.AddPhysics_Browse(model, ref errMsg);
+        }
+
+        #endregion
+
+
+        #region 添加对比
+        /// <summary>
+        /// 添加对比
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public List<PlasModel.Physics_ContrastModel> GetPhysics_Contrast(string userId, ref string errMsg)
+        {
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                var dt = mdal.GetPhysics_Contrast(userId, ref errMsg);
+                var list = PlasCommon.ToolClass<PlasModel.Physics_ContrastModel>.ConvertDataTableToModel(dt);
+                return list;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 添加对比
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public bool AddPhysics_Contrast(Physics_ContrastModel model, ref string errMsg)
+        {
+            return mdal.AddPhysics_Contrast(model, ref errMsg);
+        }
+
+        /// <summary>
+        /// 删除对比
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public bool RomvePhysics_Contrast(Physics_ContrastModel model, ref string errMsg)
+        {
+            return mdal.RomvePhysics_Contrast(model, ref errMsg);
         }
 
         #endregion
