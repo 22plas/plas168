@@ -852,6 +852,7 @@ namespace PlasQueryWeb.Controllers
             }
         }
         #endregion
+     
         #region 替换详情
         /// <summary>
         /// 替换详情
@@ -881,6 +882,157 @@ namespace PlasQueryWeb.Controllers
         }
         #endregion
 
+        #region 获取自定义权重
+        /// <summary>
+        /// 获取自定义权重
+        /// </summary>
+        /// <param name="Rpt"></param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetReplaceWeightList(string Rpt)
+        {
+            try
+            {
+                //产品编号
+                string ProTitle = "请选择产品";
+                string ProGuid = string.Empty;
+                var dt = new DataTable();
+                var pt = new DataTable();//替换属性RealKey
+                string bigName = string.Empty;
+                string samllName = string.Empty;
+                string RealKey = string.Empty;
+                List<tempinfo> listinfo = new List<tempinfo>();
+                if (!string.IsNullOrEmpty(Rpt))
+                {
+                    var ds = bll.GetModelInfo(Rpt);
+                    pt = plbll.GetAttributeAliasList_RealKey();//替换属性RealKey
+                    if (ds.Tables.Contains("ds") && ds.Tables[0].Rows.Count > 0)
+                    {
+                        ProTitle = ds.Tables[0].Rows[0]["proModel"].ToString();
+                        ProGuid = ds.Tables[0].Rows[0]["productid"].ToString();
+                    }
+                    if (ds.Tables.Contains("ds1") && ds.Tables[1].Rows.Count > 0)
+                    {
+                        //< !--卿思明:
+                        //产品说明；注射; 注射说明; 备注 这些都不参与对比
+                        //，说明，加工方法，备注不允许选择-- >
+                        //< !--总体参与对比的有（（RoHS 合规性；供货地区；加工方法；树脂ID(ISO 1043)；特性；添加剂；填料 / 增强材料；用途 ）这个是总体里要参与对比的）-->
+                        var dr = ds.Tables[1];///此数据要过滤
+                        //DataTable tblDatas = new DataTable("Datas");
+                        
+                        //DataColumn dc = null;
+                        //dc = tblDatas.Columns.Add("lev", Type.GetType("System.Int32"));
+                        //dc = tblDatas.Columns.Add("Attribute1", Type.GetType("System.String"));
+                        //dc = tblDatas.Columns.Add("Attribute2", Type.GetType("System.String"));
+                        //dc = tblDatas.Columns.Add("Attribute3", Type.GetType("System.String"));
+                        //dc = tblDatas.Columns.Add("Attribute4", Type.GetType("System.String"));
+                        //dc = tblDatas.Columns.Add("Attribute5", Type.GetType("System.String"));
+                        //dc = tblDatas.Columns.Add("RealKey", Type.GetType("System.String"));
+                        string lev = string.Empty;
+                        DataRow newRow;
+                        for (var i = 0; i < dr.Rows.Count; i++)
+                        {
+                            tempinfo model = new tempinfo();
+                            if ((string.IsNullOrEmpty(dr.Rows[i]["Attribute2"].ToString())
+                                && string.IsNullOrEmpty(dr.Rows[i]["Attribute3"].ToString())
+                                && string.IsNullOrEmpty(dr.Rows[i]["Attribute4"].ToString())
+                                && string.IsNullOrEmpty(dr.Rows[i]["Attribute5"].ToString()) && dr.Rows[i]["Attribute1"].ToString().Trim() != "总体")
+                                ||
+                                (dr.Rows[i]["Attribute1"].ToString().Trim() == "加工方法"
+                                || dr.Rows[i]["Attribute1"].ToString().Trim() == "材料状态"
+                                || dr.Rows[i]["Attribute1"].ToString().Trim().Replace(" ", "") == "资料 1".Replace(" ", "")
+                                || dr.Rows[i]["Attribute1"].ToString().Trim().Replace(" ", "") == "搜索 UL 黄卡".Replace(" ", "")
+                                || dr.Rows[i]["Attribute1"].ToString().Trim().Replace(" ", "") == "UL 黄卡 2".Replace(" ", "")
+                                || dr.Rows[i]["Attribute1"].ToString().Trim().Replace(" ", "") == "UL文件号".Replace(" ", "")
+                                )
+                                )
+                            {
+                            }
+                            else
+                            {
+
+                                //单独过滤注射
+                                if (dr.Rows[i]["Attribute1"].ToString().Trim() == "注射")
+                                {
+                                    //int.TryParse(dr.Rows[i]["lev"].ToString().Trim(), out lev);//记住注射
+                                    lev = "injection";
+                                }
+                                else
+                                {
+
+                                    int count = (1 + Convert.ToInt32(dr.Rows[i]["lev"].ToString().Trim()));
+                                    if (count == 3 && lev == "injection")
+                                    {
+
+                                    }
+                                    else
+                                    {
+                                        if (count == 2)//后续其他，必须清除，不然会有异常
+                                        {
+                                            lev = "";
+                                        }
+                                        //newRow = tblDatas.NewRow();
+                                        //if (dr.Rows[i]["lev"].ToString() == "1")
+                                        //{
+                                        //    bigName = dr.Rows[i]["Attribute1"].ToString().Trim();
+                                        //}
+                                        //else
+                                        //{
+                                        //    samllName = dr.Rows[i]["Attribute1"].ToString().Trim();
+                                        //}
+                                        //DataRow[] rows = pt.Select("Attribute1='" + bigName + "' and Attribute2Alias = '" + samllName + "'");
+                                        //if (rows.Count() > 0)
+                                        //{
+                                        //    RealKey = rows[0]["RealKey"].ToString();
+                                        //}
+                                        //newRow["lev"] = dr.Rows[i]["lev"].ToString().Trim();
+                                        //newRow["Attribute1"] = dr.Rows[i]["Attribute1"].ToString().Trim();
+                                        //newRow["Attribute2"] = dr.Rows[i]["Attribute2"].ToString().Trim();
+                                        //newRow["Attribute3"] = dr.Rows[i]["Attribute3"].ToString().Trim();
+                                        //newRow["Attribute4"] = dr.Rows[i]["Attribute4"].ToString().Trim();
+                                        //newRow["Attribute5"] = dr.Rows[i]["Attribute5"].ToString().Trim();
+                                        //newRow["RealKey"] = RealKey;
+                                        //tblDatas.Rows.Add(newRow);
+
+                                        model.Attribute1= dr.Rows[i]["Attribute1"].ToString().Trim();
+                                        model.Attribute2= dr.Rows[i]["Attribute2"].ToString().Trim();
+                                        model.Attribute3 = dr.Rows[i]["Attribute3"].ToString().Trim();
+                                        model.Attribute4 = dr.Rows[i]["Attribute4"].ToString().Trim();
+                                        model.Attribute5 = dr.Rows[i]["Attribute5"].ToString().Trim();
+                                        model.lev = dr.Rows[i]["lev"].ToString().Trim();
+                                        listinfo.Add(model);
+                                    }
+                                }
+                            }
+                        }
+                        //dt = tblDatas;
+                        //var spdr=dr.Select("Attribute1<>'产品说明' and Attribute1 <> '注射' and Attribute1 <> '备注'")
+                    }
+                    if (ds.Tables.Count > 2)
+                    {
+                        //详情页标题：种类（Prd_SmallClass_l.Name）+型号（Product.ProModel）+产地（Product.PlaceOrigin）
+                        ViewBag.Title = ds.Tables[2].Rows[0]["Title"].ToString();
+                        //关键字：特性(product_l.characteristic)+用途(product_l.ProUse)
+                        ViewBag.Keywords = ds.Tables[2].Rows[0]["keyword"].ToString();
+                        //ViewBag.description2 =产品说明(只能用 exec readproduct '0004D924-5BD4-444F-A6D2-045D4EDB0DD3'命令中读出)
+                    }
+                }
+               //string jsonstr = ToolHelper.DataTableToJson(dt);
+                var returndata = new
+                {
+                    physicalinfo = listinfo,
+                    promodel = ProTitle,
+                    proguid = ProGuid
+                };
+                return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
         //pdf数据
         public class pdfinfo {
             public string TypeName { get; set; }
