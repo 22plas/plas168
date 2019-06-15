@@ -892,17 +892,18 @@ namespace PlasQueryWeb.Controllers
             }
         }
         #endregion
-     
+
         #region 替换详情
         /// <summary>
         /// 替换详情
         /// </summary>
         /// <param name="ProductID">产品id</param>
         /// <param name="Ven">对比产品id</param>
+        /// <param name="isuser">是否自定义</param>
         /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpGet]
-        public ActionResult AppGetMaterialReplaceDetail(string ProductID, string Ven)
+        public ActionResult AppGetMaterialReplaceDetail(string ProductID, string Ven,string isuser)
         {
             try
             {
@@ -910,7 +911,7 @@ namespace PlasQueryWeb.Controllers
                 var dt = new DataTable();
                 if (!string.IsNullOrWhiteSpace(ProductID) && !string.IsNullOrWhiteSpace(Ven))
                 {
-                    dt = plbll.GetReplaceDetail(ProductID, Ven);
+                    dt = plbll.GetReplaceDetail(ProductID, Ven, isuser);
                     jsonstr = ToolHelper.DataTableToJson(dt);
                 }
                 return Json(Common.ToJsonResult("Success", "获取成功", jsonstr), JsonRequestBehavior.AllowGet);

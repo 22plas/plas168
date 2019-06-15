@@ -197,13 +197,27 @@ namespace PlasDal
         }
 
         //获取详情
-        public DataTable GetReplaceDetail(string productID,string Evn)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="productID"></param>
+        /// <param name="Evn"></param>
+        /// <param name="isuser">是否自定义0：否 1：是</param>
+        /// <returns></returns>
+        public DataTable GetReplaceDetail(string productID, string Evn, string isuser = "0")
         {
             var dt = new DataTable();
-            //string sql = string.Format(@"select * from ProductAlikeDetails_User where TargetId='{0}' 
-            //                           and ver= '{1}'", productID, Evn);
-            string sql = string.Format(@"select * from ProductAlikeDetails where Sourprodid='{0}' 
+            string sql = "";
+            if (isuser == "0")
+            {
+                sql = string.Format(@"select * from ProductAlikeDetails where Sourprodid='{0}' 
                                        and TargetProdid= '{1}'", productID, Evn);
+            }
+            else
+            {
+                sql = string.Format(@"select * from ProductAlikeDetails_User where TargetId='{0}' 
+                                       and ver= '{1}'", productID, Evn);
+            }
             dt = SqlHelper.GetSqlDataTable(sql.ToString());
             return dt;
         }
