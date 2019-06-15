@@ -202,7 +202,9 @@ function InitData(pageindx, isNavLink) {
                     tbodyui += "<td>" + n.Name + "</td>";
                     tbodyui += "<td>" + n.ProUse + "</td>";
                     tbodyui += "<td>" + n.characteristic + "</td>";
-                    tbodyui += "<td><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.productid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span></td>";// <span class='layui-btn layui-btn-sm'><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>
+                    tbodyui += "<td><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.productid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span>";
+                    tbodyui += "<span class='layui-btn layui-btn-sm' id=\"Contrast_" + n.productid + "\" onClick=\"onColl('" + n.productid + "');\"><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>";
+                    tbodyui +="</td>";// <span class='layui-btn layui-btn-sm'><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>
                     tbodyui += "</tr>";
                 });
             }
@@ -283,7 +285,34 @@ $("#QueryBtnSuper").click(function () {
     // alert(titlestr);
 })
 
+///添加对比
+function onColl(ProductId) {
+    $.ajax({
+        type: "POST",
+        dataType: "JSON",
+        url: '/MemberCenter/AddContrast',
+        data: "ProductId=" + ProductId,
+        async: false,
+        success: function (json) {
+            if (json != null && json != '') {
+                if (json.isContonl == true) {
+                    layer.msg('收藏成功！', { icon: 1 });
+                    //<i class='Hui-iconfont'>&#xe61f;</i> 已参与对比
+                    $("#Contrast_" + ProductId).removeAttr("onlick");
+                    $("#Contrast_" + ProductId).html("<i class='Hui-iconfont'>&#xe61f;</i> 已参与对比");
+                    $("#Contrast_" + ProductId).css("background-color", "#e1e1e1");
+                }
+                else {
+                    layer.msg(json.errmsg, { icon: 2 });
+                }
+            }
+        },
+        error: function () { layer.msg('数据请求异常', { icon: 2 }); }
 
+
+    });
+
+}
 ///点击数字输入值
 $("td[name='samllHit']").click(function () {
     var idx = $(this).attr("number");

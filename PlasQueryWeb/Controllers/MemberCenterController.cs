@@ -518,7 +518,11 @@ namespace PlasModel.Controllers
             {
                  list = JsonConvert.DeserializeObject<List<string>>(arry);
             }
-            var userName = AccountData.UserID;
+            var userName = string.Empty;
+            if (AccountData != null)
+            {
+                userName = AccountData.UserID;
+            }
 
             PlasBll.MemberCenterBll mbll = new MemberCenterBll();
 
@@ -536,6 +540,37 @@ namespace PlasModel.Controllers
             return Json(new { isadd = isadd , errMsg = errMsg },JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// 添加对比
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult AddContrast(string ProductId)
+        {
+            string errmsg = string.Empty;
+            PlasBll.MemberCenterBll mbll = new MemberCenterBll();
+            var userName = string.Empty;
+            if (AccountData != null)
+            {
+                userName = AccountData.UserID;
+            }
+            else
+            {
+                errmsg = "请登录才能添加对比！";
+            }
+            bool isContonl = false;
+            if (!string.IsNullOrWhiteSpace(ProductId))
+            {
+                PlasModel.Physics_ContrastModel model = new Physics_ContrastModel();
+                model.UserId = userName;
+                model.ProductGuid = ProductId;
+                isContonl= mbll.AddPhysics_Contrast(model, ref errmsg);
+            }
+            else
+            {
+                errmsg = "请选中需要对比的物料！";
+            }
+            return Json(new { isContonl = isContonl , errmsg = errmsg },JsonRequestBehavior.AllowGet);
+        }
 
         //物性浏览记录
         [UserAttribute]

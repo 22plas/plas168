@@ -200,8 +200,8 @@ namespace PlasDal
         public DataTable GetReplaceDetail(string productID,string Evn)
         {
             var dt = new DataTable();
-            string sql = string.Format(@"select * from ProductAlikeDetails where Sourprodid='{0}' 
-                                       and TargetProdid= '{1}'", productID, Evn);
+            string sql = string.Format(@"select * from ProductAlikeDetails_User where TargetId='{0}' 
+                                       and ver= '{1}'", productID, Evn);
             dt = SqlHelper.GetSqlDataTable(sql.ToString());
             return dt;
         }

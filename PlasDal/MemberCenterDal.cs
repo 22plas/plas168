@@ -608,13 +608,142 @@ namespace PlasDal
 
         #endregion
 
+        #region 对比
+
         /// <summary>
         /// 对比
+        /// , int pageindex, int pagesize, ref int pagecout, ref string errMsg
         /// </summary>
-        public DataTable GetPhysics_Contrast(string userId, int pageindex, int pagesize, ref int pagecout, ref string errMsg)
+        public DataTable GetPhysics_Contrast(string userId, ref string errMsg)
         {
+            try
+            {
+                StringBuilder sql = new StringBuilder();
+                //string sql = "select * from Physics_Contrast where UserId=@UserId";
+                sql.Append("select a.Id,a.ProductGuid,a.UserId,a.CreateDate,b.ProModel,b.PlaceOrigin,c.ProUse,c.characteristic,d.Name from Physics_Contrast as a ");
+                sql.Append(" left join Product as b on a.ProductGuid=b.ProductGuid");
+                sql.Append(" left join Product_l as c on c.ParentGuid=a.ProductGuid");
+                sql.Append(" left join Prd_SmallClass_l as d on d.parentguid=b.SmallClassId");
+                sql.Append(" where 1=1");
+                if (!string.IsNullOrWhiteSpace(userId))
+                {
+                    sql.Append(" and a.UserId=@UserId");
+                    SqlParameter[] parm = { new SqlParameter("@UserId", userId) };
+                    return SqlHelper.GetSqlDataTable_Param(sql.ToString(), parm);
+                }
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message.ToString();
+            }
             return null;
+            
         }
+
+        /// <summary>
+        /// 添加对比
+        /// 只允许三条对比不允许重复
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public bool AddPhysics_Contrast(Physics_ContrastModel model, ref string errMsg)
+        {
+            bool isadd = false;
+            bool isTrue = true;//是否允许添加
+            try
+            {
+                int count = 0;
+                string isExites = string.Format(@"select ProductGuid from Physics_Contrast where UserId=@UserId");
+                SqlParameter[] parm = { new SqlParameter("@UserId", model.UserId) };
+                var dt = SqlHelper.GetSqlDataTable_Param(isExites, parm);
+                if (dt.Rows.Count > 0)
+                {
+                    count = dt.Rows.Count;
+                    //int.TryParse(dt.Rows[0]["counts"].ToString(),out count);
+                    for (var i = 0; i < dt.Rows.Count; i++)
+                    {
+                        if (dt.Rows[i]["ProductGuid"].ToString().ToLower() == model.ProductGuid.ToLower())
+                        {
+                            isTrue = false;
+                        }
+                    }
+                    dt.Dispose();
+                }
+                ///目前只运行三行对比
+                if (count < 3)
+                {
+                    if (isTrue)
+                    {
+                        StringBuilder sql = new StringBuilder();
+                        sql.Append("insert into Physics_Contrast(ProductGuid,UserId,CreateDate)");
+                        sql.Append("values(@ProductGuid,@UserId,@CreateDate)");
+                        SqlParameter[] parmts = {
+                        new SqlParameter("@ProductGuid", model.ProductGuid),
+                        new SqlParameter("@UserId", model.UserId),
+                        new SqlParameter("@CreateDate",DateTime.Now)
+                       };
+                        isadd = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), parmts) > 0;
+                    }
+                    else
+                    {
+                        errMsg = "此数据已经参与对比！";
+                    }
+
+                }
+                else
+                {
+                    errMsg = "你最多只能三条数据对比！";
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message.ToString();
+            }
+            return isadd;
+        }
+
+
+        /// <summary>
+        /// 删除对比
+        /// </summary>
+        /// <param name=""></param>
+        /// <returns></returns>
+        public bool RomvePhysics_Contrast(Physics_ContrastModel model, ref string errMsg)
+        {
+            var isadd = false;
+            try
+            {
+
+                if (!string.IsNullOrWhiteSpace(model.UserId) && !string.IsNullOrWhiteSpace(model.ProductGuid))
+                {
+                    string sql = string.Format("delete from Physics_Contrast where ProductGuid=@ProductGuid and UserId=@UserId");
+                    SqlParameter[] param = {
+                        new SqlParameter("@ProductGuid",model.ProductGuid),
+                        new SqlParameter("@UserId",model.UserId)
+                    };
+                    isadd = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), param) > 0;
+                }
+                else if (model.Id > 0)
+                {
+                    string sql = string.Format("delete from Physics_Contrast where Id=@Id");
+                    SqlParameter[] parm = { new SqlParameter("@Id", model.Id) };
+                    isadd = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), parm)>0;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                errMsg = ex.Message.ToString();
+            }
+            return isadd;
+        }
+
+
+        #endregion
 
         /// <summary>
         /// 公用方法类

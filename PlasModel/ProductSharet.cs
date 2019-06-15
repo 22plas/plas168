@@ -48,5 +48,8 @@ namespace PlasModel
         /// </summary>
         public string custguid { get; set; }
 
+
+        public int isColl { get; set; }
+
     }
 }
