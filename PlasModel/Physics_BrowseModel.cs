@@ -54,7 +54,10 @@ namespace PlasModel
         /// </summary>
         public string characteristic { get; set; }
 
-        public int isColl { get; set; }
+        /// <summary>
+        /// 是否参与对比
+        /// </summary>
+        public string isColl { get; set; }
 
     }
 }

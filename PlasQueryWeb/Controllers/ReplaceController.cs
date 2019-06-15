@@ -396,12 +396,12 @@ namespace PlasModel.Controllers
         /// 显示详情
         /// </summary>
         /// <returns></returns>
-        public ActionResult More(string ProductID,string Ven)
+        public ActionResult More(string ProductID,string Ven,string isUser)
         {
             var dt = new DataTable();
-            if (!string.IsNullOrWhiteSpace(ProductID) && !string.IsNullOrWhiteSpace(Ven))
+            if (!string.IsNullOrWhiteSpace(ProductID) && !string.IsNullOrWhiteSpace(Ven) && !string.IsNullOrWhiteSpace(isUser))
             {
-                dt = plbll.GetReplaceDetail(ProductID, Ven);
+                dt = plbll.GetReplaceDetail(ProductID, Ven, isUser);
             }
             ViewBag.allData = dt;
             return View();
