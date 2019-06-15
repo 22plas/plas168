@@ -449,7 +449,7 @@ namespace PlasQueryWeb.Controllers
                     if (!string.IsNullOrWhiteSpace(wherestring))
                     {
                         ds = plbll.GetReplace(proid, ver, "", wherestring, pageindex, pagesize, "0", "0", "");
-                        ReplaceResult tmodel = new ReplaceResult();
+                        
                         if (ds.Tables.Contains("ds") && ds.Tables[0].Rows.Count > 0)
                         {
                             DataTable dt = ds.Tables[0];
@@ -457,6 +457,7 @@ namespace PlasQueryWeb.Controllers
                             {
                                 for (int i = 0; i < dt.Rows.Count; i++)
                                 {
+                                    ReplaceResult tmodel = new ReplaceResult();
                                     tmodel.AlikePercent = dt.Rows[i]["ALikePercent"].ToString();
                                     tmodel.TargetGuid= dt.Rows[i]["ProductId"].ToString();
                                     tmodel.Name= dt.Rows[i]["name"].ToString();
@@ -470,7 +471,6 @@ namespace PlasQueryWeb.Controllers
                     else
                     {
                         ds = plbll.GetProductReplace(ver, proid, pageindex, pagesize, isfilter, factory);
-                        ReplaceResult tmodel = new ReplaceResult();
                         if (ds.Tables.Contains("ds") && ds.Tables[0].Rows.Count > 0)
                         {
                             DataTable dt = ds.Tables[0];
@@ -478,6 +478,7 @@ namespace PlasQueryWeb.Controllers
                             {
                                 for (int i = 0; i < dt.Rows.Count; i++)
                                 {
+                                    ReplaceResult tmodel = new ReplaceResult();
                                     tmodel.AlikePercent = dt.Rows[i]["AlikePercent"].ToString();
                                     tmodel.TargetGuid = dt.Rows[i]["TargetGuid"].ToString();
                                     tmodel.Name = dt.Rows[i]["Name"].ToString();
