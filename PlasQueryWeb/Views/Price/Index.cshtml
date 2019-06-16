@@ -140,7 +140,9 @@
         width: 100px;
         height: 26px;
     }
-
+    .input2 {
+        height:30px; line-height:30px;text-align:left;padding-left:10px;
+    }
     .btn_price {
         height: 27px;
         line-height: 27px;
@@ -202,6 +204,7 @@
         <div class="search-item-btn" data-type="4" data-typename="生产厂家">更多 ∨</div>
     </div>
 </div>
+<div style="width: 100%;padding: 10px 25px;"><b>检索：</b><input type="text" id="ProdcutModle"  class="input2" placeholder="请输入材料类别，厂家，产品型号" style="width:50%;" maxlength="20" /><button id="shartPrice" style="border-radius:0px; height:30px; line-height:30px;" class="btn_price" type="button">搜索</button></div>
 <!--<p style="padding: 10px 20px;" id="selectCheckValue">
     当前已选择条件：<span class="search_condition_wrap">
     </span>
@@ -209,7 +212,7 @@
 </p>--->
 <div class="marginTop" style="margin-top: 0;padding-top: 0;">
     <div class="item-left">
-        <div style="padding:2px 5px;">产品型号：<input type="text" id="ProdcutModle" class="input" style="width:150px;" maxlength="20" /> <button id="shartPrice" class="btn_price" type="button">搜索</button></div>
+        
         <ul id="PriceListHTML"></ul>
         <ul>
             <li class="page" id="Pagination">
