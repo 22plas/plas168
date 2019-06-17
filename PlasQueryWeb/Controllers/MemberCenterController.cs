@@ -771,7 +771,8 @@ namespace PlasModel.Controllers
                     {
                         var returndata = new
                         {
-                            usid = resultstr[1]
+                            usid = resultstr[1],
+                            phone=resultstr[4]
                         };
                         return Json(Common.ToJsonResult("Success", "登录成功", returndata), JsonRequestBehavior.AllowGet);
                     }
@@ -807,7 +808,8 @@ namespace PlasModel.Controllers
                         {
                             var returndata2 = new
                             {
-                                usid = resultstr2[1]
+                                usid = resultstr2[1],
+                                phone = resultstr2[4]
                             };
                             return Json(Common.ToJsonResult("Success", "登录成功", returndata2), JsonRequestBehavior.AllowGet);
                         }
@@ -897,6 +899,35 @@ namespace PlasModel.Controllers
             }
         }
 
+        /// <summary>
+        /// 绑定手机号
+        /// </summary>
+        /// <param name="phone">手机号</param>
+        /// <param name="usid">用户id</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpPost]
+        public ActionResult BindUserPhone(string phone, string usid)
+        {
+            string resultstr = mbll.AccountLoginBll(phone);
+            //手机号已存在
+            if (resultstr != "NoFind" && resultstr != "Fail")
+            {
+                return Json(Common.ToJsonResult("Exists", "手机号已绑定其他账号"), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                string bindresult = mbll.UpdateUserInfobll("phone", phone, usid);
+                if (bindresult == "Success")
+                {
+                    return Json(Common.ToJsonResult("Success", "绑定成功"), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(Common.ToJsonResult("Fail", "绑定失败"), JsonRequestBehavior.AllowGet);
+                }
+            }
+        }
         /// <summary>
         /// 获取用户信息
         /// </summary>

@@ -562,6 +562,7 @@ namespace PlasQueryWeb.Controllers
             List<FactoryInfo> factoryjsonstr = new List<FactoryInfo>();//厂家json数据
             List<attributeinfo> otherlist = new List<attributeinfo>();//其他属性
             List<bigtype> bigtypelist = new List<bigtype>();//大类
+            List<SearchResult> resultmodellist = new List<SearchResult>();//搜索结果
 
             if (!string.IsNullOrWhiteSpace(key))
             {
@@ -576,8 +577,10 @@ namespace PlasQueryWeb.Controllers
                 }
                 if (ds.Tables.Contains("ds") && ds.Tables[0] != null)
                 {
-                    jsonstr = ToolHelper.DataTableToJson(ds.Tables[0]);
+                    //jsonstr = ToolHelper.DataTableToJson(ds.Tables[0]);
+                    resultmodellist = Comm.ToDataList<SearchResult>(ds.Tables[0]);
                 }
+                
                 //DataTable dt = new DataTable();
                 //if (ds.Tables.Contains("ds2") && ds.Tables[2] != null && ds.Tables[2].Rows.Count > 0)
                 //{
@@ -651,7 +654,7 @@ namespace PlasQueryWeb.Controllers
             }
             var returndata = new
             {
-                datalist = jsonstr,
+                datalist = resultmodellist,
                 factorydata = factoryjsonstr,
                 classdata = classjsonstr,
                 bigtypedata= bigtypelist,
@@ -760,9 +763,11 @@ namespace PlasQueryWeb.Controllers
             try
             {
                 string isNavLink = string.Empty;
+                List<SearchResult> resultmodellist = new List<SearchResult>();//搜索结果
                 var ds = bll.Sys_SuperSearch(searchstr, 2052, pageindex, pagesize, guidstr, isNavLink);
-                string jsonstr = PlasCommon.ToolHelper.DataTableToJson(ds.Tables[0]);
-                return Json(Common.ToJsonResult("Success", "获取成功", jsonstr), JsonRequestBehavior.AllowGet);
+                //string jsonstr = PlasCommon.ToolHelper.DataTableToJson(ds.Tables[0]);
+                resultmodellist = Comm.ToDataList<SearchResult>(ds.Tables[0]);
+                return Json(Common.ToJsonResult("Success", "获取成功", resultmodellist), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -1138,6 +1143,23 @@ namespace PlasQueryWeb.Controllers
             public string Name { get; set; }
             public string PlaceOrigin { get; set; }
             public string TargetGuid { get; set; }
+        }
+
+        //搜索结果类
+        public class SearchResult
+        {
+            public int rn { get; set; }
+            public int rank { get; set; }
+            public string prodid { get; set; }
+            public string productid { get; set; }
+
+            public string ProModel { get; set; }
+            public string PlaceOrigin { get; set; }
+            public string Name { get; set; }
+            public string ProUse { get; set; }
+            public string characteristic { get; set; }
+            public string custguid { get; set; }
+            public string isColl { get; set; }
         }
     }
 }
