@@ -144,6 +144,32 @@ namespace PlasDal
             var ds = SqlHelper.GetSqlDataSet(sql);
             return ds;
         }
+        /// <summary>
+        /// 获取产品类别
+        /// </summary>
+        /// <param name="parentid">上级分类id</param>
+        /// <param name="type">获取类型 0：获取一级分类  1：获取二级分类 2：获取三级分类</param>
+        /// <param name="middlename">二级分类名称</param>
+        /// <returns></returns>
+        public DataTable GetClass(string parentid, string middlename, string type)
+        {
+            string sql = "";
+            if (type == "0")
+            {
+                sql = string.Format("select Name,parentguid from Prd_BigClass_l");
+            }
+            else if (type == "1")
+            {
+                sql = string.Format(@"select distinct a.MidClassName as Name,'' as parentguid from Prd_SmallClass_l a inner join Prd_SmallClass b on a.parentguid=b.guid 
+                                      inner join Prd_BigClass c on c.guid = b.parentguid where c.guid = '{0}' and a.LanguageId = 2052 order by a.MidClassName", parentid);
+            }
+            else
+            {
+                sql = string.Format("select Name,'' as parentguid from Prd_SmallClass_l where MidClassName='{0}' and LanguageId=2052 order by Name", middlename);
+            }
+            DataTable dt = SqlHelper.GetSqlDataTable(sql);
+            return dt;
+        }
         //属性值
         public DataSet Sys_GetSuperSearchParam(int parentID = -1)
         {

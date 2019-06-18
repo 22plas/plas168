@@ -50,7 +50,7 @@ namespace PlasBll
         /// <param name="type"></param>
         /// <param name="showNum"></param>
         /// <returns></returns>
-        public DataTable GetSearchParam(int type,string wherekey, int showNum = 10,int? pageindex=1)
+        public DataTable GetSearchParam(int type, string wherekey, int showNum = 10, int? pageindex = 1)
         {
             return dal.GetSearchParam(type, wherekey, showNum, pageindex.Value);
         }
@@ -76,7 +76,7 @@ namespace PlasBll
         }
 
         //超级搜索
-        public DataSet Sys_SuperSearch(string searchStr = "", int languageid = 2052, int pageCount = 0, int pageSize = 20, string guidstr = "",string isNavLink="")
+        public DataSet Sys_SuperSearch(string searchStr = "", int languageid = 2052, int pageCount = 0, int pageSize = 20, string guidstr = "", string isNavLink = "")
         {
             return dal.Sys_SuperSearch(searchStr, languageid, pageCount, pageSize, guidstr, isNavLink);
         }
@@ -84,7 +84,7 @@ namespace PlasBll
         #endregion
 
         //普通搜索
-        public DataSet GetGeneralSearch(string key = "", int pageIndex = 1, int pageSize = 20, string strGuid = "",int? isapp=0)
+        public DataSet GetGeneralSearch(string key = "", int pageIndex = 1, int pageSize = 20, string strGuid = "", int? isapp = 0)
         {
             return dal.GetGeneralSearch(key, pageIndex, pageSize, strGuid, isapp);
         }
@@ -126,9 +126,9 @@ namespace PlasBll
         #endregion
 
         #region 点击次数累增
-        public  void ProductHit(string proid)
+        public void ProductHit(string proid)
         {
-             dal.ProductHit(proid);
+            dal.ProductHit(proid);
         }
         #endregion
 
@@ -154,6 +154,10 @@ namespace PlasBll
         public DataTable GetProductAttribute(string ver, string tx)
         {
             return dal.GetProductAttribute(ver, tx);
+        }
+        public DataTable GetClass(string parentid, string middlename, string type)
+        {
+            return dal.GetClass(parentid, middlename, type);
         }
     }
 }
