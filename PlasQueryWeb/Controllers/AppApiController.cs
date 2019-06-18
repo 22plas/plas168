@@ -140,14 +140,36 @@ namespace PlasQueryWeb.Controllers
         /// <param name="priceproductguid">id</param>
         /// <param name="bdate">起始时间</param>
         /// <param name="ndate">结束时间</param>
+        /// <param name="type">时间类型：0 近七天 1：近一个月 2：近半年 3：自定义</param>
         /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpGet]
-        public ActionResult AppGetPriceDateList(string priceproductguid, string bdate, string ndate)
+        public ActionResult AppGetPriceDateList(string priceproductguid, string bdate, string ndate,string type)
         {
             try
             {
                 StringBuilder sql = new StringBuilder();
+                string starttime = "";
+                string endtime = "";
+                if (type == "0")
+                {
+                    starttime = DateTime.Now.AddDays(-7).ToShortDateString();
+                    endtime = DateTime.Now.ToShortDateString();
+                }
+                else if (type == "1")
+                {
+                    starttime = DateTime.Now.AddDays(-30).ToShortDateString();
+                    endtime = DateTime.Now.ToShortDateString();
+                }
+                else if (type == "2")
+                {
+                    starttime = DateTime.Now.AddMonths(6).ToShortDateString();
+                    endtime = DateTime.Now.ToShortDateString();
+                }
+                else {
+                    starttime = bdate;
+                    endtime = ndate;
+                }
                 string jsonstr = string.Empty;
                 if (!string.IsNullOrEmpty(bdate) && !string.IsNullOrEmpty(ndate))
                 {
@@ -246,8 +268,15 @@ namespace PlasQueryWeb.Controllers
         {
             try
             {
+                string sql = string.Format("SELECT * FROM dbo.Pri_Product WHERE PriceProductGuid='{0}'",prodid);
+                DataTable dt = SqlHelper.GetSqlDataTable(sql);
+                string pid = "";
+                if (dt.Rows.Count>0)
+                {
+                    pid = dt.Rows[0]["ProductGuid"].ToString();
+                }
                 #region 产品详情
-                var ds = bll.NewGetModelInfo(prodid);//"9C37DC9C-E867-46A2-97DF-32A9489BCDC4"
+                var ds = bll.NewGetModelInfo(pid);//"9C37DC9C-E867-46A2-97DF-32A9489BCDC4"
                 //var ds = bll.GetModelInfo(prodid);
                 string descriptionjsonstr = string.Empty;//说明
                 List<tempinfo> listinfo = new List<tempinfo>();
@@ -1081,6 +1110,31 @@ namespace PlasQueryWeb.Controllers
             }
         }
         #endregion
+
+        #region 产品类别
+        /// <summary>
+        /// 产品类别
+        /// </summary>
+        /// <param name="parentid">上级id</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult AppGetClass(string parentid, string middlename, string type)
+        {
+            try
+            {
+                List<NewClassInfo> listresult = new List<NewClassInfo>();
+                DataTable dt = bll.GetClass(parentid, middlename, type);
+                listresult = Comm.ToDataList<NewClassInfo>(dt);
+                return Json(Common.ToJsonResult("Success", "获取成功", listresult), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
         //pdf数据
         public class pdfinfo {
             public string TypeName { get; set; }
@@ -1119,6 +1173,14 @@ namespace PlasQueryWeb.Controllers
         public class ClassInfo
         {
             public string SmallClass { get; set; }
+            public string Parnetid { get; set; }
+        }
+
+        //类别
+        public class NewClassInfo
+        {
+            public string Name { get; set; }
+            public string parentguid { get; set; }
         }
 
         //获取商品详情时需要用到该类
