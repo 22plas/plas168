@@ -202,11 +202,14 @@
     ///收藏
     function AddColl() {
         debugger;
-        var arry = new Array();
+        //var arry = new Array();
+        var arry = "";
+        var afterval = "";
         $.each($("input[name='BrowseName']"), function (index, item) {
             if ($(this).is(":checked") && $(this).attr("iscoll") == "0") {
                 var prodGuid = $(this).attr("productguid");
-                arry.push(prodGuid);
+                //arry.push(prodGuid);
+                arry += prodGuid + "#";
             }
         })
 
@@ -214,7 +217,7 @@
             layer.msg('至少选中一项未被收藏物料！', { icon: 2 });
             return false;
         }
-        var path = JSON.stringify(arry);
+        //var path = JSON.stringify(arry);
       //  alert(path);
         $.ajax({
             type: "POST",
@@ -225,7 +228,7 @@
             success: function (json) {
                 if (json != null && json != '' && json != 'null') {
                     if (json.isadd) {
-                        layer.msg('收藏成功！1', { icon: 1 });
+                        layer.msg(json.errMsg, { icon: 1 });
                         InitData(0);
                     }
                     else {

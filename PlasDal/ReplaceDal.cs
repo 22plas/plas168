@@ -134,7 +134,7 @@ namespace PlasDal
                 //以下代码是执行整个运算的第二步：由前端调用多任务来计算每个任务中列出目标物料属性的相似度得分并写入到表ProductAlikeDetails_User中
 
                 //先找出存储过程将本次参与运算的实际任务个数
-                string sql = "select max(tasks) from ProductAlikeTargetList_User where ver=@ver";
+                string sql = "select isnull(max(tasks),0)as tasks  from ProductAlikeTargetList_User where ver=@ver";
                 SqlParameter[] parm2 = { new SqlParameter("@ver", ver) };
                 tasks = SqlHelper.ExecuteScalar(SqlHelper.ConnectionStrings, sql, parm2);
 
@@ -215,8 +215,7 @@ namespace PlasDal
             }
             else
             {
-                sql = string.Format(@"select * from ProductAlikeDetails_User where TargetId='{0}' 
-                                       and ver= '{1}'", productID, Evn);
+                sql = string.Format(@"select * from ProductAlikeDetails_User where ver= '{1}' and  TargetId='{0}'",Evn , productID);
             }
             dt = SqlHelper.GetSqlDataTable(sql.ToString());
             return dt;

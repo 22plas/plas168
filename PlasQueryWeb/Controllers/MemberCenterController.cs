@@ -534,9 +534,18 @@ namespace PlasModel.Controllers
             string errMsg = string.Empty;
             bool isadd = false;
             var list = new List<string>();
-            if (!string.IsNullOrWhiteSpace(arry))
+            if (!string.IsNullOrWhiteSpace(arry) && arry.Length>0)
             {
-                 list = JsonConvert.DeserializeObject<List<string>>(arry);
+                //list = JsonConvert.DeserializeObject<List<string>>(arry);
+                var splitvalue = arry.Split('#');
+                for (var i = 0; i < splitvalue.Length; i++)
+                {
+                    if (!string.IsNullOrWhiteSpace(splitvalue[i]))
+                    {
+                        list.Add(splitvalue[i]);
+                    }
+                    
+                }
             }
             var userName = string.Empty;
             if (AccountData != null)
@@ -545,7 +554,8 @@ namespace PlasModel.Controllers
             }
 
             PlasBll.MemberCenterBll mbll = new MemberCenterBll();
-
+            var counttrue = 0;
+            var countfalse = 0;
             if (list.Count > 0)
             {
                 for (var i=0;i<list.Count;i++)
@@ -554,7 +564,16 @@ namespace PlasModel.Controllers
                     model.ProductGuid = list[i];
                     model.UserId = userName;
                     isadd= mbll.AddPhysics_Collection(model,ref errMsg);
+                    if (isadd)
+                    {
+                        counttrue++;
+                    }
+                    else
+                    {
+                        countfalse++;
+                    }
                 }
+                errMsg = "收藏成功 " + counttrue + " 条 ,失败 " + countfalse + " 条";
             }
            
             return Json(new { isadd = isadd , errMsg = errMsg },JsonRequestBehavior.AllowGet);
