@@ -189,16 +189,60 @@ namespace PlasModel.Controllers
         {
             int datatCount = 1000000;
             var allData = new DataTable();
+            var restuesDt = new DataTable();
             if (rid > 0)
             {
                 allData = bll.GetSearchParam(rid,"", datatCount);
             }
-            ViewBag.allData = allData;
+            if (allData != null && allData.Rows.Count > 0)
+            {
+                DataTable tblDatas = new DataTable("Datas");
+                DataColumn dc = null;
+                dc = tblDatas.Columns.Add("SmallGuid", Type.GetType("System.String"));
+                dc = tblDatas.Columns.Add("AliasName", Type.GetType("System.String"));
+                dc = tblDatas.Columns.Add("Name", Type.GetType("System.String"));
+                DataRow newRow;
+                for (var k = 0; k < allData.Rows.Count; k++)
+                {
+                    var isadd = true;
+                    var alisaName= allData.Rows[k]["AliasName"].ToString();
+                    var kvalue = allData.Rows[k]["Name"].ToString();
+                    for (var j = 0; j < tblDatas.Rows.Count; j++)
+                    {
+                        if (kvalue == tblDatas.Rows[j]["Name"].ToString() && alisaName == tblDatas.Rows[j]["AliasName"].ToString())
+                        {
+                            isadd = false;
+                            break;
+                        }
+                    }
+                    if (isadd)
+                    {
+                        newRow = tblDatas.NewRow();
+                        newRow["AliasName"] = allData.Rows[k]["AliasName"].ToString();
+                        newRow["SmallGuid"] = allData.Rows[k]["SmallGuid"].ToString();
+                        newRow["Name"] = allData.Rows[k]["Name"].ToString();
+                        tblDatas.Rows.Add(newRow);
+                    }
+                    restuesDt = tblDatas;
+                }
+
+                ///DataView dv = new DataView(comp);
+                //company = dv.ToTable(true, new string[] { "max(SmallGuid)", "Name" });// comp.Select("max(SmallGuid) as SmallGuid,Name");
+            }
+            ViewBag.allData = restuesDt;
             ViewBag.rname = rname;
             ViewBag.rid = rid;
             ViewBag.more = more;
             return View();
         }
+
+        public static DataTable Distinct(DataTable dt, string[] filedNames)
+        {
+            DataView dv = dt.DefaultView;
+            DataTable DistTable = dv.ToTable("Dist", true, filedNames);
+            return DistTable;
+        }
+
 
         //属性值
         public ActionResult Attribute()

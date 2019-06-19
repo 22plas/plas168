@@ -89,8 +89,8 @@ namespace PlasDal
                     ds = Sys_GetSearchParam("Prd_ZRDJSort", showNum, "  substring(dbo.[fn_ChineseToSpell](KeyWord),1,1) as fw,KeyWord as Name,*,'''' as SmallGuid ", "", " value desc ,substring(dbo.[fn_ChineseToSpell](KeyWord),1,1),KeyWord ", pageindex.Value);
                     break;
                 case 4://厂家
-                    tempwherekey = string.IsNullOrWhiteSpace(wherekey) ? "" : " and ShortName like ''%" + wherekey + "%''";
-                    ds = Sys_GetSearchParam("Sys_Manufacturer", showNum, "  substring(dbo.[fn_ChineseToSpell](ShortName),1,1) as fw,ShortName as Name,*,[Guid] as SmallGuid", " and ShortName<>'''' and ShortName<>''--''" + tempwherekey, "weight desc, substring(dbo.[fn_ChineseToSpell](ShortName),1,1),ShortName ", pageindex.Value);
+                    tempwherekey = string.IsNullOrWhiteSpace(wherekey) ? "" : " and AliasName like ''%" + wherekey + "%''";
+                    ds = Sys_GetSearchParam("Sys_Manufacturer", showNum, "  substring(dbo.[fn_ChineseToSpell](AliasName),1,1) as fw,AliasName as Name,*,[Guid] as SmallGuid", " and AliasName<>'''' and AliasName<>''--''" + tempwherekey, "weight desc, substring(dbo.[fn_ChineseToSpell](AliasName),1,1),AliasName ", pageindex.Value);
                     break;
                 case 5://加工方法
                     tempwherekey = string.IsNullOrWhiteSpace(wherekey) ? "" : " and name like ''%" + wherekey + "%''";
