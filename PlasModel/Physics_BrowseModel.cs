@@ -57,7 +57,7 @@ namespace PlasModel
         /// <summary>
         /// 是否参与对比
         /// </summary>
-        public string isColl { get; set; }
+        public int isColl { get; set; }
 
     }
 }

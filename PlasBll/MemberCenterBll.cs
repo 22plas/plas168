@@ -367,11 +367,11 @@ namespace PlasBll
         /// <summary>
         /// 浏览分页查询
         /// </summary>
-        public List<Physics_BrowseModel> GetPhysics_Browse(string userId, int pageindex, int pagesize, ref int pagecout, ref string errMsg)
+        public List<Physics_BrowseModel> GetPhysics_Browse(string userId, int pageindex, int pagesize, ref int pagecout, ref string errMsg,string wheresql="")
         {
             if (!string.IsNullOrWhiteSpace(userId))
             {
-                var dt = mdal.GetPhysics_Browse(userId,  pageindex, pagesize, ref pagecout, ref errMsg);
+                var dt = mdal.GetPhysics_Browse(userId,  pageindex, pagesize, ref pagecout, ref errMsg, wheresql);
                 return PlasCommon.ToolClass<Physics_BrowseModel>.ConvertDataTableToModel(dt);
             }
             return null;
@@ -387,7 +387,6 @@ namespace PlasBll
         {
             return mdal.AddPhysics_Browse(model, ref errMsg);
         }
-
         #endregion
 
 
@@ -429,6 +428,17 @@ namespace PlasBll
         public bool RomvePhysics_Contrast(Physics_ContrastModel model, ref string errMsg)
         {
             return mdal.RomvePhysics_Contrast(model, ref errMsg);
+        }
+
+        /// <summary>
+        /// 删除对比
+        /// </summary>
+        /// <param name="browsId">对比编号</param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public bool RomvePhysics_Contrast(List<string> browsId, ref string errMsg)
+        {
+            return mdal.RomvePhysics_Contrast(browsId, ref errMsg);
         }
 
         #endregion

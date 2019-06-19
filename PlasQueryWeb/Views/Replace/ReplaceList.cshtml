@@ -102,6 +102,7 @@
  
     ///提交对比
     function SubmitComparison(pageindx) {
+       // alert(guidstr);
         page_indx = pageindx;
         var chaeckvalue = "";
         var tbodyui = "";
@@ -133,7 +134,7 @@
                             tbodyui += "<td>" + n.characteristic + "</td>";
                             tbodyui += "<td>" + n.ProUse + "</td>";
                             tbodyui += "<td><div class=\"layui-progress layui-progress-big\" lay-showpercent=\"true\"><div class=\"layui-progress-bar\" lay-percent=\"" + parseInt(n.ALikePercent) + "%\" style=\"width:" + parseInt(n.ALikePercent) + "%;\"><span class=\"layui-progress-text\">" + parseFloat(n.ALikePercent).toFixed(2) + "%</span></div></div></td>";
-                            tbodyui += "<td><a class=\"btn btn-orange btn-sm\" onClick=\"LookDetail('" + proid + "','" + n.ProductId+"');\">查看对比详情</a></td>";//<button class=\"layui-btn layui-btn-normal\" onClick=\"window.location.href='/PhysicalProducts/Detail/" + n.ProductId + ".html'\">相识度详情</button><button class=\"layui-btn layui-btn-normal\">加入收藏</button>
+                            tbodyui += "<td><a class=\"btn btn-orange btn-sm\" onClick=\"LookDetail('" + guidstr+ "','" + n.ProductId +"');\">查看对比详情</a></td>";//<button class=\"layui-btn layui-btn-normal\" onClick=\"window.location.href='/PhysicalProducts/Detail/" + n.ProductId + ".html'\">相识度详情</button><button class=\"layui-btn layui-btn-normal\">加入收藏</button>
                             tbodyui += "</tr>";
                         });
                     }
@@ -233,6 +234,7 @@
 
 
     function LookDetail(proid, ven) {
+        //alert(guidstr);
         layer.open({
             type: 2,
             title: '对比详情',

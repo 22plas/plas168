@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -529,14 +530,20 @@ namespace PlasModel.Controllers
         /// 添加收藏
         /// </summary>
         /// <returns></returns>
-        public JsonResult AddMaterialColl(string arry)
+        public JsonResult AddMaterialColl()
         {
             string errMsg = string.Empty;
             bool isadd = false;
-            var list = new List<string>();
-            if (!string.IsNullOrWhiteSpace(arry))
+            //var list = arrylist;
+            string arry = string.Empty;
+            if (!string.IsNullOrWhiteSpace(Request["arry"]))
             {
-                 list = JsonConvert.DeserializeObject<List<string>>(arry);
+                arry = Request["arry"].ToString();
+            }
+            var list = new List<string>();
+            if (!string.IsNullOrWhiteSpace(arry) && arry.Length > 0)
+            {
+                list = JsonConvert.DeserializeObject<List<string>>(arry);
             }
             var userName = string.Empty;
             if (AccountData != null)
@@ -545,18 +552,28 @@ namespace PlasModel.Controllers
             }
 
             PlasBll.MemberCenterBll mbll = new MemberCenterBll();
-
+            var counttrue = 0;
+            var countfalse = 0;
             if (list.Count > 0)
             {
-                for (var i=0;i<list.Count;i++)
+                for (var i = 0; i < list.Count; i++)
                 {
                     PlasModel.Physics_CollectionModel model = new Physics_CollectionModel();
                     model.ProductGuid = list[i];
                     model.UserId = userName;
-                    isadd= mbll.AddPhysics_Collection(model,ref errMsg);
+                    isadd = mbll.AddPhysics_Collection(model, ref errMsg);
+                    if (isadd)
+                    {
+                        counttrue++;
+                    }
+                    else
+                    {
+                        countfalse++;
+                    }
                 }
+                errMsg = "收藏成功 " + counttrue + " 条 ,失败 " + countfalse + " 条" + errMsg;
             }
-           
+
             return Json(new { isadd = isadd , errMsg = errMsg },JsonRequestBehavior.AllowGet);
         }
 
@@ -602,7 +619,7 @@ namespace PlasModel.Controllers
         }
 
         /// <summary>
-        /// 首页分页
+        /// 浏览分页
         /// </summary>
         /// <param name="pageindex"></param>
         /// <param name="pagesize"></param>
@@ -613,17 +630,133 @@ namespace PlasModel.Controllers
             int.TryParse(pageindex, out beginPage);
             int endPage = 10;
             int.TryParse(pagesize, out endPage);
-            string smallid = string.Empty;
+            string seletvalue = string.Empty;
             int totalCount = 0;
             string note = string.Empty;
-            if (!string.IsNullOrWhiteSpace(Request["smallid"]))
+            //seletvalue pulicevalue
+            //类型1（型号），2（供应商），3（用途）
+            StringBuilder wheresql = new StringBuilder();
+            if (!string.IsNullOrWhiteSpace(Request["seletvalue"]))
             {
-                smallid = Request["smallid"].ToString();
+                seletvalue = Request["seletvalue"].ToString();
             }
-            var list = mbll.GetPhysics_Browse(AccountData.UserID, beginPage, endPage, ref totalCount, ref note);
+
+            string pulicevalue = string.Empty;
+            if (!string.IsNullOrWhiteSpace(Request["pulicevalue"]))
+            {
+                pulicevalue = Request["pulicevalue"].ToString();
+            }
+
+            if (!string.IsNullOrWhiteSpace(seletvalue) && !string.IsNullOrWhiteSpace(pulicevalue))
+            {
+                switch (seletvalue)
+                {
+                    case "1":
+                        wheresql.Append(" and d.Name like '%" + pulicevalue + "%'");
+                        break;
+                    case "2":
+                        wheresql.Append(" and b.ProModel like '%" + pulicevalue + "%'");
+                        break;
+                    case "3":
+                        wheresql.Append(" and c.ProUse like '%" + pulicevalue + "%'");
+                        break;
+                    default:
+                        break;
+                }
+            }
+            
+
+
+            var list = mbll.GetPhysics_Browse(AccountData.UserID, beginPage, endPage, ref totalCount, ref note, wheresql.ToString());
             return Json(new { data = list, totalCount = totalCount }, JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// 删除浏览
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult DelteMaterialColl()
+        {
+            string errMsg = string.Empty;
+            bool isadd = false;
+            //var list = arrylist;
+            string arry = string.Empty;
+            if (!string.IsNullOrWhiteSpace(Request["arry"]))
+            {
+                arry = Request["arry"].ToString();
+            }
+            var list = new List<string>();
+            if (!string.IsNullOrWhiteSpace(arry) && arry.Length > 0)
+            {
+                list = JsonConvert.DeserializeObject<List<string>>(arry);
+            }
+            var userName = string.Empty;
+            if (AccountData != null)
+            {
+                userName = AccountData.UserID;
+            }
+
+            PlasBll.MemberCenterBll mbll = new MemberCenterBll();
+            if (list.Count > 0)
+            {
+                isadd= mbll.RomvePhysics_Browse(list, ref errMsg);
+            }
+
+            return Json(new { isadd = isadd, errMsg = errMsg }, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 对比记录
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Physics_ContrastList()
+        {
+            Sidebar("物性对比记录");
+            var userName = string.Empty;
+            string errMsg = string.Empty;
+            if (AccountData != null)
+            {
+                userName = AccountData.UserID;
+            }
+            var ContrastList = new List<PlasModel.Physics_ContrastModel>();
+            if (!string.IsNullOrWhiteSpace(userName))
+            {
+                ContrastList = mbll.GetPhysics_Contrast(userName, ref errMsg);
+            }
+            ViewBag.ContrastList = ContrastList;
+            return View();
+        }
+
+        //删除对比
+        public ActionResult DelteMaterialContrast()
+        {
+            string errMsg = string.Empty;
+            bool isadd = false;
+            //var list = arrylist;
+            string arry = string.Empty;
+            if (!string.IsNullOrWhiteSpace(Request["arry"]))
+            {
+                arry = Request["arry"].ToString();
+            }
+            var list = new List<string>();
+            if (!string.IsNullOrWhiteSpace(arry) && arry.Length > 0)
+            {
+                list = JsonConvert.DeserializeObject<List<string>>(arry);
+            }
+            var userName = string.Empty;
+            if (AccountData != null)
+            {
+                userName = AccountData.UserID;
+            }
+
+            PlasBll.MemberCenterBll mbll = new MemberCenterBll();
+            if (list.Count > 0)
+            {
+                isadd = mbll.RomvePhysics_Contrast(list, ref errMsg);
+            }
+
+            return Json(new { isadd = isadd, errMsg = errMsg }, JsonRequestBehavior.AllowGet);
+        }
         //我要报价
         public ActionResult SellerOffer()
         {
