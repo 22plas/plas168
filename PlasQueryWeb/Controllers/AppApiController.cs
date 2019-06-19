@@ -715,8 +715,8 @@ namespace PlasQueryWeb.Controllers
             try
             {
                 DataTable dt = bll.GetProductAttribute(ver, txname);
-                List<ClassInfo> classjsonstr = new List<ClassInfo>();//类别json数据
-                List<FactoryInfo> factoryjsonstr = new List<FactoryInfo>();//厂家json数据
+                List<parminfo> classjsonstr = new List<parminfo>();//类别json数据
+                List<parminfo> factoryjsonstr = new List<parminfo>();//厂家json数据
                 List<attributeinfo> list = new List<attributeinfo>();
                 if (txname == "生产厂家")
                 {
@@ -724,8 +724,8 @@ namespace PlasQueryWeb.Controllers
                     {
                         for (int j = 0; j < dt.Rows.Count; j++)
                         {
-                            FactoryInfo tfmodel = new FactoryInfo();
-                            tfmodel.ManuFacturer = dt.Rows[j]["attributevalue"].ToString();
+                            parminfo tfmodel = new parminfo();
+                            tfmodel.Name = dt.Rows[j]["attributevalue"].ToString();
                             factoryjsonstr.Add(tfmodel);
                         }
                     }
@@ -737,8 +737,8 @@ namespace PlasQueryWeb.Controllers
                     {
                         for (int s = 0; s < dt.Rows.Count; s++)
                         {
-                            ClassInfo tcmodel = new ClassInfo();
-                            tcmodel.SmallClass = dt.Rows[s]["attributevalue"].ToString();
+                            parminfo tcmodel = new parminfo();
+                            tcmodel.Name = dt.Rows[s]["attributevalue"].ToString();
                             classjsonstr.Add(tcmodel);
                         }
                     }
