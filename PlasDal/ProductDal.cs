@@ -165,7 +165,7 @@ namespace PlasDal
             }
             else
             {
-                sql = string.Format("select Name,'' as parentguid from Prd_SmallClass_l where MidClassName='{0}' and LanguageId=2052 order by Name", middlename);
+                sql = string.Format(@"select Name,guid as parentguid from Prd_SmallClass_l where MidClassName='{0}' and LanguageId=2052 order by Name", middlename);
             }
             DataTable dt = SqlHelper.GetSqlDataTable(sql);
             return dt;

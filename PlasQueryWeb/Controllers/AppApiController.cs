@@ -264,17 +264,25 @@ namespace PlasQueryWeb.Controllers
         /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpGet]
-        public ActionResult AppGetDetail(string prodid)
+        public ActionResult AppGetDetail(string prodid,string type)
         {
             try
             {
-                string sql = string.Format("SELECT * FROM dbo.Pri_Product WHERE PriceProductGuid='{0}'",prodid);
-                DataTable dt = SqlHelper.GetSqlDataTable(sql);
                 string pid = "";
-                if (dt.Rows.Count>0)
+                if (type == "1")
                 {
-                    pid = dt.Rows[0]["ProductGuid"].ToString();
+                    string sql = string.Format("SELECT * FROM dbo.Pri_Product WHERE PriceProductGuid='{0}'", prodid);
+                    DataTable dt = SqlHelper.GetSqlDataTable(sql);
+                    if (dt.Rows.Count > 0)
+                    {
+                        pid = dt.Rows[0]["ProductGuid"].ToString();
+                    }
                 }
+                else
+                {
+                    pid = prodid;
+                }
+                
                 #region 产品详情
                 var ds = bll.NewGetModelInfo(pid);//"9C37DC9C-E867-46A2-97DF-32A9489BCDC4"
                 //var ds = bll.GetModelInfo(prodid);
@@ -1123,9 +1131,18 @@ namespace PlasQueryWeb.Controllers
         {
             try
             {
-                List<NewClassInfo> listresult = new List<NewClassInfo>();
+                List<parminfo> listresult = new List<parminfo>();
                 DataTable dt = bll.GetClass(parentid, middlename, type);
-                listresult = Comm.ToDataList<NewClassInfo>(dt);
+                if (dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        parminfo m = new parminfo();
+                        m.Name = dt.Rows[i]["Name"].ToString();
+                        m.Guid = dt.Rows[i]["parentguid"].ToString();
+                        listresult.Add(m);
+                    }
+                }
                 return Json(Common.ToJsonResult("Success", "获取成功", listresult), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -1174,13 +1191,6 @@ namespace PlasQueryWeb.Controllers
         {
             public string SmallClass { get; set; }
             public string Parnetid { get; set; }
-        }
-
-        //类别
-        public class NewClassInfo
-        {
-            public string Name { get; set; }
-            public string parentguid { get; set; }
         }
 
         //获取商品详情时需要用到该类
