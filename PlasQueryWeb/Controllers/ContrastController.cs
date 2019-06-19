@@ -1,4 +1,5 @@
 ﻿using PlasCommon;
+using PlasModel.App_Start;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,9 +12,31 @@ namespace PlasModel.Controllers
     public class ContrastController : Controller
     {
         private PlasBll.ContrastBll bll = new PlasBll.ContrastBll();
+
+        AccountData AccountData
+        {
+            get
+            {
+                return this.GetAccountData();
+            }
+        }
         // GET: 物料对比
         public ActionResult Index()
         {
+            PlasBll.MemberCenterBll mbll = new PlasBll.MemberCenterBll();
+            var userName = string.Empty;
+            string errMsg = string.Empty;
+            if (AccountData != null)
+            {
+                userName = AccountData.UserID;
+            }
+            var list = new List<PlasModel.Physics_ContrastModel>();
+            if (!string.IsNullOrWhiteSpace(userName))
+            {
+                list= mbll.GetPhysics_Contrast(userName, ref errMsg);
+
+            }
+            ViewBag.ContrastList = list;
             return View();
         }
 

@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewBag.Title = "物性对比记录";
+    Layout = "~/Views/Shared/MemberOtherShared.cshtml";
+    var list = ViewBag.ContrastList as List<PlasModel.Physics_ContrastModel>;
+}
+<link href="~/Content/css/PaginationCenter.css" rel="stylesheet" />
+<div class="tpl-content-wrapper">
+    <div class="tpl-content-wrapper-bg">
+        <ol class="am-breadcrumb">
+            <li><a href="/MemberCenter/Index" class="am-icon-home">首页</a></li>
+            <li>会员中心</li>
+            <li class="am-active">对比记录</li>
+        </ol>
+        <div class="tpl-portlet-components">
+            <div class="portlet-title">
+                <div class="caption"><span class="am-icon-eye" style="margin-right: 3px;"></span>对比记录</div>
+                <div class="tpl-portlet-input tpl-fz-ml">
+                    <div class="portlet-input input-small input-inline">
+                        <div class="input-icon right">
+                            <i class="am-icon-search"></i>
+                            <input type="text" class="form-control form-control-solid" placeholder="搜索...">
+                        </div>
+                    </div>
+                </div>
+            </div>
+         
+            <div class="tpl-block" style="padding-top: 0;">
+                <div class="am-g" style="border-bottom: 1px dashed #ddd;padding-top: 8px;padding-bottom: 8px;">
+                    <div class="am-u-sm-12 am-u-md-3">
+                        <div class="am-btn-toolbar" style="margin-top: 2px;">
+                            <div class="am-btn-group am-btn-group-xs">
+                                <button type="button" id="AddCollList" class="am-btn am-btn-default am-btn-warning" style="margin-right: 5px;"><span class="am-icon-archive"></span>对比</button>
+                                <button type="button" id="DeleteList" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删除</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="am-u-sm-12 am-u-md-9">
+                     
+                    </div>
+                </div>
+                <ul class="tpl-task-list" id="DataList">
+                    @foreach (var item in list)
+                    {
+                        <li>
+                            <div class="task-checkbox">
+                                <input type="checkbox" value="@item" name="ContrastList">
+                            </div>
+                            <div class="task-title">
+                                <span class="task-title-sp"><a href="table-font-list.html">@(item.PlaceOrigin + " " + item.ProModel + " " + item.ProUse)</a></span>
+                                <span class="task-bell">
+                                    <i class="am-icon-bell-o"></i>@item.CreateDate
+                                </span>
+                            </div>
+                        </li>
+                    }
+                   
+                </ul>
+                <div class="black2" style="text-align:right;" id="Pagination"></div>
+            </div>
+            <div class="tpl-alert"></div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+    $("#DeleteList").click(function () {
+        var arry = new Arry();
+        $.each($("input[name='BrowseName']"), function (index, item) {
+            if ($(this).is(":checked")) {
+                var prodGuid = $(this).attr("value");
+                arry.push(prodGuid);
+                //arry += prodGuid + "#";
+            }
+        })
+        if (arry == null || arry.length == 0) {
+            layer.msg('至少选中一项被删除！', { icon: 2 });
+            return false;
+        }
+
+        layer.confirm('你确定删除此对比记录？', {
+            btn: ['确定', '取消'] //按钮
+        }, function () {
+            $.ajax({
+                type: "POST",
+                dataType: "JSON",
+                url: '/MemberCenter/DelteMaterialContrast',
+                data: "arry=" + JSON.stringify(arry),
+                async: false,
+                success: function (json) {
+                    if (json != null && json != '' && json != 'null') {
+                        if (json.isadd) {
+                            layer.msg("删除成功！", { icon: 1 });
+                            InitData(0);
+                        }
+                        else {
+                            layer.msg(json.errMsg, { icon: 2 });
+                        }
+                    }
+
+                },
+                error: function () { layer.msg('数据请求异常', { icon: 2 }); }
+            });
+
+
+        }, function () {
+        });
+
+
+    })
+
+    ///添加对比
+    $("#AddCollList").click(function () {
+        window.location.href = "/Contrast/";
+    })
+</script>

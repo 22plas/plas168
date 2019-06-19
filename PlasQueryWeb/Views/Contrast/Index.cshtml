@@ -42,10 +42,18 @@
 </div>
 
 <script type="text/javascript">
+      var list=@Html.Raw(Json.Encode(ViewBag.ContrastList));
     $(function () {
         $(".navBox").find(".nav").find("li").eq(4).children("a").addClass("active");
+        var count = 0;
+        $.each(list, function (index, item) {
+            count++;
+            $("#Contrast_" + count).val(item.ProModel);
+            $("#Hid_Contrast_" + count).val(item.ProductGuid);
+        })
+        onLoadContrast();
     })
-
+  
     function InputChecked(obj) {
         layer.open({
             type: 2,

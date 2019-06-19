@@ -552,7 +552,7 @@ namespace PlasDal
         /// <summary>
         /// 浏览分页查询
         /// </summary>
-        public DataTable GetPhysics_Browse(string userId, int pageindex, int pagesize, ref int pagecout, ref string errMsg)
+        public DataTable GetPhysics_Browse(string userId, int pageindex, int pagesize, ref int pagecout, ref string errMsg,string wherestr="")
         {
             try
             {
@@ -567,6 +567,10 @@ namespace PlasDal
                 {
                     sql.Append(" and a.UserId='" + userId + "'");
                  }
+                if (!string.IsNullOrWhiteSpace(wherestr))
+                {
+                    sql.Append(" " + wherestr);
+                }
                 var dt = GetPhysicsAttr(sql.ToString(), "id desc", pageindex, pagesize, ref pagecout, ref errMsg);
                 return dt;
             }
@@ -742,6 +746,36 @@ namespace PlasDal
             return isadd;
         }
 
+
+
+        /// <summary>
+        /// 删除对比
+        /// </summary>
+        /// <param name="browsId">对比编号</param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public bool RomvePhysics_Contrast(List<string> browsId, ref string errMsg)
+        {
+            bool isdel = false;
+            try
+            {
+                if (browsId.Count > 0)
+                {
+                    StringBuilder sql = new StringBuilder();
+                    for (var i = 0; i < browsId.Count; i++)
+                    {
+                        string sqlstr = string.Format(" delete from Physics_Contrast where Id={0}", browsId[i]);
+                        sql.Append(sqlstr);
+                    }
+                    isdel = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), null) > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message.ToString();
+            }
+            return isdel;
+        }
 
         #endregion
 
