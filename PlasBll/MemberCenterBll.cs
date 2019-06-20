@@ -339,12 +339,18 @@ namespace PlasBll
         /// <returns></returns>
         public List<ProductAttr> getProductAttr(string userId, ref string errMsg)
         {
+            var attr = new List<ProductAttr>();
             if (!string.IsNullOrWhiteSpace(userId))
             {
                 var dt = mdal.getProductAttr(userId, ref errMsg);
-                return PlasCommon.ToolClass<ProductAttr>.ConvertDataTableToModel(dt);
+               var list=PlasCommon.ToolClass<ProductAttr>.ConvertDataTableToModel(dt);
+                if (list != null)
+                {
+                    attr = list;
+                }
+                return attr;
             }
-            return null;
+            return attr;
         }
         #endregion
 
