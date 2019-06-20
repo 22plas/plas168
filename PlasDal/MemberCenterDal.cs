@@ -824,6 +824,109 @@ namespace PlasDal
          
         }
 
+
+
+        #region 行情
+        /// <summary>
+        /// 添加行情
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public bool AddPhysics_Quotation(Physics_QuotationModel model, ref string errMsg)
+        {
+            bool isAdd = false;
+            try
+            {
+                string savesql = string.Format("select id from Physics_Quotation where ProductGuid='{0}' and UserId='{1}'", model.ProductGuid, model.UserId);
+                var dt = SqlHelper.GetSqlDataTable(savesql.ToString());
+                if (dt.Rows.Count > 0)
+                {
+                    errMsg = "此产品已经行情！";
+                    dt.Dispose();
+                }
+                else
+                {
+                    StringBuilder sql = new StringBuilder();
+                    sql.Append("insert into Physics_Quotation(ProductGuid,UserId,CreateDate)");
+                    sql.Append(" values(@ProductGuid,@UserId,@CreateDate)");
+                    SqlParameter[] parm = {
+                   new SqlParameter("@ProductGuid",model.ProductGuid),
+                   new SqlParameter("@UserId",model.UserId),
+                   new SqlParameter("@CreateDate",DateTime.Now)
+                    };
+                    isAdd = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), parm) > 0;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                errMsg = ex.Message.ToString();
+            }
+            return isAdd;
+        }
+
+
+        /// <summary>
+        /// 删除行情
+        /// </summary>
+        /// <param name="CollID">批量删除ID</param>
+        /// <param name="errMsg">错误信息</param>
+        /// <returns></returns>
+        public bool RomvePhysics_Quotation(List<string> CollID, ref string errMsg)
+        {
+            bool isdel = false;
+            try
+            {
+                if (CollID.Count > 0)
+                {
+                    StringBuilder sql = new StringBuilder();
+                    for (var i = 0; i < CollID.Count; i++)
+                    {
+                        string sqlstr = string.Format(" delete from Physics_Quotation where Id={0}", CollID[i]);
+                        sql.Append(sqlstr);
+                    }
+                    isdel = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), null) > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message.ToString();
+            }
+            return isdel;
+        }
+
+        /// <summary>
+        /// 获取 行情列表
+        /// </summary>
+        public DataTable GetPhysics_Quotation(string userId, int pageindex, int pagesize, ref int pagecout, ref string errMsg)
+        {
+            if (!string.IsNullOrEmpty(userId))
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.Append("select a.Id,a.ProductGuid,a.UserId,a.CreateDate,b.ProModel,b.PlaceOrigin,c.ProUse,c.characteristic,d.Name from Physics_Quotation as a ");
+                sql.Append(" left join Product as b on a.ProductGuid=b.ProductGuid");
+                sql.Append(" left join Product_l as c on c.ParentGuid=a.ProductGuid");
+                sql.Append(" left join Prd_SmallClass_l as d on d.parentguid=b.SmallClassId");
+                sql.Append(" where 1=1 ");
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    sql.Append(" and a.UserId='" + userId + "'");
+                }
+                var dt = GetPhysicsAttr(sql.ToString(), "id desc", pageindex, pagesize, ref pagecout, ref errMsg);
+                return dt;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        #endregion
+
+
+
+
         #endregion
 
     }

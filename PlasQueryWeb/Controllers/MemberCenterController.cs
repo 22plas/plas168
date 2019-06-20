@@ -796,6 +796,9 @@ namespace PlasModel.Controllers
             return View();
         }
 
+
+
+
         //行情浏览记录
         public ActionResult QuotationRecord()
         {

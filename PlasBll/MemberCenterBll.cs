@@ -450,6 +450,55 @@ namespace PlasBll
         #endregion
 
 
+
+        #region 行情数据
+
+        /// <summary>
+        /// 添加行情
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public bool AddPhysics_Quotation(Physics_QuotationModel model, ref string errMsg)
+        {
+            return mdal.AddPhysics_Quotation(model, ref errMsg);
+        }
+
+        /// <summary>
+        /// 获取我的行情
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="pageindex"></param>
+        /// <param name="pagesize"></param>
+        /// <param name="pagecout"></param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public List<Physics_QuotationModel> GetPhysics_Quotation(string userId, int pageindex, int pagesize, ref int pagecout, ref string errMsg)
+        {
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                var dt = mdal.GetPhysics_Quotation(userId,  pageindex, pagesize, ref pagecout, ref errMsg);
+                return PlasCommon.ToolClass<Physics_QuotationModel>.ConvertDataTableToModel(dt);
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 删除行情
+        /// </summary>
+        /// <param name="CollID">批量删除ID</param>
+        /// <param name="errMsg">错误信息</param>
+        /// <returns></returns>
+        public bool RomvePhysics_Quotation(List<string> CollID, ref string errMsg)
+        {
+            return mdal.RomvePhysics_Quotation(CollID, ref errMsg);
+        }
+
+
+
+        #endregion
+
+
         #endregion
 
 

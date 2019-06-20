@@ -7,14 +7,15 @@ using System.Threading.Tasks;
 namespace PlasModel
 {
     /// <summary>
-    /// 行情订阅
+    /// 对比
     /// </summary>
-   public class Physics_QuotationModel
+    public class Physics_ContrastModel
     {
         public int Id { get; set; }
         public string ProductGuid { get; set; }
         public string UserId { get; set; }
         public DateTime? CreateDate { get; set; }
+
 
         /// <summary>
         /// 产品型号
@@ -40,5 +41,6 @@ namespace PlasModel
         /// 特性
         /// </summary>
         public string characteristic { get; set; }
+
     }
 }
