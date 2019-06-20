@@ -1152,6 +1152,44 @@ namespace PlasQueryWeb.Controllers
         }
         #endregion
 
+        #region 删除我的物料收藏
+        /// <summary>
+        /// 删除我的物料收藏
+        /// </summary>
+        /// <param name="idstr"></param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpPost]
+        public ActionResult DeleteCollection(string idstr)
+        {
+            try
+            {
+                string[] templist = idstr.Split(',');
+                List<string> idlist = new List<string>();
+                for (int i = 0; i < templist.Length; i++)
+                {
+                    if (!string.IsNullOrWhiteSpace(templist[i]))
+                    {
+                        idlist.Add(templist[i]);
+                    }
+                }
+                string note = string.Empty;
+                bool count = mbll.RomvePhysics_Collection(idlist, ref note);
+                if (count)
+                {
+                    return Json(Common.ToJsonResult("Success", "删除成功"), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(Common.ToJsonResult("Fail", "删除失败"), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "删除失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
         //pdf数据
         public class pdfinfo {
             public string TypeName { get; set; }
