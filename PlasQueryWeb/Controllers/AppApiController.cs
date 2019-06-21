@@ -97,6 +97,13 @@ namespace PlasQueryWeb.Controllers
                     }
                     return Json(Common.ToJsonResult("Success", "获取成功", list), JsonRequestBehavior.AllowGet);
                 }
+                //获取超级搜填料属性
+                else if (typestr == "8")
+                {
+                    DataTable dt = bll.GetSysfiller(key, pageindex.Value, pagesize.Value);
+                    list = Comm.ToDataList<parminfo>(dt);
+                    return Json(Common.ToJsonResult("Success", "获取成功", list), JsonRequestBehavior.AllowGet);
+                }
                 else
                 {
                     DataTable dt = new DataTable();

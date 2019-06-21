@@ -159,5 +159,11 @@ namespace PlasBll
         {
             return dal.GetClass(parentid, middlename, type);
         }
+
+        //获取超级搜索填料属性
+        public DataTable GetSysfiller(string parentname, int pageindex = 1, int pagesize = 8)
+        {
+            return dal.GetSysfiller(parentname, pageindex, pagesize);
+        }
     }
 }

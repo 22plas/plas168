@@ -388,5 +388,28 @@ namespace PlasDal
             DataTable dt = SqlHelper.GetSqlDataTable(sql);
             return dt;
         }
+        /// <summary>
+        /// 获取超级搜索属性填料
+        /// </summary>
+        /// <param name="parentname">上级填料名称</param>
+        /// <param name="pageindex">页码</param>
+        /// <param name="pagesize">每页数量</param>
+        /// <returns></returns>
+        public DataTable GetSysfiller(string parentname, int pageindex = 1, int pagesize = 8)
+        {
+            string sql = "";
+            int startpage = (pageindex - 1) * pagesize + 1;
+            int endpage = pageindex * pagesize;
+            if (string.IsNullOrWhiteSpace(parentname))
+            {
+                sql = string.Format("SELECT b.Tl AS Name FROM(SELECT row_number() over(order by Tl desc)as rownum,a.Tl FROM(SELECT DISTINCT Tl FROM Sys_filler) a) b WHERE b.rownum BETWEEN {0} AND {1}", startpage, endpage);
+            }
+            else
+            {
+                sql = string.Format("SELECT Name FROM dbo.Sys_filler WHERE Tl='{0}' ORDER BY Weight DESC", parentname);
+            }
+            DataTable dt = SqlHelper.GetSqlDataTable(sql);
+            return dt;
+        }
     }
 }
