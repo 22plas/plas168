@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace PlasModel
 {
     /// <summary>
-    /// 行情订阅
+    /// 收藏
     /// </summary>
-   public class Physics_QuotationModel
+  public  class Physics_CollectionModel
     {
         public int Id { get; set; }
         public string ProductGuid { get; set; }

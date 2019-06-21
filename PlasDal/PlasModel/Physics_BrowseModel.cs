@@ -7,14 +7,27 @@ using System.Threading.Tasks;
 namespace PlasModel
 {
     /// <summary>
-    /// 行情订阅
+    /// 浏览
     /// </summary>
-   public class Physics_QuotationModel
+   public class Physics_BrowseModel
     {
         public int Id { get; set; }
         public string ProductGuid { get; set; }
         public string UserId { get; set; }
+        /// <summary>
+        /// 浏览类型1，产品，2新闻，3，其他
+        /// </summary>
+        public int Btype { get; set; }
+        /// <summary>
+        /// 浏览次数
+        /// </summary>
+        public int BrowsCount { get; set; }
+
+        /// <summary>
+        /// 创建时间
+        /// </summary>
         public DateTime? CreateDate { get; set; }
+
 
         /// <summary>
         /// 产品型号
@@ -40,5 +53,11 @@ namespace PlasModel
         /// 特性
         /// </summary>
         public string characteristic { get; set; }
+
+        /// <summary>
+        /// 是否参与对比
+        /// </summary>
+        public int isColl { get; set; }
+
     }
 }
