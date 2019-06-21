@@ -56,6 +56,7 @@
     <Compile Include="Physics_ContrastModel.cs" />
     <Compile Include="Physics_QuotationModel.cs" />
     <Compile Include="PriceModle.cs" />
+    <Compile Include="Pri_DayAvgPriceModel.cs" />
     <Compile Include="ProductAttr.cs" />
     <Compile Include="ProductSharet.cs" />
     <Compile Include="ProductViewModel.cs" />

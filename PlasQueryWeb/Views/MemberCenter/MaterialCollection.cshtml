@@ -188,6 +188,7 @@
                     async: false,
                     success: function (json) {
                         if (json.count > 0) {
+                            layer.msg("删除成功！", { icon: 1 });
                             InitData(0);
                         }
                         else {

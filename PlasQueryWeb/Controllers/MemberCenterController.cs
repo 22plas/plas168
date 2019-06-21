@@ -805,12 +805,112 @@ namespace PlasModel.Controllers
             Sidebar("行情浏览记录");
             return View();
         }
+        //获取行情记录
+        public JsonResult GetMaterialQuotation(string pageindex, string pagesize)
+        {
+            int beginPage = 1;
+            int.TryParse(pageindex, out beginPage);
+            int endPage = 10;
+            int.TryParse(pagesize, out endPage);
+            string seletvalue = string.Empty;
+            int totalCount = 0;
+            string note = string.Empty;
+            //seletvalue pulicevalue
+            //类型1（型号），2（供应商），3（用途）
+            StringBuilder wheresql = new StringBuilder();
+            if (!string.IsNullOrWhiteSpace(Request["seletvalue"]))
+            {
+                seletvalue = Request["seletvalue"].ToString();
+            }
+
+            string pulicevalue = string.Empty;
+            if (!string.IsNullOrWhiteSpace(Request["pulicevalue"]))
+            {
+                pulicevalue = Request["pulicevalue"].ToString();
+            }
+
+            if (!string.IsNullOrWhiteSpace(seletvalue) && !string.IsNullOrWhiteSpace(pulicevalue))
+            {
+                switch (seletvalue)
+                {
+                    case "1":
+                        wheresql.Append(" and d.Name like '%" + pulicevalue + "%'");
+                        break;
+                    case "2":
+                        wheresql.Append(" and b.ProModel like '%" + pulicevalue + "%'");
+                        break;
+                    case "3":
+                        wheresql.Append(" and c.ProUse like '%" + pulicevalue + "%'");
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+
+
+            var list = mbll.GetPhysics_Quotation(AccountData.UserID, beginPage, endPage, ref totalCount, ref note);
+            return Json(new { data = list, totalCount = totalCount }, JsonRequestBehavior.AllowGet);
+        }
+
+
+        /// <summary>
+        /// 取消行情订阅
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult RomveMaterialQuotation()
+        {
+            string errMsg = string.Empty;
+            bool isadd = false;
+            //var list = arrylist;
+            string arry = string.Empty;
+            if (!string.IsNullOrWhiteSpace(Request["arry"]))
+            {
+                arry = Request["arry"].ToString();
+            }
+            var list = new List<string>();
+            if (!string.IsNullOrWhiteSpace(arry) && arry.Length > 0)
+            {
+                list = JsonConvert.DeserializeObject<List<string>>(arry);
+            }
+            var userName = string.Empty;
+            if (AccountData != null)
+            {
+                userName = AccountData.UserID;
+            }
+
+            PlasBll.MemberCenterBll mbll = new MemberCenterBll();
+            if (list.Count > 0)
+            {
+                isadd = mbll.RomvePhysics_Quotation(list, ref errMsg);
+            }
+
+            return Json(new { isadd = isadd, errMsg = errMsg }, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// 显示详情
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult QuotationDafaut(string ProductGuid)
+        {
+            //QuotationDafaut
+            PlasBll.ProductBll pbll = new ProductBll();
+            var QuotationList = new List<Pri_DayAvgPriceModel>();
+            if (!string.IsNullOrWhiteSpace(ProductGuid))
+            {
+                QuotationList = pbll.GetPri_DayAvgPrice(ProductGuid);
+            }
+            ViewBag.QuotationList = QuotationList;
+            return View();
+        }
+
         /// <summary>
         /// 发送验证码
         /// </summary>
         /// <param name="phone"></param>
         /// <returns></returns>
-        
+
         [HttpGet]
         [AllowCrossSiteJson]
         public ActionResult SetCode(string phone)

@@ -535,6 +535,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\MemberOtherShared.cshtml" />
     <Content Include="Views\MemberCenter\Physics_ContrastList.cshtml" />
+    <Content Include="Views\MemberCenter\QuotationDafaut.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

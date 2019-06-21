@@ -1,4 +1,5 @@
 ﻿using PlasDal;
+using PlasModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -164,6 +165,25 @@ namespace PlasBll
         public DataTable GetSysfiller(string parentname, int pageindex = 1, int pagesize = 8)
         {
             return dal.GetSysfiller(parentname, pageindex, pagesize);
+        }
+
+        /// <summary>
+        /// 获取价格
+        /// </summary>
+        /// <param name="ProductGuid"></param>
+        /// <returns></returns>
+        public List<Pri_DayAvgPriceModel> GetPri_DayAvgPrice(string ProductGuid)
+        {
+            var list = new List<Pri_DayAvgPriceModel>();
+            if (!string.IsNullOrWhiteSpace(ProductGuid))
+            {
+                var query = dal.GetPri_DayAvgPrice(ProductGuid);
+                if (query != null)
+                {
+                    list= PlasCommon.ToolClass<Pri_DayAvgPriceModel>.ConvertDataTableToModel(query);
+                }
+            }
+            return list;
         }
     }
 }

@@ -1,8 +1,10 @@
 ﻿
 @{
     ViewBag.Title = "行情浏览记录";
-    Layout = "~/Views/Shared/MemberCenterShared.cshtml";
+    Layout = "~/Views/Shared/MemberOtherShared.cshtml";
 }
+<link href="~/Content/css/PaginationCenter.css" rel="stylesheet" />
+
 <div class="tpl-content-wrapper">
     <div class="tpl-content-wrapper-bg">
         <ol class="am-breadcrumb">
@@ -27,101 +29,185 @@
                     <div class="am-u-sm-12 am-u-md-3">
                         <div class="am-btn-toolbar" style="margin-top: 2px;">
                             <div class="am-btn-group am-btn-group-xs">
-                                <button type="button" class="am-btn am-btn-default am-btn-success" style="margin-right: 5px;"><span class="am-icon-star"></span>收藏</button>
-                                <button type="button" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删除</button>
+                                <button type="button" id="CalcolBtn" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 取消订阅</button>
                             </div>
                         </div>
                     </div>
-                    @*<div class="am-u-sm-12 am-u-md-9">
-                        <div class="am-form-group" style="margin-bottom: 0;float: right;display: flex;">
-                            <select data-am-selected="{btnSize: 'sm'}">
-                                <option value="option1">按日期查询</option>
-                            </select>
-                            <input type="text" class="am-form-field" style="margin-left: 8px;border:1px solid #ddd;">
-                            <button class="am-btn  am-btn-default am-btn-success tpl-am-btn-success am-icon-search am-btn-sm" type="button"></button>
-                        </div>
-                    </div>*@
                 </div>
-                <ul class="tpl-task-list">
-                    <li>
-                        <div class="task-checkbox">
-                            <input type="hidden" value="1" name="test">
-                            <span class="am-icon-square" style="color: #aaa;"></span>
-                        </div>
-                        <div class="task-title">
-                            <span class="task-title-sp"><a href="table-font-list.html">POLYLAC® PA-757 CHI MEI CORPORATION ABS</a></span>
-                            <span class="label label-sm label-success">产品</span>
-                            <span class="task-bell">
-                                <i class="am-icon-bell-o"></i>2018-10-22 17：16
-                            </span>
-                            <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="task-checkbox">
-                            <input type="hidden" value="1" name="test">
-                            <span class="am-icon-square" style="color: #aaa;"></span>
-                        </div>
-                        <div class="task-title">
-                            <span class="task-title-sp"><a href="table-font-list.html">POLYLAC® PA-757 CHI MEI CORPORATION ABS</a></span>
-                            <span class="label label-sm label-danger">案例</span>
-                            <span class="task-bell">2018-10-22 17：16</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="task-checkbox">
-                            <input type="hidden" value="1" name="test">
-                            <span class="am-icon-square" style="color: #aaa;"></span>
-                        </div>
-                        <div class="task-title">
-                            <span class="task-title-sp"><a href="table-font-list.html">POLYLAC® PA-757 CHI MEI CORPORATION ABS</a></span>
-                            <span class="label label-sm label-warning">应用</span>
-                            <span class="task-bell">2018-10-22 17：16</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="task-checkbox">
-                            <input type="hidden" value="1" name="test">
-                            <span class="am-icon-square" style="color: #aaa;"></span>
-                        </div>
-                        <div class="task-title">
-                            <span class="task-title-sp"><a href="table-font-list.html">这是测试数据这是测试数据这是测试数据这是测试数据这是测试数据</a></span>
-                            <span class="label label-sm label-warning">应用</span>
-                            <span class="task-bell">2018-10-22 17：16</span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="task-checkbox">
-                            <input type="hidden" value="1" name="test">
-                            <span class="am-icon-check-square-o" style="color: #0093dd;"></span>
-                        </div>
-                        <div class="task-title">
-                            <span class="task-title-sp"><a href="table-font-list.html">POLYLAC® PA-757 CHI MEI CORPORATION ABSCORPORATION CORPORATION</a></span>
-                            <span class="label label-sm label-success">产品</span>
-                            <span class="task-bell">
-                                <i class="am-icon-bell-o"></i>2018-10-22 17：16
-                            </span>
-                            <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="task-checkbox">
-                            <input type="hidden" value="1" name="test">
-                            <span class="am-icon-square" style="color: #aaa;"></span>
-                        </div>
-                        <div class="task-title">
-                            <span class="task-title-sp"><a href="table-font-list.html">POLYLAC® PA-757 CHI MEI CORPORATION ABS</a></span>
-                            <span class="label label-sm label-danger">案例</span>
-                            <span class="task-bell">2018-10-22 17：16</span>
-                        </div>
-                    </li>
+                <ul class="tpl-task-list" id="DataList">
+                    
                 </ul>
             </div>
-            <div class="tpl-alert"></div>
+            <div class="am-fr black2" id="Pagination"></div>
         </div>
     </div>
 </div>
 
+<script src="~/Scripts/jquery-1.12.4.min.js" type="text/javascript"></script>
+<script src="~/Scripts/jquery.pagination.js" type="text/javascript"></script>
 <script type="text/javascript">
+
+    var pagesize = 10;
+    var rowcount = 0;
+    var datas = "";
+
+
+    $().ready(function () {
+        InitData(0);
+    });
+
+
+    function InitData(pageindx) {
+        var tbodyui = "";
+        $.ajax({
+            type: "POST",
+            dataType: "JSON",
+            url: '/MemberCenter/GetMaterialQuotation',
+            data: "pageindex=" + (pageindx + 1) + "&pagesize=" + pagesize + "" + datas,
+            async: false,
+            success: function (json) {
+                // debugger;
+                var productData = json.data;
+                rowcount = json.totalCount;
+                var columnscount = 0;
+                if (rowcount != 0) {
+                    $.each(productData, function (i, n) {
+                        columnscount++;
+                        tbodyui += '<li>';
+                        tbodyui += '<div class="task-checkbox">';
+                        tbodyui += '<input type="checkbox" value="' + n.Id + '"  productguid="' + n.ProductGuid + '" name="QuotationName">';
+                        tbodyui += '</div>';
+                        tbodyui += "<div class=\"task-title\" onclick=\"onShowQuotation('" + n.ProductGuid + "','" + n.PlaceOrigin+"');\">";
+                        tbodyui += '<span class="task-title-sp"><a href="javascript:void(0);" target="_blank">' + n.ProModel + '-' + n.PlaceOrigin + '-' + n.ProUse + '</a></span>';
+                        tbodyui += '<span class="label label-sm label-success">产品</span>';
+                        tbodyui += '<span class="task-bell">';
+                        tbodyui += '<i class="am-icon-bell-o"></i> ' + FormatToDate(n.CreateDate);
+                        tbodyui += '</span>';
+                        tbodyui += ' </div>';
+                        tbodyui += '</li>';
+                    });
+                }
+                if (tbodyui == "")
+                    tbodyui = "<li  style=\"height:50px; color:red;font-size:12px; text-align:center;line-height:50px;\">暂无信息！</li>";
+                $("#DataList").html(tbodyui);
+
+
+            },
+            error: function () { layer.msg('数据请求异常', { icon: 2 }); }
+        });
+
+        $("#Pagination").pagination(rowcount, {
+            callback: pageselectCallback,
+            prev_text: '上一页',
+            next_text: '下一页',
+            items_per_page: pagesize,
+            num_display_entries: 8,
+            current_page: pageindx,
+            num_edge_entries: 1
+        });
+        //$("html, body").stop().animate({ scrollTop: $("#records").offset().top - 200 }, 400);
+
+    }
+
+    function FormatToDate(val) {
+        if (val != null) {
+            var date = new Date(parseInt(val.replace("/Date(", "").replace(")/", ""), 10));
+            //月份为0-11，所以+1，月份小于10时补个0
+            var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+            var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+            return date.getFullYear() + "-" + month + "-" + currentDate;
+        }
+        return "";
+    }
+
+    function pageselectCallback(page_id, jq) {
+
+        InitData(page_id);
+    }
+
+    ///多选
+    $("input[name='checkAll']").click(function () {
+        if ($(this).is(":checked")) {
+            $.each($("input[name='checkList']"), function (index, item) {
+                $(this).prop("checked", true);
+            })
+        }
+        else {
+            $.each($("input[name='checkList']"), function (index, item) {
+                $(this).prop("checked", false);
+            })
+        }
+    })
+
+
+
+
+
+    $("#ProductAttr").change(function () {
+        // alert($(this).val());
+        var selectval = $(this).val();
+        var smallid = "";
+        if (selectval != "0") {
+            smallid = selectval;
+        }
+        datas = "&selectval=" + selectval;
+        InitData(0);
+    })
+
+    //取消订阅
+    $("#CalcolBtn").click(function () {
+        var arry = new Array();
+        $.each($("input[name='QuotationName']"), function (index, item) {
+            if ($(this).is(":checked")) {
+                arry.push($(this).val());
+            }
+        })
+        if (arry == null || arry.length == 0) {
+            layer.msg('至少选中一项取消订阅项', { icon: 2 });
+            return false;
+        }
+        if (arry > 0) {
+            layer.confirm('您确定删除此收藏吗？', {
+                btn: ['删除', '取消'] //按钮
+            }, function () {
+                //layer.msg('的确很重要', { icon: 1 });
+                $.ajax({
+                    type: "POST",
+                    dataType: "JSON",
+                    url: '/MemberCenter/RomveMaterialQuotation',
+                    data: "arry=" + JSON.stringify(arry),
+                    async: false,
+                    success: function (json) {
+                        if (json.isadd) {
+                            layer.msg("取消成功！", { icon: 1 });
+                            InitData(0);
+                        }
+                        else {
+                            //alert(json.message);
+                            layer.msg(json.message, { icon: 5 });
+                        }
+                    },
+                    error: function () { layer.msg('数据请求异常', { icon: 2 }); }
+                });
+
+            }, function () {
+
+            });
+
+        }
+
+    })
+
+    //显示行情
+    function onShowQuotation(PdtGuid,ProductTitle) {
+        layer.open({
+            type: 2,
+            title: '订阅详情 ' + ProductTitle,
+            shade: false,
+            maxmin: true,
+            area: ['90%', '90%'],
+            content: '/MemberCenter/QuotationDafaut?ProductGuid=' + PdtGuid
+        });
+    }
 
 </script>
