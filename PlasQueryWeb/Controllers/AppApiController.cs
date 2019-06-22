@@ -472,7 +472,7 @@ namespace PlasQueryWeb.Controllers
         /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpGet]
-        public ActionResult AppProductReplaceList(int pageindex, int pagesize, int isfilter, string factory, string proid, string ver,string wherestring)
+        public ActionResult AppProductReplaceList(int pageindex, int pagesize, int isfilter, string factory, string proid, string ver,string wherestring,string isuser,string type="0")
         {
             string sErr = string.Empty;
             string jsonstr = string.Empty;
@@ -490,9 +490,23 @@ namespace PlasQueryWeb.Controllers
                 var ds = new DataSet();
                 if (!string.IsNullOrWhiteSpace(proid) && !string.IsNullOrWhiteSpace(ver))
                 {
+                    string temppid = "";
+                    if (type == "1")
+                    {
+                        string sql = string.Format("SELECT * FROM dbo.Pri_Product WHERE PriceProductGuid='{0}'", proid);
+                        DataTable pdt = SqlHelper.GetSqlDataTable(sql);
+                        if (pdt.Rows.Count > 0)
+                        {
+                            temppid = pdt.Rows[0]["ProductGuid"].ToString();
+                        }
+                    }
+                    else
+                    {
+                        temppid = proid;
+                    }
                     if (!string.IsNullOrWhiteSpace(wherestring))
                     {
-                        ds = plbll.GetReplace(proid, ver, "", wherestring, pageindex, pagesize, "0", "0", "");
+                        ds = plbll.GetReplace(temppid, ver, "", wherestring, pageindex, pagesize, "0", "0", "");
                         
                         if (ds.Tables.Contains("ds") && ds.Tables[0].Rows.Count > 0)
                         {
@@ -514,7 +528,7 @@ namespace PlasQueryWeb.Controllers
                     }
                     else
                     {
-                        ds = plbll.GetProductReplace(ver, proid, pageindex, pagesize, isfilter, factory);
+                        ds = plbll.GetProductReplace(ver, temppid, pageindex, pagesize, isfilter, factory);
                         if (ds.Tables.Contains("ds") && ds.Tables[0].Rows.Count > 0)
                         {
                             DataTable dt = ds.Tables[0];
@@ -827,10 +841,19 @@ namespace PlasQueryWeb.Controllers
         /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpPost]
-        public ActionResult AddMaterialCollection(Physics_CollectionModel model)
+        public ActionResult AddMaterialCollection(Physics_CollectionModel model,string type="0")
         {
             try
             {
+                if (type == "1")
+                {
+                    string sql = string.Format("SELECT * FROM dbo.Pri_Product WHERE PriceProductGuid='{0}'", model.ProductGuid);
+                    DataTable pdt = SqlHelper.GetSqlDataTable(sql);
+                    if (pdt.Rows.Count > 0)
+                    {
+                        model.ProductGuid = pdt.Rows[0]["ProductGuid"].ToString();
+                    }
+                }
                 string savesql = string.Format("select id from Physics_Collection where ProductGuid='{0}' and UserId='{1}'", model.ProductGuid, model.UserId);
                 var dt = SqlHelper.GetSqlDataTable(savesql.ToString());
                 if (dt.Rows.Count > 0)
@@ -853,7 +876,7 @@ namespace PlasQueryWeb.Controllers
             }
             catch (Exception ex)
             {
-                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+                return Json(Common.ToJsonResult("Fail", "收藏失败", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
         #endregion
@@ -917,6 +940,50 @@ namespace PlasQueryWeb.Controllers
         }
         #endregion
 
+        #region 添加物料行情订阅
+        /// <summary>
+        /// 添加物料收藏
+        /// </summary>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpPost]
+        public ActionResult AddMaterialQuotation(Physics_QuotationModel model)
+        {
+            try
+            {
+                //string sql = string.Format("SELECT * FROM dbo.Pri_Product WHERE PriceProductGuid='{0}'", model.ProductGuid);
+                //DataTable pdt = SqlHelper.GetSqlDataTable(sql);
+                //if (pdt.Rows.Count > 0)
+                //{
+                //    model.ProductGuid = pdt.Rows[0]["ProductGuid"].ToString();
+                //}
+                string savesql = string.Format("select id from Physics_Quotation where ProductGuid='{0}' and UserId='{1}'", model.ProductGuid, model.UserId);
+                var dt = SqlHelper.GetSqlDataTable(savesql.ToString());
+                if (dt.Rows.Count > 0)
+                {
+                    return Json(Common.ToJsonResult("IsCollection", "此产品已经订阅行情"), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    string msg = "";
+                    bool returnresult = mbll.AddPhysics_Quotation(model, ref msg);
+                    if (returnresult)
+                    {
+                        return Json(Common.ToJsonResult("Success", "订阅成功"), JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(Common.ToJsonResult("Fail", "订阅失败"), JsonRequestBehavior.AllowGet);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "订阅失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
         #region 我的收藏
         /// <summary>
         /// 我的收藏
@@ -952,15 +1019,29 @@ namespace PlasQueryWeb.Controllers
         /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpGet]
-        public ActionResult AppGetMaterialReplaceDetail(string ProductID, string Ven,string isuser)
+        public ActionResult AppGetMaterialReplaceDetail(string ProductID, string Ven,string isuser,string type)
         {
             try
             {
+                string temppid = "";
+                if (type == "1")
+                {
+                    string sql = string.Format("SELECT * FROM dbo.Pri_Product WHERE PriceProductGuid='{0}'", ProductID);
+                    DataTable pdt = SqlHelper.GetSqlDataTable(sql);
+                    if (pdt.Rows.Count > 0)
+                    {
+                        temppid = pdt.Rows[0]["ProductGuid"].ToString();
+                    }
+                }
+                else
+                {
+                    temppid = ProductID;
+                }
                 string jsonstr = "";
                 var dt = new DataTable();
-                if (!string.IsNullOrWhiteSpace(ProductID) && !string.IsNullOrWhiteSpace(Ven))
+                if (!string.IsNullOrWhiteSpace(temppid) && !string.IsNullOrWhiteSpace(Ven))
                 {
-                    dt = plbll.GetReplaceDetail(ProductID, Ven, isuser);
+                    dt = plbll.GetReplaceDetail(temppid, Ven, isuser);
                     jsonstr = ToolHelper.DataTableToJson(dt);
                 }
                 return Json(Common.ToJsonResult("Success", "获取成功", jsonstr), JsonRequestBehavior.AllowGet);
@@ -1155,6 +1236,72 @@ namespace PlasQueryWeb.Controllers
             catch (Exception ex)
             {
                 return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
+        #region 获取我的订阅
+        /// <summary>
+        /// 获取我的订阅
+        /// </summary>
+        /// <param name="userId">用户id</param>
+        /// <param name="pageindex">页码</param>
+        /// <param name="pagesize">每页数量</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetPhysicsQuotation(string userId, int pageindex, int pagesize)
+        {
+            List<Physics_QuotationModel> returnlist = new List<Physics_QuotationModel>();
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                int pagecout = 0;
+                string errMsg = "";
+                returnlist = mbll.GetPhysics_Quotation(userId, pageindex, pagesize, ref pagecout, ref errMsg);
+                return Json(Common.ToJsonResult("Success", "获取成功", returnlist), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败"), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
+        #region 删除我的订阅
+        /// <summary>
+        /// 删除我的订阅
+        /// </summary>
+        /// <param name="idstr"></param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpPost]
+        public ActionResult DeleteQuotation(string idstr)
+        {
+            try
+            {
+                string[] templist = idstr.Split(',');
+                List<string> idlist = new List<string>();
+                for (int i = 0; i < templist.Length; i++)
+                {
+                    if (!string.IsNullOrWhiteSpace(templist[i]))
+                    {
+                        idlist.Add(templist[i]);
+                    }
+                }
+                string note = string.Empty;
+                bool count = mbll.RomvePhysics_Quotation(idlist, ref note);
+                if (count)
+                {
+                    return Json(Common.ToJsonResult("Success", "删除成功"), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(Common.ToJsonResult("Fail", "删除失败"), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "删除失败", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
         #endregion

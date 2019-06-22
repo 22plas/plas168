@@ -904,17 +904,22 @@ namespace PlasDal
         {
             if (!string.IsNullOrEmpty(userId))
             {
-                StringBuilder sql = new StringBuilder();
-                sql.Append("select a.Id,a.ProductGuid,a.UserId,a.CreateDate,b.ProModel,b.PlaceOrigin,c.ProUse,c.characteristic,d.Name from Physics_Quotation as a ");
-                sql.Append(" left join Product as b on a.ProductGuid=b.ProductGuid");
-                sql.Append(" left join Product_l as c on c.ParentGuid=a.ProductGuid");
-                sql.Append(" left join Prd_SmallClass_l as d on d.parentguid=b.SmallClassId");
-                sql.Append(" where 1=1 ");
-                if (!string.IsNullOrEmpty(userId))
-                {
-                    sql.Append(" and a.UserId='" + userId + "'");
-                }
-                var dt = GetPhysicsAttr(sql.ToString(), "id desc", pageindex, pagesize, ref pagecout, ref errMsg);
+                //StringBuilder sql = new StringBuilder();
+                //sql.Append("select a.Id,a.ProductGuid,a.UserId,a.CreateDate,b.ProModel,b.PlaceOrigin,c.ProUse,c.characteristic,d.Name from Physics_Quotation as a ");
+                //sql.Append(" left join Product as b on a.ProductGuid=b.ProductGuid");
+                //sql.Append(" left join Product_l as c on c.ParentGuid=a.ProductGuid");
+                //sql.Append(" left join Prd_SmallClass_l as d on d.parentguid=b.SmallClassId");
+                //sql.Append(" where 1=1 ");
+                //if (!string.IsNullOrEmpty(userId))
+                //{
+                //    sql.Append(" and a.UserId='" + userId + "'");
+                //}
+                //var dt = GetPhysicsAttr(sql.ToString(), "id desc", pageindex, pagesize, ref pagecout, ref errMsg);
+                string sql = string.Format(@"SELECT * FROM ( SELECT a.PriDate,a.SmallClass,a.ManuFacturer,a.Model,a.Price,a.Diff,a.PriceProductGuid,a.SupplierrQty,row_number() over(order by a.SupplierrQty desc)as rownum      
+                                            from Pri_DayAvgPrice a 
+                                            INNER join (select max(a.PriDate) as PriDate from Pri_DayAvgPrice a) b on a.PriDate=b.PriDate
+                                            INNER JOIN Physics_Quotation c ON c.ProductGuid=a.PriceProductGuid AND c.UserId='{0}' ) s WHERE s.rownum BETWEEN {1} AND {2}", userId, pageindex, pagesize);
+                DataTable dt = SqlHelper.GetSqlDataTable(sql);
                 return dt;
             }
             else

@@ -40,5 +40,14 @@ namespace PlasModel
         /// 特性
         /// </summary>
         public string characteristic { get; set; }
+        public DateTime PriDate { get; set; }
+        public string SmallClass { get; set; }
+        public string ManuFacturer { get; set; }
+        public string Model { get; set; }
+        public decimal Price { get; set; }
+        public decimal Diff { get; set; }
+        public string PriceProductGuid { get; set; }
+        public int SupplierrQty { get; set; }
+
     }
 }
