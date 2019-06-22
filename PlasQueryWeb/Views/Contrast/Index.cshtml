@@ -48,8 +48,10 @@
         var count = 0;
         $.each(list, function (index, item) {
             count++;
-            $("#Contrast_" + count).val(item.ProModel);
-            $("#Hid_Contrast_" + count).val(item.ProductGuid);
+            if ($("#Contrast_" + count).length > 0) {
+                $("#Contrast_" + count).val(item.ProModel);
+                $("#Hid_Contrast_" + count).val(item.ProductGuid);
+            }
         })
         onLoadContrast();
     })

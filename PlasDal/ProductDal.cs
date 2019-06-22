@@ -411,5 +411,25 @@ namespace PlasDal
             DataTable dt = SqlHelper.GetSqlDataTable(sql);
             return dt;
         }
+
+
+
+        /// <summary>
+        /// 获取价格
+        /// </summary>
+        /// <param name="ProductGuid"></param>
+        /// <returns></returns>
+        public DataTable GetPri_DayAvgPrice(string ProductGuid)
+        {
+            string sql = "select * from Pri_DayAvgPrice where PriceProductGuid=@ProductGuid order by priDate";
+            SqlParameter[] parm = { new SqlParameter("@ProductGuid", ProductGuid) };
+            return SqlHelper.GetSqlDataTable_Param(sql, parm);
+        }
+
+
+
+
+
+
     }
 }

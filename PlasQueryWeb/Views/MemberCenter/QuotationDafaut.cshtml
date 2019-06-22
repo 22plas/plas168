@@ -1,0 +1,84 @@
+﻿
+@{
+    Layout = null;
+}
+
+<script src="~/Content/js/jquery-2.1.1.js" type="text/javascript"></script>
+<script src="~/Content/js/echarts.min.js" type="text/javascript"></script>
+
+<div id="container" style="height: 100%"></div>
+<script type="text/javascript">
+    var qlist =@Html.Raw(Json.Encode(ViewBag.QuotationList));
+    var datalist = new Array();
+    var datavaluelist = new Array();
+    $.each(qlist, function (index, item) {
+        datalist.push(FormatToDate(item.PriDate));
+        datavaluelist.push(item.Price);
+    })
+
+    var options = {
+        title: {
+            text: ''
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross',
+                label: {
+                    backgroundColor: '#6a7985'
+                }
+            }
+        },
+        legend: { data: [] },
+        toolbox: {
+            feature: {
+                saveAsImage: {}
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '3%',
+            bottom: '4%',
+            top: '7%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                boundaryGap: false,
+                data: datalist//'2019-03-16', '2019-03-17', '2019-03-18', '2019-03-19', '2019-03-20', '2019-03-21', '2019-03-22'
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value'
+            }
+        ],
+        series: [
+            {
+                name: '价格',
+                type: 'line',
+                data: datavaluelist//
+            }
+        ]
+    };
+    function rpt1(id, option, h) {
+        var o = document.getElementById(id);
+        var myChart = echarts.init(o);
+        myChart.setOption(option);
+    }
+    rpt1('container', options);
+
+
+    function FormatToDate(val) {
+        if (val != null) {
+            var date = new Date(parseInt(val.replace("/Date(", "").replace(")/", ""), 10));
+            //月份为0-11，所以+1，月份小于10时补个0
+            var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+            var currentDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+            return date.getFullYear() + "-" + month + "-" + currentDate;
+        }
+        return "";
+    }
+
+</script>

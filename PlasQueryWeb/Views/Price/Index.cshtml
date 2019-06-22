@@ -226,13 +226,14 @@
             <div class="right" style="padding-top: 7px;">
                 <span>开始时间：</span><input type="text" id="beginDate" class="input">
                 <span style="margin-left: 8px;">结束时间：</span>
-                <input type="text" id="endDate" class="input">
-                <button id="PriceDateSharet" class="btn_price" type="button">查询</button>
+                <input type="text" id="endDate" class="input"> 
+                <button id="PriceDateSharet" class="btn_price" style="border-radius:0px; height:26px; line-height:26px;" type="button">查询</button>
                 <!--<a class="btn btn-red" style="margin-left: 5px;">查询</a>-->
             </div>
         </div>
         <div>
-            <span class="Txt_SmallClass"></span> | <span class="Txt_Model"></span>
+            <span class="Txt_SmallClass"></span> | <span class="Txt_Model"></span><input type="hidden" id="ProductGuid" value="" />&nbsp;
+            <button title="订阅后可跟踪该产品价格动态" id="QuotationBtn" style="border-radius:0px; height:30px; line-height:30px;" class="btn_price" type="button">订阅行情</button>
         </div>
         <div style="color: #777;border-bottom: 1px solid #ddd;padding-bottom: 8px">
             <span class="fa fa-check-square"></span>加入价格对比 <span class="fa fa-square" style="margin-left: 15px;"></span>显示上游原料价格

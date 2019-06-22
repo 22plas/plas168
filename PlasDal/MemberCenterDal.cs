@@ -842,7 +842,7 @@ namespace PlasDal
                 var dt = SqlHelper.GetSqlDataTable(savesql.ToString());
                 if (dt.Rows.Count > 0)
                 {
-                    errMsg = "此产品已经行情！";
+                    errMsg = "此产品行情已订阅！";
                     dt.Dispose();
                 }
                 else
@@ -905,15 +905,14 @@ namespace PlasDal
             if (!string.IsNullOrEmpty(userId))
             {
                 StringBuilder sql = new StringBuilder();
-                sql.Append("select a.Id,a.ProductGuid,a.UserId,a.CreateDate,b.ProModel,b.PlaceOrigin,c.ProUse,c.characteristic,d.Name from Physics_Quotation as a ");
-                sql.Append(" left join Product as b on a.ProductGuid=b.ProductGuid");
-                sql.Append(" left join Product_l as c on c.ParentGuid=a.ProductGuid");
-                sql.Append(" left join Prd_SmallClass_l as d on d.parentguid=b.SmallClassId");
+                sql.Append("select a.id,a.ProductGuid,a.CreateDate,Max(b.PriDate)as PriDate,max(b.SmallClass)as ProUse,max(b.ManuFacturer)as PlaceOrigin,max(b.Model)as ProModel from Physics_Quotation a ");
+                sql.Append(" left join Pri_DayAvgPrice b on a.ProductGuid=b.PriceProductGuid");
                 sql.Append(" where 1=1 ");
                 if (!string.IsNullOrEmpty(userId))
                 {
                     sql.Append(" and a.UserId='" + userId + "'");
                 }
+                sql.Append(" group by a.id,a.ProductGuid,a.CreateDate");
                 var dt = GetPhysicsAttr(sql.ToString(), "id desc", pageindex, pagesize, ref pagecout, ref errMsg);
                 return dt;
             }

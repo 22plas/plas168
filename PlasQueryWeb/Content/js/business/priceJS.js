@@ -9,7 +9,8 @@
 
     var SmallClass = "";
     var Manufacturer = "";
-    var Model = "";
+var Model = "";
+var ProductGuid = "";
     var priceData = "";
     function NoneLine() {
         if ($("#Pagination").find("span").length > 0) {
@@ -139,11 +140,12 @@ $(".search_item_contentList").find("li").click(function () {
                             SmallClass = n.SmallClass;
                             Manufacturer = n.ManuFacturer;
                             Model = n.Model;
+                            ProductGuid = n.PriceProductGuid;
                             priceData="&priceDate=7"
                             GetPriceList();
                             onLoadEchars();
                         }
-                        tbodyui += ' style="cursor: pointer" smallClass="' + n.SmallClass + '" manufacturer="' + n.ManuFacturer + '"  model="' + n.Model+'">';
+                        tbodyui += ' style="cursor: pointer" smallClass="' + n.SmallClass + '" manufacturer="' + n.ManuFacturer + '"  ProductGuid="' + n.PriceProductGuid+'" model="' + n.Model+'">';
                         tbodyui += '<div class="left">';
                         tbodyui += '<p>' + n.SmallClass + ' | ' + n.ManuFacturer + '</p>';
                         tbodyui += '<p>' + n.Model + '</p>';
@@ -188,6 +190,7 @@ $(".search_item_contentList").find("li").click(function () {
             SmallClass = $(this).attr("smallclass");
             Manufacturer = $(this).attr("manufacturer");
             Model = $(this).attr("model");
+            ProductGuid = $(this).attr("ProductGuid");
             GetPriceList();
             onLoadEchars();
 
@@ -240,6 +243,28 @@ $("#PriceDateSharet").click(function () {
 
 
 
+$("#QuotationBtn").click(function () {
+    var textval = $("#ProductGuid").val();
+    $.ajax({
+        type: "POST",
+        dataType: "JSON",
+        url: '/Price/TrueQuotation',
+        data: "textval=" + textval,
+        async: false,
+        success: function (json) {
+            if (json != null && json != "") {
+                if (json.isadd) {
+                    layer.msg('订阅成功', { icon: 1 });
+                }
+                else {
+                    layer.msg(json.errMsg, { icon: 2 });
+                }
+            }
+        },
+        error: function () { layer.msg('数据请求异常', { icon: 2 }); }
+    });
+})
+
 
     function GetPriceList() {
         //debugger;
@@ -249,6 +274,7 @@ $("#PriceDateSharet").click(function () {
         $(".Txt_SmallClass").html(SmallClass);
         $(".Txt_Manufacturer").html(Manufacturer);
         $(".Txt_Model").html(Model);
+        $("#ProductGuid").val(ProductGuid);
         $.ajax({
             type: "POST",
             dataType: "JSON",

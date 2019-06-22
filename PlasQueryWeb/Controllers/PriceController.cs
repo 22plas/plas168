@@ -12,6 +12,13 @@ namespace PlasModel.Controllers
 {
     public class PriceController : Controller
     {
+        AccountData AccountData
+        {
+            get
+            {
+                return this.GetAccountData();
+            }
+        }
         private PlasBll.ProductBll bll = new PlasBll.ProductBll();
         // GET: 价格
         public ActionResult Index()
@@ -145,6 +152,36 @@ namespace PlasModel.Controllers
             return View();
         }
 
+
+        /// <summary>
+        /// 订阅行其
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult TrueQuotation(string textval)
+        {
+            PlasBll.MemberCenterBll mbll = new PlasBll.MemberCenterBll();
+            string errMsg = string.Empty;
+            bool isadd = false;
+            if (!string.IsNullOrWhiteSpace(textval))
+            {
+                if (AccountData != null && AccountData.UserID != null)
+                {
+                    PlasModel.Physics_QuotationModel model = new Physics_QuotationModel();
+                    model.UserId = AccountData.UserID;
+                    model.ProductGuid = textval;
+                    isadd= mbll.AddPhysics_Quotation(model, ref errMsg);
+                }
+                else
+                {
+                    errMsg = "订阅行情请先登录！";
+                }
+            }
+            else
+            {
+                errMsg = "订阅号不能未空！";
+            }
+            return Json(new { errMsg= errMsg, isadd= isadd },JsonRequestBehavior.AllowGet);
+        }
 
     }
 }
