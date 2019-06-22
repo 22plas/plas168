@@ -185,5 +185,50 @@ namespace PlasBll
             }
             return list;
         }
+
+        #region 产品UL
+
+
+        /// <summary>
+        /// Ul头部
+        /// </summary>
+        /// <param name="FileNumber"></param>
+        /// <returns></returns>
+        public List<Ul_HeadModel> GetUl_Head(string ProductId)
+        {
+            var list = new List<Ul_HeadModel>();
+            if (!string.IsNullOrWhiteSpace(ProductId))
+            {
+                var query = dal.GetUl_Head(ProductId);
+                if (query != null)
+                {
+                    list = PlasCommon.ToolClass<Ul_HeadModel>.ConvertDataTableToModel(query);
+                }
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Ul详情
+        /// </summary>
+        /// <param name="NumberId"></param>
+        /// <returns></returns>
+        public List<Ul_bodyModel> GetUl_body(string NumberId)
+        {
+            var list = new List<Ul_bodyModel>();
+            if (!string.IsNullOrWhiteSpace(NumberId))
+            {
+                var query = dal.GetUl_body(NumberId);
+                if (query != null)
+                {
+                    list = PlasCommon.ToolClass<Ul_bodyModel>.ConvertDataTableToModel(query);
+                }
+            }
+            return list;
+        }
+
+
+        #endregion
+
     }
 }
