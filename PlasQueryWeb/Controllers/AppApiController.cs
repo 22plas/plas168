@@ -1255,9 +1255,8 @@ namespace PlasQueryWeb.Controllers
             List<Physics_QuotationModel> returnlist = new List<Physics_QuotationModel>();
             if (!string.IsNullOrWhiteSpace(userId))
             {
-                int pagecout = 0;
-                string errMsg = "";
-                returnlist = mbll.GetPhysics_Quotation(userId, pageindex, pagesize, ref pagecout, ref errMsg);
+                DataTable dt = mbll.AppGetPhyices_Quotation(userId, pageindex, pagesize);
+                returnlist = Comm.ToDataList<Physics_QuotationModel>(dt);
                 return Json(Common.ToJsonResult("Success", "获取成功", returnlist), JsonRequestBehavior.AllowGet);
             }
             else

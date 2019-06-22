@@ -482,14 +482,18 @@ namespace PlasBll
             }
             return null;
         }
-
-        /// <summary>
-        /// 删除行情
-        /// </summary>
-        /// <param name="CollID">批量删除ID</param>
-        /// <param name="errMsg">错误信息</param>
-        /// <returns></returns>
-        public bool RomvePhysics_Quotation(List<string> CollID, ref string errMsg)
+        //手机端获取订阅的行情列表
+        public DataTable AppGetPhyices_Quotation(string userId, int pageindex, int pagesize)
+        {
+            return mdal.AppGetPhyices_Quotation(userId, pageindex, pagesize);
+        }
+            /// <summary>
+            /// 删除行情
+            /// </summary>
+            /// <param name="CollID">批量删除ID</param>
+            /// <param name="errMsg">错误信息</param>
+            /// <returns></returns>
+            public bool RomvePhysics_Quotation(List<string> CollID, ref string errMsg)
         {
             return mdal.RomvePhysics_Quotation(CollID, ref errMsg);
         }
