@@ -451,10 +451,13 @@ namespace PlasDal
         /// </summary>
         /// <param name="NumberId"></param>
         /// <returns></returns>
-        public DataTable GetUl_body(string NumberId)
+        public DataTable GetUl_body(string ProductId)
         {
-            string sql = "select * from Ul_body where NumberId=@NumberId";
-            SqlParameter[] parm = { new SqlParameter("@NumberId", NumberId) };
+            string sql = string.Format(@"select c.* from Ul_Product a 
+                                            left join Ul_Head b on a.FileNumber = b.FileNumber
+                                            left join Ul_body c on b.NumberId = c.NumberId
+                                            where a.ProductId = @ProductId");
+            SqlParameter[] parm = { new SqlParameter("@ProductId", ProductId) };
             return SqlHelper.GetSqlDataTable_Param(sql.ToString(), parm);
         }
 

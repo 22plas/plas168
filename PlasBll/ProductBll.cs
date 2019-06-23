@@ -213,12 +213,12 @@ namespace PlasBll
         /// </summary>
         /// <param name="NumberId"></param>
         /// <returns></returns>
-        public List<Ul_bodyModel> GetUl_body(string NumberId)
+        public List<Ul_bodyModel> GetUl_body(string ProductId)
         {
             var list = new List<Ul_bodyModel>();
-            if (!string.IsNullOrWhiteSpace(NumberId))
+            if (!string.IsNullOrWhiteSpace(ProductId))
             {
-                var query = dal.GetUl_body(NumberId);
+                var query = dal.GetUl_body(ProductId);
                 if (query != null)
                 {
                     list = PlasCommon.ToolClass<Ul_bodyModel>.ConvertDataTableToModel(query);

@@ -1,6 +1,8 @@
 ﻿
 @{
     Layout = null;
+    var blist = ViewBag.blist as List<PlasModel.Ul_HeadModel>;
+    var clist = ViewBag.clist as List<PlasModel.Ul_bodyModel>;
 }
 
 <style type="text/css">
@@ -87,23 +89,28 @@
     </tr>
     <tr>
         <td style="padding:10px 0px;">
+            @foreach (var item in blist)
+            {
             <table width="100%" border="0" style="border:solid 1px #be0f34;" cellspacing="0" cellpadding="0">
                 <tr class="trtitle">
-                    <td width="50%" class="pand10">filmey</td>
+                    <td width="50%" class="pand10">@item.Serires</td>
                     <td width="25%">Value</td>
-                    <td width="25%">TextMethod</td>
+                    <td width="25%">Text Method</td>
                 </tr>
-                <tr class="showlist pand20">
-                    <td>file</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr class="showlist pand30">
-                    <td>1.5min</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
+                @foreach (var b in clist)
+                {
+                    if (item.NumberId == b.NumberId && !string.IsNullOrWhiteSpace(b.Attribute2))
+                    {
+                        <tr class="showlist pand20">
+                            <td>@b.Attribute2</td>
+                            <td>@(b.Value+b.Unit)</td>
+                            <td>@b.TestType</td>
+                        </tr>
+                    }
+                }
             </table>
+            }
+
 
         </td>
     </tr>

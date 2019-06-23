@@ -347,7 +347,17 @@ namespace PlasModel.Controllers
         /// <returns></returns>
         public ActionResult ShowUlPDF(string ProductGuid)
         {
-
+            ProductGuid = "1298B2AA-ED90-4B79-8ACB-535704D463FD";
+            PlasBll.ProductBll bll = new ProductBll();
+            var blist = new List<Ul_HeadModel>();
+            var clist = new List<Ul_bodyModel>();
+            if (!string.IsNullOrWhiteSpace(ProductGuid))
+            {
+                blist = bll.GetUl_Head(ProductGuid);
+                clist = bll.GetUl_body(ProductGuid);
+            }
+            ViewBag.blist = blist;
+            ViewBag.clist = clist;
             return View();
         }
 
