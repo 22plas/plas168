@@ -1466,15 +1466,22 @@ namespace PlasQueryWeb.Controllers
             try
             {
                 List<parminfo> listresult = new List<parminfo>();
-                DataTable dt = bll.AppGetFactoryByName(name);
-                if (dt.Rows.Count > 0)
+                string[] listname = name.Split(',');
+                if (listname.Length > 0)
                 {
-                    for (int i = 0; i < dt.Rows.Count; i++)
+                    for (int i = 0; i < listname.Length; i++)
                     {
-                        parminfo m = new parminfo();
-                        m.Name = dt.Rows[i]["AliasName"].ToString();
-                        m.Guid = dt.Rows[i]["Guid"].ToString();
-                        listresult.Add(m);
+                        DataTable dt = bll.AppGetFactoryByName(listname[i]);
+                        if (dt.Rows.Count > 0)
+                        {
+                            for (int j = 0; j < dt.Rows.Count; j++)
+                            {
+                                parminfo m = new parminfo();
+                                m.Name = dt.Rows[j]["AliasName"].ToString();
+                                m.Guid = dt.Rows[j]["Guid"].ToString();
+                                listresult.Add(m);
+                            }
+                        }
                     }
                 }
                 return Json(Common.ToJsonResult("Success", "获取成功", listresult), JsonRequestBehavior.AllowGet);
