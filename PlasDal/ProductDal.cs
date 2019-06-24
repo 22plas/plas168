@@ -427,8 +427,17 @@ namespace PlasDal
             return SqlHelper.GetSqlDataTable_Param(sql, parm);
         }
 
-
-
+        /// <summary>
+        /// 根据厂家名称获取对应的厂家id
+        /// </summary>
+        /// <param name="name">厂家名称</param>
+        /// <returns></returns>
+        public DataTable AppGetFactoryByName(string name)
+        {
+            string sql = string.Format(@"select a.AliasName,a.Guid from Sys_Manufacturer a where '{0}' in (select * from f_split(a.AliasName,';'))", name);
+            return SqlHelper.GetSqlDataTable(sql);
+        }
+        #endregion
         #region 产品UL
 
         /// <summary>
