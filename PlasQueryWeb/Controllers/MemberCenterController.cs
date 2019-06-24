@@ -57,6 +57,15 @@ namespace PlasModel.Controllers
                 ViewBag.Intotal = "0";
                 ViewBag.OutTotal = "0";
             }
+            int count = 0;
+            string errMsg = string.Empty;
+            ///浏览记录
+            var BrowseList = mbll.GetPhysics_Browse(AccountData.UserID, 1, 8, ref count, ref errMsg);
+            ///比较
+            var ContrastList = mbll.GetPhysics_Contrast(AccountData.UserID, ref errMsg);
+
+            ViewBag.BrowseList = BrowseList;
+            ViewBag.ContrastList = ContrastList;
             Sidebar("个人中心");
             return View();
         }

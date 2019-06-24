@@ -185,14 +185,5 @@ namespace PlasBll
             }
             return list;
         }
-        /// <summary>
-        /// 根据厂家名称获取对应的厂家id
-        /// </summary>
-        /// <param name="name">厂家名称</param>
-        /// <returns></returns>
-        public DataTable AppGetFactoryByName(string name)
-        {
-            return dal.AppGetFactoryByName(name);
-        }
     }
 }

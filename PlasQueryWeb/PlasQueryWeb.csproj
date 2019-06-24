@@ -238,6 +238,8 @@
     <Content Include="Content\images\tserver-ad-icon3.png" />
     <Content Include="Content\images\tserver-ad-icon4.png" />
     <Content Include="Content\images\tserver-ad-icon5.png" />
+    <Content Include="Content\images\ul_Logo.jpg" />
+    <Content Include="Content\images\ul_rjus.jpg" />
     <Content Include="Content\img\check_mark.png" />
     <Content Include="Content\css\font-awesome.css" />
     <Content Include="Content\css\font-awesome.min.css" />
@@ -536,6 +538,7 @@
     <Content Include="Views\Shared\MemberOtherShared.cshtml" />
     <Content Include="Views\MemberCenter\Physics_ContrastList.cshtml" />
     <Content Include="Views\MemberCenter\QuotationDafaut.cshtml" />
+    <Content Include="Views\PhysicalProducts\ShowUlPDF.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

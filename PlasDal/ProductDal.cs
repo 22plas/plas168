@@ -34,7 +34,7 @@ namespace PlasDal
         /// <returns></returns>
         public DataTable HotProducts(int showNum = 5)
         {
-      
+
             var ds = SqlHelper.GetSqlDataTable(string.Format(@"select a.*,(select top 1 ProductID from dbo.ProductLevel1 b where a.SmallClassId=b.SmallClassID) as ProductID from
   (SELECT TOP {0} BigClassId,SmallClassId,ProModel,PlaceOrigin,ProductGuid,HitCount,Brand,Edition
   FROM dbo.Product where isShow=1 order by HitCount desc) a ", showNum));
@@ -72,7 +72,7 @@ namespace PlasDal
         /// <param name="type"></param>
         /// <param name="showNum"></param>
         /// <returns></returns>
-        public DataTable GetSearchParam(int type, string wherekey, int showNum = 10,int? pageindex=1)
+        public DataTable GetSearchParam(int type, string wherekey, int showNum = 10, int? pageindex = 1)
         {
             string tempwherekey = string.Empty;
             var ds = new DataSet();
@@ -83,7 +83,7 @@ namespace PlasDal
                     break;
                 case 2://特性
                     tempwherekey = string.IsNullOrWhiteSpace(wherekey) ? "" : " and name like ''%" + wherekey + "%''";
-                    ds = Sys_GetSearchParam("Sys_character", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid", " and name<>'''' and name<>''--''"+ tempwherekey, "weight desc,  substring(dbo.[fn_ChineseToSpell](name),1,1),name ", pageindex.Value);
+                    ds = Sys_GetSearchParam("Sys_character", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid", " and name<>'''' and name<>''--''" + tempwherekey, "weight desc,  substring(dbo.[fn_ChineseToSpell](name),1,1),name ", pageindex.Value);
                     break;
                 case 3://阻燃等级
                     ds = Sys_GetSearchParam("Prd_ZRDJSort", showNum, "  substring(dbo.[fn_ChineseToSpell](KeyWord),1,1) as fw,KeyWord as Name,*,'''' as SmallGuid ", "", " value desc ,substring(dbo.[fn_ChineseToSpell](KeyWord),1,1),KeyWord ", pageindex.Value);
@@ -94,27 +94,27 @@ namespace PlasDal
                     break;
                 case 5://加工方法
                     tempwherekey = string.IsNullOrWhiteSpace(wherekey) ? "" : " and name like ''%" + wherekey + "%''";
-                    ds = Sys_GetSearchParam("Sys_Method", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid,'''' as AliasName ", " and name<>'''' and name<>''--''"+ tempwherekey, "[weight] desc, substring(dbo.[fn_ChineseToSpell](name),1,1),name ", pageindex.Value);
+                    ds = Sys_GetSearchParam("Sys_Method", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid,'''' as AliasName ", " and name<>'''' and name<>''--''" + tempwherekey, "[weight] desc, substring(dbo.[fn_ChineseToSpell](name),1,1),name ", pageindex.Value);
                     break;
                 case 6://安全级别(阻燃等级的二级属性)
                     tempwherekey = string.IsNullOrWhiteSpace(wherekey) ? "" : " and name like ''%" + wherekey + "%''";
-                    ds = Sys_GetSearchParam("Prd_SmallClass", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid,'''' as AliasName ", " and name<>'''' and name<>''--''"+ tempwherekey, "[weight] desc, substring(dbo.[fn_ChineseToSpell](name),1,1),name  ", pageindex.Value);//Weigth字段加在了Prd_SmallClass_l表
+                    ds = Sys_GetSearchParam("Prd_SmallClass", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid,'''' as AliasName ", " and name<>'''' and name<>''--''" + tempwherekey, "[weight] desc, substring(dbo.[fn_ChineseToSpell](name),1,1),name  ", pageindex.Value);//Weigth字段加在了Prd_SmallClass_l表
                     break;
                 case 7://用途
                     tempwherekey = string.IsNullOrWhiteSpace(wherekey) ? "" : " and name like ''%" + wherekey + "%''";
-                    ds = Sys_GetSearchParam("Sys_ForUse", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid ", " and name<>'''' and name<>''--''"+ tempwherekey, "[weight] desc,substring(dbo.[fn_ChineseToSpell](name),1,1),name  ", pageindex.Value);
+                    ds = Sys_GetSearchParam("Sys_ForUse", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid ", " and name<>'''' and name<>''--''" + tempwherekey, "[weight] desc,substring(dbo.[fn_ChineseToSpell](name),1,1),name  ", pageindex.Value);
                     break;
                 case 8://填料
                     tempwherekey = string.IsNullOrWhiteSpace(wherekey) ? "" : " and name like ''%" + wherekey + "%''";
-                    ds = Sys_GetSearchParam("Sys_filler", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid ", " and name<>'''' and name<>''--''"+ tempwherekey, "[weight] desc,substring(dbo.[fn_ChineseToSpell](name),1,1),name ", pageindex.Value);
+                    ds = Sys_GetSearchParam("Sys_filler", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid ", " and name<>'''' and name<>''--''" + tempwherekey, "[weight] desc,substring(dbo.[fn_ChineseToSpell](name),1,1),name ", pageindex.Value);
                     break;
                 case 9://添加剂
                     tempwherekey = string.IsNullOrWhiteSpace(wherekey) ? "" : " and name like ''%" + wherekey + "%''";
-                    ds = Sys_GetSearchParam("Sys_Additive", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid,'''' as AliasName ", " and name<>'''' and name<>''--''"+ tempwherekey, "[weight] desc,substring(dbo.[fn_ChineseToSpell](name),1,1),name ", pageindex.Value);
+                    ds = Sys_GetSearchParam("Sys_Additive", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,*,'''' as SmallGuid,'''' as AliasName ", " and name<>'''' and name<>''--''" + tempwherekey, "[weight] desc,substring(dbo.[fn_ChineseToSpell](name),1,1),name ", pageindex.Value);
                     break;
                 case 11://app高级搜类别
                     tempwherekey = string.IsNullOrWhiteSpace(wherekey) ? "" : " aliasname LIKE''" + wherekey.Trim() + "'' OR name like ''%" + wherekey.Trim() + "%''";
-                    ds = Sys_SuperSearchGetSmallClassList(showNum, pageindex.Value,tempwherekey);
+                    ds = Sys_SuperSearchGetSmallClassList(showNum, pageindex.Value, tempwherekey);
                     break;
                 default:
                     tempwherekey = string.IsNullOrWhiteSpace(wherekey) ? "" : " and name like ''%" + wherekey + "%''";
@@ -140,7 +140,7 @@ namespace PlasDal
         //超级搜索获取产品类别
         public DataSet Sys_SuperSearchGetSmallClassList(int pageSize, int pageIndex, string key)
         {
-            string sql = string.Format("exec PROC_SuperSearchGetSmallClassList {0},{1},'{2}'", pageIndex, pageSize,key);
+            string sql = string.Format("exec PROC_SuperSearchGetSmallClassList {0},{1},'{2}'", pageIndex, pageSize, key);
             var ds = SqlHelper.GetSqlDataSet(sql);
             return ds;
         }
@@ -186,7 +186,7 @@ namespace PlasDal
         }
 
         //超级搜索
-        public DataSet Sys_SuperSearch(string searchStr = "", int languageid = 2052, int pageCount = 0, int pageSize = 20, string guidstr = "",string isNavLink="")
+        public DataSet Sys_SuperSearch(string searchStr = "", int languageid = 2052, int pageCount = 0, int pageSize = 20, string guidstr = "", string isNavLink = "")
         {
             //{产品种类=>''尼龙 6 弹性体;MMS;EA'',0,0}{产品特性=>''Broad Seal Range ;半结晶'',0,0}	
             // { 机械性能 =)拉伸模量 => '''',0,10600}
@@ -195,7 +195,7 @@ namespace PlasDal
             //为每个条件开启一个线程
             int taskts = searchStr.Length - searchStr.Replace("}", "").Length;//Environment.ProcessorCount
             string ver = guidstr;//Guid.NewGuid().ToString();
-            if (string.IsNullOrWhiteSpace(isNavLink) && isNavLink!="1")//分页的时候，不执行数据查询
+            if (string.IsNullOrWhiteSpace(isNavLink) && isNavLink != "1")//分页的时候，不执行数据查询
             {
                 for (int i = 1; i <= taskts; i++)
                 {
@@ -242,7 +242,7 @@ namespace PlasDal
         }
 
         //普通搜索
-        public DataSet GetGeneralSearch(string key = "", int pageIndex = 1, int pageSize = 20, string strGuid = "",int? isapp=0)
+        public DataSet GetGeneralSearch(string key = "", int pageIndex = 1, int pageSize = 20, string strGuid = "", int? isapp = 0)
         {
             string sql = string.Format("exec headsearch '{0}','{1}',{2},{3},{4},{5}", strGuid, key, 2052, pageIndex, pageSize, isapp);
             var ds = SqlHelper.GetSqlDataSet(sql);
@@ -274,7 +274,7 @@ namespace PlasDal
         /// 
         /// </summary>
         /// <returns></returns>
-        public DataSet getPriceFile(string SmallClass ,string Manufacturer,string  Model,int pageindex = 1, int pagesize = 8)
+        public DataSet getPriceFile(string SmallClass, string Manufacturer, string Model, int pageindex = 1, int pagesize = 8)
         {
             string sql = string.Format("exec QueryPriceProc {0},{1},'{2}','{3}','{4}',''", pageindex, pagesize, SmallClass, Manufacturer, Model);
             var ds = SqlHelper.GetSqlDataSet(sql);
@@ -300,7 +300,7 @@ namespace PlasDal
         }
 
         //获取分类
-        public DataSet GetPriceType(int numtop=10)
+        public DataSet GetPriceType(int numtop = 10)
         {
             StringBuilder sql = new StringBuilder();
             sql.Append("select ");
@@ -342,16 +342,17 @@ namespace PlasDal
         /// 产品点击数次累加
         /// </summary>
         /// <param name="proid"></param>
-        public  void ProductHit(string proid)
+        public void ProductHit(string proid)
         {
             string sql = "update Product set HitCount=isnull(HitCount,0)+1 where ProductGuid=@ProductGuid";
             SqlParameter[] parm = {
                 new SqlParameter("@ProductGuid",proid)
             };
-            SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings,sql, parm);
+            SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql, parm);
         }
         #endregion
 
+        #region 产品属性
 
         /// <summary>
         /// 查询产品下面的PDF
@@ -426,17 +427,43 @@ namespace PlasDal
             return SqlHelper.GetSqlDataTable_Param(sql, parm);
         }
 
+
+
+        #region 产品UL
+
         /// <summary>
-        /// 根据厂家名称获取对应的厂家id
+        /// Ul头部
         /// </summary>
-        /// <param name="name">厂家名称</param>
+        /// <param name="FileNumber"></param>
         /// <returns></returns>
-        public DataTable AppGetFactoryByName(string name)
+        public DataTable GetUl_Head(string ProductId)
         {
-            string sql = string.Format(@"select a.AliasName,a.Guid from Sys_Manufacturer a where '{0}' in (select * from f_split(a.AliasName,';'))", name);
-            return SqlHelper.GetSqlDataTable(sql);
+            string sql = string.Format(@"select b.* from Ul_Product a 
+                                        left join Ul_Head b on a.FileNumber=b.FileNumber
+                                        where a.ProductId=@ProductId");
+            SqlParameter[] parm = { new SqlParameter("@ProductId", ProductId) };
+            return SqlHelper.GetSqlDataTable_Param(sql.ToString(), parm);
         }
 
+        /// <summary>
+        /// 获取Ul头部
+        /// </summary>
+        /// <param name="NumberId"></param>
+        /// <returns></returns>
+        public DataTable GetUl_body(string ProductId)
+        {
+            string sql = string.Format(@"select c.* from Ul_Product a 
+                                            left join Ul_Head b on a.FileNumber = b.FileNumber
+                                            left join Ul_body c on b.NumberId = c.NumberId
+                                            where a.ProductId = @ProductId");
+            SqlParameter[] parm = { new SqlParameter("@ProductId", ProductId) };
+            return SqlHelper.GetSqlDataTable_Param(sql.ToString(), parm);
+        }
+
+        
+
+
+        #endregion
 
 
 

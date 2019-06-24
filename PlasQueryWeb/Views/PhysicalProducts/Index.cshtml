@@ -149,7 +149,8 @@
     <div class="item-left" style="width: 23%;text-align: center;">
         <p class="orange-title">选择查询功能</p>
         @{
-            var dt2 = attrs.Select("ParentID=0 and id<>3");
+            var dt2 =attrs.Select("ParentID=0 and id<>3");
+            
         }
         <ul class="ul-lst orange-border">
             @foreach (var item in dt2)

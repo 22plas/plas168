@@ -109,11 +109,12 @@
                 <li><a href="javascript:void(0);"><i class="Hui-iconfont">&#xe610;</i>&nbsp;添加收藏</a></li>
                 <li><a href="/Replace/ProductReplace?PGuid=@ViewBag.ProdID" target="_blank"><i class="Hui-iconfont">&#xe709;</i>&nbsp;寻找相识</a></li>
                 <li><a href="javascript:void(0);" style="border-top:solid 1px #ff6a00;display:block;" onclick="viewpdf('@ViewBag.ProdID','@ViewBag.ProModel')"><i class="Hui-iconfont">&#xe640;</i>&nbsp;下载PDF</a></li>
+                <li><a href="javascript:void(0);" style="display:block;" onclick="showUlpdf('@ViewBag.ProdID');"><i class="Hui-iconfont">&#xe6c6;</i>&nbsp;黄卡UL</a></li>
                 @for (var i = 0; i < pdf.Rows.Count; i++)
                 {
-                    <li><a href="@((ViewBag.PdfUrl)+pdf.Rows[i]["pdfPath"].ToString())" ><span style="border:solid 1px @(pdf.Rows[i]["ImagesColor"].ToString()); padding:3px 5px;background:@(pdf.Rows[i]["ImagesColor"].ToString());color:#fff;">@(pdf.Rows[i]["TypeName"].ToString().Length > 0 ? pdf.Rows[i]["TypeName"].ToString().Substring(0,1) : "")</span>&nbsp;@pdf.Rows[i]["TypeName"]</a></li>
+                    <li><a href="@((ViewBag.PdfUrl)+pdf.Rows[i]["pdfPath"].ToString())"><span style="border:solid 1px @(pdf.Rows[i]["ImagesColor"].ToString()); padding:3px 5px;background:@(pdf.Rows[i]["ImagesColor"].ToString());color:#fff;">@(pdf.Rows[i]["TypeName"].ToString().Length > 0 ? pdf.Rows[i]["TypeName"].ToString().Substring(0, 1) : "")</span>&nbsp;@pdf.Rows[i]["TypeName"]</a></li>
                 }
-                
+
             </ul>
             <hr />
             <br />
@@ -161,5 +162,19 @@
         });
 
     }
+
+    ///生成
+    function showUlpdf(prodid) {
+        layer.open({
+            type: 2,
+            title: '黄卡UL',
+            shade: false,
+            maxmin: true,
+            area: ['90%', '90%'],
+            content: '/PhysicalProducts/ShowUlPDF?ProductGuid=' + prodid
+        });
+       // alert(prodid);
+    }
+
 </script>
 @Html.Partial("~/Views/Public/Bottom.cshtml")

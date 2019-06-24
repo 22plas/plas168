@@ -1,0 +1,133 @@
+﻿
+@{
+    Layout = null;
+    var blist = ViewBag.blist as List<PlasModel.Ul_HeadModel>;
+    var clist = ViewBag.clist as List<PlasModel.Ul_bodyModel>;
+}
+
+<style type="text/css">
+    .title {
+        height: 90px;
+        background: #be0f34;
+    }
+    .logimg {
+      text-align:center;
+    }
+    .titleComt {
+        font-size:26px;color:#fff;
+    }
+    .titleCenter {
+        font-size:16px;color:#fff;
+    }
+    tr, td {
+        font-size:12px;
+        line-height:25px;
+    }
+    .font16 {
+        font-size:16px;
+    }
+    .trtitle {
+        height:35px;line-height:35px;background:#be0f34; color:#fff;
+    }
+    .pand10 {
+        padding-left:10px;
+    }
+    .pand20 {
+        padding-left: 20px;
+    }
+        .pand20 td:first-child {
+            padding-left: 20px;
+        }
+        .pand30 {
+            padding-left: 30px;
+        }
+    .pand30 td:first-child {
+        padding-left: 30px;
+    }
+    .showlist {
+        background:#fffacd;
+    }
+    .baseTitle {
+        font-size: 16px;
+        height: 35px;
+        line-height: 35px;
+    }
+    .baseContent {
+        line-height:25px;
+    }
+</style>
+
+<table width="90%" border="0" align="center" cellspacing="0" cellpadding="0">
+    <tr>
+        <td class="title">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="15%" class="logimg" rowspan="2"><img src="~/Content/images/ul_Logo.jpg" style="margin-left:10px;" /></td>
+                    <td width="85%" class="titleComt">Compont - Plasstic</td>
+                </tr>
+                <tr>
+                    <td class="titleCenter">File Number : E56070</td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <table width="100%" border="0" style="margin-top:20px;" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td width="85%"><spn class="font16">H-ui前端框架是在bootstrap的思想基础上基于</spn><br /> &nbsp;HTML、CSS、JAVASCRIPT开发的轻量级web前端框架,开源免费,简单灵活,兼容性好,满足大多数中国网站,H-ui——专注前端解决</td>
+                    <td width="15%" align="right">
+                        <img src="~/Content/images/ul_rjus.jpg" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2"><spn class="font16">2019年5月22日 - PROMULGATOR [h] 北京市 关注作者</spn><br /> &nbsp;(89) 收藏此插件 (973) 最新发布 最多收藏 最多评论 最多下载 兼容IE8 兼容IE6 css 格式化工具 js 格式化工具 CDN加..</td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding:10px 0px;">
+            @foreach (var item in blist)
+            {
+            <table width="100%" border="0" style="border:solid 1px #be0f34;" cellspacing="0" cellpadding="0">
+                <tr class="trtitle">
+                    <td width="50%" class="pand10">@item.Serires</td>
+                    <td width="25%">Value</td>
+                    <td width="25%">Text Method</td>
+                </tr>
+                @foreach (var b in clist)
+                {
+                    if (item.NumberId == b.NumberId && !string.IsNullOrWhiteSpace(b.Attribute2))
+                    {
+                        <tr class="showlist pand20">
+                            <td>@b.Attribute2</td>
+                            <td>@(b.Value+b.Unit)</td>
+                            <td>@b.TestType</td>
+                        </tr>
+                    }
+                }
+            </table>
+            }
+
+
+        </td>
+    </tr>
+    <tr>
+        <td height="20">&nbsp;</td>
+    </tr>
+    <tr>
+        <td>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                    <td class="baseTitle">基于h-ui admin后台管理前端框架模板</td>
+                </tr>
+                <tr>
+                    <td class="baseContent">2018年4月19日 - 基于h-ui admin后台管理前端框架模板 基于h-ui前端框架制作绿色的OA后台管理系统模板。页面人口是index.html是采用iframe,必须重index.html进入,不然...</td>
+                </tr>
+            </table>
+
+        </td>
+    </tr>
+</table>

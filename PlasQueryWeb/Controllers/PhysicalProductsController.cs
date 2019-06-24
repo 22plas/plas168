@@ -91,6 +91,7 @@ namespace PlasModel.Controllers
 
             //属性值
             var attr = new DataTable();
+            
             attr = bll.Sys_GetSuperSearchParam(-1).Tables[0];
             ViewBag.attr = attr;
 
@@ -282,6 +283,20 @@ namespace PlasModel.Controllers
 
 
 
+        public DataTable DtSortA(DataTable Dt, string column)
+        {
+            DataTable dtNew = Dt.Clone();
+            dtNew.Columns[column].DataType = typeof(DateTime);
+            foreach (DataRow s in Dt.Rows)
+            {
+                dtNew.ImportRow(s);//导入旧数据
+            }
+            dtNew.DefaultView.Sort = column + "";
+            dtNew = dtNew.DefaultView.ToTable();
+            return dtNew;
+        }
+
+
         #region 生成PDF
         public string ViewPdf(string prodid, string prodModel = "")
         {
@@ -322,6 +337,32 @@ namespace PlasModel.Controllers
         }
 
         #endregion
+
+
+        #region 生成UL
+
+        /// <summary>
+        /// 显示UL数据
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ShowUlPDF(string ProductGuid)
+        {
+            ProductGuid = "1298B2AA-ED90-4B79-8ACB-535704D463FD";
+            PlasBll.ProductBll bll = new ProductBll();
+            var blist = new List<Ul_HeadModel>();
+            var clist = new List<Ul_bodyModel>();
+            if (!string.IsNullOrWhiteSpace(ProductGuid))
+            {
+                blist = bll.GetUl_Head(ProductGuid);
+                clist = bll.GetUl_body(ProductGuid);
+            }
+            ViewBag.blist = blist;
+            ViewBag.clist = clist;
+            return View();
+        }
+
+        #endregion
+
 
     }
 }
