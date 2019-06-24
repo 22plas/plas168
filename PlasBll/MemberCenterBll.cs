@@ -413,6 +413,11 @@ namespace PlasBll
             }
             return null;
         }
+        //手机端获取订阅的行情列表
+        public DataTable AppGetPhyices_Contrast(string userId, int pageindex, int pagesize)
+        {
+            return mdal.AppGetPhyices_Contrast(userId, pageindex, pagesize);
+        }
 
         /// <summary>
         /// 添加对比

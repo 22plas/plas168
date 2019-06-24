@@ -643,7 +643,28 @@ namespace PlasDal
             return null;
             
         }
-
+        //手机端获取订阅的行情列表
+        public DataTable AppGetPhyices_Contrast(string userId, int pageindex, int pagesize)
+        {
+            int pageBegin = 1;
+            int pageEnd = 1;
+            if (pageindex == 0)
+            {
+                pageindex = 1;
+            }
+            if (pagesize == 0)
+            {
+                pagesize = 1;
+            }
+            pageBegin = (pageindex - 1) * pagesize;
+            pageEnd = (pagesize * pageindex);
+            string sql = string.Format(@"SELECT * FROM ( select a.Id,a.ProductGuid,a.UserId,a.CreateDate,b.ProModel,b.PlaceOrigin,c.ProUse,c.characteristic,d.Name,row_number() over(order by a.Id desc)as rownum from Physics_Contrast as a 
+                                         left join Product as b on a.ProductGuid=b.ProductGuid
+                                         left join Product_l as c on c.ParentGuid=a.ProductGuid
+                                         left join Prd_SmallClass_l as d on d.parentguid=b.SmallClassId where a.UserId='{0}' ) s WHERE s.rownum BETWEEN {1} AND {2}", userId, pageBegin, pageEnd);
+            DataTable dt = SqlHelper.GetSqlDataTable(sql);
+            return dt;
+        }
         /// <summary>
         /// 添加对比
         /// 只允许三条对比不允许重复
@@ -924,10 +945,22 @@ namespace PlasDal
         //手机端获取订阅的行情列表
         public DataTable AppGetPhyices_Quotation(string userId, int pageindex, int pagesize)
         {
-            string sql = string.Format(@"SELECT * FROM ( SELECT a.PriDate,a.SmallClass,a.ManuFacturer,a.Model,a.Price,a.Diff,a.PriceProductGuid,a.SupplierrQty,row_number() over(order by a.SupplierrQty desc)as rownum      
+            int pageBegin = 1;
+            int pageEnd = 1;
+            if (pageindex == 0)
+            {
+                pageindex = 1;
+            }
+            if (pagesize == 0)
+            {
+                pagesize = 1;
+            }
+            pageBegin = (pageindex - 1) * pagesize;
+            pageEnd = (pagesize * pageindex);
+            string sql = string.Format(@"SELECT * FROM ( SELECT c.Id, a.PriDate,a.SmallClass,a.ManuFacturer,a.Model,a.Price,a.Diff,a.PriceProductGuid,a.SupplierrQty,row_number() over(order by a.SupplierrQty desc)as rownum      
                                             from Pri_DayAvgPrice a 
                                             INNER join (select max(a.PriDate) as PriDate from Pri_DayAvgPrice a) b on a.PriDate=b.PriDate
-                                            INNER JOIN Physics_Quotation c ON c.ProductGuid=a.PriceProductGuid AND c.UserId='{0}' ) s WHERE s.rownum BETWEEN {1} AND {2}", userId, pageindex, pagesize);
+                                            INNER JOIN Physics_Quotation c ON c.ProductGuid=a.PriceProductGuid AND c.UserId='{0}' ) s WHERE s.rownum BETWEEN {1} AND {2}", userId, pageBegin, pageEnd);
             DataTable dt = SqlHelper.GetSqlDataTable(sql);
             return dt;
         }

@@ -984,6 +984,50 @@ namespace PlasQueryWeb.Controllers
         }
         #endregion
 
+        #region 添加物料对比
+        /// <summary>
+        /// 添加物料对比
+        /// </summary>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpPost]
+        public ActionResult AddMaterialContrast(Physics_ContrastModel model)
+        {
+            try
+            {
+                string sql = string.Format("SELECT * FROM dbo.Pri_Product WHERE PriceProductGuid='{0}'", model.ProductGuid);
+                DataTable pdt = SqlHelper.GetSqlDataTable(sql);
+                if (pdt.Rows.Count > 0)
+                {
+                    model.ProductGuid = pdt.Rows[0]["ProductGuid"].ToString();
+                }
+                string savesql = string.Format("select id from Physics_Contrast where ProductGuid='{0}' and UserId='{1}'", model.ProductGuid, model.UserId);
+                var dt = SqlHelper.GetSqlDataTable(savesql.ToString());
+                if (dt.Rows.Count > 0)
+                {
+                    return Json(Common.ToJsonResult("IsCollection", "此产品已经添加对比"), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    string msg = "";
+                    bool returnresult = mbll.AddPhysics_Contrast(model, ref msg);
+                    if (returnresult)
+                    {
+                        return Json(Common.ToJsonResult("Success", "加入对比成功"), JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(Common.ToJsonResult("Fail", "加入对比失败"), JsonRequestBehavior.AllowGet);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "加入对比失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
         #region 我的收藏
         /// <summary>
         /// 我的收藏
@@ -1265,6 +1309,71 @@ namespace PlasQueryWeb.Controllers
             }
         }
         #endregion
+     
+        #region 获取我的对比
+        /// <summary>
+        /// 获取我的对比
+        /// </summary>
+        /// <param name="userId">用户id</param>
+        /// <param name="pageindex">页码</param>
+        /// <param name="pagesize">每页数量</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetPhysicsContrast(string userId, int pageindex, int pagesize)
+        {
+            List<Physics_ContrastModel> returnlist = new List<Physics_ContrastModel>();
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                DataTable dt = mbll.AppGetPhyices_Contrast(userId, pageindex, pagesize);
+                returnlist = Comm.ToDataList<Physics_ContrastModel>(dt);
+                return Json(Common.ToJsonResult("Success", "获取成功", returnlist), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败"), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
+        #region 删除我的对比
+        /// <summary>
+        /// 删除我的对比
+        /// </summary>
+        /// <param name="idstr"></param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpPost]
+        public ActionResult DeleteContrast(string idstr)
+        {
+            try
+            {
+                string[] templist = idstr.Split(',');
+                List<string> idlist = new List<string>();
+                for (int i = 0; i < templist.Length; i++)
+                {
+                    if (!string.IsNullOrWhiteSpace(templist[i]))
+                    {
+                        idlist.Add(templist[i]);
+                    }
+                }
+                string note = string.Empty;
+                bool count = mbll.RomvePhysics_Contrast(idlist, ref note);
+                if (count)
+                {
+                    return Json(Common.ToJsonResult("Success", "删除成功"), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(Common.ToJsonResult("Fail", "删除失败"), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "删除失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
 
         #region 删除我的订阅
         /// <summary>
@@ -1343,6 +1452,40 @@ namespace PlasQueryWeb.Controllers
             }
         }
         #endregion
+
+        #region 根据厂家名称获取对应的厂家id
+        /// <summary>
+        /// 根据厂家名称获取对应的厂家id
+        /// </summary>
+        /// <param name="name">厂家名称</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult AppGetFactoryByName(string name)
+        {
+            try
+            {
+                List<parminfo> listresult = new List<parminfo>();
+                DataTable dt = bll.AppGetFactoryByName(name);
+                if (dt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        parminfo m = new parminfo();
+                        m.Name = dt.Rows[i]["AliasName"].ToString();
+                        m.Guid = dt.Rows[i]["Guid"].ToString();
+                        listresult.Add(m);
+                    }
+                }
+                return Json(Common.ToJsonResult("Success", "获取成功", listresult), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
         //pdf数据
         public class pdfinfo {
             public string TypeName { get; set; }
