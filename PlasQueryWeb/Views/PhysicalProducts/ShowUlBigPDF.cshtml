@@ -1,0 +1,46 @@
+﻿@{
+    Layout = null;
+    var blist = ViewBag.blist as List<PlasModel.Ul_HeadModel>;
+}
+<link href="~/Content/css/H-ui.min.css" rel="stylesheet" />
+
+<div style="margin:20px;">
+    <table class="table table-border table-bordered" border="0" cellspacing="0" cellpadding="0">
+        <thead>
+            <tr>
+                <td>黄卡UL</td>
+                <td>型号</td>
+                <td>厂家</td>
+                <td>种类</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in blist)
+            {
+                <tr>
+                    <td>@item.FileNumber</td>
+                    <td>@item.Serires</td>
+                    <td>@item.Category</td>
+                    <td title="查看 @(item.Serires+item.Manufactory) UL" onclick="showUlmsgpdf('@item.NumberId')"><a href="javascript:void(0);">@item.Manufactory</a></td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+</div>
+
+<script src="~/Content/js/jquery-1.11.0.min.js"></script>
+<script src="~/Content/layui/lay/modules/layer.js"></script>
+<script type="text/javascript">
+    ///生成
+    function showUlmsgpdf(prodid) {
+        window.parent.layer.open({
+            type: 2,
+            title: '黄卡UL',
+            area: ['90%', '90%'],
+            content: '/PhysicalProducts/ShowUlPDF?ProductGuid=' + prodid
+        }); 
+
+    }
+</script>

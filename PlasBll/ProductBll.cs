@@ -216,6 +216,26 @@ namespace PlasBll
             return list;
         }
 
+            /// <summary>
+            ///根据 编号查询
+            /// </summary>
+            /// <param name="FileNumber"></param>
+            /// <returns></returns>
+        public List<Ul_HeadModel> GetUl_HeadNumber(string NumberId)
+        {
+            var list = new List<Ul_HeadModel>();
+            if (!string.IsNullOrWhiteSpace(NumberId))
+            {
+                var query = dal.GetUl_HeadNumber(NumberId);
+                if (query != null && query.Rows.Count > 0)
+                {
+                    list = PlasCommon.ToolClass<Ul_HeadModel>.ConvertDataTableToModel(query);
+                }
+            }
+            return list;
+        }
+
+
         /// <summary>
         /// Ul详情
         /// </summary>

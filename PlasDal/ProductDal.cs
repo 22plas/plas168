@@ -438,6 +438,7 @@ namespace PlasDal
             return SqlHelper.GetSqlDataTable(sql);
         }
         #endregion
+
         #region 产品UL
 
         /// <summary>
@@ -449,8 +450,22 @@ namespace PlasDal
         {
             string sql = string.Format(@"select b.* from Ul_Product a 
                                         left join Ul_Head b on a.FileNumber=b.FileNumber
-                                        where a.ProductId=@ProductId");
+                                        where a.ProductId=@ProductId
+                                        order by b.[Category] , b.[FileNumber] ,b.[Manufactory],   b.[Field8] ,b.[Serires]   ,b.[Field10] , b.[Field11]
+                                       ");
             SqlParameter[] parm = { new SqlParameter("@ProductId", ProductId) };
+            return SqlHelper.GetSqlDataTable_Param(sql.ToString(), parm);
+        }
+
+        /// <summary>
+        /// 根据编号
+        /// </summary>
+        /// <param name="NumberId"></param>
+        /// <returns></returns>
+        public DataTable GetUl_HeadNumber(string NumberId)
+        {
+            string sql = string.Format("select top 1* from Ul_Head where NumberId=@NumberId");
+            SqlParameter[] parm = { new SqlParameter("@NumberId", NumberId) };
             return SqlHelper.GetSqlDataTable_Param(sql.ToString(), parm);
         }
 
@@ -461,10 +476,7 @@ namespace PlasDal
         /// <returns></returns>
         public DataTable GetUl_body(string ProductId)
         {
-            string sql = string.Format(@"select c.* from Ul_Product a 
-                                            left join Ul_Head b on a.FileNumber = b.FileNumber
-                                            left join Ul_body c on b.NumberId = c.NumberId
-                                            where a.ProductId = @ProductId");
+            string sql = string.Format(@"select * from dbo.UL_Body where NumberId=@ProductId");
             SqlParameter[] parm = { new SqlParameter("@ProductId", ProductId) };
             return SqlHelper.GetSqlDataTable_Param(sql.ToString(), parm);
         }

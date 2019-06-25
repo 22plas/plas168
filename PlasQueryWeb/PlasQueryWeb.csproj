@@ -538,6 +538,7 @@
     <Content Include="Views\Shared\MemberOtherShared.cshtml" />
     <Content Include="Views\MemberCenter\Physics_ContrastList.cshtml" />
     <Content Include="Views\MemberCenter\QuotationDafaut.cshtml" />
+    <Content Include="Views\PhysicalProducts\ShowUlBigPDF.cshtml" />
     <Content Include="Views\PhysicalProducts\ShowUlPDF.cshtml" />
   </ItemGroup>
   <ItemGroup>
