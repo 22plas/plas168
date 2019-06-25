@@ -91,24 +91,24 @@
         <td style="padding:10px 0px;">
             @foreach (var item in blist)
             {
-            <table width="100%" border="0" style="border:solid 1px #be0f34;" cellspacing="0" cellpadding="0">
-                <tr class="trtitle">
-                    <td width="50%" class="pand10">@item.Serires</td>
-                    <td width="25%">Value</td>
-                    <td width="25%">Text Method</td>
-                </tr>
-                @foreach (var b in clist)
-                {
-                    if (item.NumberId == b.NumberId && !string.IsNullOrWhiteSpace(b.Attribute2))
+                <table width="100%" border="0" style="border:solid 1px #be0f34;" cellspacing="0" cellpadding="0">
+                    <tr class="trtitle">
+                        <td width="50%" class="pand10">@item.Serires</td>
+                        <td width="25%">Value</td>
+                        <td width="25%">Text Method</td>
+                    </tr>
+                    @foreach (var b in clist)
                     {
-                        <tr class="showlist pand20">
-                            <td>@b.Attribute2</td>
-                            <td>@(b.Value+b.Unit)</td>
-                            <td>@b.TestType</td>
-                        </tr>
+                        if (item.NumberId == b.NumberId && !string.IsNullOrWhiteSpace(b.Attribute2))
+                        {
+                            <tr class="showlist pand20">
+                                <td>@b.Attribute2</td>
+                                <td>@(b.Value + b.Unit)</td>
+                                <td>@b.TestType</td>
+                            </tr>
+                        }
                     }
-                }
-            </table>
+                </table>
             }
 
 
@@ -117,7 +117,7 @@
     <tr>
         <td height="20">&nbsp;</td>
     </tr>
-    <tr>
+    <!--<tr>
         <td>
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                 <tr>
@@ -129,5 +129,5 @@
             </table>
 
         </td>
-    </tr>
+    </tr>-->
 </table>

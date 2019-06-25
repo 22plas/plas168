@@ -54,10 +54,12 @@ namespace PlasModel.Controllers
                 {
                     var isadd = true;
                     var kvalue = comp.Rows[k]["Name"].ToString();
+                    var samllGuid = comp.Rows[k]["SmallGuid"].ToString();
                     if (string.IsNullOrWhiteSpace(kvalue))
                     {
                         kvalue = comp.Rows[k]["EnglishName"].ToString();
                     }
+
                     for (var j = 0; j < tblDatas.Rows.Count; j++)
                     {
                         if (kvalue == tblDatas.Rows[j]["Name"].ToString())
@@ -69,7 +71,7 @@ namespace PlasModel.Controllers
                     if (isadd)
                     {
                         newRow = tblDatas.NewRow();
-                        newRow["SmallGuid"] = comp.Rows[k]["SmallGuid"].ToString();
+                        newRow["SmallGuid"] = GetDetail(comp, comp.Rows[k]["Name"].ToString());//comp.Rows[k]["SmallGuid"].ToString();
                         newRow["Name"] = comp.Rows[k]["Name"].ToString();
                         tblDatas.Rows.Add(newRow);
                     }
@@ -107,6 +109,50 @@ namespace PlasModel.Controllers
             ViewBag.tianjiaji = tianjiaji;
             return View();
         }
+
+        /// <summary>
+        /// 返回重复GUID
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="strName"></param>
+        /// <returns></returns>
+        private string GetDetail(DataTable dt, string strName)
+        {
+            string retGuid = string.Empty;
+            if (dt != null && dt.Rows.Count > 0 && !string.IsNullOrWhiteSpace(strName))
+            {
+                DataRow[] arrRows = dt.Select("Name='" + strName + "'");
+                var datadt = ToDataTable(arrRows);
+                if (datadt.Rows.Count > 0)
+                {
+                    for (var i = 0; i < datadt.Rows.Count; i++)
+                    {
+                        retGuid += datadt.Rows[i]["SmallGuid"].ToString() + ";";
+                    }
+                }
+            }
+            if (!string.IsNullOrWhiteSpace(retGuid))
+            {
+                retGuid = retGuid.Substring(0, retGuid.Length - 1);
+            }
+            return retGuid;
+        }
+
+
+        private DataTable ToDataTable(DataRow[] rows)
+        {
+            if (rows == null || rows.Length == 0) return null;
+            DataTable tmp = rows[0].Table.Clone(); // 复制DataRow的表结构
+            foreach (DataRow row in rows)
+            {
+                tmp.ImportRow(row); // 将DataRow添加到DataTable中
+            }
+            return tmp;
+        }
+
+
+
+
 
         //产品详情
         public ActionResult Detail(string prodid)
@@ -220,7 +266,7 @@ namespace PlasModel.Controllers
                     {
                         newRow = tblDatas.NewRow();
                         newRow["AliasName"] = allData.Rows[k]["AliasName"].ToString();
-                        newRow["SmallGuid"] = allData.Rows[k]["SmallGuid"].ToString();
+                        newRow["SmallGuid"] = GetDetail(allData, allData.Rows[k]["Name"].ToString().Replace("'","''"));//allData.Rows[k]["SmallGuid"].ToString();
                         newRow["Name"] = allData.Rows[k]["Name"].ToString();
                         tblDatas.Rows.Add(newRow);
                     }
@@ -347,7 +393,7 @@ namespace PlasModel.Controllers
         /// <returns></returns>
         public ActionResult ShowUlPDF(string ProductGuid)
         {
-            ProductGuid = "1298B2AA-ED90-4B79-8ACB-535704D463FD";
+          //  ProductGuid = "1298B2AA-ED90-4B79-8ACB-535704D463FD";
             PlasBll.ProductBll bll = new ProductBll();
             var blist = new List<Ul_HeadModel>();
             var clist = new List<Ul_bodyModel>();
