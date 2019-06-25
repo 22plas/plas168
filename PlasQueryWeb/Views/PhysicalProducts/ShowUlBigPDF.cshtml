@@ -15,16 +15,24 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in blist)
+            @if (blist.Count > 0)
+            {
+                foreach (var item in blist)
+                {
+                    <tr>
+                        <td>@item.FileNumber</td>
+                        <td>@item.Serires</td>
+                        <td>@item.Category</td>
+                        <td title="查看 @(item.Serires + item.Manufactory) UL" onclick="showUlmsgpdf('@item.NumberId')"><a href="javascript:void(0);">@item.Manufactory</a></td>
+                    </tr>
+                }
+            }
+            else
             {
                 <tr>
-                    <td>@item.FileNumber</td>
-                    <td>@item.Serires</td>
-                    <td>@item.Category</td>
-                    <td title="查看 @(item.Serires+item.Manufactory) UL" onclick="showUlmsgpdf('@item.NumberId')"><a href="javascript:void(0);">@item.Manufactory</a></td>
+                    <td colspan="4" style="font-size:12px;text-align:center; color:darkred">暂无黄卡信息</td>
                 </tr>
             }
-
         </tbody>
 
     </table>
