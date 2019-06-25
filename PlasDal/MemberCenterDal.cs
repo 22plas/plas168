@@ -48,7 +48,7 @@ namespace PlasDal
             {
                 addsql = string.Format(@"INSERT dbo.cp_user
                 ( UserName ,UserPwd ,Email ,Phone ,Address ,TestQQ ,CreateDate ,states ,ErrorDate ,ErrorCount ,WeChat ,ContentAddress ,LeaderUserName,HeadImage,InTotal,OutTotal,Balance,ID,qqopenid)
-                VALUES  ( '{0}' ,'{1}' ,'{2}' ,'{3}' ,'{4}' ,N'' ,GETDATE() ,0 ,null ,0 ,N'' ,N'' ,'{5}','{8}',100,0,100,'{6}','{7}')", model.UserName, "", string.Empty,"", string.Empty, leaderuserid, guid, model.wxopenid, model.HeadImage);
+                VALUES  ( '{0}' ,'{1}' ,'{2}' ,'{3}' ,'{4}' ,N'' ,GETDATE() ,0 ,null ,0 ,N'' ,N'' ,'{5}','{8}',100,0,100,'{6}','{7}')", model.UserName, "", string.Empty,"", string.Empty, leaderuserid, guid, model.qqopenid, model.HeadImage);
             }
             else
             {
