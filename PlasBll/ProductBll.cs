@@ -208,7 +208,7 @@ namespace PlasBll
             if (!string.IsNullOrWhiteSpace(ProductId))
             {
                 var query = dal.GetUl_Head(ProductId);
-                if (query != null)
+                if (query != null && query.Rows.Count>0)
                 {
                     list = PlasCommon.ToolClass<Ul_HeadModel>.ConvertDataTableToModel(query);
                 }
@@ -227,7 +227,7 @@ namespace PlasBll
             if (!string.IsNullOrWhiteSpace(NumberId))
             {
                 var query = dal.GetUl_body(NumberId);
-                if (query != null)
+                if (query != null && query.Rows.Count > 0)
                 {
                     list = PlasCommon.ToolClass<Ul_bodyModel>.ConvertDataTableToModel(query);
                 }
