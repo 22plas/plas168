@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>黄卡UL</title>
+    <title>黄卡UL- @(bModel.FileNumber+"-"+bModel.Serires)</title>
     <style type="text/css">
         .title {
             height: 90px;
@@ -37,12 +37,12 @@
 
             .titleCenter a {
                 color: #fff;
-                text-decoration: underline;
+                text-decoration: none;
             }
 
                 .titleCenter a:hover {
                     color: #fff;
-                    text-decoration: none;
+                    text-decoration: underline;
                 }
 
         tr, td {
@@ -130,7 +130,6 @@
             line-height: 25px;
         }
     </style>
-
 </head>
 <body>
     <table width="90%" border="0" align="center" cellspacing="0" cellpadding="0">
@@ -138,15 +137,13 @@
             <td class="title">
                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td width="100" class="logimg" rowspan="2"><img src="~/Content/images/ul_Logo.jpg" style="margin-left:10px;" /></td>
+                        <td width="100" class="logimg" rowspan="2" style="background-color:#be0f34;"><img src="~/Content/images/ul_Logo.jpg" style="margin-left:10px;" /></td>
                         <td class="titleCenter"><h1>@bModel.Category</h1></td>
-                        <td width="200" class="titleCenter" rowspan="2"><a href="javascript:void(0);" onclick="viewpdf('@bModel.NumberId','@bModel.Serires');"><h1>Download UL</h1></a></td>
                     </tr>
                     <tr>
-                        <td class="titleCenter"><h2>File Number : @bModel.FileNumber</h2></td>
+                        <td class="titleCenter" style="background-color:#be0f34;"><h2>File Number : @bModel.FileNumber</h2></td>
                     </tr>
                 </table>
-
             </td>
         </tr>
         <tr>
@@ -209,46 +206,7 @@
         <tr>
             <td height="20">&nbsp;</td>
         </tr>
-        <!--<tr>
-            <td>
-                <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                    <tr>
-                        <td class="baseTitle">基于h-ui admin后台管理前端框架模板</td>
-                    </tr>
-                    <tr>
-                        <td class="baseContent">2018年4月19日 - 基于h-ui admin后台管理前端框架模板 基于h-ui前端框架制作绿色的OA后台管理系统模板。页面人口是index.html是采用iframe,必须重index.html进入,不然...</td>
-                    </tr>
-                </table>
-
-            </td>
-        </tr>-->
     </table>
 
 </body>
 </html>
-<script src="~/Content/js/jquery-1.11.0.min.js"></script>
-<script src="~/Content/layui/lay/modules/layer.js"></script>
-
-<script type="text/javascript">
-    function viewpdf(prodid, prodModel) {
-        debugger;
-        var index = layer.load(2, { shade: false });
-        var url = location.href;
-
-        //打开一个不被拦截的新窗口
-        var newWindow = window.open('/viewpdf.html');
-        $.ajax({
-            type: "get",
-            url: '/PhysicalProducts/ViewUL_Pdf',
-            data: { prodid: prodid, prodModel: prodModel },
-            success: function (data) {
-                //生成pdf成功，返回pdf路径
-                debugger;
-                layer.close(index);
-                newWindow.location.href = '/' + data;
-            }
-
-        });
-
-    }
-</script>

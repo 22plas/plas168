@@ -435,6 +435,46 @@ namespace PlasModel.Controllers
             return View();
         }
 
+
+        /// <summary>
+        /// 显示PDF生成
+        /// </summary>
+        /// <param name="ProductGuid"></param>
+        /// <returns></returns>
+        public ActionResult ViewUl_ShowPdf(string prodid)
+        {
+            PlasBll.ProductBll bll = new ProductBll();
+            var blist = new Ul_HeadModel();
+            var clist = new List<Ul_bodyModel>();
+            if (!string.IsNullOrWhiteSpace(prodid))
+            {
+                var query = bll.GetUl_HeadNumber(prodid);
+                if (query != null && query.Count > 0)
+                {
+                    blist = query[0];
+                }
+                clist = bll.GetUl_body(prodid);
+
+            }
+            ViewBag.blist = blist;
+            ViewBag.clist = clist;
+            return View();
+        }
+
+
+        //
+        public string ViewUL_Pdf(string prodid, string prodModel = "")
+        {
+            if (string.IsNullOrWhiteSpace(prodModel))
+                return "";
+            //prodModel = HttpUtility.UrlEncode(prodModel);
+            //prodModel = prodModel.Replace(" ","+");
+            string pdfUrl = "pdf/" + prodid + ".pdf";
+            bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewUl_ShowPdf?prodid=" + prodid, pdfUrl);
+            if (success)
+                return pdfUrl;
+            return "";
+        }
         #endregion
 
 

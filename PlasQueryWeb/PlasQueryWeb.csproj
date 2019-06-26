@@ -540,6 +540,7 @@
     <Content Include="Views\MemberCenter\QuotationDafaut.cshtml" />
     <Content Include="Views\PhysicalProducts\ShowUlBigPDF.cshtml" />
     <Content Include="Views\PhysicalProducts\ShowUlPDF.cshtml" />
+    <Content Include="Views\PhysicalProducts\ViewUl_ShowPdf.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
