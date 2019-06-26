@@ -221,7 +221,7 @@ namespace PlasModel.Controllers
                 string errMsg = string.Empty;
                 mbll.AddPhysics_Browse(mModels, ref errMsg);
             }
-
+            //System.Text.RegularExpressions.Regex reg = new System.Text.RegularExpressions.Regex(@"(?<=^|>)[^<>]+(?=<|$)");
             ViewBag.PdfUrl = PdfUrl;
             ViewBag.ProdID = prodid;
             ViewBag.LiveProdcut = LiveDs;
