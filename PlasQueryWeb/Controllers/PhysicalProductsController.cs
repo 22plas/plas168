@@ -221,7 +221,7 @@ namespace PlasModel.Controllers
                 string errMsg = string.Empty;
                 mbll.AddPhysics_Browse(mModels, ref errMsg);
             }
-
+            //System.Text.RegularExpressions.Regex reg = new System.Text.RegularExpressions.Regex(@"(?<=^|>)[^<>]+(?=<|$)");
             ViewBag.PdfUrl = PdfUrl;
             ViewBag.ProdID = prodid;
             ViewBag.LiveProdcut = LiveDs;
@@ -387,26 +387,94 @@ namespace PlasModel.Controllers
 
         #region 生成UL
 
+
         /// <summary>
         /// 显示UL数据
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult ShowUlBigPDF(string ProductGuid)
+        {
+            //  ProductGuid = "1298B2AA-ED90-4B79-8ACB-535704D463FD";
+            PlasBll.ProductBll bll = new ProductBll();
+            var blist = new List<Ul_HeadModel>();
+            //  var clist = new List<Ul_bodyModel>();
+            if (!string.IsNullOrWhiteSpace(ProductGuid))
+            {
+                blist = bll.GetUl_Head(ProductGuid);
+                // clist = bll.GetUl_body(ProductGuid);
+            }
+            ViewBag.blist = blist;
+            //ViewBag.clist = clist;
+            return View();
+        }
+
+
+
+        /// <summary>
+        /// 显示UL数据详情
         /// </summary>
         /// <returns></returns>
         public ActionResult ShowUlPDF(string ProductGuid)
         {
           //  ProductGuid = "1298B2AA-ED90-4B79-8ACB-535704D463FD";
             PlasBll.ProductBll bll = new ProductBll();
-            var blist = new List<Ul_HeadModel>();
+            var blist = new Ul_HeadModel();
             var clist = new List<Ul_bodyModel>();
             if (!string.IsNullOrWhiteSpace(ProductGuid))
             {
-                blist = bll.GetUl_Head(ProductGuid);
+                var query = bll.GetUl_HeadNumber(ProductGuid);
+                if (query!=null && query.Count > 0)
+                {
+                    blist = query[0];
+                }
                 clist = bll.GetUl_body(ProductGuid);
+
             }
             ViewBag.blist = blist;
             ViewBag.clist = clist;
             return View();
         }
 
+
+        /// <summary>
+        /// 显示PDF生成
+        /// </summary>
+        /// <param name="ProductGuid"></param>
+        /// <returns></returns>
+        public ActionResult ViewUl_ShowPdf(string prodid)
+        {
+            PlasBll.ProductBll bll = new ProductBll();
+            var blist = new Ul_HeadModel();
+            var clist = new List<Ul_bodyModel>();
+            if (!string.IsNullOrWhiteSpace(prodid))
+            {
+                var query = bll.GetUl_HeadNumber(prodid);
+                if (query != null && query.Count > 0)
+                {
+                    blist = query[0];
+                }
+                clist = bll.GetUl_body(prodid);
+
+            }
+            ViewBag.blist = blist;
+            ViewBag.clist = clist;
+            return View();
+        }
+
+
+        //
+        public string ViewUL_Pdf(string prodid, string prodModel = "")
+        {
+            if (string.IsNullOrWhiteSpace(prodModel))
+                return "";
+            //prodModel = HttpUtility.UrlEncode(prodModel);
+            //prodModel = prodModel.Replace(" ","+");
+            string pdfUrl = "pdf/" + prodid + ".pdf";
+            bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewUl_ShowPdf?prodid=" + prodid, pdfUrl);
+            if (success)
+                return pdfUrl;
+            return "";
+        }
         #endregion
 
 

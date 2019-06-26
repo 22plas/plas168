@@ -4,6 +4,7 @@
     var PhysicalData = ViewBag.PhysicalInfo == null ? new System.Data.DataTable() : ViewBag.PhysicalInfo as System.Data.DataTable;
     var liveds = (ViewBag.LiveProdcut) as System.Data.DataSet;//第一表：同一个厂家，第二表：感兴趣的产品
     var pdf = (ViewBag.pdfdt) as System.Data.DataTable;//产品下面的pdf
+    
 }
 <style type="text/css">
     .item-left {
@@ -68,8 +69,18 @@
                             }
                             else if (string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
                             {
+                                var attrone = System.Text.RegularExpressions.Regex.Replace(dr["Attribute1"].ToString(), @"\s", "").ToUpper();
+                                if (attrone == "黄卡编号" || attrone == "UL黄卡1" || attrone == "UL黄卡2")
+                                {
                                 <div class="f-l" style="width:25%;">@dr["Attribute1"].ToString()</div>
-                                <div class="f-l" style="width: 75%;">@dr["Attribute2"].ToString()</div>
+                                    <div class="f-l" style="width: 75%;"><a href="javascript:void(0)" onclick="showUlPdfCheck('@ViewBag.ProdID','@dr["Attribute2"].ToString()');" style="color:#de5f02;">@dr["Attribute2"].ToString()</a></div>
+                                }
+                                else
+                                {
+                                    <div class="f-l" style="width:25%;">@dr["Attribute1"].ToString()</div>
+                                    <div class="f-l" style="width: 75%;">@dr["Attribute2"].ToString()</div>
+                                }
+
                             }
                             else if (string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
                             {
@@ -167,13 +178,19 @@
     function showUlpdf(prodid) {
         layer.open({
             type: 2,
-            title: '黄卡UL',
+            title: '所有黄卡项',
             shade: false,
             maxmin: true,
-            area: ['90%', '90%'],
-            content: '/PhysicalProducts/ShowUlPDF?ProductGuid=' + prodid
+            area: ['98%', '98%'],
+            content: '/PhysicalProducts/ShowUlBigPDF?ProductGuid=' + prodid
         });
        // alert(prodid);
+    }
+
+
+    function showUlPdfCheck(prodid, code) {
+        //alert(prodid + "+" + code);
+        showUlpdf(prodid);
     }
 
 </script>
