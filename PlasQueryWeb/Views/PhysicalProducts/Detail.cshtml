@@ -70,10 +70,11 @@
                             else if (string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
                             {
                                 var attrone = System.Text.RegularExpressions.Regex.Replace(dr["Attribute1"].ToString(), @"\s", "").ToUpper();
+                                var attrtwo = System.Text.RegularExpressions.Regex.Replace(dr["Attribute2"].ToString(), @"\s", "").ToUpper();
                                 if (attrone == "黄卡编号" || attrone == "UL黄卡1" || attrone == "UL黄卡2")
                                 {
                                 <div class="f-l" style="width:25%;">@dr["Attribute1"].ToString()</div>
-                                    <div class="f-l" style="width: 75%;"><a href="javascript:void(0)" onclick="showUlPdfCheck('@ViewBag.ProdID','@dr["Attribute2"].ToString()');" style="color:#de5f02;">@dr["Attribute2"].ToString()</a></div>
+                                    <div class="f-l" style="width: 75%;"><a href="javascript:void(0)" onclick="showUlPdfCheck('@ViewBag.ProdID','@attrtwo');" style="color:#de5f02;">@dr["Attribute2"].ToString()</a></div>
                                 }
                                 else
                                 {
