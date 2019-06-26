@@ -180,7 +180,7 @@ namespace PlasQueryWeb.Controllers
                 string jsonstr = string.Empty;
                 if (!string.IsNullOrEmpty(bdate) && !string.IsNullOrEmpty(ndate))
                 {
-                    sql.Append(" and pridate>='" + bdate + "' and  pridate<='" + ndate + "'");
+                    sql.Append(" and pridate>='" + starttime + "' and  pridate<='" + endtime + "'");
                 }
                 if (!string.IsNullOrWhiteSpace(priceproductguid))
                 {
@@ -221,6 +221,98 @@ namespace PlasQueryWeb.Controllers
                     data = jsonstr
                 };
                 return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
+        #region 获取价格走势对比信息
+        /// <summary>
+        /// 获取价格走势对比信息
+        /// </summary>
+        /// <param name="priceproductguid">id</param>
+        /// <param name="bdate">起始时间</param>
+        /// <param name="ndate">结束时间</param>
+        /// <param name="type">时间类型：0 近七天 1：近一个月 2：近半年 3：自定义</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult AppGetPriceDateListContrast(string priceproductguid, string bdate, string ndate, string type)
+        {
+            try
+            {
+                string[] liststrpid = priceproductguid.Split(';');
+                StringBuilder sql = new StringBuilder();
+                string starttime = "";
+                string endtime = "";
+                if (type == "0")
+                {
+                    starttime = DateTime.Now.AddDays(-7).ToShortDateString();
+                    endtime = DateTime.Now.ToShortDateString();
+                }
+                else if (type == "1")
+                {
+                    starttime = DateTime.Now.AddDays(-30).ToShortDateString();
+                    endtime = DateTime.Now.ToShortDateString();
+                }
+                else if (type == "2")
+                {
+                    starttime = DateTime.Now.AddMonths(6).ToShortDateString();
+                    endtime = DateTime.Now.ToShortDateString();
+                }
+                else
+                {
+                    starttime = bdate;
+                    endtime = ndate;
+                }
+                //返回数据集
+                List<PriceContrast> listcontrast = new List<PriceContrast>();
+                string jsonstr = string.Empty;
+                int max = 0;
+                int min = 0;
+                for (int i = 0; i < liststrpid.Length; i++)
+                {
+                    if (!string.IsNullOrEmpty(bdate) && !string.IsNullOrEmpty(ndate))
+                    {
+                        sql.Append(" and pridate>='" + starttime + "' and  pridate<='" + endtime + "'");
+                    }
+                    if (!string.IsNullOrWhiteSpace(priceproductguid))
+                    {
+                        sql.Append(@" and PriceProductGuid in(SELECT PriceProductGuid FROM dbo.Pri_Product WHERE ProductGuid='" + liststrpid[i] + "')");
+                    }
+                    var dt = bll.GetPriceLineDt(sql.ToString());
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        PriceContrast model = new PriceContrast();
+                        model.pricejsondata = ToolHelper.DataTableToJson(dt);
+                        for (int j = 0; j < dt.Rows.Count; j++)
+                        {
+                            int tempmax = Convert.ToInt32(dt.Rows[j]["Price"]);
+                            if (max < tempmax)
+                            {
+                                max = tempmax;
+                            }
+                            if (min == 0)
+                            {
+                                min = tempmax;
+                            }
+                            else
+                            {
+                                if (min > tempmax)
+                                {
+                                    min = tempmax;
+                                }
+                            }
+                        }
+                        model.MaxPrice = max;
+                        model.MinPrice = min;
+                        listcontrast.Add(model);
+                    }
+                }
+                return Json(Common.ToJsonResult("Success", "获取成功", listcontrast), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -834,11 +926,45 @@ namespace PlasQueryWeb.Controllers
         }
         #endregion
 
-        #region 添加物料收藏
+        #region 根据价格趋势id获取对应的物性id
         /// <summary>
-        /// 添加物料收藏
+        /// 根据价格趋势id获取对应的物性id
         /// </summary>
         /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetProductidByPrid(string prid)
+        {
+            try
+            {
+                string sql = string.Format("SELECT * FROM dbo.Pri_Product WHERE PriceProductGuid='{0}'", prid);
+                DataTable pdt = SqlHelper.GetSqlDataTable(sql);
+                string tempid = "";
+                string tempmodel = "";
+                if (pdt.Rows.Count > 0)
+                {
+                    tempid = pdt.Rows[0]["ProductGuid"].ToString();
+                    tempmodel= pdt.Rows[0]["Model"].ToString();
+                }
+                var returndata = new
+                {
+                    pid = tempid,
+                    pmodel= tempmodel
+                };
+                return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
+        #region 添加物料收藏
+            /// <summary>
+            /// 添加物料收藏
+            /// </summary>
+            /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpPost]
         public ActionResult AddMaterialCollection(Physics_CollectionModel model,string type="0")
@@ -991,15 +1117,65 @@ namespace PlasQueryWeb.Controllers
         /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpPost]
-        public ActionResult AddMaterialContrast(Physics_ContrastModel model)
+        public ActionResult AddMaterialContrast(Physics_ContrastModel model, string type)
         {
             try
             {
-                string sql = string.Format("SELECT * FROM dbo.Pri_Product WHERE PriceProductGuid='{0}'", model.ProductGuid);
-                DataTable pdt = SqlHelper.GetSqlDataTable(sql);
-                if (pdt.Rows.Count > 0)
+                if (type=="1")
                 {
-                    model.ProductGuid = pdt.Rows[0]["ProductGuid"].ToString();
+                    string sql = string.Format("SELECT * FROM dbo.Pri_Product WHERE PriceProductGuid='{0}'", model.ProductGuid);
+                    DataTable pdt = SqlHelper.GetSqlDataTable(sql);
+                    if (pdt.Rows.Count > 0)
+                    {
+                        model.ProductGuid = pdt.Rows[0]["ProductGuid"].ToString();
+                    }
+                }                
+                string savesql = string.Format("select id from Physics_Contrast where ProductGuid='{0}' and UserId='{1}'", model.ProductGuid, model.UserId);
+                var dt = SqlHelper.GetSqlDataTable(savesql.ToString());
+                if (dt.Rows.Count > 0)
+                {
+                    return Json(Common.ToJsonResult("IsCollection", "此产品已经添加对比"), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    string msg = "";
+                    bool returnresult = mbll.AddPhysics_Contrast(model, ref msg);
+                    if (returnresult)
+                    {
+                        return Json(Common.ToJsonResult("Success", "加入对比成功"), JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(Common.ToJsonResult("Fail", "加入对比失败"), JsonRequestBehavior.AllowGet);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "加入对比失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
+        #region 添加浏览记录
+        /// <summary>
+        /// 添加浏览记录
+        /// </summary>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpPost]
+        public ActionResult AddBrowse(Physics_ContrastModel model, string type)
+        {
+            try
+            {
+                if (type == "1")
+                {
+                    string sql = string.Format("SELECT * FROM dbo.Pri_Product WHERE PriceProductGuid='{0}'", model.ProductGuid);
+                    DataTable pdt = SqlHelper.GetSqlDataTable(sql);
+                    if (pdt.Rows.Count > 0)
+                    {
+                        model.ProductGuid = pdt.Rows[0]["ProductGuid"].ToString();
+                    }
                 }
                 string savesql = string.Format("select id from Physics_Contrast where ProductGuid='{0}' and UserId='{1}'", model.ProductGuid, model.UserId);
                 var dt = SqlHelper.GetSqlDataTable(savesql.ToString());
@@ -1336,6 +1512,72 @@ namespace PlasQueryWeb.Controllers
         }
         #endregion
 
+        #region 获取我的浏览记录
+        /// <summary>
+        /// 获取我的浏览记录
+        /// </summary>
+        /// <param name="userId">用户id</param>
+        /// <param name="pageindex">页码</param>
+        /// <param name="pagesize">每页数量</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetPhysics_Browse(string userId, int pageindex, int pagesize)
+        {
+            List<Physics_BrowseModel> returnlist = new List<Physics_BrowseModel>();
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                string msg = "";
+                int pagecount = 0;
+                returnlist = mbll.GetPhysics_Browse(userId, pageindex, pagesize,ref pagecount, ref msg,"");
+                return Json(Common.ToJsonResult("Success", "获取成功", returnlist), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败"), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
+        #region 删除我的浏览记录
+        /// <summary>
+        /// 删除我的浏览记录
+        /// </summary>
+        /// <param name="idstr"></param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpPost]
+        public ActionResult DeleteBrowse(string idstr)
+        {
+            try
+            {
+                string[] templist = idstr.Split(',');
+                List<string> idlist = new List<string>();
+                for (int i = 0; i < templist.Length; i++)
+                {
+                    if (!string.IsNullOrWhiteSpace(templist[i]))
+                    {
+                        idlist.Add(templist[i]);
+                    }
+                }
+                string note = string.Empty;
+                bool count = mbll.RomvePhysics_Browse(idlist, ref note);
+                if (count)
+                {
+                    return Json(Common.ToJsonResult("Success", "删除成功"), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(Common.ToJsonResult("Fail", "删除失败"), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "删除失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
         #region 删除我的对比
         /// <summary>
         /// 删除我的对比
@@ -1573,6 +1815,17 @@ namespace PlasQueryWeb.Controllers
             public string characteristic { get; set; }
             public string custguid { get; set; }
             public string isColl { get; set; }
+        }
+
+        //价格对比类
+        public class PriceContrast
+        {
+            //价格json数据
+            public string pricejsondata { get; set; }
+            //最大价格
+            public int MaxPrice { get; set; }
+            //最小价格
+            public int MinPrice { get; set; }
         }
     }
 }
