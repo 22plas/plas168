@@ -187,6 +187,16 @@ namespace PlasDal
             var dt = SqlHelper.GetSqlDataTable(sql.ToString());
             return dt;
         }
+        /// <summary>
+        /// 新的获取替换RealKey
+        /// </summary>
+        /// <returns></returns>
+        public DataTable NewGetAttributeAliasList_RealKey(string productid)
+        {
+            string sqlparm5 = string.Format("exec readproduct_for_alikeuser '{0}',{1}", productid, 2052);
+            var dt = SqlHelper.GetSqlDataTable(sqlparm5);
+            return dt;
+        }
 
         //根据产品来获取数据信息
         public DataSet GetProductReplace(string ver,string proGuid,int pageno,int pagesize,int isfilter,string companys)

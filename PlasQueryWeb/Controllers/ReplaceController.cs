@@ -55,20 +55,23 @@ namespace PlasModel.Controllers
             if (!string.IsNullOrEmpty(Rpt))
             {
                 var ds = bll.GetModelInfo(Rpt);
-                pt = plbll.GetAttributeAliasList_RealKey();//替换属性RealKey
+                //pt = plbll.GetAttributeAliasList_RealKey();//替换属性RealKey
+                pt = plbll.NewGetAttributeAliasList_RealKey(Rpt);//替换属性RealKey(罗志强 修改使用新的存储过程查询参数数据)
+
                 if (ds.Tables.Contains("ds") && ds.Tables[0].Rows.Count > 0)
                 {
                     ProTitle = ds.Tables[0].Rows[0]["proModel"].ToString();
                     ProGuid = ds.Tables[0].Rows[0]["productid"].ToString();
 
                 }
-                if (ds.Tables.Contains("ds1") && ds.Tables[1].Rows.Count > 0)
+                //if (ds.Tables.Contains("ds1") && ds.Tables[1].Rows.Count > 0)
+                if(pt.Rows.Count>0)
                 {
                     //< !--卿思明:
                     //产品说明；注射; 注射说明; 备注 这些都不参与对比
                     //，说明，加工方法，备注不允许选择-- >
                     //< !--总体参与对比的有（（RoHS 合规性；供货地区；加工方法；树脂ID(ISO 1043)；特性；添加剂；填料 / 增强材料；用途 ）这个是总体里要参与对比的）-->
-                    var dr = ds.Tables[1];///此数据要过滤
+                    var dr = pt; //ds.Tables[1];///此数据要过滤（罗志强修改使用新存储过程查询的数据）
 
                     DataTable tblDatas = new DataTable("Datas");
                     DataColumn dc = null;
@@ -130,18 +133,19 @@ namespace PlasModel.Controllers
                                     {
                                         samllName = dr.Rows[i]["Attribute1"].ToString().Trim();
                                     }
-                                    DataRow[] rows = pt.Select("Attribute1='" + bigName + "' and Attribute2Alias = '" + samllName + "'");
-                                    if (rows.Count() > 0)
-                                    {
-                                        RealKey = rows[0]["RealKey"].ToString();
-                                    }
+                                    //罗志强修改  在新的存储过程中已经查询出realkey
+                                    //DataRow[] rows = pt.Select("Attribute1='" + bigName + "' and Attribute2Alias = '" + samllName + "'");
+                                    //if (rows.Count() > 0)
+                                    //{
+                                    //    RealKey = rows[0]["RealKey"].ToString();
+                                    //}
                                     newRow["lev"] = dr.Rows[i]["lev"].ToString().Trim();
                                     newRow["Attribute1"] = dr.Rows[i]["Attribute1"].ToString().Trim();
                                     newRow["Attribute2"] = dr.Rows[i]["Attribute2"].ToString().Trim();
                                     newRow["Attribute3"] = dr.Rows[i]["Attribute3"].ToString().Trim();
                                     newRow["Attribute4"] = dr.Rows[i]["Attribute4"].ToString().Trim();
                                     newRow["Attribute5"] = dr.Rows[i]["Attribute5"].ToString().Trim();
-                                    newRow["RealKey"] = RealKey;
+                                    newRow["RealKey"] = dr.Rows[i]["realkey"].ToString().Trim();// RealKey;
                                     tblDatas.Rows.Add(newRow);
                                 }
 

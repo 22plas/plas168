@@ -165,7 +165,7 @@ namespace PlasDal
             }
             else
             {
-                sql = string.Format(@"select Name,guid as parentguid from Prd_SmallClass_l where MidClassName='{0}' and LanguageId=2052 order by Name", middlename);
+                sql = string.Format(@"select Name,parentguid as parentguid from Prd_SmallClass_l where MidClassName='{0}' and LanguageId=2052 order by Name", middlename);
             }
             DataTable dt = SqlHelper.GetSqlDataTable(sql);
             return dt;
@@ -178,9 +178,26 @@ namespace PlasDal
             return ds;
         }
         //app获取搜索属性值
-        public DataTable Sys_GetSuperSearchParamForApp(int parentID = -1)
+        public DataTable Sys_GetSuperSearchParamForApp(string type, string keyname)
         {
-            string sql = string.Format("exec proc_supersearch_getParam_forapp {0}", parentID);
+            //string sql = string.Format("exec proc_supersearch_getParam_forapp {0}", parentID);
+            //DataTable dt = SqlHelper.GetSqlDataTable(sql);
+            string sql = string.Format(@"SELECT * FROM V_RealKey");
+            //一级
+            if (type == "0")
+            {
+                sql = "SELECT DISTINCT parentkey FROM V_RealKey";
+            }
+            //二级
+            else if (type == "1")
+            {
+                sql = string.Format("SELECT DISTINCT realkeygroup FROM V_RealKey WHERE parentkey='{0}'", keyname);
+            }
+            //三级
+            else if (type == "2")
+            {
+                sql = string.Format("SELECT  FaceKey,RealKey,Guid FROM V_RealKey WHERE realkeygroup='{0}'", keyname);
+            }
             DataTable dt = SqlHelper.GetSqlDataTable(sql);
             return dt;
         }

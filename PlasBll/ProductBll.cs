@@ -71,9 +71,9 @@ namespace PlasBll
             return dal.Sys_GetSuperSearchParam(parentID);
         }
         //app获取搜索属性值
-        public DataTable Sys_GetSuperSearchParamForApp(int parentID = -1)
+        public DataTable Sys_GetSuperSearchParamForApp(string type, string keyname)
         {
-            return dal.Sys_GetSuperSearchParamForApp(parentID);
+            return dal.Sys_GetSuperSearchParamForApp(type, keyname);
         }
 
         //超级搜索

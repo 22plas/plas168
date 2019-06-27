@@ -24,7 +24,11 @@ namespace PlasBll
         {
             return dal.GetAttributeAliasList_RealKey();
         }
-
+        //新的查找替换里面的RealKey
+        public DataTable NewGetAttributeAliasList_RealKey(string productid)
+        {
+            return dal.NewGetAttributeAliasList_RealKey(productid);
+        }
         //根据产品获取替换数据
         public DataSet GetProductReplace(string ver, string proGuid, int pageno, int pagesize, int isfilter, string companys)
         {
