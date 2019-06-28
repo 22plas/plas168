@@ -186,17 +186,17 @@ namespace PlasDal
             //一级
             if (type == "0")
             {
-                sql = "SELECT DISTINCT parentkey FROM V_RealKey";
+                sql = "SELECT DISTINCT parentkey,parentweight FROM V_RealKey WHERE parentkey<>'总体' ORDER BY parentweight ASC";
             }
             //二级
             else if (type == "1")
             {
-                sql = string.Format("SELECT DISTINCT realkeygroup FROM V_RealKey WHERE parentkey='{0}'", keyname);
+                sql = string.Format("SELECT DISTINCT realkeygroup AS FaceKey,weight FROM V_RealKey WHERE parentkey='{0}' ORDER BY weight desc", keyname);
             }
             //三级
             else if (type == "2")
             {
-                sql = string.Format("SELECT  FaceKey,RealKey,Guid FROM V_RealKey WHERE realkeygroup='{0}'", keyname);
+                sql = string.Format("SELECT  FaceKey,RealKey,Guid,UnitFaceKey FROM V_RealKey WHERE realkeygroup='{0}'", keyname);
             }
             DataTable dt = SqlHelper.GetSqlDataTable(sql);
             return dt;

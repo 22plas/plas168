@@ -23,6 +23,7 @@ namespace PlasQueryWeb.Controllers
         private PlasBll.ReplaceBll plbll = new PlasBll.ReplaceBll();
         private PlasBll.MemberCenterBll mbll = new PlasBll.MemberCenterBll();
         private PlasBll.ContrastBll cbll = new PlasBll.ContrastBll();
+        private PlasBll.NewsBll newbll = new PlasBll.NewsBll();
 
         #region 获取行情走势
         /// <summary>
@@ -1822,6 +1823,50 @@ namespace PlasQueryWeb.Controllers
                     }
                 }
                 return Json(Common.ToJsonResult("Success", "获取成功", listresult), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
+        #region 获取案例
+        /// <summary>
+        /// 获取案例
+        /// </summary>
+        /// <param name="pageindex">页码</param>
+        /// <param name="pagesize">每页数量</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetNews(int pageindex, int pagesize)
+        {
+            List<Physics_ContrastModel> returnlist = new List<Physics_ContrastModel>();
+                DataTable dt = newbll.GetNews( pageindex, pagesize);
+                returnlist = Comm.ToDataList<Physics_ContrastModel>(dt);
+                return Json(Common.ToJsonResult("Success", "获取成功", returnlist), JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region 获取UL数据
+        /// <summary>
+        /// 获取UL数据
+        /// </summary>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult ShowUlBigPDF(string ProductGuid)
+        {
+            try
+            {
+                List<Ul_HeadModel> blist = new List<Ul_HeadModel>();
+                if (!string.IsNullOrWhiteSpace(ProductGuid))
+                {
+                    blist = bll.GetUl_Head(ProductGuid);
+                    // clist = bll.GetUl_body(ProductGuid);
+                }
+                return Json(Common.ToJsonResult("Success", "获取成功", blist), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
