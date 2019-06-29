@@ -513,6 +513,30 @@ namespace PlasQueryWeb.Controllers
                 return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetProductULPDF(string prodid)
+        {
+            try
+            {
+                string pdfUrl = "pdf/" + prodid + ".pdf";
+                //bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewDetail?prodid=" + prodid, pdfUrl);
+                bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewUl_ShowPdf?prodid=" + prodid, pdfUrl);
+                if (success)
+                {
+                    string path = MainHost + "/" + pdfUrl;
+                    return Json(Common.ToJsonResult("Success", "获取成功", path), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(Common.ToJsonResult("Fail", "获取失败"), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
         #endregion
 
         #region 获取下拉关键词数据
@@ -1867,6 +1891,44 @@ namespace PlasQueryWeb.Controllers
                     // clist = bll.GetUl_body(ProductGuid);
                 }
                 return Json(Common.ToJsonResult("Success", "获取成功", blist), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
+        #region 获取UL数据详情
+        /// <summary>
+        /// 获取UL数据详情
+        /// </summary>
+        /// <param name="ProductGuid"></param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult ShowUlPDF(string ProductGuid)
+        {
+            try
+            {
+                var blist = new Ul_HeadModel();
+                var clist = new List<Ul_bodyModel>();
+                if (!string.IsNullOrWhiteSpace(ProductGuid))
+                {
+                    var query = bll.GetUl_HeadNumber(ProductGuid);
+                    if (query != null && query.Count > 0)
+                    {
+                        blist = query[0];
+                    }
+                    clist = bll.GetUl_body(ProductGuid);
+
+                }
+                var returndata = new
+                {
+                    blistdata = blist,
+                    clistdata = clist
+                };
+                return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
