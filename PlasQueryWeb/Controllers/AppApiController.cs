@@ -101,7 +101,7 @@ namespace PlasQueryWeb.Controllers
                 //获取超级搜填料属性
                 else if (typestr == "8")
                 {
-                    DataTable dt = bll.GetSysfiller(key, pageindex.Value, pagesize.Value);
+                    DataTable dt = bll.GetSysfiller("0",key, pageindex.Value, pagesize.Value);
                     list = Comm.ToDataList<parminfo>(dt);
                     return Json(Common.ToJsonResult("Success", "获取成功", list), JsonRequestBehavior.AllowGet);
                 }
@@ -133,6 +133,25 @@ namespace PlasQueryWeb.Controllers
                     }
                     return Json(Common.ToJsonResult("Success", "获取成功", list), JsonRequestBehavior.AllowGet);
                 }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败"), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
+        #region 根据上级名称获取二级填料
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetSysfiller(string key)
+        {
+            try
+            {
+                List<parminfo> list = new List<parminfo>();
+                DataTable dt = bll.GetSysfiller("1", key, 0, 0);
+                list = Comm.ToDataList<parminfo>(dt);
+                return Json(Common.ToJsonResult("Success", "获取成功", list), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -364,7 +383,7 @@ namespace PlasQueryWeb.Controllers
         /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpGet]
-        public ActionResult AppGetDetail(string prodid,string type)
+        public ActionResult AppGetDetail(string prodid,string type,string userid)
         {
             try
             {
@@ -467,6 +486,16 @@ namespace PlasQueryWeb.Controllers
                     }
                     //pdfinfolist = Comm.ToDataList<pdfinfo>(pdfdt);
                 }
+                //if (!string.IsNullOrWhiteSpace(userid))
+                //{
+                //    Physics_BrowseModel model = new Physics_BrowseModel();
+                //    model.BrowsCount = 1;
+                //    model.Btype = 1;
+                //    model.ProductGuid = pid;
+                //    model.UserId = userid;
+                //    string msg = "";
+                //    mbll.AddPhysics_Browse(model, ref msg);
+                //}
                 
                 //新增点击次数
                 //bll.ProductHit(prodid);
@@ -1183,52 +1212,6 @@ namespace PlasQueryWeb.Controllers
         }
         #endregion
 
-        #region 添加浏览记录
-        /// <summary>
-        /// 添加浏览记录
-        /// </summary>
-        /// <returns></returns>
-        [AllowCrossSiteJson]
-        [HttpPost]
-        public ActionResult AddBrowse(Physics_ContrastModel model, string type)
-        {
-            try
-            {
-                if (type == "1")
-                {
-                    string sql = string.Format("SELECT * FROM dbo.Pri_Product WHERE PriceProductGuid='{0}'", model.ProductGuid);
-                    DataTable pdt = SqlHelper.GetSqlDataTable(sql);
-                    if (pdt.Rows.Count > 0)
-                    {
-                        model.ProductGuid = pdt.Rows[0]["ProductGuid"].ToString();
-                    }
-                }
-                string savesql = string.Format("select id from Physics_Contrast where ProductGuid='{0}' and UserId='{1}'", model.ProductGuid, model.UserId);
-                var dt = SqlHelper.GetSqlDataTable(savesql.ToString());
-                if (dt.Rows.Count > 0)
-                {
-                    return Json(Common.ToJsonResult("IsCollection", "此产品已经添加对比"), JsonRequestBehavior.AllowGet);
-                }
-                else
-                {
-                    string msg = "";
-                    bool returnresult = mbll.AddPhysics_Contrast(model, ref msg);
-                    if (returnresult)
-                    {
-                        return Json(Common.ToJsonResult("Success", "加入对比成功"), JsonRequestBehavior.AllowGet);
-                    }
-                    else
-                    {
-                        return Json(Common.ToJsonResult("Fail", "加入对比失败"), JsonRequestBehavior.AllowGet);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return Json(Common.ToJsonResult("Fail", "加入对比失败", ex.Message), JsonRequestBehavior.AllowGet);
-            }
-        }
-        #endregion
 
         #region 我的收藏
         /// <summary>
@@ -1937,6 +1920,28 @@ namespace PlasQueryWeb.Controllers
         }
         #endregion
 
+        /// <summary>
+        /// 获取单位
+        /// </summary>
+        /// <param name="parmname"></param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetUnit(string parmname)
+        {
+            try
+            {
+                List<bigtype> unitlist = new List<bigtype>();
+                string getsql = string.Format(@"select distinct unit as Name from ProductAttribute where RealKey in (select * from f_split('{0}',';'))", parmname);
+                DataTable dt = SqlHelper.GetSqlDataTable(getsql);
+                unitlist = Comm.ToDataList<bigtype>(dt);
+                return Json(Common.ToJsonResult("Success", "获取成功", unitlist), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
         //pdf数据
         public class pdfinfo {
             public string TypeName { get; set; }

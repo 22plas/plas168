@@ -162,9 +162,9 @@ namespace PlasBll
         }
 
         //获取超级搜索填料属性
-        public DataTable GetSysfiller(string parentname, int pageindex = 1, int pagesize = 8)
+        public DataTable GetSysfiller(string type, string parentname, int pageindex = 1, int pagesize = 8)
         {
-            return dal.GetSysfiller(parentname, pageindex, pagesize);
+            return dal.GetSysfiller(type, parentname, pageindex, pagesize);
         }
 
         /// <summary>

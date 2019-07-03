@@ -413,14 +413,15 @@ namespace PlasDal
         /// <param name="pageindex">页码</param>
         /// <param name="pagesize">每页数量</param>
         /// <returns></returns>
-        public DataTable GetSysfiller(string parentname, int pageindex = 1, int pagesize = 8)
+        public DataTable GetSysfiller(string type, string parentname, int pageindex = 1, int pagesize = 8)
         {
             string sql = "";
             int startpage = (pageindex - 1) * pagesize + 1;
             int endpage = pageindex * pagesize;
-            if (string.IsNullOrWhiteSpace(parentname))
+            if (type=="0")
             {
-                sql = string.Format("SELECT b.Tl AS Name FROM(SELECT row_number() over(order by Tl desc)as rownum,a.Tl FROM(SELECT DISTINCT Tl FROM Sys_filler) a) b WHERE b.rownum BETWEEN {0} AND {1}", startpage, endpage);
+                //sql = string.Format("SELECT b.Tl AS Name FROM(SELECT row_number() over(order by Tl desc)as rownum,a.Tl FROM(SELECT DISTINCT Tl FROM Sys_filler) a) b WHERE b.rownum BETWEEN {0} AND {1}", startpage, endpage);
+                sql = string.Format("exec proc_supersearch_getfiller {0},{1},'{2}'", startpage, endpage, parentname);
             }
             else
             {

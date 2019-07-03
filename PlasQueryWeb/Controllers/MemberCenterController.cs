@@ -1034,6 +1034,8 @@ namespace PlasModel.Controllers
                 //如果微信或者qq已经存在则登录
                 if (resultstr.Length > 0)
                 {
+                    mbll.UpdateUserInfobll("HeadImage",model.HeadImage, resultstr[1]);
+                    mbll.UpdateUserInfobll("UserName", model.UserName, resultstr[1]);
                     if (resultstr[0].Equals("Success"))
                     {
                         var returndata = new
