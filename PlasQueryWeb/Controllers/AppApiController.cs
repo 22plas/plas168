@@ -1849,10 +1849,49 @@ namespace PlasQueryWeb.Controllers
         [HttpGet]
         public ActionResult GetNews(int pageindex, int pagesize)
         {
-            List<Physics_ContrastModel> returnlist = new List<Physics_ContrastModel>();
-                DataTable dt = newbll.GetNews( pageindex, pagesize);
-                returnlist = Comm.ToDataList<Physics_ContrastModel>(dt);
+            try
+            {
+                List<News> returnlist = new List<News>();
+                DataTable dt = newbll.GetNews(pageindex, pagesize);
+                returnlist = Comm.ToDataList<News>(dt);
                 return Json(Common.ToJsonResult("Success", "获取成功", returnlist), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+        #region 获取案例详情
+        /// <summary>
+        /// 获取案例详情
+        /// </summary>
+        /// <param name="pageindex">页码</param>
+        /// <param name="pagesize">每页数量</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetNewsDetail(int ID)
+        {
+            try
+            {
+                DataTable dt = newbll.GetNewsDetail(ID);
+                string tempcontent = "";
+                if (dt.Rows.Count > 0)
+                {
+                    tempcontent = dt.Rows[0]["ContentAll"].ToString();
+                }
+                var returndata = new
+                {
+                    content = tempcontent// HttpUtility.UrlEncode(tempcontent)
+                };
+                return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+            
         }
         #endregion
 
@@ -1920,6 +1959,7 @@ namespace PlasQueryWeb.Controllers
         }
         #endregion
 
+        #region 获取单位
         /// <summary>
         /// 获取单位
         /// </summary>
@@ -1942,6 +1982,8 @@ namespace PlasQueryWeb.Controllers
                 return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
+
         //pdf数据
         public class pdfinfo {
             public string TypeName { get; set; }
@@ -2033,6 +2075,19 @@ namespace PlasQueryWeb.Controllers
             public int MaxPrice { get; set; }
             //最小价格
             public int MinPrice { get; set; }
+        }
+        //案例
+        public class News
+        {
+            //标题
+            public string Title { get; set; }
+            //描述
+            public string DescMsg { get; set; }
+            //ID
+            public int ID { get; set; }
+            //图片
+            public string HomeImg { get; set; }
+            public string CreateDate { get; set; }
         }
     }
 }

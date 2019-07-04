@@ -16,5 +16,10 @@ namespace PlasBll
         {
             return dal.GetNews(pageindex, pagesize);
         }
+        //获取案例详情
+        public DataTable GetNewsDetail(int ID)
+        {
+            return dal.GetNewsDetail(ID);
+        }
     }
 }

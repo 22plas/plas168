@@ -482,9 +482,10 @@ namespace PlasDal
         /// <returns></returns>
         public DataTable GetUl_HeadNumber(string NumberId)
         {
-            string sql = string.Format("select top 1* from Ul_Head where NumberId=@NumberId");
+            string sql = string.Format("select top 1* from Ul_Head where FileNumber=@NumberId");
             SqlParameter[] parm = { new SqlParameter("@NumberId", NumberId) };
-            return SqlHelper.GetSqlDataTable_Param(sql.ToString(), parm);
+            DataTable dt = SqlHelper.GetSqlDataTable_Param(sql.ToString(), parm);
+            return dt;
         }
 
         /// <summary>
@@ -494,7 +495,7 @@ namespace PlasDal
         /// <returns></returns>
         public DataTable GetUl_body(string ProductId)
         {
-            string sql = string.Format(@"select * from dbo.UL_Body where NumberId=@ProductId");
+            string sql = string.Format(@"select * from dbo.UL_Body where FileNumber=@ProductId");
             SqlParameter[] parm = { new SqlParameter("@ProductId", ProductId) };
             return SqlHelper.GetSqlDataTable_Param(sql.ToString(), parm);
         }

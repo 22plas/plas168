@@ -25,7 +25,14 @@ namespace PlasDal
             }
             pageBegin = (pageindex - 1) * pagesize;
             pageEnd = (pagesize * pageindex);
-            string sql = string.Format(@"SELECT * FROM ( SELECT ROW_NUMBER() over(order by ID desc)as rownum,Title,HomeImg,CreateDate,ID FROM dbo.News ) s WHERE s.rownum BETWEEN {0} AND {1}",  pageBegin, pageEnd);
+            string sql = string.Format(@"SELECT * FROM ( SELECT ROW_NUMBER() over(order by ID desc)as rownum,Title,HomeImg,CreateDate,ID,DescMsg FROM dbo.News ) s WHERE s.rownum BETWEEN {0} AND {1}",  pageBegin, pageEnd);
+            DataTable dt = SqlHelper.GetSqlDataTable(sql);
+            return dt;
+        }
+        //获取案例详情
+        public DataTable GetNewsDetail(int ID)
+        {
+            string sql = string.Format(@"SELECT ContentAll FROM dbo.News WHERE ID={0}", ID);
             DataTable dt = SqlHelper.GetSqlDataTable(sql);
             return dt;
         }
