@@ -92,9 +92,9 @@ namespace PlasModel.Controllers
             tianjiaji = bll.GetSearchParam(9, "");
 
             //属性值
-            var attr = new DataTable();
+           // var attr = new DataTable();
             
-            attr = bll.Sys_GetSuperSearchParam(-1).Tables[0];
+            var attr = bll.Sys_GetSuperSearchParam(-1);
             ViewBag.attr = attr;
 
 

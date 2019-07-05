@@ -11,7 +11,8 @@
     var addliao = (ViewBag.addliao) as System.Data.DataTable;
     var tianjiaji = (ViewBag.tianjiaji) as System.Data.DataTable;
     //属性
-    var attrs = (ViewBag.attr) as System.Data.DataTable;
+    var dsattrs = (ViewBag.attr) as System.Data.DataSet;
+    var attrs = dsattrs.Tables[0];
     var count = 0;
     var countone = 0;
 }
@@ -191,7 +192,13 @@
                             <td><input type="text" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" name="MaxValue" class="input" /></td>
                             <td>
                                 <select class="input" name="UnitFaceKey">
-                                    <option value="@sammll["UnitFaceKey"].ToString()">@sammll["UnitFaceKey"].ToString()</option>
+                                    @for (var k = 0; k < dsattrs.Tables[1].Rows.Count; k++)
+                                    {
+                                        if ((dsattrs.Tables[1].Rows[k]["id"]).ToString() == (sammll["id"]).ToString())
+                                        {
+                                            <option value="@dsattrs.Tables[1].Rows[k]["Name"].ToString()">@dsattrs.Tables[1].Rows[k]["Name"].ToString()</option>
+                                        }
+                                    }
                                 </select>
                             </td>
                             <td>@sammll["RangeFaceKey"].ToString()</td>

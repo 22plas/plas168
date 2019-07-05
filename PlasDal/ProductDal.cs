@@ -173,8 +173,40 @@ namespace PlasDal
         //属性值
         public DataSet Sys_GetSuperSearchParam(int parentID = -1)
         {
+            var ds = new DataSet();
             string sql = string.Format("exec proc_supersearch_getParam {0}", parentID);
-            var ds = SqlHelper.GetSqlDataSet(sql);
+            var dt = SqlHelper.GetSqlDataTable(sql);
+            dt.TableName = "dt1n";
+            DataTable tblDatas = new DataTable("dt2n");
+            DataColumn dc = null;
+            dc = tblDatas.Columns.Add("id", Type.GetType("System.String"));
+            dc = tblDatas.Columns.Add("Name", Type.GetType("System.String"));
+            DataRow newRow;
+            if (dt.Rows.Count > 0)
+            {
+                for (var i = 0; i < dt.Rows.Count; i++)
+                {
+                    if (!string.IsNullOrWhiteSpace(dt.Rows[i]["RealKey"].ToString()))
+                    {
+                        string rsql = string.Format("select distinct unit as Name from ProductAttribute where RealKey in (select * from f_split('{0}',';'))", dt.Rows[i]["RealKey"].ToString().Replace("'",""));
+                        var ts = SqlHelper.GetSqlDataTable(rsql);
+                        if (ts.Rows.Count > 0)
+                        {
+                            for (var j = 0; j < ts.Rows.Count; j++)
+                            {
+                                newRow = tblDatas.NewRow();
+                                newRow["id"] = dt.Rows[i]["id"].ToString();
+                                newRow["Name"] = ts.Rows[j]["Name"].ToString();
+                                tblDatas.Rows.Add(newRow);
+                            }
+                        }
+
+                    }
+                }
+            }
+            dt.TableName = "dt1n";
+            ds.Tables.Add(dt.Copy());
+            ds.Tables.Add(tblDatas);
             return ds;
         }
         //app获取搜索属性值
