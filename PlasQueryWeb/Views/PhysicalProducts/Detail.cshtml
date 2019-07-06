@@ -73,8 +73,17 @@
                                 var attrtwo = System.Text.RegularExpressions.Regex.Replace(dr["Attribute2"].ToString(), @"\s", "").ToUpper();
                                 if (attrone == "黄卡编号" || attrone == "UL黄卡1" || attrone == "UL黄卡2")
                                 {
-                                <div class="f-l" style="width:25%;">@dr["Attribute1"].ToString()</div>
-                                    <div class="f-l" style="width: 75%;"><a href="javascript:void(0)" onclick="showUlPdfCheck('@ViewBag.ProdID','@attrtwo');" style="color:#de5f02;">@dr["Attribute2"].ToString()</a></div>
+                                    <div class="f-l" style="width:25%;">@dr["Attribute1"].ToString()</div>
+                                    <div class="f-l" style="width: 75%;">
+                                        @if (ViewBag.blistCount > 0)
+                                        {
+                                            <a href="javascript:void(0)" onclick="showUlPdfCheck('@ViewBag.ProdID','@attrtwo');" style="color:#de5f02;">@dr["Attribute2"].ToString()</a>
+                                        }
+                                        else
+                                        {
+                                            @dr["Attribute2"].ToString()
+                                        }
+                                    </div>
                                 }
                                 else
                                 {
@@ -121,7 +130,11 @@
                 <li><a href="javascript:void(0);"><i class="Hui-iconfont">&#xe610;</i>&nbsp;添加收藏</a></li>
                 <li><a href="/Replace/ProductReplace?PGuid=@ViewBag.ProdID" target="_blank"><i class="Hui-iconfont">&#xe709;</i>&nbsp;寻找相识</a></li>
                 <li><a href="javascript:void(0);" style="border-top:solid 1px #ff6a00;display:block;" onclick="viewpdf('@ViewBag.ProdID','@ViewBag.ProModel')"><i class="Hui-iconfont">&#xe640;</i>&nbsp;下载PDF</a></li>
-                <li><a href="javascript:void(0);" style="display:block;" onclick="showUlpdf('@ViewBag.ProdID');"><i class="Hui-iconfont">&#xe6c6;</i>&nbsp;黄卡UL</a></li>
+                @if (ViewBag.blistCount > 0)
+                {
+                     <li><a href="javascript:void(0);" style="display:block;" onclick="showUlpdf('@ViewBag.ProdID');"><i class="Hui-iconfont">&#xe6c6;</i>&nbsp;黄卡UL</a></li>
+                }
+                   
                 @for (var i = 0; i < pdf.Rows.Count; i++)
                 {
                     <li><a href="@((ViewBag.PdfUrl)+pdf.Rows[i]["pdfPath"].ToString())"><span style="border:solid 1px @(pdf.Rows[i]["ImagesColor"].ToString()); padding:3px 5px;background:@(pdf.Rows[i]["ImagesColor"].ToString());color:#fff;">@(pdf.Rows[i]["TypeName"].ToString().Length > 0 ? pdf.Rows[i]["TypeName"].ToString().Substring(0, 1) : "")</span>&nbsp;@pdf.Rows[i]["TypeName"]</a></li>

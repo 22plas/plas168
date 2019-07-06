@@ -202,6 +202,17 @@ namespace PlasModel.Controllers
             var LiveDs = bll.GetCompanyAndLiveProduct(10, prodid);
             #endregion
 
+            #region 黄卡UL
+            var blist = new List<Ul_HeadModel>();
+            //  var clist = new List<Ul_bodyModel>();
+            if (!string.IsNullOrWhiteSpace(prodid))
+            {
+                blist = bll.GetUl_Head(prodid);
+                // clist = bll.GetUl_body(ProductGuid);
+            }
+            ViewBag.blistCount = blist.Count();
+            #endregion
+
             var pdfdt = new DataTable();
             if (!string.IsNullOrEmpty(prodid))
             {
