@@ -486,17 +486,17 @@ namespace PlasQueryWeb.Controllers
                     }
                     //pdfinfolist = Comm.ToDataList<pdfinfo>(pdfdt);
                 }
-                //if (!string.IsNullOrWhiteSpace(userid))
-                //{
-                //    Physics_BrowseModel model = new Physics_BrowseModel();
-                //    model.BrowsCount = 1;
-                //    model.Btype = 1;
-                //    model.ProductGuid = pid;
-                //    model.UserId = userid;
-                //    string msg = "";
-                //    mbll.AddPhysics_Browse(model, ref msg);
-                //}
-                
+                if (!string.IsNullOrWhiteSpace(userid))
+                {
+                    Physics_BrowseModel model = new Physics_BrowseModel();
+                    model.BrowsCount = 1;
+                    model.Btype = 1;
+                    model.ProductGuid = pid;
+                    model.UserId = userid;
+                    string msg = "";
+                    mbll.AddPhysics_Browse(model, ref msg);
+                }
+
                 //新增点击次数
                 //bll.ProductHit(prodid);
                 var returndata = new {
@@ -1862,6 +1862,7 @@ namespace PlasQueryWeb.Controllers
             }
         }
         #endregion
+     
         #region 获取案例详情
         /// <summary>
         /// 获取案例详情
