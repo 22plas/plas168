@@ -526,7 +526,17 @@ namespace PlasQueryWeb.Controllers
             try
             {
                 string pdfUrl = "pdf/" + prodid + ".pdf";
-                bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewDetail?prodid=" + prodid, pdfUrl);
+                var ds = bll.GetModelInfo(prodid);
+                string pmodel = string.Empty;
+                string placeorigin = string.Empty;
+                string brand = string.Empty;
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    pmodel = ds.Tables[0].Rows[0]["proModel"].ToString();
+                    placeorigin = ds.Tables[0].Rows[0]["PlaceOrigin"].ToString();
+                    brand = ds.Tables[0].Rows[0]["Brand"].ToString();
+                }
+                bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewDetail?prodid=" + prodid, pdfUrl, Server.UrlEncode(pmodel), Server.UrlEncode(placeorigin), Server.UrlEncode(brand),"0");
                 if (success)
                 {
                     string path = MainHost+"/"+pdfUrl;
@@ -549,8 +559,18 @@ namespace PlasQueryWeb.Controllers
             try
             {
                 string pdfUrl = "pdf/" + prodid + ".pdf";
+                var ds = bll.GetModelInfo(prodid);
+                string pmodel = string.Empty;
+                string placeorigin = string.Empty;
+                string brand = string.Empty;
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    pmodel = ds.Tables[0].Rows[0]["proModel"].ToString();
+                    placeorigin = ds.Tables[0].Rows[0]["PlaceOrigin"].ToString();
+                    brand = ds.Tables[0].Rows[0]["Brand"].ToString();
+                }
                 //bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewDetail?prodid=" + prodid, pdfUrl);
-                bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewUl_ShowPdf?prodid=" + prodid, pdfUrl);
+                bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewUl_ShowPdf?prodid=" + prodid, pdfUrl, string.Empty, string.Empty, string.Empty,"1");
                 if (success)
                 {
                     string path = MainHost + "/" + pdfUrl;
@@ -968,7 +988,8 @@ namespace PlasQueryWeb.Controllers
             {
                 string isNavLink = string.Empty;
                 List<SearchResult> resultmodellist = new List<SearchResult>();//搜索结果
-                var ds = bll.Sys_SuperSearch(searchstr, 2052, pageindex, pagesize, guidstr, isNavLink);
+                string tempsearchkey = Server.UrlDecode(searchstr);
+                var ds = bll.Sys_SuperSearch(tempsearchkey, 2052, pageindex, pagesize, guidstr, isNavLink);
                 //string jsonstr = PlasCommon.ToolHelper.DataTableToJson(ds.Tables[0]);
                 resultmodellist = Comm.ToDataList<SearchResult>(ds.Tables[0]);
                 return Json(Common.ToJsonResult("Success", "获取成功", resultmodellist), JsonRequestBehavior.AllowGet);
@@ -1332,12 +1353,13 @@ namespace PlasQueryWeb.Controllers
                         for (var i = 0; i < dr.Rows.Count; i++)
                         {
                             tempinfo model = new tempinfo();
-                            if ((string.IsNullOrEmpty(dr.Rows[i]["Attribute2"].ToString())
+                            if (
+                                (string.IsNullOrEmpty(dr.Rows[i]["Attribute2"].ToString())&& string.IsNullOrEmpty(dr.Rows[i]["RealKey"].ToString())
                                 && string.IsNullOrEmpty(dr.Rows[i]["Attribute3"].ToString())
                                 && string.IsNullOrEmpty(dr.Rows[i]["Attribute4"].ToString())
                                 && string.IsNullOrEmpty(dr.Rows[i]["Attribute5"].ToString()) && dr.Rows[i]["Attribute1"].ToString().Trim() != "总体")
                                 ||
-                                (dr.Rows[i]["Attribute1"].ToString().Trim() == "加工方法"
+                                (dr.Rows[i]["Attribute1"].ToString().Trim() == "加工方法"|| dr.Rows[i]["Attribute1"].ToString().Trim() == "产品说明"
                                 || dr.Rows[i]["Attribute1"].ToString().Trim() == "材料状态"
                                 || dr.Rows[i]["Attribute1"].ToString().Trim().Replace(" ", "") == "资料 1".Replace(" ", "")
                                 || dr.Rows[i]["Attribute1"].ToString().Trim().Replace(" ", "") == "搜索 UL 黄卡".Replace(" ", "")

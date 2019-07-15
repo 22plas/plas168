@@ -1,4 +1,5 @@
 ﻿using PlasBll;
+using PlasCommon;
 using PlasModel.App_Start;
 using System;
 using System.Collections.Generic;
@@ -361,8 +362,18 @@ namespace PlasModel.Controllers
                 return "";
             //prodModel = HttpUtility.UrlEncode(prodModel);
             //prodModel = prodModel.Replace(" ","+");
+            var ds = bll.GetModelInfo(prodid);
+            string pmodel = string.Empty;
+            string placeorigin = string.Empty;
+            string brand = string.Empty;
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                pmodel = ds.Tables[0].Rows[0]["proModel"].ToString();
+                placeorigin = ds.Tables[0].Rows[0]["PlaceOrigin"].ToString();
+                brand = ds.Tables[0].Rows[0]["Brand"].ToString();
+            }
             string pdfUrl = "pdf/" + prodid + ".pdf";
-            bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewDetail?prodid=" + prodid, pdfUrl);
+            bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewDetail?prodid=" + prodid, pdfUrl, Server.UrlEncode(pmodel), Server.UrlEncode(placeorigin), Server.UrlEncode(brand),"0");
             if (success)
                 return pdfUrl;
             return "";
@@ -395,7 +406,37 @@ namespace PlasModel.Controllers
 
         #endregion
 
-
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetPdfHeaderInfo(string pid)
+        {
+            try
+            {
+                var ds = bll.GetModelInfo(pid);
+                //string pmodel = string.Empty;
+                //string placeorigin = string.Empty;
+                //string brand = string.Empty;
+                //if (ds.Tables[0].Rows.Count > 0)
+                //{
+                //    pmodel = ds.Tables[0].Rows[0]["proModel"].ToString();
+                //    placeorigin = ds.Tables[0].Rows[0]["PlaceOrigin"].ToString();
+                //    brand = ds.Tables[0].Rows[0]["Brand"].ToString();
+                //}
+                //var resultdata = new
+                //{
+                //    pmodelstr = pmodel,
+                //    placeoriginstr = placeorigin,
+                //    brandstr = brand
+                //};
+                string jsonstr = PlasCommon.ToolHelper.DataTableToJson(ds.Tables[0]);
+                //return Json(Common.ToJsonResult("Success", "获取成功", resultdata), JsonRequestBehavior.AllowGet);
+                return Json(new { data = jsonstr}, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
         #region 生成UL
 
 
@@ -480,8 +521,18 @@ namespace PlasModel.Controllers
                 return "";
             //prodModel = HttpUtility.UrlEncode(prodModel);
             //prodModel = prodModel.Replace(" ","+");
+            var ds = bll.GetModelInfo(prodid);
+            string pmodel = string.Empty;
+            string placeorigin = string.Empty;
+            string brand = string.Empty;
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                pmodel = ds.Tables[0].Rows[0]["proModel"].ToString();
+                placeorigin = ds.Tables[0].Rows[0]["PlaceOrigin"].ToString();
+                brand = ds.Tables[0].Rows[0]["Brand"].ToString();
+            }
             string pdfUrl = "pdf/" + prodid + ".pdf";
-            bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewUl_ShowPdf?prodid=" + prodid, pdfUrl);
+            bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewUl_ShowPdf?prodid=" + prodid, pdfUrl, string.Empty, string.Empty, string.Empty,"1");
             if (success)
                 return pdfUrl;
             return "";

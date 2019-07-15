@@ -86,7 +86,7 @@ namespace PlasModel.Controllers
                     DataRow newRow;
                     for (var i = 0; i < dr.Rows.Count; i++)
                     {
-                        if ((string.IsNullOrEmpty(dr.Rows[i]["Attribute2"].ToString())
+                        if ((string.IsNullOrEmpty(dr.Rows[i]["Attribute2"].ToString()) && string.IsNullOrEmpty(dr.Rows[i]["RealKey"].ToString())
                             && string.IsNullOrEmpty(dr.Rows[i]["Attribute3"].ToString())
                             && string.IsNullOrEmpty(dr.Rows[i]["Attribute4"].ToString())
                             && string.IsNullOrEmpty(dr.Rows[i]["Attribute5"].ToString()) && dr.Rows[i]["Attribute1"].ToString().Trim() != "总体")

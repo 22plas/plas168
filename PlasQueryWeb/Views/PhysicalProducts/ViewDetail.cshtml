@@ -6,16 +6,16 @@
 <style type="text/css">
     .item-left {
         width: 78%;
-        padding: 15px 10px;
+        /*padding: 15px 10px;*/
         box-sizing: border-box;
     }
 
     .icon-cycle-box {
-        display: inline-block;
+        /*display: inline-block;*/
         border: 2px solid orange;
         width: 16px;
         height: 16px;
-        line-height: 16px;
+        /*line-height: 16px;*/
         border-radius: 12px;
         text-align: center;
         color: red;
@@ -28,90 +28,183 @@
 
     .l, .f-l {
         float: left !important;
-        _display: inline;
-        font-size: 13px;
+        /*_display: inline;*/
+        font-size: 14px;
     }
-
+    .linheightcss {
+        float: left !important;
+        /*_display: inline;*/
+        font-size: 14px;
+        line-height: 40px;
+    }
+    .hkcss {
+        float: left !important;
+        font-size: 14px;
+        background: #FFFACD;
+        border-bottom: 1px solid #DEDEDE;
+    }
     .r, .f-r {
         float: right !important;
-        _display: inline;
+        /*_display: inline;*/
     }
 
     .bold {
-        font-weight: bold;
-        padding: 8px 0;
+        /*font-weight: bold;*/
+        /*padding: 8px 0;*/
         border: none;
         font-size: 16px;
         color: red !important;
-        background: #e1e1e1;
+        background: #ffffff;
     }
-        .bold td div {
-            border-bottom: 1px solid #945657 !important;
-            border-top: 1px solid #945657 !important;
+        .bold td div{
+            border-bottom: 1px solid #B10820 !important;
+            border-top: 1px solid #B10820 !important;
             font-size: 16px;
             height: 40px;
-            background: #f2f2f2;
-            line-height: 40px;
+            background: #ffffff;
+            /*line-height: 40px;*/
         }
         .bold td div {
-            color: #945657;
+            /*color: #945657;*/
+            color: #B10820;
         }
     .pl-10 {
-        border-bottom:none;
+        /*border-bottom:none;*/
     }
     .table-list tr td {
-        border:none !important;
+        border: none !important;
     }
 </style>
 
-<table class="table-list" border="0" cellspacing="0" cellpadding="0">
+@*<table class="table-list" border="0" cellspacing="0" cellpadding="0" style="padding-left:40px;padding-right:40px;padding-top:50px; ">
     <tbody>
         <tr>
-            <td style="font-size:24px; height:40px; line-height:40px; font-weight:700;color: #945657; text-align:left;">@(ViewBag.ProModel)</td>
+            <td style="font-size:24px; height:40px; line-height:40px; font-weight:700;color: #B10820; text-align:left;">@(ViewBag.ProModel)</td>
         </tr>
         <tr>
             <td style="font-size:20px; color: #535353; text-align:left;">@(ViewBag.PlaceOrigin)</td>
         </tr>
         <tr>
-            <td style="font-size:20px; font-weight:700;color: #535353; text-align:left;">@(ViewBag.Brand)</td>
+            <td style="font-size:20px; font-weight:700;color: #B10820; text-align:left;">@(ViewBag.Brand)</td>
         </tr>
-        @foreach (System.Data.DataRow dr in PhysicalData.Rows)
-        {
-            <tr class="@(dr["lev"].ToString() == "1" ? "bold" : "pl-10")">
-                <td>
-                    @if (string.IsNullOrWhiteSpace(dr["Attribute2"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
-                    {
-                        <div class="f-l" style="width:100%;">@dr["Attribute1"].ToString()</div>
-                    }
-                    else if (string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
-                    {
-                        <div class="f-l" style="width:25%;">@dr["Attribute1"].ToString()</div>
-                        <div class="f-l" style="width: 75%;">@dr["Attribute2"].ToString()</div>
-                    }
-                    else if (string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
-                    {
-                        <div class="f-l" style="width: 25%;">@dr["Attribute1"].ToString()</div>
-                        <div class="f-l" style="width: 25%;">@dr["Attribute2"].ToString()</div>
-                        <div class="f-l" style="width: 50%;">@dr["Attribute3"].ToString()</div>
-                    }
-                    else
-                    {
-                        int paddleft = 0;
-                        int.TryParse(dr["lev"].ToString(), out paddleft);
-                        paddleft = paddleft * 10;
-                        <div class="f-l" style="width:25%;"><span style="margin-right:5px; padding-left:@(paddleft)px;">@dr["Attribute1"].ToString()</span></div>
-                        <div class="f-l" style="width:25%;">
-                            @dr["Attribute2"].ToString()
-                        </div>
-                        <div class="f-l" style="width:25%;">@dr["Attribute3"].ToString()</div>
-                        <div class="f-l" style="width:25%;">
-                            @dr["Attribute4"].ToString()
-                        </div>
+        <tr style="height:30px;width:100%;">
+            <td>
+                <div style="width:100%;height:30px; border-top:1px solid #B10820;border-left:1px solid #B10820; line-height:40px;font-size:18px;margin-bottom:15px; padding-left:10px; color:#B10820;">
+                    Technical Data
+                </div>
+            </td>
+        </tr>
+            @foreach (System.Data.DataRow dr in PhysicalData.Rows)
+            {
+                <tr class="@(dr["lev"].ToString() == "1" ? "bold" : "pl-10")">
+                    <td>
+                        @if (string.IsNullOrWhiteSpace(dr["Attribute2"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
+                        {
+                            <div class="f-l" style="width:100%;">@dr["Attribute1"].ToString()</div>
+                        }
+                        else if (string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
+                        {
+                            <div class="f-l" style="width:25%;">@dr["Attribute1"].ToString()</div>
+                            <div class="f-l" style="width: 75%;">@dr["Attribute2"].ToString()</div>
+                        }
+                        else if (string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
+                        {
+                            <div class="f-l" style="width: 25%;">@dr["Attribute1"].ToString()</div>
+                            <div class="f-l" style="width: 25%;">@dr["Attribute2"].ToString()</div>
+                            <div class="f-l" style="width: 50%;">@dr["Attribute3"].ToString()</div>
+                        }
+                        else
+                        {
+                            int paddleft = 0;
+                            int.TryParse(dr["lev"].ToString(), out paddleft);
+                            paddleft = paddleft * 10;
+                            <div class="f-l" style="width:25%;"><span style="margin-right:5px; padding-left:@(paddleft)px;">@dr["Attribute1"].ToString()</span></div>
+                            <div class="f-l" style="width:25%;">
+                                @dr["Attribute2"].ToString()
+                            </div>
+                            <div class="f-l" style="width:25%;">@dr["Attribute3"].ToString()</div>
+                            <div class="f-l" style="width:25%;">
+                                @dr["Attribute4"].ToString()
+                            </div>
 
-                    }
-                    <div class="clear"></div>
-                </td>
-            </tr>
-        }
+                        }
+                        <div class="clear"></div>
+                    </td>
+                </tr>
+            }
     </tbody>
-</table>
+</table>*@
+<div  style="width:100%;height:auto;">
+    @*<div style="width:90%;height:100px;margin:0 auto;margin-top:50px;">
+        <div style="width:100%;height:25px;line-height:25px;font-size:28px;font-weight:900;color: #B10820; text-align:left; ">
+            @(ViewBag.ProModel)
+        </div>
+        <div style="width:100%;height:25px;line-height:25px;font-size:20px;font-weight:800;color: #535353; text-align:left; ">
+            @(ViewBag.PlaceOrigin)
+        </div>
+        <div style="width:100%;height:25px;line-height:25px;font-size:20px;font-weight:800;color: #B10820; text-align:left; ">
+            @(ViewBag.Brand)
+        </div>
+        <div style="width:100%;height:25px; border-top:1px solid #B10820;border-left:1px solid #B10820; line-height:40px;font-size:18px;margin-bottom:15px; padding-left:10px; color:#B10820;">
+            Technical Data
+        </div>
+    </div>*@
+    <div style="width:85%;height:auto;min-height:500px;margin:0 auto;color:#333333;">
+            <table border="0" cellspacing="0" cellpadding="0">
+            <tbody>
+                    @foreach (System.Data.DataRow dr in PhysicalData.Rows)
+                    {
+                        <tr class="@(dr["lev"].ToString() == "1" ? "bold" : "pl-10")">
+                            <td >
+                                @if (string.IsNullOrWhiteSpace(dr["Attribute2"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
+                                {
+                                <div style="width:100%;height:auto;min-height:40px;border-bottom:1px solid #DEDEDE;">
+                                    <div class="@(dr["lev"].ToString() == "1" ? "linheightcss" :(dr["Attribute1"].ToString())=="UL 黄卡 2"||dr["Attribute1"].ToString()=="搜索 UL 黄卡"?"hkcss":"f-l"))" style="width:100%;height:auto;min-height:40px;line-height:40px;vertical-align:middle;display:table-cell;">@dr["Attribute1"].ToString().Replace(" ", "")</div>
+                                </div>
+                                }
+                                else if (string.IsNullOrWhiteSpace(dr["Attribute3"].ToString()) && string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
+                                {
+                                    <div style="width:100%;height:auto;min-height:40px;float:left; border-bottom:1px solid #DEDEDE;">
+                                        <div class="@(dr["lev"].ToString() == "1" ? "linheightcss" :(dr["Attribute1"].ToString()=="UL 黄卡 2"||dr["Attribute1"].ToString()=="搜索 UL 黄卡"?"hkcss":"f-l"))" style="width:25%;height:auto;min-height:40px;line-height:40px; ">
+                                        @dr["Attribute1"].ToString()
+                                        </div>
+                                        <div class="@(dr["lev"].ToString() == "1" ? "linheightcss" : (dr["Attribute1"].ToString()=="UL 黄卡 2"||dr["Attribute1"].ToString()=="搜索 UL 黄卡"?"hkcss":"f-l"))" style="width: 75%;height:auto;min-height:40px;line-height:40px;">
+                                        @dr["Attribute2"].ToString()
+                                        </div>
+                                    </div>
+                                }
+                                else if (string.IsNullOrWhiteSpace(dr["Attribute4"].ToString()))
+                                {
+                                    <div style="width:100%;height:auto;min-height:40px;border-bottom:1px solid #DEDEDE;">
+                                        <div class="@(dr["lev"].ToString() == "1" ? "linheightcss" : (dr["Attribute1"].ToString()=="UL 黄卡 2"||dr["Attribute1"].ToString()=="搜索 UL 黄卡"?"hkcss":"f-l"))" style="width: 25%;height:auto;min-height:40px;">@dr["Attribute1"].ToString().Replace(" ", "")</div>
+                                        <div class="@(dr["lev"].ToString() == "1" ? "linheightcss" : (dr["Attribute1"].ToString()=="UL 黄卡 2"||dr["Attribute1"].ToString()=="搜索 UL 黄卡"?"hkcss":"f-l"))" style="width: 25%;height:auto;min-height:40px;">@dr["Attribute2"].ToString().Replace(" ", "")</div>
+                                        <div class="@(dr["lev"].ToString() == "1" ? "linheightcss" : (dr["Attribute1"].ToString()=="UL 黄卡 2"||dr["Attribute1"].ToString()=="搜索 UL 黄卡"?"hkcss":"f-l"))" style="width: 50%;height:auto;min-height:40px;">@dr["Attribute3"].ToString().Replace(" ", "")</div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    //int paddleft = 0;
+                                    //int.TryParse(dr["lev"].ToString(), out paddleft);
+                                    //paddleft = paddleft * 10;
+                                    <div style="width:100%;height:auto;min-height:40px;float:left; border-bottom:1px solid #DEDEDE;">
+                                        <div class="@(dr["lev"].ToString() == "1" ? "linheightcss" : (dr["Attribute1"].ToString()=="UL 黄卡 2"||dr["Attribute1"].ToString()=="搜索 UL 黄卡"?"hkcss":"f-l"))" style="width:25%;height:auto;min-height:40px;line-height:40px; ">
+                                            @*<span style="margin-right:5px; padding-left:@(paddleft)px;">@dr["Attribute1"].ToString()</span>*@
+                                            @dr["Attribute1"].ToString().Replace(" ", "")
+                                        </div>
+                                        <div class="@(dr["lev"].ToString() == "1" ? "linheightcss" : (dr["Attribute1"].ToString()=="UL 黄卡 2"||dr["Attribute1"].ToString()=="搜索 UL 黄卡"?"hkcss":"f-l"))" style="width:25%;height:auto;min-height:40px;line-height:40px;">
+                                            @dr["Attribute2"].ToString().Replace(" ", "")
+                                        </div>
+                                        <div class="@(dr["lev"].ToString() == "1" ? "linheightcss" : (dr["Attribute1"].ToString()=="UL 黄卡 2"||dr["Attribute1"].ToString()=="搜索 UL 黄卡"?"hkcss":"f-l"))" style="width:25%;height:auto;min-height:40px;line-height:40px; ">@dr["Attribute3"].ToString().Replace(" ", "")</div>
+                                        <div class="@(dr["lev"].ToString() == "1" ? "linheightcss" : (dr["Attribute1"].ToString()=="UL 黄卡 2"||dr["Attribute1"].ToString()=="搜索 UL 黄卡"?"hkcss":"f-l"))" style="width:25%;height:auto;min-height:40px;line-height:40px;">
+                                            @dr["Attribute4"].ToString().Replace(" ", "")
+                                        </div>
+                                    </div>
+                                        }
+                                        @*<div class="clear"></div>*@
+                                </td>
+                        </tr>
+                    }
+            </tbody>
+        </table>
+    </div>
+</div>
