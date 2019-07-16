@@ -21,10 +21,10 @@ namespace PlasQueryWeb.CommonClass
             string footerUrl = MainHost + "/pdfFooter.html";//页脚内容页面
             string footerLeft = "本页面信息资料来自厂商，文档提供者不承担任何法律责任，强烈建议在最终选择材料前，就数据值与材料供应商进行验证。版权归原作者所有，如有侵权请立即与我们联系。";
             //string Arguments = "-q  -B 0 -L 0 -R 0 -T 0 -s A4 --no-background --disable-smart-shrinking --cookie " + cookie + " " + url + " " + path; //参数可以根据自己的需要进行修改
-            string Arguments = "-q  -B 10 -L 0 -R 0 -T 5  -s A4 --header-html " + headerUrl + " --footer-html " + footerUrl + " --header-spacing 35 --margin-top 50 --footer-right [page]/[topage] --disable-smart-shrinking " + url + " " + path; //参数可以根据自己的需要进行修改
+            string Arguments = "-q  -B 10 -L 0 -R 0 -T 5 --header-html " + headerUrl + " --footer-html " + footerUrl + " --header-spacing 35 --footer-spacing 10 --margin-bottom 45 --margin-top 50 --disable-smart-shrinking " + url + " " + path; //参数可以根据自己的需要进行修改
             if (type=="1")
             {
-                Arguments= "-q  -B 10 -L 0 -R 0 -T 5  -s A4  --footer-html " + footerUrl + " --footer-right [page]/[topage] --disable-smart-shrinking " + url + " " + path;
+                Arguments= "-q  -B 10 -L 0 -R 0 -T 5  -s A3  --footer-html " + footerUrl + " --footer-right [page]/[topage] --disable-smart-shrinking " + url + " " + path;
             }
             try
             {
