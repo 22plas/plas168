@@ -24,7 +24,8 @@ namespace PlasQueryWeb.CommonClass
             string Arguments = "-q  -B 10 -L 0 -R 0 -T 5 --header-html " + headerUrl + " --footer-html " + footerUrl + " --header-spacing 35 --footer-spacing 10 --margin-bottom 45 --margin-top 50 --disable-smart-shrinking " + url + " " + path; //参数可以根据自己的需要进行修改
             if (type=="1")
             {
-                Arguments= "-q  -B 10 -L 0 -R 0 -T 5  -s A3  --footer-html " + footerUrl + " --footer-right [page]/[topage] --disable-smart-shrinking " + url + " " + path;
+                string urlgooterurl = MainHost+"/urlpdfFooter.html";
+                Arguments= "-q  -B 10 -L 0 -R 0 -T 5 --footer-html " + urlgooterurl + " --footer-spacing 10 --margin-bottom 45 --disable-smart-shrinking " + url + " " + path;
             }
             try
             {

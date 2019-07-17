@@ -981,7 +981,7 @@ namespace PlasQueryWeb.Controllers
         /// </summary>
         /// <returns></returns>
         [AllowCrossSiteJson]
-        [HttpGet]
+        [HttpPost]
         public ActionResult AppSuperMsgSearch(int pageindex, int pagesize, string guidstr, string searchstr)
         {
             try
