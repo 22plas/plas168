@@ -2,6 +2,14 @@
     $(".navBox").find(".nav").find("li").eq(2).children("a").addClass("active");
     //需要验证是否登录
 
+    //$.each($("table[name='AttrRightList']"), function (index, item) {
+    //    if ($(this).css("display") == "none") {
+    //        $.each($(this).find("selet[name='UnitFaceKey']"), function (a, b) {
+    //            alert($(this).attr("smalltypename"));
+    //        })
+    //    }
+    //})
+
 })
 function LookLoadingIcon(obj) {
     //alert("调用到了e");
