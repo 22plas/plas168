@@ -11,13 +11,13 @@ namespace PlasQueryWeb.CommonClass
     public class PdfHelper
     {
         //type 标识是否是黄卡UL生成pdf 0：否  1：是
-        public static bool HtmlToPdf(string url, string path,string pmodel, string placeorigin, string brand,string type)
+        public static bool HtmlToPdf(string url, string path,string pmodel, string placeorigin, string brand,string type,string icopath)
         {
             Encoding utf8 = Encoding.UTF8;
             string MainHost = System.Web.Configuration.WebConfigurationManager.AppSettings["MainHost"];
             path = HttpContext.Current.Server.MapPath("~/") + path;
             string cookie = "cookieKey cookieValue";//改为为你自己的
-            string headerUrl = MainHost + "/pdfHeader.html?pmodel=" + Microsoft.JScript.GlobalObject.escape(pmodel) + "&placeorigin=" + Microsoft.JScript.GlobalObject.escape(placeorigin) + "&brand=" + Microsoft.JScript.GlobalObject.escape(brand);//页头内容
+            string headerUrl = MainHost + "/pdfHeader.html?pmodel=" + Microsoft.JScript.GlobalObject.escape(pmodel) + "&placeorigin=" + Microsoft.JScript.GlobalObject.escape(placeorigin) + "&brand=" + Microsoft.JScript.GlobalObject.escape(brand)+ "&icopath="+ Microsoft.JScript.GlobalObject.escape(icopath);//页头内容
             string footerUrl = MainHost + "/pdfFooter.html";//页脚内容页面
             string footerLeft = "本页面信息资料来自厂商，文档提供者不承担任何法律责任，强烈建议在最终选择材料前，就数据值与材料供应商进行验证。版权归原作者所有，如有侵权请立即与我们联系。";
             //string Arguments = "-q  -B 0 -L 0 -R 0 -T 0 -s A4 --no-background --disable-smart-shrinking --cookie " + cookie + " " + url + " " + path; //参数可以根据自己的需要进行修改

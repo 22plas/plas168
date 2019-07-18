@@ -10,22 +10,33 @@
 </head>
 <body>
     <div style="width:90%;height:130px;margin:0 auto;position:absolute;margin-left:5%;">
-        <div id="modeldiv" style="width:100%;height:28px;line-height:28px;font-size:24px;font-weight:900;color: #B10820; text-align:left; ">
-            <!--@(ViewBag.ProModel)-->
-            <!--POLYLAC® PA-757-->
+        <div style="width:100%;height:90px;">
+            <div style="width:60%;height:90px;float:left;">
+                <div id="modeldiv" style="width:100%;height:28px;line-height:28px;font-size:24px;font-weight:900;color: #B10820; text-align:left; ">
+                    <!--@(ViewBag.ProModel)-->
+                    <!--POLYLAC® PA-757-->
+                </div>
+                <div id="placeorigindiv" style="width:100%;height:28px;line-height:28px;font-size:18px;font-weight:800;color: #535353; text-align:left; ">
+                    <!--@(ViewBag.PlaceOrigin)-->
+                    <!--CHI MEI CORPORATION-->
+                </div>
+                <div id="branddiv" style="width:100%;height:28px;line-height:28px;font-size:18px;font-weight:800;color: #B10820; text-align:left; ">
+                    <!--@(ViewBag.Brand)-->
+                    <!--POLYLAC® Plastic Materials-->
+                </div>
+            </div>
+            <div id="imgdiv" style="width:40%;height:90px;float:right;">
+                <!--<img id="icoimg" src="Content/images/news-001.png" style="width:120px;height:60px;float:right;margin-top:15px; margin-right:15px;" />-->
+                <img id="icoimg" style="min-width:120px;width:auto; height:70px; display:block; float:right;margin-top:15px; margin-right:15px;" />
+            </div>
         </div>
-        <div id="placeorigindiv" style="width:100%;height:28px;line-height:28px;font-size:18px;font-weight:800;color: #535353; text-align:left; ">
-            <!--@(ViewBag.PlaceOrigin)-->
-            <!--CHI MEI CORPORATION-->
-        </div>
-        <div id="branddiv" style="width:100%;height:28px;line-height:28px;font-size:18px;font-weight:800;color: #B10820; text-align:left; ">
-            <!--@(ViewBag.Brand)-->
-            <!--POLYLAC® Plastic Materials-->
-        </div>
-        <div style="width:100%;height:25px; border-top:1px solid #B10820;border-left:1px solid #B10820; line-height:40px;font-size:18px;margin-bottom:15px; padding-left:10px; color:#B10820;">
-            Technical Data
+        <div style="width:100%;height:25px;margin:0px;">
+            <div style="width:100%;height:25px;border-top:1px solid #B10820;border-left:1px solid #B10820; font-size:18px;margin-bottom:15px; padding-left:10px; color:#B10820;">
+                Technical Data
+            </div>
         </div>
     </div>
+
 </body>
 </html>
 <script src="Content/js/jquery-2.1.1.js"></script>
@@ -38,12 +49,20 @@
     var model = decodeURI(getQueryString("pmodel"));
     var placeorigin = decodeURI(getQueryString("placeorigin"));
     var brand = decodeURI(getQueryString("brand"));
+    var icopath = decodeURI(getQueryString("icopath"));
     var tempmodel = model.replace(/[+\\[\]{}()|^$?*+]/g, ' ');
     var tempplaceorigin = placeorigin.replace(/[+\\[\]{}()|^$?*+]/g, ' ');
-    var tempbrand = brand.replace(/[+\\[\]{}()|^$?*+]/g,' ');
+    var tempbrand = brand.replace(/[+\\[\]{}()|^$?*+]/g, ' ');
     $("#modeldiv").html(tempmodel);
     $("#placeorigindiv").html(tempplaceorigin);
     $("#branddiv").html(tempbrand);
+    if (icopath == "") {
+        $("#imgdiv").css("display", "none");
+    }
+    else
+    {
+        $("#icoimg").attr("src", icopath);
+    }
     //var pid = getQueryString("pid");
     //$.ajax({
     //    type: "get",
