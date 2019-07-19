@@ -29,6 +29,7 @@ namespace PlasQueryWeb.CommonClass
             }
             try
             {
+                PlasCommon.Common.AddLog("", "开始生成pdf", "开始生成pdf", "");
                 if (string.IsNullOrEmpty(url) || string.IsNullOrEmpty(path))
                     return false;
                 var p = new Process();
@@ -50,9 +51,10 @@ namespace PlasQueryWeb.CommonClass
             }
             catch (Exception ex)
             {
+                PlasCommon.Common.AddLog("", "生成pdf错误",ex.Message,"");
                 throw ex;
             }
-            return false;
+            //return false;
         }
 
     }
