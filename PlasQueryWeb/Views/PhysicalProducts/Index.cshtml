@@ -168,7 +168,7 @@
         @foreach (var item in dt2)
         {
             count++;
-            <table class="table-contrast @(count==1?"":"none")" id="Attr_@item["ParentGuid"].ToString()" style="margin-top:0px;" name="AttrRightList">
+            <table class="table-contrast @(count==1?"":"none")" isread="@(count==1?"1":"0")" id="Attr_@item["ParentGuid"].ToString()" style="margin-top:0px;" name="AttrRightList">
                 <thead>
                     <tr>
                         <th>@item["FaceKey"].ToString()</th>
@@ -191,14 +191,8 @@
                             <td><input type="text" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" bigtypename="@item["FaceKey"].ToString()" smalltypename="@sammll["Realkey"].ToString()" name="MinValue" class="input" /></td>
                             <td><input type="text" onkeyup="value=value.replace(/[^\-?\d.]/g,'')" name="MaxValue" class="input" /></td>
                             <td>
-                                <select class="input" name="UnitFaceKey">
-                                    @for (var k = 0; k < dsattrs.Tables[1].Rows.Count; k++)
-                                    {
-                                        if ((dsattrs.Tables[1].Rows[k]["id"]).ToString() == (sammll["id"]).ToString())
-                                        {
-                                            <option value="@dsattrs.Tables[1].Rows[k]["Name"].ToString()">@dsattrs.Tables[1].Rows[k]["Name"].ToString()</option>
-                                        }
-                                    }
+                                <select class="input" name="UnitFaceKey"  bigtypename="@item["FaceKey"].ToString()" smalltypename="@sammll["Realkey"].ToString()">
+                                      <option></option>
                                 </select>
                             </td>
                             <td>@sammll["RangeFaceKey"].ToString()</td>

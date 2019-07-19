@@ -82,6 +82,16 @@ namespace PlasBll
             return dal.Sys_SuperSearch(searchStr, languageid, pageCount, pageSize, guidstr, isNavLink);
         }
 
+        /// <summary>
+        /// 获取单位面积
+        /// </summary>
+        /// <param name="bigClassName">大类编号</param>
+        /// <param name="samllClassName">小类编号0</param>
+        /// <returns></returns>
+        public List<PlasModel.unitModels> GetUnitModels(string bigClassName, string samllClassName)
+        {
+            return dal.GetUnitModels(bigClassName, samllClassName);
+        }
         #endregion
 
         //普通搜索
