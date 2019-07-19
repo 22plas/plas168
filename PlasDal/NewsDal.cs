@@ -25,7 +25,7 @@ namespace PlasDal
             }
             pageBegin = (pageindex - 1) * pagesize;
             pageEnd = (pagesize * pageindex);
-            string sql = string.Format(@"SELECT * FROM ( SELECT ROW_NUMBER() over(order by ID desc)as rownum,Title,case when HomeImg is null or HomeImg='' then '' else 'http://www.15350038.com:5003'+HomeImg end as HomeImg,CreateDate,ID,DescMsg FROM dbo.News where states=1 ) s WHERE s.rownum BETWEEN {0} AND {1}",  pageBegin, pageEnd);
+            string sql = string.Format(@"SELECT * FROM ( SELECT ROW_NUMBER() over(order by ID desc)as rownum,Title,case when HomeImg is null or HomeImg='' then '' else 'http://www.admin.22plas.com'+HomeImg end as HomeImg,CreateDate,ID,DescMsg FROM dbo.News where states=1 ) s WHERE s.rownum BETWEEN {0} AND {1}",  pageBegin, pageEnd);
             DataTable dt = SqlHelper.GetSqlDataTable(sql);
             return dt;
         }
