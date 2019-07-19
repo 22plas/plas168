@@ -355,6 +355,26 @@ namespace PlasModel.Controllers
         }
 
 
+        /// <summary>
+        /// 查询单位
+        /// </summary>
+        /// <param name="bigname"></param>
+        /// <param name="samllname"></param>
+        /// <returns></returns>
+        public JsonResult GetUnitList(string bigname,string samllname)
+        {
+            var list = new List<PlasModel.unitModels>();
+            if (!string.IsNullOrWhiteSpace(bigname) && !string.IsNullOrWhiteSpace(samllname))
+            {
+                var query = bll.GetUnitModels(bigname.Replace("'",""), samllname.Replace("'", ""));
+                if (query != null)
+                {
+                    list = query;
+                }
+            }
+            return Json(new { list= list },JsonRequestBehavior.AllowGet);
+        }
+
         #region 生成PDF
         public string ViewPdf(string prodid, string prodModel = "")
         {
