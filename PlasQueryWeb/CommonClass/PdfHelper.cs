@@ -29,11 +29,11 @@ namespace PlasQueryWeb.CommonClass
             }
             try
             {
-                PlasCommon.Common.AddLog("", "开始生成pdf", "开始生成pdf", "");
+                PlasCommon.Common.AddLog("", "开始生成pdf", url+ "+" + path, "");
                 if (string.IsNullOrEmpty(url) || string.IsNullOrEmpty(path))
                     return false;
                 var p = new Process();
-                string str = HttpContext.Current.Server.MapPath("~/") + @"bin\wkhtmltopdf.exe";
+                string str = HttpContext.Current.Server.MapPath("~/") + @"bin/wkhtmltopdf.exe";
                 if (!File.Exists(str))
                     return false;
                 p.StartInfo.FileName = str;
@@ -43,10 +43,10 @@ namespace PlasQueryWeb.CommonClass
                 p.StartInfo.RedirectStandardOutput = true;
                 p.StartInfo.RedirectStandardError = true;
                 p.StartInfo.CreateNoWindow = false;
-                p.Start();
+                var istrue=p.Start();
                 p.WaitForExit();
                 //System.Threading.Thread.Sleep(1000);
-
+                PlasCommon.Common.AddLog("", "开始生成pdf", istrue.ToString() + "exe生成器" + "+" + str, "");
                 return true;
             }
             catch (Exception ex)

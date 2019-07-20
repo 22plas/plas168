@@ -366,7 +366,7 @@ namespace PlasModel.Controllers
             var list = new List<PlasModel.unitModels>();
             if (!string.IsNullOrWhiteSpace(bigname) && !string.IsNullOrWhiteSpace(samllname))
             {
-                var query = bll.GetUnitModels(bigname.Replace("'",""), samllname.Replace("'", ""));
+                var query = bll.GetUnitModels(bigname.Replace("'","''"), samllname.Replace("'", "''"));
                 if (query != null)
                 {
                     list = query;
