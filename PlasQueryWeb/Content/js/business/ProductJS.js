@@ -63,8 +63,8 @@ function InitData(pageindx) {
                         tbodyui += "<td>" + n.PlaceOrigin + "</td>";
                         tbodyui += "<td>" + n.Name + "</td>";
                         tbodyui += "<td>" + n.ProUse + "</td>";
-                        tbodyui += "<td>" + n.characteristic +  "</td>";
-                        tbodyui += "<td><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.prodid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span>";
+                        tbodyui += "<td >" + n.characteristic +  "</td>";
+                        tbodyui += "<td ><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.prodid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span>";
                         //后期需要添加用户账户
                         //if (n.isColl == '0') {
                             tbodyui += "<span class='layui-btn layui-btn-sm' id=\"Contrast_" + n.prodid + "\" onClick=\"onColl('" + n.prodid + "');\"><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>";
