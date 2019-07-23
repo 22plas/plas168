@@ -2,15 +2,38 @@
     $(".navBox").find(".nav").find("li").eq(2).children("a").addClass("active");
     //需要验证是否登录
 
-    //$.each($("table[name='AttrRightList']"), function (index, item) {
-    //    if ($(this).css("display") == "none") {
-    //        $.each($(this).find("selet[name='UnitFaceKey']"), function (a, b) {
-    //            alert($(this).attr("smalltypename"));
-    //        })
-    //    }
-    //})
+    $.each($("table[isread='1']"), function (index, item) {
+        $.each($("table[isread='1']").find("select[name='UnitFaceKey']"), function (a, b) {
+            //alert($(this).attr("smalltypename"));
+            onLoadUnit(this, $(this).attr("bigtypename"), $(this).attr("smalltypename"));
+        })
+    })
 
 })
+
+//获取列表
+function onLoadUnit(obj, bigname, samllname) {
+    if (bigname != "" && samllname != "" && obj != "") {
+        $.ajax({
+            type: "POST",
+            dataType: "JSON",
+            url: '/PhysicalProducts/GetUnitList',
+            data: "bigname=" + bigname + "&samllname=" + samllname ,
+            async: false,
+            success: function (json) {
+                if (json != null) {
+                    var str = "";
+                    $.each(json.list, function (k, j) {
+                        str += "<option value=" + j.unit + ">" + j.unit + "</option>";
+                    })
+                    $(obj).empty().append(str);
+                }
+            },
+            error: function () { /*alert('加载数据失败');*/  }
+        });
+    }
+}
+
 function LookLoadingIcon(obj) {
     //alert("调用到了e");
     window.location.href = "/Replace/ProductReplace?PGuid=" + obj;
@@ -55,6 +78,12 @@ $(".orange-border").find("li").click(function () {
     $("table[name='AttrRightList']").hide();
     $("#Attr_" + id).removeClass("none");
     $("#Attr_" + id).show();
+    if ($("#Attr_" + id).attr("isread") == "0") {
+        $.each($("#Attr_" + id).find("select[name='UnitFaceKey']"), function (index, item) {
+            onLoadUnit(this, $(this).attr("bigtypename"), $(this).attr("smalltypename"));
+        })
+        $("#Attr_" + id).attr("isread", "1");
+    }
 })
 ///选中值，可多选择
 $(".search-item-content").find("li").click(function () {

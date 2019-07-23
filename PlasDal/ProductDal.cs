@@ -245,7 +245,7 @@ namespace PlasDal
         /// <returns></returns>
         public List<PlasModel.unitModels> GetUnitModels(string bigClassName, string samllClassName)
         {
-            string sql = string.Format(@"select '' as unit union select unit from ProductUnit where attribute1='{0}' and realkey='{1}' order by unit", bigClassName, samllClassName);
+            string sql = string.Format(@"select '' as unit union select unit from ProductUnit where attribute1='{0}' and realkey='{1}' and unit<>'' and unit is not null order by unit", bigClassName, samllClassName);
             var models = new List<PlasModel.unitModels>();
             var dt = SqlHelper.GetSqlDataTable(sql);
             if (dt.Rows.Count > 0)
