@@ -441,7 +441,7 @@ namespace PlasQueryWeb.Controllers
                             }
 
                             model.lev = templev;
-                            if (tempstr == "基础参数" || tempstr == "产品说明" || tempstr == "总体" || tempstr == "备注")
+                            if (tempstr == "基础参数" || tempstr == "产品说明" || tempstr == "总体" || tempstr == "基本信息" || tempstr == "备注")
                             {
                                 model.Attribute1 = temp1.Trim();
                                 model.Attribute2 = temp2.Trim();
@@ -2008,7 +2008,31 @@ namespace PlasQueryWeb.Controllers
             }
         }
         #endregion
-
+        #region 获取搜索关键词转换数字后的关键词字符串
+        /// <summary>
+        /// 获取搜索关键词转换数字后的关键词字符串
+        /// </summary>
+        /// <param name="key">原本要转换的关键词</param>
+        /// <returns>转换后的新关键词</returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetSearchNewKye(string key)
+        {
+            try
+            {
+                string keys = Common.DecodeMoneyCn(key);
+                var newkey = new
+                {
+                    key = keys
+                };
+                return Json(Common.ToJsonResult("Success", "获取成功", newkey), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
         //pdf数据
         public class pdfinfo {
             public string TypeName { get; set; }

@@ -211,6 +211,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="appdownload\downloadapp.html" />
+    <Content Include="appdownload\iconfont.css" />
+    <Content Include="appdownload\ic_launcher_APP.png" />
+    <Content Include="appdownload\jquery-2.1.1.js" />
+    <Content Include="appdownload\live_weixin.png" />
+    <Content Include="appdownload\vue.js" />
     <Content Include="Content\css\admin.css" />
     <Content Include="Content\css\amazeui.min.css" />
     <Content Include="Content\css\app.css" />
@@ -462,6 +468,9 @@
     <Content Include="Content\css\uploader.less" />
     <Content Include="Content\css\base.less" />
     <Content Include="ApplicationInsights.config" />
+    <Content Include="appdownload\iconfont.ttf" />
+    <Content Include="appdownload\android.apk" />
+    <Content Include="appdownload\ios.ipa" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\comm.js" />

@@ -371,5 +371,97 @@ namespace PlasCommon
 
         #endregion
 
+
+        #region 搜索关键词字符转换
+        /// <summary>
+        /// 搜索关键词字符转换
+        /// </summary>
+        /// <param name="AText">需要转换的关键词</param>
+        /// <returns></returns>
+        public static string DecodeMoneyCn(string AText)
+        {
+            string resultstr = AText;
+            for (int i = 0; i < AText.Length; i++)
+            {
+                string tempchar = AText.Substring(i, 1);
+                bool iscont = "零一二三四五六七八九点十".Contains(tempchar);
+                if (iscont)
+                {
+                    string tstring = string.Empty;
+                    if (tempchar== "零")
+                    {
+                        tstring = "0";
+                    }
+                    else if (tempchar == "一")
+                    {
+                        tstring = "1";
+                    }
+                    else if (tempchar == "二")
+                    {
+                        tstring = "2";
+                    }
+                    else if (tempchar == "三")
+                    {
+                        tstring = "3";
+                    }
+                    else if (tempchar == "四")
+                    {
+                        tstring = "4";
+                    }
+                    else if (tempchar == "五")
+                    {
+                        tstring = "5";
+                    }
+                    else if (tempchar == "六")
+                    {
+                        tstring = "6";
+                    }
+                    else if (tempchar == "七")
+                    {
+                        tstring = "7";
+                    }
+                    else if (tempchar == "八")
+                    {
+                        tstring = "8";
+                    }
+                    else if (tempchar == "九")
+                    {
+                        tstring = "9";
+                    }
+                    else if (tempchar == "点")
+                    {
+                        tstring = ".";
+                    }
+                    else if (tempchar == "十")
+                    {
+                        if (i == 0)
+                        {
+                            tstring = "1";
+                        }
+                        else {
+                            string t= AText.Substring(i-1, 1);
+                            string t2 = AText.Substring(i +1, 1);
+                            bool iscont2 = "一二三四五六七八九".Contains(t);
+                            bool iscont3= "一二三四五六七八九".Contains(t2);
+                            if (iscont2&& iscont3)
+                            {
+                                tstring = "";
+                            }
+                            else if (!iscont2 && iscont3)
+                            {
+                                tstring = "1";
+                            }
+                            else if (iscont2 && !iscont3)
+                            {
+                                tstring = "0";
+                            }
+                        }
+                    }
+                    resultstr =resultstr.Replace(tempchar, tstring);
+                }
+            }
+            return resultstr;
+        }
+        #endregion
     }
 }

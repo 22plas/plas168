@@ -1,0 +1,122 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>塑蚁网app下载</title>
+    <link rel="stylesheet" type="text/css" href="iconfont.css" />
+    <style type="text/css">
+        html, body {
+            background: #ffffff;
+        }
+        a {
+            text-decoration: none;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .weixin-tip {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            filter: alpha(opacity=80);
+            height: 100%;
+            width: 100%;
+            z-index: 100;
+        }
+
+            .weixin-tip p {
+                text-align: center;
+                margin-top: 10%;
+                padding: 0 5%;
+            } 
+    </style>
+</head>
+<body>
+    <div id="contentdiv" style="width:95%;margin:0 auto; height:auto;min-height:500px;">
+        <div style="width:100%;height:auto;min-height:500px;">
+            <div style="width:100%;height:100px;margin-top:100px;">
+                <div style="width:200px;height:100px;margin:0 auto;">
+                    <img src="ic_launcher_APP.png" style="border-radius:10px;width:100px;height:100px;margin:0 auto;display:block; " />
+                </div>
+            </div>
+            <div style="width:200px;height:60px;margin:20px auto;border-bottom:1px solid #cccccc;margin-top:30px;line-height:60px;">
+                <i v-if="systemtype=='0'" class="iconfont suyianzhuo" style="color:#666666;font-size:32px; margin-left:5px;float:left;margin-right:20px;margin-left:25px;color:green;"></i>
+                <i v-if="systemtype=='1'" class="iconfont suyiios" style="color:#666666;font-size:32px; margin-left:5px;float:left;margin-right:20px;margin-left:25px;color:#1281D4;"></i>
+                <span style="font-size:24px;color:#666666;">塑蚁网</span>
+            </div>
+            <div style="width:200px;height:60px;margin:0 auto;">
+                <div v-if="systemtype=='1'" style="width:100%;height:30px;line-height:30px;font-size:14px;color:#999999;text-align:center;">
+                    版本：1.0.1 - 19.53 MB
+                </div>
+                <div v-if="systemtype=='0'" style="width:100%;height:30px;line-height:30px;font-size:14px;color:#999999;text-align:center;">
+                    版本：1.0.1 - 15.88 MB
+                </div>
+                <div style="width:100%;height:30px;line-height:30px;font-size:14px;color:#999999;text-align:center;">
+                    更新于：2019-07-22 17:15
+                </div>
+            </div>
+            <div style="width:200px;height:60px;margin:0 auto;">
+                <a v-if="systemtype=='1'" href="https://apps.apple.com/cn/app/%E5%A1%91%E8%9A%81%E7%BD%91/id1471629019" style="width:90%;height:40px;text-decoration: none; display:block; margin:50px auto;background:#1281D4;border-radius:40px;text-align:center;line-height:40px;font-size:14px;color:#ffffff;">
+                    下载安装
+                </a>
+                <a v-if="systemtype=='0'" href="https://www.22plas.com/appdownload/android.apk" style="width:90%;height:40px;text-decoration: none; display:block; margin:50px auto;background:green;border-radius:40px;text-align:center;line-height:40px;font-size:14px;color:#ffffff;">
+                    下载安装
+                </a>
+            </div>
+        </div>
+        <div class="weixin-tip">
+            <p>     
+                <img src="live_weixin.png" alt="微信打开" />   
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="api.js"></script>
+<script type="text/javascript" src="vue.js"></script>
+<script type="text/javascript" src="jquery-2.1.1.js"></script>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#contentdiv',
+        data: {
+            systemtype:"0"//0:安卓 1：苹果
+        },
+        methods: {
+            init: function () {
+            }
+        }
+    });
+    $(window).on("load", function () {
+        var winHeight = $(window).height();
+        function is_weixin() {
+            var ua = navigator.userAgent.toLowerCase();
+            if (ua.match(/MicroMessenger/i) == "micromessenger") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        var isWeixin = is_weixin();
+        //是在微信中打开
+        if (isWeixin) {
+            $(".weixin-tip").css("height", winHeight);
+            $(".weixin-tip").show();
+        }
+        else {
+            var u = navigator.userAgent;
+            if (u.indexOf("Android") > -1 || u.indexOf("Linux") > -1) {
+                vm.systemtype = "0";
+            }
+            else if (u.indexOf("iPhone") > -1 || u.indexOf("iOS") > -1) {
+                vm.systemtype = "1";
+            }
+        }
+    });
+</script>
