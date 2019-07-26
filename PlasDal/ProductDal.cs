@@ -116,6 +116,10 @@ namespace PlasDal
                     tempwherekey = string.IsNullOrWhiteSpace(wherekey) ? "" : " aliasname LIKE''" + wherekey.Trim() + "'' OR name like ''%" + wherekey.Trim() + "%''";
                     ds = Sys_SuperSearchGetSmallClassList(showNum, pageindex.Value, tempwherekey);
                     break;
+                case 111://app助剂类别
+                    tempwherekey = string.IsNullOrWhiteSpace(wherekey) ? "" : " aliasname LIKE''" + wherekey.Trim() + "'' OR name like ''%" + wherekey.Trim() + "%''";
+                    ds = Sys_SuperSearchGetSmallClassList(showNum, pageindex.Value, tempwherekey);
+                    break;
                 default:
                     tempwherekey = string.IsNullOrWhiteSpace(wherekey) ? "" : " and name like ''%" + wherekey + "%''";
                     ds = Sys_GetSearchParam("Prd_SmallClass", showNum, " substring(dbo.[fn_ChineseToSpell](name),1,1) as fw,* ,'''' as SmallGuid,'''' as AliasName ", " and name<>'''' and name<>''--''" + tempwherekey, "[weight] desc,substring(dbo.[fn_ChineseToSpell](name),1,1),name ", pageindex.Value);
@@ -400,7 +404,7 @@ namespace PlasDal
         //获取产品所属厂家等信息
         public DataTable GetProductFactoryInfo(string pid)
         {
-            string sql = string.Format(@"select b.AliasName,c.Name from Product a inner join Sys_Manufacturer b on a.PlaceOrigin=b.EnglishName inner join Prd_SmallClass_l c on a.SmallClassId=c.parentguid
+            string sql = string.Format(@"select b.AliasName,c.Name,b.EnglishName from Product a inner join Sys_Manufacturer b on a.PlaceOrigin=b.EnglishName inner join Prd_SmallClass_l c on a.SmallClassId=c.parentguid
                                         where a.ProductGuid = '{0}' and c.LanguageId = 2052", pid);
             var dt = SqlHelper.GetSqlDataTable(sql);
             return dt;
@@ -554,12 +558,17 @@ namespace PlasDal
             return SqlHelper.GetSqlDataTable_Param(sql.ToString(), parm);
         }
 
-        
+
 
 
         #endregion
 
-
+        //获取产品助剂列表
+        public DataTable GetAnnotationList(int pagesize, int pageindex)
+        {
+            string sql = string.Format("exec Fi_FillerList {0},{1},{2},{3}", pagesize, pageindex, 2052, 1);
+            return SqlHelper.GetSqlDataTable(sql);
+        }
 
     }
 }

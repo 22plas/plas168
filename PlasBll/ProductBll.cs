@@ -267,5 +267,15 @@ namespace PlasBll
 
 
         #endregion
+
+        /// <summary>
+        /// 获取产品助剂列表
+        /// </summary>
+        /// <param name="name">厂家名称</param>
+        /// <returns></returns>
+        public DataTable GetAnnotationList(int pagesize, int pageindex)
+        {
+            return dal.GetAnnotationList(pagesize, pageindex);
+        }
     }
 }

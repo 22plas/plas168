@@ -109,7 +109,7 @@ namespace PlasQueryWeb.Controllers
                 {
                     DataTable dt = new DataTable();
                     int selecttype = Convert.ToInt32(typestr);
-                    if (typestr == "11")
+                    if (typestr == "11"|| typestr == "111")
                     {
                         selecttype = 11;
                         dt = bll.GetSearchParam(selecttype, key, pagesize.Value, pageindex.Value);
@@ -358,7 +358,7 @@ namespace PlasQueryWeb.Controllers
                 DataTable dt = bll.GetProductFactoryInfo(pid);
                 if (dt.Rows.Count > 0)
                 {
-                    factoryname = dt.Rows[0]["AliasName"].ToString();
+                    factoryname = dt.Rows[0]["AliasName"].ToString()==""?dt.Rows[0]["EnglishName"].ToString(): dt.Rows[0]["AliasName"].ToString();
                     name = dt.Rows[0]["Name"].ToString();
                 }
                 var returndata = new
@@ -2033,6 +2033,25 @@ namespace PlasQueryWeb.Controllers
             }
         }
         #endregion
+        #region  获取产品助剂信息
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetAnnotationList(int pageindex, int pagesize)
+        {
+            try
+            {
+                List<Annotation> returnlist = new List<Annotation>();
+                DataTable dt = bll.GetAnnotationList(pagesize, pageindex);
+                returnlist = Comm.ToDataList<Annotation>(dt);
+                return Json(Common.ToJsonResult("Success", "获取成功", returnlist), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
         //pdf数据
         public class pdfinfo {
             public string TypeName { get; set; }
@@ -2137,6 +2156,16 @@ namespace PlasQueryWeb.Controllers
             //图片
             public string HomeImg { get; set; }
             public string CreateDate { get; set; }
+        }
+        //产品助剂
+        public class Annotation
+        {
+            public string Model { get; set; }
+            public string Supplier { get; set; }
+            public string comments { get; set; }
+            public string Product_Type { get; set; }
+            public string Product_Status { get; set; }
+            public int id { get; set; }
         }
     }
 }
