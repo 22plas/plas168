@@ -141,6 +141,23 @@ namespace PlasQueryWeb.Controllers
         }
         #endregion
 
+        #region 获取助剂类别或者厂家
+        public ActionResult GetAnnotationClassOrFactory(string typestr, string key, int? pageindex = 1, int? pagesize = 10)
+        {
+            try
+            {
+                List<parminfo> list = new List<parminfo>();
+                DataTable dt = bll.GetAnnotationClassOrFactory(typestr, key, pageindex, pagesize);
+                list = Comm.ToDataList<parminfo>(dt);
+                return Json(Common.ToJsonResult("Success", "获取成功", list), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败"), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
         #region 根据上级名称获取二级填料
         [AllowCrossSiteJson]
         [HttpGet]
@@ -2036,12 +2053,12 @@ namespace PlasQueryWeb.Controllers
         #region  获取产品助剂信息
         [AllowCrossSiteJson]
         [HttpGet]
-        public ActionResult GetAnnotationList(int pageindex, int pagesize)
+        public ActionResult GetAnnotationList(int pageindex, int pagesize, string key, int? type = 0)
         {
             try
             {
                 List<Annotation> returnlist = new List<Annotation>();
-                DataTable dt = bll.GetAnnotationList(pagesize, pageindex);
+                DataTable dt = bll.GetAnnotationList(pagesize, pageindex,key, type);
                 returnlist = Comm.ToDataList<Annotation>(dt);
                 return Json(Common.ToJsonResult("Success", "获取成功", returnlist), JsonRequestBehavior.AllowGet);
             }

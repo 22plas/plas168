@@ -273,9 +273,21 @@ namespace PlasBll
         /// </summary>
         /// <param name="name">厂家名称</param>
         /// <returns></returns>
-        public DataTable GetAnnotationList(int pagesize, int pageindex)
+        public DataTable GetAnnotationList(int pagesize, int pageindex,string key, int? type = 0)
         {
-            return dal.GetAnnotationList(pagesize, pageindex);
+            return dal.GetAnnotationList(pagesize, pageindex, key,type);
+        }
+        /// <summary>
+        /// 获取助剂类别或者厂家
+        /// </summary>
+        /// <param name="typestr">获取类别</param>
+        /// <param name="key">关键词</param>
+        /// <param name="pageindex">页码</param>
+        /// <param name="pagesize">每页数量</param>
+        /// <returns></returns>
+        public DataTable GetAnnotationClassOrFactory(string typestr, string key, int? pageindex = 1, int? pagesize = 10)
+        {
+            return dal.GetAnnotationClassOrFactory(typestr, key, pageindex, pagesize);
         }
     }
 }

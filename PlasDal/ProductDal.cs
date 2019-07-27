@@ -564,11 +564,30 @@ namespace PlasDal
         #endregion
 
         //获取产品助剂列表
-        public DataTable GetAnnotationList(int pagesize, int pageindex)
+        public DataTable GetAnnotationList(int pagesize, int pageindex, string key,int? type=0)
         {
-            string sql = string.Format("exec Fi_FillerList {0},{1},{2},{3}", pagesize, pageindex, 2052, 1);
+            string sql = string.Format("exec Fi_FillerList {0},{1},{2},{3},{4},'{5}'", pagesize, pageindex, 2052, 1, type,key);
+            return SqlHelper.GetSqlDataTable(sql);
+        }
+        /// <summary>
+        /// 获取助剂类别或者厂家
+        /// </summary>
+        /// <param name="typestr">获取类别</param>
+        /// <param name="key">关键词</param>
+        /// <param name="pageindex">页码</param>
+        /// <param name="pagesize">每页数量</param>
+        /// <returns>返回助剂类别或者厂家</returns>
+        public DataTable GetAnnotationClassOrFactory(string typestr, string key, int? pageindex = 1, int? pagesize = 10)
+        {
+            string sql = string.Format(@"exec Fi_FillerProductTypeOrFactory {0},{1},{2},{3},'{4}'", pagesize, pageindex,2052, typestr, key);
             return SqlHelper.GetSqlDataTable(sql);
         }
 
+        //获取助剂详情
+        public DataTable GetAnnotationDetail()
+        {
+            string sql = string.Format("");
+            return SqlHelper.GetSqlDataTable(sql);
+        }
     }
 }
