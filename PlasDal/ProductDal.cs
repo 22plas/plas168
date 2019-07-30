@@ -20,7 +20,8 @@ namespace PlasDal
         }
         public DataSet NewGetModelInfo(string pguid)
         {
-            var ds = SqlHelper.GetSqlDataSet(string.Format(@"exec readproduct '{0}' ", pguid));
+            var ds = SqlHelper.GetSqlDataSet(string.Format(@"exec PROC_GetInfoByPguid '{0}' ", pguid));
+            //var ds = SqlHelper.GetSqlDataSet(string.Format(@"exec readproduct '{0}' ", pguid));
             return ds;
         }
         #endregion
@@ -584,10 +585,21 @@ namespace PlasDal
         }
 
         //获取助剂详情
-        public DataTable GetAnnotationDetail()
+        public DataSet GetAnnotationDetail(int id)
         {
-            string sql = string.Format("");
-            return SqlHelper.GetSqlDataTable(sql);
+            string sql = string.Format("EXEC Fi_ReadHead {0},{1}", id, 2052);
+            string sql2 = string.Format(@"SELECT a.Property,a.ValueUnit,a.TestType,a.TestCondition FROM dbo.Fi_Body a 
+                                            INNER JOIN dbo.Fi_Fillter b ON a.Parentid=b.id
+                                            INNER JOIN dbo.Fi_Fillter_l c ON c.ParentId=a.Parentid
+                                            WHERE c.languageid={1} AND a.Parentid={0}", id, 2052);
+            DataTable dt2 = SqlHelper.GetSqlDataTable(sql2);
+            DataTable dt = SqlHelper.GetSqlDataTable(sql);
+            dt.TableName = "dt";
+            dt2.TableName = "dt2";
+            DataSet dset = new DataSet();
+            dset.Tables.Add(dt.Copy());
+            dset.Tables.Add(dt2.Copy());
+            return dset;
         }
     }
 }

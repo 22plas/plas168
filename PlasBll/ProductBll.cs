@@ -190,7 +190,7 @@ namespace PlasBll
                 var query = dal.GetPri_DayAvgPrice(ProductGuid);
                 if (query != null)
                 {
-                    list= PlasCommon.ToolClass<Pri_DayAvgPriceModel>.ConvertDataTableToModel(query);
+                    list = PlasCommon.ToolClass<Pri_DayAvgPriceModel>.ConvertDataTableToModel(query);
                 }
             }
             return list;
@@ -218,7 +218,7 @@ namespace PlasBll
             if (!string.IsNullOrWhiteSpace(ProductId))
             {
                 var query = dal.GetUl_Head(ProductId);
-                if (query != null && query.Rows.Count>0)
+                if (query != null && query.Rows.Count > 0)
                 {
                     list = PlasCommon.ToolClass<Ul_HeadModel>.ConvertDataTableToModel(query);
                 }
@@ -226,11 +226,11 @@ namespace PlasBll
             return list;
         }
 
-            /// <summary>
-            ///根据 编号查询
-            /// </summary>
-            /// <param name="FileNumber"></param>
-            /// <returns></returns>
+        /// <summary>
+        ///根据 编号查询
+        /// </summary>
+        /// <param name="FileNumber"></param>
+        /// <returns></returns>
         public List<Ul_HeadModel> GetUl_HeadNumber(string NumberId)
         {
             var list = new List<Ul_HeadModel>();
@@ -273,9 +273,9 @@ namespace PlasBll
         /// </summary>
         /// <param name="name">厂家名称</param>
         /// <returns></returns>
-        public DataTable GetAnnotationList(int pagesize, int pageindex,string key, int? type = 0)
+        public DataTable GetAnnotationList(int pagesize, int pageindex, string key, int? type = 0)
         {
-            return dal.GetAnnotationList(pagesize, pageindex, key,type);
+            return dal.GetAnnotationList(pagesize, pageindex, key, type);
         }
         /// <summary>
         /// 获取助剂类别或者厂家
@@ -288,6 +288,15 @@ namespace PlasBll
         public DataTable GetAnnotationClassOrFactory(string typestr, string key, int? pageindex = 1, int? pagesize = 10)
         {
             return dal.GetAnnotationClassOrFactory(typestr, key, pageindex, pagesize);
+        }
+        /// <summary>
+        /// 获取助剂详情
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public DataSet GetAnnotationDetail(int id)
+        {
+            return dal.GetAnnotationDetail(id);
         }
     }
 }

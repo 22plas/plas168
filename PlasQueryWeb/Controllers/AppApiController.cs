@@ -428,7 +428,7 @@ namespace PlasQueryWeb.Controllers
                 {
                     if (ds.Tables.Count >= 1)
                     {
-                        DataTable tempdt = ds.Tables[0];
+                        DataTable tempdt = ds.Tables[1];
                         string tempstr = "";
                         for (int i = 0; i < tempdt.Rows.Count; i++)
                         {
@@ -2069,6 +2069,45 @@ namespace PlasQueryWeb.Controllers
         }
         #endregion
 
+        #region  获取产品助剂详情
+        //获取助剂详情
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetAnnotationDetail(int id)
+        {
+            try
+            {
+                List<KeyValue> list = new List<KeyValue>();
+                List<AnnotationDetail> detaillist = new List<AnnotationDetail>();
+                DataSet set = bll.GetAnnotationDetail(id);
+                DataTable dt = set.Tables[0];
+                DataTable dt2 = set.Tables[1];
+                list = Comm.ToDataList<KeyValue>(dt);
+                detaillist = Comm.ToDataList<AnnotationDetail>(dt2);
+                for (int i = 0; i < detaillist.Count; i++)
+                {
+                    if (i % 2 == 0)
+                    {
+                        detaillist[i].bcolor = "ff";
+                    }
+                    else
+                    {
+                        detaillist[i].bcolor = "f2";
+                    }
+                }
+                var returnlist = new
+                {
+                    headdata = list,
+                    detaildata = detaillist
+                };
+                return Json(Common.ToJsonResult("Success", "获取成功", returnlist), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
         //pdf数据
         public class pdfinfo {
             public string TypeName { get; set; }
@@ -2183,6 +2222,18 @@ namespace PlasQueryWeb.Controllers
             public string Product_Type { get; set; }
             public string Product_Status { get; set; }
             public int id { get; set; }
+        }
+        //产品助剂详情
+        public class AnnotationDetail {
+            public string Property { get; set; }
+            public string ValueUnit { get; set; }
+            public string TestType { get; set; }
+            public string TestCondition { get; set; }
+            public string bcolor { get; set; }
+        }
+        public class KeyValue {
+            public string facekey { get; set; }
+            public string facevalue { get; set; }
         }
     }
 }
