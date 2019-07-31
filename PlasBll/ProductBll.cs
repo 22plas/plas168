@@ -178,6 +178,16 @@ namespace PlasBll
         }
 
         /// <summary>
+        /// 获取关键词
+        /// </summary>
+        /// <param name="productGuid"></param>
+        /// <returns></returns>
+        public DataTable GetPorcutKeyWord(string productGuid)
+        {
+            return dal.GetPorcutKeyWord(productGuid);
+        }
+
+        /// <summary>
         /// 获取价格
         /// </summary>
         /// <param name="ProductGuid"></param>

@@ -300,6 +300,20 @@ namespace PlasDal
             return ds;
         }
 
+        /// <summary>
+        /// 获取关键词
+        /// </summary>
+        /// <param name="productGuid"></param>
+        /// <returns></returns>
+        public DataTable GetPorcutKeyWord(string productGuid)
+        {
+            string sql = string.Format(@"select * from Product a 
+                                        left join sys_Manufacturer b on a.PlaceOrigin=b.EnglishName
+                                        where a.ProductGuid='{0}'", productGuid);
+            return SqlHelper.GetSqlDataTable(sql.ToString());
+
+        }
+
         #endregion
 
         #region 普通搜索

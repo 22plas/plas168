@@ -188,7 +188,7 @@ namespace PlasModel.Controllers
                 if (ds.Tables.Count > 2)
                 {
                     //详情页标题：种类（Prd_SmallClass_l.Name）+型号（Product.ProModel）+产地（Product.PlaceOrigin）
-                    ViewBag.Title = ds.Tables[2].Rows[0]["Title"].ToString();
+                    ViewBag.Title2 = ds.Tables[2].Rows[0]["Title"].ToString();
                     //关键字：特性(product_l.characteristic)+用途(product_l.ProUse)
                     ViewBag.Keywords = ds.Tables[2].Rows[0]["keyword"].ToString();
                     //ViewBag.description2 =产品说明(只能用 exec readproduct '0004D924-5BD4-444F-A6D2-045D4EDB0DD3'命令中读出)
