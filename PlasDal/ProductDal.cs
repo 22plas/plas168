@@ -587,6 +587,16 @@ namespace PlasDal
         //获取助剂详情
         public DataSet GetAnnotationDetail(int id)
         {
+            //根据id查询产品助剂热度
+            string gethitsql =string.Format("select * from Fi_FillterHitCount where ParentId={0}",id);
+            DataTable hitdt = SqlHelper.GetSqlDataTable(gethitsql);
+            int hitcount = 0;
+            if (hitdt.Rows.Count > 0)
+            {
+                hitcount = Convert.ToInt32(hitdt.Rows[0]["HitCount"]) + 1;
+                string updatehitsql = string.Format(@"update Fi_FillterHitCount set HitCount={0}", hitcount);
+                SqlHelper.ExecuteSqlNoQuery(updatehitsql);
+            }
             string sql = string.Format("EXEC Fi_ReadHead {0},{1}", id, 2052);
             string sql2 = string.Format(@"SELECT a.Property,a.ValueUnit,a.TestType,a.TestCondition FROM dbo.Fi_Body a 
                                             INNER JOIN dbo.Fi_Fillter b ON a.Parentid=b.id

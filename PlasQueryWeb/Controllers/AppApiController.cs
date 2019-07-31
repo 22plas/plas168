@@ -2082,6 +2082,11 @@ namespace PlasQueryWeb.Controllers
                 DataSet set = bll.GetAnnotationDetail(id);
                 DataTable dt = set.Tables[0];
                 DataTable dt2 = set.Tables[1];
+                DataRow[] rw = dt.Select("facekey='说明'");
+                if (rw.Length>0)
+                {
+                    dt.Rows.Remove(rw[0]);
+                }                
                 list = Comm.ToDataList<KeyValue>(dt);
                 detaillist = Comm.ToDataList<AnnotationDetail>(dt2);
                 for (int i = 0; i < detaillist.Count; i++)
