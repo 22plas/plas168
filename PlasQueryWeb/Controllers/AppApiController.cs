@@ -797,7 +797,7 @@ namespace PlasQueryWeb.Controllers
         /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpGet]
-        public ActionResult AppMsgSearch(string ver, string use, string key, string factory, string kind, string method, string characteristic, string additive, string addingmaterial, int pageindex, int pagesize, string isTow)
+        public ActionResult AppMsgSearch(string ver, string use, string key, string factory, string kind, string method, string characteristic, string additive, string addingmaterial,string addghdq, int pageindex, int pagesize, string isTow)
         {
 
             string jsonstr = string.Empty;
@@ -812,7 +812,7 @@ namespace PlasQueryWeb.Controllers
                 DataSet ds = new DataSet();
                 if (isTow == "1")//第二次分页，查询数据isTow:(0：第一次 1：多次)
                 {
-                    ds = bll.GetTwoSearch(pageindex, pagesize, ver, characteristic, use, kind, method, factory, additive, addingmaterial);
+                    ds = bll.GetTwoSearch(pageindex, pagesize, ver, characteristic, use, kind, method, factory, additive, addingmaterial, addghdq);
                 }
                 else
                 {

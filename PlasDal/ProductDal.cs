@@ -349,9 +349,9 @@ namespace PlasDal
         //@Factory varchar(300),--厂家
         //@Additive varchar(300),--添加剂
         //@AddingMaterial varchar(300)--增料
-        public DataSet GetTwoSearch(int pageIndex, int pageSize, string ver, string Characteristic, string Used, string Kind, string Method, string Factory, string Additive, string AddingMaterial)
+        public DataSet GetTwoSearch(int pageIndex, int pageSize, string ver, string Characteristic, string Used, string Kind, string Method, string Factory, string Additive, string AddingMaterial,string addghdq)
         {
-            string sql = string.Format("exec Get_TwoHeadSearchTmpData {0},{1},'{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}'", pageIndex, pageSize, ver, Characteristic, Used, Kind, Method, Factory, Additive, AddingMaterial);
+            string sql = string.Format("exec Get_TwoHeadSearchTmpData {0},{1},'{2}','{3}','{4}','{5}','{6}','{7}','{8}','{9}','{10}'", pageIndex, pageSize, ver, Characteristic, Used, Kind, Method, Factory, Additive, AddingMaterial, addghdq);
             var ds = SqlHelper.GetSqlDataSet(sql);
             return ds;
         }

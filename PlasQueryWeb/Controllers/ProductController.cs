@@ -103,7 +103,7 @@ namespace PlasModel.Controllers
                 DataSet ds = new DataSet();
                 if (isTow)//第二次分页，查询数据
                 {
-                    ds = bll.GetTwoSearch(pageindex, pagesize, strGuid, Characteristic, Use, Kind, Method, Factory, Additive, AddingMaterial);
+                    ds = bll.GetTwoSearch(pageindex, pagesize, strGuid, Characteristic, Use, Kind, Method, Factory, Additive, AddingMaterial,"");
                 }
                 else
                 {
