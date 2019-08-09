@@ -166,6 +166,8 @@ namespace PlasModel.Controllers
                 if (ds.Tables.Contains("ds") &&  ds.Tables[0].Rows.Count > 0)
                 {
                     ViewBag.ProModel = ds.Tables[0].Rows[0]["proModel"];
+                    ViewBag.ProFactory= ds.Tables[0].Rows[0]["cnname"];
+                    ViewBag.ProType = ds.Tables[0].Rows[0]["cntype"];
                 }
                 if (ds.Tables.Contains("ds1") && ds.Tables.Count > 1)
                 {
