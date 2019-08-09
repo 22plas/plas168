@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using PlasBll;
 using PlasCommon;
 using PlasCommon.SqlCommonQuery;
 using PlasModel;
@@ -24,6 +25,7 @@ namespace PlasQueryWeb.Controllers
         private PlasBll.MemberCenterBll mbll = new PlasBll.MemberCenterBll();
         private PlasBll.ContrastBll cbll = new PlasBll.ContrastBll();
         private PlasBll.NewsBll newbll = new PlasBll.NewsBll();
+        private ModProductBll mpbll = new ModProductBll();
 
         #region 获取行情走势
         /// <summary>
@@ -2113,6 +2115,29 @@ namespace PlasQueryWeb.Controllers
             }
         }
         #endregion
+
+        /// <summary>
+        /// 获取改新厂列表
+        /// </summary>
+        /// <param name="pageindex"></param>
+        /// <param name="pagesize"></param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetModProductList(int pageindex, int pagesize)
+        {
+            try
+            {
+                List<ModProduct> list = new List<ModProduct>();
+                DataTable dt = mpbll.GetModProductList(pageindex, pagesize);
+                list = Comm.ToDataList<ModProduct>(dt);
+                return Json(Common.ToJsonResult("Success", "获取成功", list), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
         //pdf数据
         public class pdfinfo {
             public string TypeName { get; set; }
@@ -2239,6 +2264,18 @@ namespace PlasQueryWeb.Controllers
         public class KeyValue {
             public string facekey { get; set; }
             public string facevalue { get; set; }
+        }
+
+        //改新厂
+        public class ModProduct
+        {
+            public int Id { get; set; }
+            public string ProModel { get; set; }
+            public string ProType { get; set; }
+            public string Color { get; set; }
+            public string Comments { get; set; }
+            public string PictPath { get; set; }
+            public string WheelPath { get; set; }
         }
     }
 }
