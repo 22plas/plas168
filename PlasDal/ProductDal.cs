@@ -608,7 +608,7 @@ namespace PlasDal
             if (hitdt.Rows.Count > 0)
             {
                 hitcount = Convert.ToInt32(hitdt.Rows[0]["HitCount"]) + 1;
-                string updatehitsql = string.Format(@"update Fi_FillterHitCount set HitCount={0}", hitcount);
+                string updatehitsql = string.Format(@"update Fi_FillterHitCount set HitCount={0} where ParentId={1} ", hitcount, id);
                 SqlHelper.ExecuteSqlNoQuery(updatehitsql);
             }
             string sql = string.Format("EXEC Fi_ReadHead {0},{1}", id, 2052);
