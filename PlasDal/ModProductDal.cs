@@ -24,6 +24,35 @@ namespace PlasDal
             return SqlHelper.GetSqlDataTable(sql);
         }
 
-        //public 
+        /// <summary>
+        /// 获取改新厂产品详情
+        /// </summary>
+        /// <param name="id">产品id</param>
+        /// <returns></returns>
+        public DataSet GetModProductDetail(int id)
+        {
+            string sql = string.Format(@"SELECT p.Id,p.ProModel,p.PictPath,p.WheelPath,pr.Price,pr.DiscountPrice,pm.Title,pr.MinQty,pm.DetailsMemo,pm.Unit,c.Name,c.MainPhoto,c.MainBusiness,
+                                        pr.PayType,p.Color,pr.MaxQty/1000 AS MaxQty,pm.Native,case when pm.Brand='' then '无' else pm.Brand end as Brand,CASE WHEN pm.IsImported=1 THEN '是' ELSE '否' END AS IsImported,pm.Catgory,pr.Packing,pr.RateType,
+                                        c.Category AS Ccategry,c.RegisteredCapital,c.Address,c.WebSite,CONVERT(DATE,c.RegisterTime) RegisterTime,p.ProductGuid,pm.Service,
+                                        c.Salesperson,c.SalseMoble,c.SalseQQ,c.SalseWechat,c.SalseMail FROM dbo.Mod_Product p
+                                        INNER JOIN dbo.Mod_Price pr ON p.Id=pr.ProductId
+                                        INNER JOIN dbo.Mod_SaleMessage pm ON p.Id=pm.ProductId
+                                        LEFT JOIN dbo.Mod_Customer c ON c.CustId=p.Custid where p.id={0};
+                                        SELECT TOP 1 p.ProModel,p.PlaceOrigin FROM [dbo].[Mod_TargetList] mt
+                                        INNER JOIN dbo.Product p ON p.ProductGuid=mt.TargetProductId WHERE mt.ModProuctId={0}", id);
+            DataSet dset = SqlHelper.GetSqlDataSet(sql);
+            return dset;
+        }
+        /// <summary>
+        /// 查询改新厂替换详情
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public DataTable GetNewFactoryth(int id)
+        {
+            string sql = string.Format(@"SELECT p.ProModel,p.PlaceOrigin FROM [dbo].[Mod_TargetList] mt
+                                        INNER JOIN dbo.Product p ON p.ProductGuid=mt.TargetProductId WHERE mt.ModProuctId={0}", id);
+            return SqlHelper.GetSqlDataTable(sql);
+        }
     }
 }

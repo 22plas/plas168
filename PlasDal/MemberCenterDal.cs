@@ -658,10 +658,10 @@ namespace PlasDal
             }
             pageBegin = (pageindex - 1) * pagesize;
             pageEnd = (pagesize * pageindex);
-            string sql = string.Format(@"SELECT * FROM ( select a.Id,a.ProductGuid,a.UserId,a.CreateDate,b.ProModel,b.PlaceOrigin,c.ProUse,c.characteristic,d.Name,row_number() over(order by a.Id desc)as rownum from Physics_Contrast as a 
+            string sql = string.Format(@"SELECT * FROM ( SELECT row_number() over(order by a.Id desc)as rownum , * FROM(SELECT DISTINCT a.Id,a.ProductGuid,a.UserId,a.CreateDate,b.ProModel,b.PlaceOrigin,c.ProUse,c.characteristic,d.Name FROM Physics_Contrast as a 
                                          left join Product as b on a.ProductGuid=b.ProductGuid
                                          left join Product_l as c on c.ParentGuid=a.ProductGuid
-                                         left join Prd_SmallClass_l as d on d.parentguid=b.SmallClassId where a.UserId='{0}' ) s WHERE s.rownum BETWEEN {1} AND {2}", userId, pageBegin, pageEnd);
+                                         left join Prd_SmallClass_l as d on d.parentguid=b.SmallClassId where a.UserId='{0}') a ) s WHERE s.rownum BETWEEN {1} AND {2}", userId, pageBegin, pageEnd);
             DataTable dt = SqlHelper.GetSqlDataTable(sql);
             return dt;
         }

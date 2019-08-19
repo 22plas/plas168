@@ -2027,6 +2027,7 @@ namespace PlasQueryWeb.Controllers
             }
         }
         #endregion
+     
         #region 获取搜索关键词转换数字后的关键词字符串
         /// <summary>
         /// 获取搜索关键词转换数字后的关键词字符串
@@ -2052,6 +2053,7 @@ namespace PlasQueryWeb.Controllers
             }
         }
         #endregion
+      
         #region  获取产品助剂信息
         [AllowCrossSiteJson]
         [HttpGet]
@@ -2116,6 +2118,7 @@ namespace PlasQueryWeb.Controllers
         }
         #endregion
 
+        #region 获取改新厂列表
         /// <summary>
         /// 获取改新厂列表
         /// </summary>
@@ -2138,6 +2141,65 @@ namespace PlasQueryWeb.Controllers
                 return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion
+
+        #region 获取改新厂产品详情
+        /// <summary>
+        /// 获取改新厂产品详情
+        /// </summary>
+        /// <param name="id">产品id</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetModProductDetail(int id)
+        {
+            try
+            {
+                List<ModProductDetail> list = new List<ModProductDetail>();
+                DataSet set = mpbll.GetModProductDetail(id);
+                DataTable dt = set.Tables[0];
+                list = Comm.ToDataList<ModProductDetail>(dt);
+                DataTable dt1 = set.Tables[1];
+                string tempmodel = string.Empty;
+                string tempfactory = string.Empty;
+                if (dt1.Rows.Count > 0)
+                {
+                    tempmodel = dt1.Rows[0]["ProModel"].ToString();
+                    tempfactory = dt1.Rows[0]["PlaceOrigin"].ToString();
+                }
+                var returndata = new
+                {
+                    datalist = list,
+                    thmodel = tempmodel,
+                    thfactory = tempfactory
+                };
+                return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+        #region 查询改新厂替换详情
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetNewFactoryth(int id)
+        {
+            try
+            {
+                List<NewFactoryth> list = new List<NewFactoryth>();
+                DataTable dt = mpbll.GetNewFactoryth(id);
+                list = Comm.ToDataList<NewFactoryth>(dt);
+                return Json(Common.ToJsonResult("Success", "获取成功", list), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
         //pdf数据
         public class pdfinfo {
             public string TypeName { get; set; }
@@ -2276,6 +2338,52 @@ namespace PlasQueryWeb.Controllers
             public string Comments { get; set; }
             public string PictPath { get; set; }
             public string WheelPath { get; set; }
+        }
+
+        //改新厂产品详情
+        //p.ProType,p.Color,pr.MaxQty,pm.Native,pm.Brand,pm.IsImported,pm.Catgory,pr.Packing,pr.RateType
+        public class ModProductDetail
+        {
+            public string ProductGuid { get; set; }//产品guid
+            public int Id { get; set; }
+            public string ProModel { get; set; }//型号
+            public string PictPath { get; set; }//主图
+            public string WheelPath { get; set; }//轮播图
+            public decimal Price { get; set; }//价格
+            public string DiscountPrice { get; set; }//折扣价
+            public string Title { get; set; }//产品标题
+            public int MinQty { get; set; }//起售量
+            public string DetailsMemo { get; set; }//详情
+            public string Unit { get; set; }//单位
+            public string Name { get; set; }//厂家名称
+            public string MainPhoto { get; set; }//厂家log
+            public string MainBusiness { get; set; }//厂家主营类目
+            public string PayType { get; set; }//付款方式
+            public string Color { get; set; }//颜色
+            public string MaxQty { get; set; }//库存
+            public string Native { get; set; }//产地
+            public string Brand { get; set; }//品牌
+            public string IsImported { get; set; }//是否进口
+            public string Catgory { get; set; }//类型
+            public string Packing { get; set; }//包装
+            public string RateType { get; set; }//含税种类
+            public string Ccategry { get; set; }//企业性质
+            public string RegisteredCapital { get; set; }//注册资本
+            public string Address { get; set; }//公司地址
+            public string WebSite { get; set; }//官网
+            public string RegisterTime { get; set; }//成立时间 
+            public string Service { get; set; }//服务
+            public string Salesperson { get; set; }//联系人
+            public string SalseMoble { get; set; }//联系电话
+            public string SalseQQ { get; set; }//联系qq
+            public string SalseWechat { get; set; }//联系微信
+            public string SalseMail { get; set; }//联系邮箱
+        }
+        //改新厂替换详情
+        public class NewFactoryth
+        {
+            public string ProModel { get; set; }//型号
+            public string PlaceOrigin { get; set; }//生产厂商
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿@{
-    ViewBag.Title = (ViewBag.Title2 + ViewBag.ProModel+"|"+ ViewBag.ProFactory + "|"+ ViewBag.ProType);
+    ViewBag.Title = (ViewBag.Title2 + ViewBag.ProModel + "|" + ViewBag.ProFactory + "|" + ViewBag.ProType+ "物性表, ROHS|MSDS|UL|COC等资料下载");
     ViewBag.keywords = (ViewBag.Keywords + ViewBag.ProModel);
     ViewBag.DescCentent = ViewBag.description;
-    }
+}
 @{
     ViewBag.HideSearch = true;//隐藏搜索框
     var PhysicalData = ViewBag.PhysicalInfo == null ? new System.Data.DataTable() : ViewBag.PhysicalInfo as System.Data.DataTable;
@@ -136,9 +136,9 @@
                 <li><a href="javascript:void(0);" style="border-top:solid 1px #ff6a00;display:block;" onclick="viewpdf('@ViewBag.ProdID','@ViewBag.ProModel')"><i class="Hui-iconfont">&#xe640;</i>&nbsp;下载PDF</a></li>
                 @if (ViewBag.blistCount > 0)
                 {
-                     <li><a href="javascript:void(0);" style="display:block;" onclick="showUlpdf('@ViewBag.ProdID');"><i class="Hui-iconfont">&#xe6c6;</i>&nbsp;黄卡UL</a></li>
+                    <li><a href="javascript:void(0);" style="display:block;" onclick="showUlpdf('@ViewBag.ProdID');"><i class="Hui-iconfont">&#xe6c6;</i>&nbsp;黄卡UL</a></li>
                 }
-                   
+
                 @for (var i = 0; i < pdf.Rows.Count; i++)
                 {
                     <li><a href="@((ViewBag.PdfUrl)+pdf.Rows[i]["pdfPath"].ToString())" target="_blank"><span style="border:solid 1px @(pdf.Rows[i]["ImagesColor"].ToString()); padding:3px 5px;background:@(pdf.Rows[i]["ImagesColor"].ToString());color:#fff;">@(pdf.Rows[i]["TypeName"].ToString().Length > 0 ? pdf.Rows[i]["TypeName"].ToString().Substring(0, 1) : "")</span>&nbsp;@pdf.Rows[i]["TypeName"]</a></li>
@@ -149,11 +149,11 @@
             <br />
             <p class="title">猜你喜欢的产品</p>
             <ul class="ul-list">
-                    @for (var i = 0; i < liveds.Tables[1].Rows.Count; i++)
-                    {
-                        <li title="@liveds.Tables[1].Rows[i]["ProModel"].ToString()"><span class="fa fa-caret-right"></span><a href="/PhysicalProducts/Detail/@(liveds.Tables[1].Rows[i]["ProductGuid"].ToString()).html" target="_blank">@liveds.Tables[1].Rows[i]["ProModel"].ToString()</a></li>
-                    }
-                </ul>
+                @for (var i = 0; i < liveds.Tables[1].Rows.Count; i++)
+                {
+                    <li title="@liveds.Tables[1].Rows[i]["ProModel"].ToString()"><span class="fa fa-caret-right"></span><a href="/PhysicalProducts/Detail/@(liveds.Tables[1].Rows[i]["ProductGuid"].ToString()).html" target="_blank">@liveds.Tables[1].Rows[i]["ProModel"].ToString()</a></li>
+                }
+            </ul>
         </div>
         <div class="small-list">
             <p class="title">同厂家产品</p>
@@ -202,7 +202,7 @@
             area: ['98%', '98%'],
             content: '/PhysicalProducts/ShowUlBigPDF?ProductGuid=' + prodid
         });
-       // alert(prodid);
+        // alert(prodid);
     }
 
 
