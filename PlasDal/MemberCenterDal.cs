@@ -493,7 +493,7 @@ namespace PlasDal
             if (!string.IsNullOrEmpty(userId))
             {
                 StringBuilder sql = new StringBuilder();
-                sql.Append("select a.Id,a.ProductGuid,a.UserId,a.CreateDate,b.ProModel,b.PlaceOrigin,c.ProUse,c.characteristic,d.Name from Physics_Collection as a ");
+                sql.Append("select DISTINCT a.Id,a.ProductGuid,a.UserId,a.CreateDate,b.ProModel,b.PlaceOrigin,c.ProUse,c.characteristic,d.Name from Physics_Collection as a ");
                 sql.Append(" left join Product as b on a.ProductGuid=b.ProductGuid");
                 sql.Append(" left join Product_l as c on c.ParentGuid=a.ProductGuid");
                 sql.Append(" left join Prd_SmallClass_l as d on d.parentguid=b.SmallClassId");

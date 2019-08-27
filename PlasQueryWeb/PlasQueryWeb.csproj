@@ -456,6 +456,7 @@
     <Content Include="Content\layui\font\iconfont.eot" />
     <Content Include="Content\layui\font\iconfont.ttf" />
     <Content Include="Content\layui\font\iconfont.woff" />
+    <Content Include="pdfContrastHeader.html" />
     <Content Include="urlpdfFooter.html" />
     <Content Include="pdfFooter.html" />
     <Content Include="pdfHeader.html" />
@@ -552,6 +553,7 @@
     <Content Include="Views\PhysicalProducts\ShowUlBigPDF.cshtml" />
     <Content Include="Views\PhysicalProducts\ShowUlPDF.cshtml" />
     <Content Include="Views\PhysicalProducts\ViewUl_ShowPdf.cshtml" />
+    <Content Include="Views\PhysicalProducts\ContrastPDF.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

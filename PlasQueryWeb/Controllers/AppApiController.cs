@@ -573,6 +573,7 @@ namespace PlasQueryWeb.Controllers
                 return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
+
         [AllowCrossSiteJson]
         [HttpGet]
         public ActionResult GetProductULPDF(string prodid)
@@ -592,6 +593,46 @@ namespace PlasQueryWeb.Controllers
                 }
                 //bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewDetail?prodid=" + prodid, pdfUrl);
                 bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewUl_ShowPdf?prodid=" + prodid, pdfUrl, string.Empty, string.Empty, string.Empty,"1",string.Empty);
+                if (success)
+                {
+                    string path = MainHost + "/" + pdfUrl;
+                    return Json(Common.ToJsonResult("Success", "获取成功", path), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(Common.ToJsonResult("Fail", "获取失败"), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        /// <summary>
+        /// 生成物性对比pdf
+        /// </summary>
+        /// <param name="contsval">id串</param>
+        /// <param name="title1">标题1</param>
+        /// <param name="title2">标题2</param>
+        /// <param name="title3">标题3</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetContrastPdf(string contsval, string title1, string title2, string title3,string factory1,string factory2,string factory3,string class1,string class2,string class3)
+        {
+            try
+            {
+                string temptitle1 = Server.UrlDecode(title1);
+                string temptitle2 = Server.UrlDecode(title2);
+                string temptitle3 = Server.UrlDecode(title3);
+                //string titletemp = contsval.Replace(';', '|');
+                //string newtimestr = temptitle1 + temptitle2 + temptitle3;// DateTime.Now.ToString("yyyyMMddhhmmss");
+                string newtimestr= DateTime.Now.ToString("yyyyMMddhhmmss");
+                string pdfUrl = "pdf/"+ newtimestr+".pdf";
+                //bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewDetail?prodid=" + prodid, pdfUrl);
+                string url = MainHost + "/PhysicalProducts/ContrastPDF?contsval=" + contsval + "&title1=" + Server.UrlEncode(title1) + "&title2=" + Server.UrlEncode(title2) + "&title3=" + Server.UrlEncode(title3);
+                bool success = PlasQueryWeb.CommonClass.PdfHelper.ContrastHtmlToPdf(url, pdfUrl, Server.UrlEncode(title1), Server.UrlEncode(title2), Server.UrlEncode(title3), Server.UrlEncode(factory1), Server.UrlEncode(factory2), Server.UrlEncode(factory3),
+                    Server.UrlEncode(class1), Server.UrlEncode(class2), Server.UrlEncode(class3));
                 if (success)
                 {
                     string path = MainHost + "/" + pdfUrl;
@@ -674,6 +715,7 @@ namespace PlasQueryWeb.Controllers
                 //本次执行运算的唯一版本号
                 //string ver = "b07f3ff6-ac47-48f4-c7dc-c8c9befbfd58";// Guid.NewGuid().ToString();
                 List<ReplaceResult> returnlist = new List<ReplaceResult>();
+                List<bigtype> returnfactorylist = new List<bigtype>();
                 var ds = new DataSet();
                 if (!string.IsNullOrWhiteSpace(proid) && !string.IsNullOrWhiteSpace(ver))
                 {
@@ -694,21 +736,31 @@ namespace PlasQueryWeb.Controllers
                     if (!string.IsNullOrWhiteSpace(wherestring))
                     {
                         ds = plbll.GetReplace(temppid, ver, "", wherestring, pageindex, pagesize, "0", "0", "");
-                        
+
                         if (ds.Tables.Contains("ds") && ds.Tables[0].Rows.Count > 0)
                         {
                             DataTable dt = ds.Tables[0];
-                            if (dt.Rows.Count>0)
+                            if (dt.Rows.Count > 0)
                             {
                                 for (int i = 0; i < dt.Rows.Count; i++)
                                 {
                                     ReplaceResult tmodel = new ReplaceResult();
                                     tmodel.AlikePercent = dt.Rows[i]["ALikePercent"].ToString();
-                                    tmodel.TargetGuid= dt.Rows[i]["ProductId"].ToString();
-                                    tmodel.Name= dt.Rows[i]["name"].ToString();
-                                    tmodel.PlaceOrigin= dt.Rows[i]["PlaceOrigin"].ToString();
+                                    tmodel.TargetGuid = dt.Rows[i]["ProductId"].ToString();
+                                    tmodel.Name = dt.Rows[i]["name"].ToString();
+                                    tmodel.PlaceOrigin = dt.Rows[i]["PlaceOrigin"].ToString();
                                     tmodel.ProModel = dt.Rows[i]["ProModel"].ToString();
                                     returnlist.Add(tmodel);
+                                }
+                            }
+                            if (ds.Tables.Count == 3)
+                            {
+                                DataTable factorydt = ds.Tables[2];
+                                for (int i = 0; i < factorydt.Rows.Count; i++)
+                                {
+                                    bigtype tempmodel = new bigtype();
+                                    tempmodel.Name = factorydt.Rows[i]["PlaceOrigin"].ToString();
+                                    returnfactorylist.Add(tempmodel);
                                 }
                             }
                         }
@@ -732,9 +784,19 @@ namespace PlasQueryWeb.Controllers
                                     returnlist.Add(tmodel);
                                 }
                             }
+                            if (ds.Tables.Count == 3)
+                            {
+                                DataTable factorydt = ds.Tables[2];
+                                for (int i = 0; i < factorydt.Rows.Count; i++)
+                                {
+                                    bigtype tempmodel = new bigtype();
+                                    tempmodel.Name = factorydt.Rows[i]["PlaceOrigin"].ToString();
+                                    returnfactorylist.Add(tempmodel);
+                                }
+                            }
                         }
                     }
-                    
+
                     //if (ds.Tables.Contains("ds1") && ds.Tables[1] != null && ds.Tables[1].Rows.Count > 0)
                     //{
                     //    int.TryParse(ds.Tables[1].Rows[0]["counts"].ToString(), out count);
@@ -743,7 +805,11 @@ namespace PlasQueryWeb.Controllers
                     //{
                     //    companys = ToolHelper.DataTableToJson(ds.Tables[2]);
                     //}
-                    return Json(Common.ToJsonResult("Success", "获取成功", returnlist), JsonRequestBehavior.AllowGet);
+                    var returndata = new {
+                        replacedata = returnlist,
+                        factoydata= returnfactorylist
+                    };
+                    return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
@@ -2382,6 +2448,7 @@ namespace PlasQueryWeb.Controllers
         //改新厂替换详情
         public class NewFactoryth
         {
+            public string ProductGuid { get; set; }//产品id
             public string ProModel { get; set; }//型号
             public string PlaceOrigin { get; set; }//生产厂商
         }

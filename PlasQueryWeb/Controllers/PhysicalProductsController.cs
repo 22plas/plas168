@@ -13,6 +13,7 @@ namespace PlasModel.Controllers
     public class PhysicalProductsController : Controller
     {
         private PlasBll.ProductBll bll = new PlasBll.ProductBll();
+        private PlasBll.ContrastBll pcbll = new PlasBll.ContrastBll();
         protected string MainHost = System.Web.Configuration.WebConfigurationManager.AppSettings["MainHost"];
         protected string PdfUrl = System.Web.Configuration.WebConfigurationManager.AppSettings["PdfUrl"];
         AccountData AccountData
@@ -424,6 +425,39 @@ namespace PlasModel.Controllers
                     //物性
                     ViewBag.PhysicalInfo = ds.Tables[1];
                 }
+            }
+            return View();
+        }
+
+        /// <summary>
+        /// 用于生成物性对比pdf的页面
+        /// </summary>
+        /// <param name="prodid"></param>
+        /// <returns></returns>
+        /// , string title1, string title2, string title3
+        public ActionResult ContrastPDF(string contsval, string title1, string title2, string title3)
+        {
+            ViewBag.title1 = title1;
+            ViewBag.title2 = title2;
+            ViewBag.title3 = title3;
+            DataTable dt = pcbll.GetContrastList(contsval);
+            if (dt.Rows.Count>0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    if (!string.IsNullOrWhiteSpace(dt.Rows[i]["unit"].ToString()))
+                    {
+                        dt.Rows[i]["unit"] = "(单位：" + dt.Rows[i]["unit"] + ")";
+                    }
+                    if (!string.IsNullOrWhiteSpace(dt.Rows[i]["testtype"].ToString())&&dt.Rows[i]["testtype"].ToString()!= "测试方法")
+                    {
+                        dt.Rows[i]["testtype"] = "(测试方法：" + dt.Rows[i]["testtype"] + ")";
+                    }
+                }
+            }
+            if (dt.Rows.Count > 0)
+            {
+                ViewBag.ContrastInfo = dt;
             }
             return View();
         }

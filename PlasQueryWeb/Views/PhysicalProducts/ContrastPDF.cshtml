@@ -1,0 +1,86 @@
+﻿@{
+    var ContrastData = ViewBag.ContrastInfo == null ? new System.Data.DataTable() : ViewBag.ContrastInfo as System.Data.DataTable;
+    var title1 = ViewBag.title1;
+    var title2 = ViewBag.title2;
+    var title3 = ViewBag.title3;
+}
+
+<style type="text/css">
+    html,body {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    .linheightcss {
+        /*float: left !important;*/
+        /*_display: inline;*/
+        font-size: 14px;
+        line-height: 40px;
+        /*border-bottom: 1px solid #B10820 !important;
+        border-top: 1px solid #B10820 !important;*/
+        color: #333333;
+    }
+
+    .hkcss {
+        float: left !important;
+        font-size: 14px;
+        background: #FFFACD;
+        border-bottom: 1px solid #DEDEDE;
+    }
+
+    .bold {
+        /*font-weight: bold;*/
+        /*padding: 8px 0;*/
+        border: none;
+        font-size: 14px;
+        color: red !important;
+        background: #ffffff;
+    }
+
+        .bold td div {
+            /*border-bottom: 1px solid #B10820 !important;*/
+            /*border-top: 1px solid #B10820 !important;*/
+            font-size: 14px;
+            height: 40px;
+            background: #ffffff;
+            color: #B10820;
+            /*line-height: 40px;*/
+        }
+
+    .pl-10 {
+        border: none;
+    }
+</style>
+<div style="width:100%;height:auto;">
+    <div style="width:98%;height:auto;min-height:500px;margin:0 auto;color:#333333;">
+        <div style="width:98%;margin:0 auto;height:auto;border-top: 1px solid #B10820 !important;">
+            @if (@title3 != "" && @title3 != "请选择对比物料")
+            {
+                foreach (System.Data.DataRow dr in ContrastData.Rows)
+                {
+                    <div style="width:100%;height:auto;min-height:40px;border-bottom:1px solid #DEDEDE;float:left;">
+                        <div class="linheightcss" style="width: 24%;height:auto;min-height:40px;line-height:40px;text-indent:15px;float:left;">
+                            @dr["Attribute"].ToString().Replace(" ", "")@dr["unit"].ToString()@dr["testtype"].ToString()
+                        </div>
+                        <div class="linheightcss" style="width: 24%;height:auto;min-height:40px;line-height:40px;float:left;text-align:center;margin-left:1%;">@dr["Attribute1"].ToString().Replace(" ", "")</div>
+                        <div class="linheightcss" style="width: 24%;height:auto;min-height:40px;line-height:40px;float:left;text-align:center;margin-left:1%;">@dr["Attribute2"].ToString().Replace(" ", "")</div>
+                        <div class="linheightcss" style="width: 24%;height:auto;min-height:40px;line-height:40px;float:left;text-align:center;margin-left:2%;">@dr["Attribute3"].ToString().Replace(" ", "")</div>
+                    </div>
+                }
+            }
+            else
+            {
+                foreach (System.Data.DataRow dr in ContrastData.Rows)
+                {
+                    <div style="width:100%;height:auto;min-height:40px;border-bottom:1px solid #DEDEDE;float:left;">
+                        <div class="linheightcss" style="width: 33%;height:auto;min-height:40px;line-height:40px;text-indent:15px;float:left;">
+                            @dr["Attribute"].ToString().Replace(" ", "")@dr["unit"].ToString()@dr["testtype"].ToString()
+                        </div>
+                        <div class="linheightcss" style="width: 33%;height:auto;min-height:40px;line-height:40px;float:left;text-align:center;">@dr["Attribute1"].ToString().Replace(" ", "")</div>
+                        <div class="linheightcss" style="width: 33%;height:auto;min-height:40px;line-height:40px;float:left;text-align:center;">@dr["Attribute2"].ToString().Replace(" ", "")</div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+ </div>

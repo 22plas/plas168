@@ -50,7 +50,7 @@ namespace PlasDal
         /// <returns></returns>
         public DataTable GetNewFactoryth(int id)
         {
-            string sql = string.Format(@"SELECT p.ProModel,p.PlaceOrigin FROM [dbo].[Mod_TargetList] mt
+            string sql = string.Format(@"SELECT p.ProductGuid, p.ProModel,p.PlaceOrigin FROM [dbo].[Mod_TargetList] mt
                                         INNER JOIN dbo.Product p ON p.ProductGuid=mt.TargetProductId WHERE mt.ModProuctId={0}", id);
             return SqlHelper.GetSqlDataTable(sql);
         }

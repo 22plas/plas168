@@ -57,5 +57,46 @@ namespace PlasQueryWeb.CommonClass
             //return false;
         }
 
+        public static bool ContrastHtmlToPdf(string url, string path,string title1,string title2,string title3,string factory1, string factory2, string factory3, string class1, string class2, string class3)
+        {
+            Encoding utf8 = Encoding.UTF8;
+            string MainHost = System.Web.Configuration.WebConfigurationManager.AppSettings["MainHost"];
+            path = HttpContext.Current.Server.MapPath("~/") + path;
+            string cookie = "cookieKey cookieValue";//改为为你自己的
+            string headerUrl = MainHost + "/pdfContrastHeader.html?titleo=" + Microsoft.JScript.GlobalObject.escape(title1) + "&titlet=" + Microsoft.JScript.GlobalObject.escape(title2) + "&titleth=" + Microsoft.JScript.GlobalObject.escape(title3)+
+                "&factory1=" + Microsoft.JScript.GlobalObject.escape(factory1) + "&factory2=" + Microsoft.JScript.GlobalObject.escape(factory2) + "&factory3=" + Microsoft.JScript.GlobalObject.escape(factory3) +
+                "&class1=" + Microsoft.JScript.GlobalObject.escape(class1) + "&class2=" + Microsoft.JScript.GlobalObject.escape(class2) + "&class3=" + Microsoft.JScript.GlobalObject.escape(class3);
+            string footerUrl = MainHost + "/pdfFooter.html";//页脚内容页面
+            //string Arguments = "-q  -B 0 -L 0 -R 0 -T 0 -s A4 --no-background --disable-smart-shrinking --cookie " + cookie + " " + url + " " + path; //参数可以根据自己的需要进行修改
+            string Arguments = "-q  -B 10 -L 0 -R 0 -T 5 --header-html " + headerUrl + " --footer-html " + footerUrl + " --header-spacing 5 --footer-spacing 10 --margin-bottom 45 --margin-top 50 --disable-smart-shrinking " + url + " " + path; //参数可以根据自己的需要进行修改
+            try
+            {
+                PlasCommon.Common.AddLog("", "开始生成pdf", url + "+" + path, "");
+                if (string.IsNullOrEmpty(url) || string.IsNullOrEmpty(path))
+                    return false;
+                var p = new Process();
+                string str = HttpContext.Current.Server.MapPath("~/") + @"bin/wkhtmltopdf.exe";
+                if (!File.Exists(str))
+                    return false;
+                p.StartInfo.FileName = str;
+                p.StartInfo.Arguments = Arguments;
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.RedirectStandardInput = true;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.StartInfo.RedirectStandardError = true;
+                p.StartInfo.CreateNoWindow = false;
+                var istrue = p.Start();
+                p.WaitForExit();
+                //System.Threading.Thread.Sleep(1000);
+                PlasCommon.Common.AddLog("", "开始生成pdf", istrue.ToString() + "exe生成器" + "+" + str, "");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                PlasCommon.Common.AddLog("", "生成pdf错误", ex.Message, "");
+                throw ex;
+            }
+        }
+
     }
 }
