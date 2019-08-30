@@ -70,7 +70,7 @@ namespace PlasDal
                 sqlcmd.CommandText = addsql;
                 sqlcmd.ExecuteNonQuery();
                 //保存注册用户的积分流水信息
-                sqlcmd.CommandText = string.Format(@"INSERT INTO dbo.Sys_UserPayDetails( UserId, InPay, InType, FromUserId )
+                sqlcmd.CommandText = string.Format(@"INSERT INTO dbo.Cp_UserPayDetails( UserId, InPay, Operation, FromUserId )
                             VALUES  ( '{0}', {1}, {2},'{3}');", guid, 100, intype, "0");
                 sqlcmd.ExecuteNonQuery();
                 if (!string.IsNullOrWhiteSpace(leaderuserid))
@@ -79,7 +79,7 @@ namespace PlasDal
                     sqlcmd.CommandText = string.Format(@"UPDATE dbo.cp_user SET InTotal=InTotal+50,Balance=Balance+50 WHERE ID='{0}'", leaderuserid);
                     sqlcmd.ExecuteNonQuery();
                     //保存上级用户积分流水信息
-                    sqlcmd.CommandText = string.Format(@"INSERT INTO dbo.Sys_UserPayDetails( UserId, InPay, InType, FromUserId )
+                    sqlcmd.CommandText = string.Format(@"INSERT INTO dbo.Cp_UserPayDetails( UserId, InPay, Operation, FromUserId )
                             VALUES  ( '{0}', {1}, {2},'{3}');", leaderuserid, 50, intype, guid);
                     sqlcmd.ExecuteNonQuery();
                 }
@@ -89,7 +89,7 @@ namespace PlasDal
                     sqlcmd.CommandText = string.Format(@"UPDATE dbo.cp_user SET InTotal=InTotal+30,Balance=Balance+30 WHERE ID='{0}'", parentid);
                     sqlcmd.ExecuteNonQuery();
                     //保存上上级用户积分流水信息
-                    sqlcmd.CommandText = string.Format(@"INSERT INTO dbo.Sys_UserPayDetails( UserId, InPay, InType, FromUserId )
+                    sqlcmd.CommandText = string.Format(@"INSERT INTO dbo.Cp_UserPayDetails( UserId, InPay, Operation, FromUserId )
                             VALUES  ( '{0}', {1}, {2},'{3}');", parentid, 30, intype, guid);
                     sqlcmd.ExecuteNonQuery();
                 }
