@@ -2114,6 +2114,10 @@ namespace PlasQueryWeb.Controllers
                 string getsql = string.Format(@"select distinct unit as Name from ProductAttribute where RealKey in (select * from f_split('{0}',';'))", parmname);
                 DataTable dt = SqlHelper.GetSqlDataTable(getsql);
                 unitlist = Comm.ToDataList<bigtype>(dt);
+                bigtype one = new bigtype();
+                one.Name = "全部";
+                //unitlist.Add(one);
+                unitlist.Insert(0,one);
                 return Json(Common.ToJsonResult("Success", "获取成功", unitlist), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
