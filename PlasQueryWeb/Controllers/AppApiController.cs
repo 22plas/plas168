@@ -874,11 +874,40 @@ namespace PlasQueryWeb.Controllers
             List<attributeinfo> otherlist = new List<attributeinfo>();//其他属性
             List<bigtype> bigtypelist = new List<bigtype>();//大类
             List<SearchResult> resultmodellist = new List<SearchResult>();//搜索结果
-
+            string tow = "0";
+            //二次查询
+            if (!string.IsNullOrWhiteSpace(characteristic))
+            {
+                tow = "1";
+            }
+            if (!string.IsNullOrWhiteSpace(use))
+            {
+                tow = "1";
+            }
+            if (!string.IsNullOrWhiteSpace(kind))
+            {
+                tow = "1";
+            }
+            if (!string.IsNullOrWhiteSpace(method))
+            {
+                tow = "1";
+            }
+            if (!string.IsNullOrWhiteSpace(factory))
+            {
+                tow = "1";
+            }
+            if (!string.IsNullOrWhiteSpace(additive))
+            {
+                tow = "1";
+            }
+            if (!string.IsNullOrWhiteSpace(addingmaterial))
+            {
+                tow = "1";
+            }
             if (!string.IsNullOrWhiteSpace(key))
             {
                 DataSet ds = new DataSet();
-                if (isTow == "1")//第二次分页，查询数据isTow:(0：第一次 1：多次)
+                if (tow == "1")//第二次分页，查询数据isTow:(0：第一次 1：多次)
                 {
                     ds = bll.GetTwoSearch(pageindex, pagesize, ver, characteristic, use, kind, method, factory, additive, addingmaterial, addghdq);
                 }

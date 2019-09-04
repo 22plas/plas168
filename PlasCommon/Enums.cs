@@ -20,10 +20,17 @@ namespace PlasCommon
         //用户积分流水类型
         public enum UserInType
         {
-            [Display(Name = "新人注册")]
+            [Display(Name = "注册")]
             AddUser=0,
-            [Display(Name = "充值")]
-            UserRecharge=1
+            [Display(Name = "查看产品")]
+            lookproduct=1,
+            [Display(Name = "查看下载物性")]
+            lookproductdown = 2,
+            [Display(Name = "签到")]
+            signin=3,
+            [Display(Name = "上传文档")]
+            uploaddocuments = 4,
+
         }
 
         /// <summary>

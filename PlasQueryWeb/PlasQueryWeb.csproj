@@ -457,6 +457,7 @@
     <Content Include="Content\layui\font\iconfont.ttf" />
     <Content Include="Content\layui\font\iconfont.woff" />
     <Content Include="pdfContrastHeader.html" />
+    <Content Include="PrivacyNotes.html" />
     <Content Include="urlpdfFooter.html" />
     <Content Include="pdfFooter.html" />
     <Content Include="pdfHeader.html" />

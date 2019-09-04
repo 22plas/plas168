@@ -63,7 +63,7 @@ namespace PlasDal
             SqlTransaction tra = con.BeginTransaction();
             sqlcmd.Connection = con;
             sqlcmd.Transaction = tra;
-            int intype = UserInType.AddUser.GetHashCode();
+            string intype = UserInType.AddUser.GetDisplayName();
             try
             {
                 //保存注册用户信息
