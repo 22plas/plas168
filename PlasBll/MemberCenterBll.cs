@@ -26,9 +26,18 @@ namespace PlasBll
                 }
                 else
                 {
+                    DataTable dt2 = GetUserByUserCode(model.ParentUserCode);
                     string parentid = string.Empty;//上上级用户id
                     string leaderuserid = string.Empty;//上级用户id
-                    return mdal.SaveRegister(model, leaderuserid, parentid,"");
+                    if (dt2.Rows.Count > 0)
+                    {
+                        leaderuserid = dt2.Rows[0]["ID"].ToString();
+                        parentid = dt2.Rows[0]["LeaderUserName"].ToString();
+                    }
+                    int tempcode = Convert.ToInt32(model.Phone.Substring(7, 4));
+                    string usercode = getusebycode(tempcode);
+                    model.usercode = usercode;
+                    return mdal.SaveRegister(model, leaderuserid, parentid, "");
                 }
             }
             catch (Exception)
@@ -36,13 +45,34 @@ namespace PlasBll
                 return "Fail";
             }
         }
+
+        public string getusebycode(int tempcode)
+        {
+            DataTable dt = mdal.GetUserByUserCode(tempcode.ToString());
+            int usercount = dt.Rows.Count;
+            string returncode = string.Empty;
+            if (usercount > 0)
+            {
+                getusebycode(tempcode + 1);
+            }
+            else
+            {
+                returncode = tempcode.ToString();
+            }
+            return returncode;
+        }
+        //根据用户邀请码获取用户信息
+        public DataTable GetUserByUserCode(string usercode)
+        {
+            return mdal.GetUserByUserCode(usercode);
+        }
         //微信或者qq用户注册登录
-        public string WxOrQQSaveRegister(cp_userview model,string type)
+        public string WxOrQQSaveRegister(cp_userview model, string type)
         {
             try
             {
                 DataTable dt = new DataTable();
-                if (type=="0")
+                if (type == "0")
                 {
                     dt = mdal.GetUserDt(model.wxopenid, "wxopenid");
                     return AddUserInfo(dt, model, type);
@@ -57,12 +87,12 @@ namespace PlasBll
                     return "Fail";
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return "Fail";
             }
         }
-        private string AddUserInfo(DataTable dt, cp_userview model,string type)
+        private string AddUserInfo(DataTable dt, cp_userview model, string type)
         {
             if (dt.Rows.Count > 0)
             {
@@ -212,7 +242,13 @@ namespace PlasBll
         {
             return mdal.UpdateUserInfodal(filestr, values, usid);
         }
-
+        //绑定手机号
+        public string binduserphone(string phone, string usid)
+        {
+            int tempcode = Convert.ToInt32(phone.Substring(7, 4));
+            string usercode = getusebycode(tempcode);
+            return mdal.BindUserPhone(phone, usercode, usid);
+        }
         /// <summary>
         /// 根据用户id获取用户信息
         /// </summary>
@@ -221,6 +257,24 @@ namespace PlasBll
         public DataTable GetUserInfo(string usid)
         {
             DataTable usdt = mdal.GetUserDt(usid, "ID");
+            return usdt;
+        }
+        /// <summary>
+        /// 获取用户积分收入明细
+        /// </summary>
+        /// <param name="userid">我的用户id</param>
+        /// <param name="pageindex">页码</param>
+        /// <param name="pagesize">每页获取数量</param>
+        /// <returns>用户信息datatable集合</returns>
+        public DataTable GetUserIntegralDetail(string userid, int pageindex, int pagesize)
+        {
+            return mdal.GetUserIntegralDetail(userid, pageindex, pagesize);
+        }
+
+        //根据要查询的字段查询用户信息
+        public DataTable GetUserInfoByFile(string filename, string value)
+        {
+            DataTable usdt = mdal.GetUserDt(value, filename);
             return usdt;
         }
 
@@ -343,7 +397,7 @@ namespace PlasBll
             if (!string.IsNullOrWhiteSpace(userId))
             {
                 var dt = mdal.getProductAttr(userId, ref errMsg);
-               var list=PlasCommon.ToolClass<ProductAttr>.ConvertDataTableToModel(dt);
+                var list = PlasCommon.ToolClass<ProductAttr>.ConvertDataTableToModel(dt);
                 if (list != null)
                 {
                     attr = list;
@@ -373,14 +427,19 @@ namespace PlasBll
         /// <summary>
         /// 浏览分页查询
         /// </summary>
-        public List<Physics_BrowseModel> GetPhysics_Browse(string userId, int pageindex, int pagesize, ref int pagecout, ref string errMsg,string wheresql="")
+        public List<Physics_BrowseModel> GetPhysics_Browse(string userId, int pageindex, int pagesize, ref int pagecout, ref string errMsg, string wheresql = "")
         {
             if (!string.IsNullOrWhiteSpace(userId))
             {
-                var dt = mdal.GetPhysics_Browse(userId,  pageindex, pagesize, ref pagecout, ref errMsg, wheresql);
+                var dt = mdal.GetPhysics_Browse(userId, pageindex, pagesize, ref pagecout, ref errMsg, wheresql);
                 return PlasCommon.ToolClass<Physics_BrowseModel>.ConvertDataTableToModel(dt);
             }
             return null;
+        }
+        //获取我的查看物性数量
+        public DataTable GetMyLookMaterial(string userid)
+        {
+            return mdal.GetMyLookMaterial(userid);
         }
 
         /// <summary>
@@ -389,12 +448,22 @@ namespace PlasBll
         /// <param name="model"></param>
         /// <param name="errMsg"></param>
         /// <returns></returns>
-        public bool AddPhysics_Browse(Physics_BrowseModel model,ref string errMsg)
+        public bool AddPhysics_Browse(Physics_BrowseModel model, ref string errMsg)
         {
             return mdal.AddPhysics_Browse(model, ref errMsg);
         }
         #endregion
 
+        //增加用户操作积分奖励
+        public void AddOperationPay(string type, string userid)
+        {
+            mdal.AddOperationPay(type, userid);
+        }
+        //获取任务完成次数
+        public int GetTaskNumber(string userid, string type)
+        {
+            return mdal.GetTaskNumber(userid, type);
+        }
 
         #region 添加对比
         /// <summary>
@@ -482,7 +551,7 @@ namespace PlasBll
         {
             if (!string.IsNullOrWhiteSpace(userId))
             {
-                var dt = mdal.GetPhysics_Quotation(userId,  pageindex, pagesize, ref pagecout, ref errMsg);
+                var dt = mdal.GetPhysics_Quotation(userId, pageindex, pagesize, ref pagecout, ref errMsg);
                 return PlasCommon.ToolClass<Physics_QuotationModel>.ConvertDataTableToModel(dt);
             }
             return null;
@@ -492,13 +561,13 @@ namespace PlasBll
         {
             return mdal.AppGetPhyices_Quotation(userId, pageindex, pagesize);
         }
-            /// <summary>
-            /// 删除行情
-            /// </summary>
-            /// <param name="CollID">批量删除ID</param>
-            /// <param name="errMsg">错误信息</param>
-            /// <returns></returns>
-            public bool RomvePhysics_Quotation(List<string> CollID, ref string errMsg)
+        /// <summary>
+        /// 删除行情
+        /// </summary>
+        /// <param name="CollID">批量删除ID</param>
+        /// <param name="errMsg">错误信息</param>
+        /// <returns></returns>
+        public bool RomvePhysics_Quotation(List<string> CollID, ref string errMsg)
         {
             return mdal.RomvePhysics_Quotation(CollID, ref errMsg);
         }
@@ -510,6 +579,16 @@ namespace PlasBll
 
         #endregion
 
-
+        /// <summary>
+        /// 获取我的下级用户
+        /// </summary>
+        /// <param name="userid">我的用户id</param>
+        /// <param name="pageindex">页码</param>
+        /// <param name="pagesize">每页获取数量</param>
+        /// <returns>用户信息datatable集合</returns>
+        public DataTable GetMyUserInfo(string userid, int pageindex, int pagesize)
+        {
+            return mdal.GetMyUserInfo(userid, pageindex, pagesize);
+        }
     }
 }

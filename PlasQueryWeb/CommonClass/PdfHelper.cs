@@ -66,9 +66,9 @@ namespace PlasQueryWeb.CommonClass
             string headerUrl = MainHost + "/pdfContrastHeader.html?titleo=" + Microsoft.JScript.GlobalObject.escape(title1) + "&titlet=" + Microsoft.JScript.GlobalObject.escape(title2) + "&titleth=" + Microsoft.JScript.GlobalObject.escape(title3)+
                 "&factory1=" + Microsoft.JScript.GlobalObject.escape(factory1) + "&factory2=" + Microsoft.JScript.GlobalObject.escape(factory2) + "&factory3=" + Microsoft.JScript.GlobalObject.escape(factory3) +
                 "&class1=" + Microsoft.JScript.GlobalObject.escape(class1) + "&class2=" + Microsoft.JScript.GlobalObject.escape(class2) + "&class3=" + Microsoft.JScript.GlobalObject.escape(class3);
-            string footerUrl = MainHost + "/pdfFooter.html";//页脚内容页面
+            string footerUrl = MainHost + "/pdfContrastFooter.html";//页脚内容页面
             //string Arguments = "-q  -B 0 -L 0 -R 0 -T 0 -s A4 --no-background --disable-smart-shrinking --cookie " + cookie + " " + url + " " + path; //参数可以根据自己的需要进行修改
-            string Arguments = "-q  -B 10 -L 0 -R 0 -T 5 --header-html " + headerUrl + " --footer-html " + footerUrl + " --header-spacing 5 --footer-spacing 10 --margin-bottom 45 --margin-top 50 --disable-smart-shrinking " + url + " " + path; //参数可以根据自己的需要进行修改
+            string Arguments = "-q  -B 10 -L 0 -R 0 -T 0 --header-html " + headerUrl + " --footer-html " + footerUrl + " --header-spacing 0 --footer-spacing 10 --margin-bottom 45 --margin-top 45 --disable-smart-shrinking " + url + " " + path; //参数可以根据自己的需要进行修改
             try
             {
                 PlasCommon.Common.AddLog("", "开始生成pdf", url + "+" + path, "");

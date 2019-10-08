@@ -1,0 +1,369 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>塑蚁网app注册</title>
+    <link rel="stylesheet" type="text/css" href="iconfont.css" />
+    <link rel="stylesheet" type="text/css" href="aui.css" />
+    <style type="text/css">
+        html, body {
+            background: #ffffff;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .weixin-tip {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            filter: alpha(opacity=80);
+            height: 100%;
+            width: 100%;
+            z-index: 100;
+        }
+
+            .weixin-tip p {
+                text-align: center;
+                margin-top: 10%;
+                padding: 0 5%;
+            }
+    </style>
+</head>
+<body>
+    <div id="contentdiv" style="width:95%;margin:0 auto; height:auto;min-height:500px;">
+        <div style="width:100%;height:auto;min-height:500px;">
+            <section class="aui-content" style=" width:90%; margin:0 auto; margin-top:40px;">
+                <ul>
+                    <li class="aui-border-b" style=" width:100%; float:left;">
+                        <div>
+                            <div class="aui-list-item-label color-orange" style="float:left;line-height: 2.2rem;">
+                                手机号 <small class="aui-margin-l-5 aui-text-warning">+86</small>
+                            </div>
+                            <div class="aui-list-item-input aui-padded-l-10" style="float:left;">
+                                <input type="number" style="font-size:14px;" pattern="[0-9]*" v-model="phone" placeholder="输入手机号" id="mobile">
+                            </div>
+                        </div>
+                    </li>
+                    <li class="aui-border-b" style=" width:100%; float:left; margin-top:10px;">
+                        <div>
+                            <div onclick="getmsgcode()" class="aui-list-item-label color-orange" style="float:left;line-height: 2.2rem;">
+                                <span id="getcodebtn" style="display:block;width:100%; color:#1281D4; text-align:center;">{{codestr}}</span>
+                            </div>
+                            <div class="aui-list-item-input aui-padded-l-10" style="float:left;">
+                                <input type="number" style="font-size:14px;" pattern="^1[345678][0-9]{9}$" v-model="code" placeholder="输入短信验证码" id="code">
+                            </div>
+                        </div>
+                    </li>
+                    <li class="aui-border-b" style=" width:100%; float:left; margin-top:10px;">
+                        <div class="aui-list-item-label color-orange" style="float:left;line-height: 2.2rem;">
+                            密码
+                        </div>
+                        <div class="aui-list-item-input aui-padded-l-10" style="float:left;">
+                            <input style="width:120%;font-size:14px;" type="password" v-model="password" placeholder="8-20位数字、字母组成" id="password">
+                        </div>
+                    </li>
+                    <li class="aui-border-b" style=" width:100%; float:left; margin-top:10px;">
+                        <div class="aui-list-item-label color-orange" style="float:left;line-height: 2.2rem;">
+                            确认密码
+                        </div>
+                        <div class="aui-list-item-input aui-padded-l-10" style="float:left;">
+                            <input style="width:120%;font-size:14px;" type="password"  v-model="confirmpassword" placeholder="请再次输入登录密码" id="confirmpassword">
+                        </div>
+                    </li>
+                    <!-- <li class="aui-border-b" style=" width:100%; float:left; margin-top:10px;">
+                <div class="aui-list-item-label color-orange" style="float:left;line-height: 2.2rem;">
+                    推荐码
+                </div>
+                <div class="aui-list-item-input aui-padded-l-10" style="float:left;">
+                    <input style="width:120%;font-size:14px;" type="number" placeholder="推荐码有奖励,选填" id="introducecode">
+                </div>
+            </li> -->
+                </ul>
+            </section>
+            <div id="cuetitle" style="display:none; width:90%; height:25px; line-height:25px; font-size:14px; color:red;text-indent:1rem; margin:5px auto;">
+                {{tishistr}}
+            </div>
+            <section class="aui-content-padded">
+                <div class="aui-btn aui-btn-block aui-btn-info aui-btn-sm" style="width:90%;margin:20px auto; height:50px; line-height:50px; border-radius:5px;" onclick="register()" tapmode>完成</div>
+            </section>
+        </div>
+        <div class="weixin-tip">
+            <p>     
+                <img src="live_weixin.png" alt="微信打开" />   
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="vue.js"></script>
+<script type="text/javascript" src="getcommon.js"></script>
+<script type="text/javascript" src="jquery-2.1.1.js"></script>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#contentdiv',
+        data: {
+            systemtype: "0",//0:安卓 1：苹果
+            password: "",//密码
+            code: "",//验证码
+            code2:"",//返回的验证码
+            codestr:"获取验证码",//倒计时内容
+            phone: "",//手机号
+            phone2:"",//发送验证码的手机号
+            confirmpassword: "",//二次确认密码
+            parentusercode: "",//上级用户邀请码
+            tishistr:""//提示字符串
+        },
+        methods: {
+            init: function () {
+            }
+        }
+    });
+    $(window).on("load", function () {
+        var winHeight = $(window).height();
+        function is_weixin() {
+            var ua = navigator.userAgent.toLowerCase();
+            if (ua.match(/MicroMessenger/i) == "micromessenger") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        var u = navigator.userAgent;
+        if (u.indexOf("Android") > -1 || u.indexOf("Linux") > -1) {
+            vm.systemtype = "0";
+            var isWeixin = is_weixin();
+            //是在微信中打开
+            if (isWeixin) {
+                $(".weixin-tip").css("height", winHeight);
+                $(".weixin-tip").show();
+            }
+            else {
+                $(".weixin-tip").hide();
+            }
+        }
+        else if (u.indexOf("iPhone") > -1 || u.indexOf("iOS") > -1) {
+            vm.systemtype = "1";
+        }
+
+        vm.parentusercode = getQueryString("parentusercode");//获取参数
+       
+    });
+    //倒计时
+    function djs() {
+        //var getcodebtn = $api.byId('getcodebtn');
+        //var offset = $api.offset(getcodebtn);
+        //$api.css(getcodebtn, 'width:' + offset.w + 'px');
+
+        var a = 59;
+        clearInterval(timer);
+        vm.codestr = a;
+        var timer = setInterval(function () {
+            if (a > 1) {
+                a--;
+                vm.codestr = a;
+            } else if (a == 1) {
+                clearInterval(timer);
+                vm.codestr = "重新获取";
+            }
+        }, 1000);
+    }        
+    //发送验证码
+    function getmsgcode() {
+        if (vm.phone != "" && vm.phone != null && vm.phone != undefined && vm.phone != "输入手机号") {
+            //var data = { phone: vm.phone };
+            //GetData("get", data, "MemberCenter/SetCode", function (c) {
+            //    // alert(JSON.stringify(c));
+            //    var data = c.Result;
+            //    var state = c.State;
+            //    if (state == "Success") {
+            //        vm.phone2 = vm.phone;
+            //        vm.code2 = data.code;
+            //        //$api.css(cuetitle, 'display:none;');
+            //        $("#cuetitle").css("display", "none");
+            //        //var getcodebtn = $api.byId('getcodebtn');
+            //        if (vm.codestr == "重新获取" || vm.codestr == "获取验证码") {
+            //            djs();
+            //        }
+            //    }
+            //});
+            // $api.css(cuetitle, 'display:block;');
+            // $api.html(cuetitle, '手机号已注册');
+            $.ajax({
+                type: "get",
+                dataType: "JSON",
+                url: '/MemberCenter/SetCode',
+                data: "phone=" + vm.phone,
+                async: false,
+                success: function (json) {
+                    var data = json.Result;
+                    var state = json.State;
+                    if (state == "Success") {
+                        vm.phone2 = vm.phone;
+                        vm.code2 = data.code;
+                        //$api.css(cuetitle, 'display:none;');
+                        $("#cuetitle").css("display", "none");
+                        //var getcodebtn = $api.byId('getcodebtn');
+                        if (vm.codestr == "重新获取" || vm.codestr == "获取验证码") {
+                            djs();
+                        }
+                    }
+                },
+                error: function () { layer.msg('Load the data failure!', { icon: 5 }); }
+            });
+        }
+        else {
+            $("#cuetitle").css("display", "block");
+            vm.tishistr = "输入手机号";
+        }
+    }
+
+    //生成验证码
+    function identifyingcode() {
+        var s = Math.round(Math.random().toFixed(6) * 1000000);
+        // if (randomnum.length<6) {
+        //     randomnum=identifyingcode();
+        // }
+        return s;
+    }
+    //注册
+    function register() {
+        //获得验证结果
+        var balidateresult = validate();
+        if (balidateresult) {
+            //var data = { UserName: vm.phone, UserPwd: vm.password, Phone: vm.phone, ParentUserCode: vm.parentusercode };
+            //GetData("get", data, "MemberCenter/SaveRegister", function (c) {
+            //    // alert(JSON.stringify(c));
+            //    //var data = c.Result;
+            //    var state = c.State;
+            //    if (state == "Success") {
+            //        alert("注册成功");
+            //        setTimeout(function () {
+
+            //        }, 2000);
+            //    }
+            //    else if ($api.trim(state) == "AlreadyExist") {
+            //        $("#cuetitle").css("display", "block");
+            //        vm.tishistr = "手机号已被注册";
+            //    }
+            //    else {
+            //        $("#cuetitle").css("display", "block");
+            //        vm.tishistr = "注册失败";
+            //    }
+            //});
+
+            $.ajax({
+                type: "get",
+                dataType: "JSON",
+                url: '/MemberCenter/SaveRegister',
+                data: "UserName=" + vm.phone + ",UserPwd=" + vm.password + ",Phone=" + vm.phone + ",ParentUserCode=" + vm.parentusercode,
+                async: false,
+                success: function (json) {
+                    var state = json.State;
+                    if (state == "Success") {
+                        alert("注册成功");
+                        setTimeout(function () {
+
+                        }, 2000);
+                    }
+                    else if ($api.trim(state) == "AlreadyExist") {
+                        $("#cuetitle").css("display", "block");
+                        vm.tishistr = "手机号已被注册";
+                    }
+                    else {
+                        $("#cuetitle").css("display", "block");
+                        vm.tishistr = "注册失败";
+                    }
+                },
+                error: function () { layer.msg('Load the data failure!', { icon: 5 }); }
+            });
+        }
+    }
+    //保存验证
+    function validate() {
+        var result = true;
+        // alert(confirmpassword);
+        // var introducecodectl=document.getElementById("introducecode");
+        // var introducecode=$api.val(introducecodectl);
+        if (result) {
+            if (vm.phone == "" || vm.phone == null || vm.phone == undefined || vm.phone == "输入手机号") {
+                result = false;
+                $("#cuetitle").css("display", "block");
+                vm.tishistr = "请输入手机号";
+            }
+        }
+        if (result) {
+            if (vm.code == "输入短信验证码" || vm.code == "" || vm.code == null || vm.code == undefined) {
+                result = false;
+                $("#cuetitle").css("display", "block");
+                vm.tishistr = "请输入短信验证码";
+            }
+        }
+        if (result) {
+            if (vm.password == "" || vm.password == null || vm.password == undefined || vm.password == "8-20位，数字、字母或者符号组成") {
+                result = false;
+                $("#cuetitle").css("display", "block");
+                vm.tishistr = "请输入密码";
+            }
+            else {
+                var number = /[0-9]/i;
+                var letter = /[a-z]/i;
+                var numberres = number.test(vm.password);
+                var letterres = letter.test(vm.password);
+                var length = vm.password.length;
+                if (!numberres || !letterres || length < 8 || length > 20) {
+                    result = false;
+                    $("#cuetitle").css("display", "block");
+                    vm.tishistr = "密码长度必须为8-20位且包含字母和数字";
+                }
+            }
+        }
+        if (result) {
+            if (vm.confirmpassword == "" || vm.confirmpassword == null || vm.confirmpassword == undefined || vm.confirmpassword == "请再次输入登录密码") {
+                result = false;
+                $("#cuetitle").css("display", "block");
+                vm.tishistr = "请输入确认密码";
+            }
+            else {
+                if (vm.confirmpassword != password) {
+                    result = false;
+                    $("#cuetitle").css("display", "block");
+                    vm.tishistr = "两次输入的密码不匹配";
+                }
+            }
+        }
+        if (result) {
+            if (vm.phone2 != vm.phone) {
+                result = false;
+                $("#cuetitle").css("display", "block");
+                vm.tishistr = "请输入收到短信验证码的手机号";
+            }
+        }
+        if (result) {
+            if (vm.code != vm.code2) {
+                result = false;
+                $("#cuetitle").css("display", "block");
+                vm.tishistr = "验证码不正确";
+            }
+        }
+        return result;
+    }
+    //获取参数
+    function getQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return "";
+    } 
+</script>

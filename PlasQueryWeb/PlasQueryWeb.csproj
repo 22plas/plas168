@@ -211,6 +211,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="appdownload\aui.css" />
+    <Content Include="appdownload\bjt1.png" />
+    <Content Include="appdownload\getcommon.js" />
+    <Content Include="appdownload\invitation.html" />
+    <Content Include="appdownload\register.html" />
     <Content Include="appdownload\downloadapp.html" />
     <Content Include="appdownload\iconfont.css" />
     <Content Include="appdownload\ic_launcher_APP.png" />
@@ -274,6 +279,7 @@
     <Content Include="Content\img\banner\6.jpg" />
     <Content Include="Content\img\card.png" />
     <Content Include="Content\img\detail.png" />
+    <Content Include="Content\img\icon.png" />
     <Content Include="Content\img\index-bg.jpg" />
     <Content Include="Content\img\index-bg2.jpg" />
     <Content Include="Content\img\juhewu.jpg" />
@@ -457,6 +463,7 @@
     <Content Include="Content\layui\font\iconfont.ttf" />
     <Content Include="Content\layui\font\iconfont.woff" />
     <Content Include="pdfContrastHeader.html" />
+    <Content Include="pdfContrastFooter.html" />
     <Content Include="PrivacyNotes.html" />
     <Content Include="urlpdfFooter.html" />
     <Content Include="pdfFooter.html" />

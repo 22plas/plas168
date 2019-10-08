@@ -440,7 +440,7 @@ namespace PlasCommon
                         }
                         else {
                             string t= AText.Substring(i-1, 1);
-                            string t2 = AText.Substring(i +1, 1);
+                            string t2 = AText.Substring(i, 1);
                             bool iscont2 = "一二三四五六七八九".Contains(t);
                             bool iscont3= "一二三四五六七八九".Contains(t2);
                             if (iscont2&& iscont3)

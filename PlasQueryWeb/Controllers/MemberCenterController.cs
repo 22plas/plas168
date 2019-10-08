@@ -1178,56 +1178,67 @@ namespace PlasModel.Controllers
         [HttpPost]
         public ActionResult BindUserPhone(string phone, string usid, string type)
         {
-            string resultstr = mbll.AccountLoginBll(phone);
-            //手机号已存在
-            if (resultstr != "NoFind" && resultstr != "Fail")
+            try
             {
-                string[] returnlist = resultstr.Split(',');
-                string tempusid = returnlist[1];
-                //如果已经存在则把已绑定的账号信息查询出来
-                DataTable dt = mbll.GetUserInfo(tempusid);
-                DataTable newuserinfo = mbll.GetUserInfo(usid);
-                int row = 0;
-                //如果是微信登录绑定
-                if (type == "0")
+                string resultstr = mbll.AccountLoginBll(phone);
+                int tempcode = Convert.ToInt32(phone.Substring(7, 4));
+                string usercode = mbll.getusebycode(tempcode);
+                //手机号已存在
+                if (resultstr != "NoFind" && resultstr != "Fail")
                 {
-                    string wxheadimage = newuserinfo.Rows[0]["HeadImage"].ToString();
-                    string wxusername = newuserinfo.Rows[0]["UserName"].ToString();
-                    string wxopenid = newuserinfo.Rows[0]["wxopenid"].ToString();
-                    string wxsql = string.Format("UPDATE dbo.cp_user SET HeadImage='{0}',UserName='{1}',wxopenid='{2}' WHERE ID='{3}'", wxheadimage, wxusername, wxopenid, tempusid);
-                    row = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, wxsql, null);
-                }
-                else
-                {
-                    string qqheadimage = newuserinfo.Rows[0]["HeadImage"].ToString();
-                    string qqusername = newuserinfo.Rows[0]["UserName"].ToString();
-                    string qqopenid = newuserinfo.Rows[0]["qqopenid"].ToString();
-                    string qqsql = string.Format("UPDATE dbo.cp_user SET HeadImage='{0}',UserName='{1}',qqopenid='{2}' WHERE ID='{3}'", qqheadimage, qqusername, qqopenid, tempusid);
-                    row = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, qqsql, null);
-                }
-                string deletesql = string.Format("delete from cp_user where ID='{0}'", usid);
-                int delrow = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, deletesql, null);
-                //return Json(Common.ToJsonResult("Exists", "手机号已绑定其他账号"), JsonRequestBehavior.AllowGet);
-                var returndata = new
-                {
-                    usidstr = tempusid
-                };
-                return Json(Common.ToJsonResult("Success", "绑定成功", returndata), JsonRequestBehavior.AllowGet);
-            }
-            else
-            {
-                string bindresult = mbll.UpdateUserInfobll("phone", phone, usid);
-                if (bindresult == "Success")
-                {
-                    var returndata = new {
-                        usidstr = usid
+                    string[] returnlist = resultstr.Split(',');
+                    string tempusid = returnlist[1];
+                    //如果已经存在则把已绑定的账号信息查询出来
+                    DataTable dt = mbll.GetUserInfo(tempusid);
+                    DataTable newuserinfo = mbll.GetUserInfo(usid);
+                    int row = 0;
+                    //如果是微信登录绑定
+                    if (type == "0")
+                    {
+                        string wxheadimage = newuserinfo.Rows[0]["HeadImage"].ToString();
+                        string wxusername = newuserinfo.Rows[0]["UserName"].ToString();
+                        string wxopenid = newuserinfo.Rows[0]["wxopenid"].ToString();
+                        string wxsql = string.Format("UPDATE dbo.cp_user SET HeadImage='{0}',UserName='{1}',wxopenid='{2}',usercode='{4}' WHERE ID='{3}'", wxheadimage, wxusername, wxopenid, tempusid, usercode);
+                        row = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, wxsql, null);
+                    }
+                    else
+                    {
+                        string qqheadimage = newuserinfo.Rows[0]["HeadImage"].ToString();
+                        string qqusername = newuserinfo.Rows[0]["UserName"].ToString();
+                        string qqopenid = newuserinfo.Rows[0]["qqopenid"].ToString();
+                        string qqsql = string.Format("UPDATE dbo.cp_user SET HeadImage='{0}',UserName='{1}',qqopenid='{2}',usercode='{4}' WHERE ID='{3}'", qqheadimage, qqusername, qqopenid, tempusid, usercode);
+                        row = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, qqsql, null);
+                    }
+                    string deletesql = string.Format("delete from cp_user where ID='{0}'", usid);
+                    int delrow = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, deletesql, null);
+                    //return Json(Common.ToJsonResult("Exists", "手机号已绑定其他账号"), JsonRequestBehavior.AllowGet);
+                    var returndata = new
+                    {
+                        usidstr = tempusid
                     };
                     return Json(Common.ToJsonResult("Success", "绑定成功", returndata), JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
-                    return Json(Common.ToJsonResult("Fail", "绑定失败"), JsonRequestBehavior.AllowGet);
+                    string bindresult = mbll.binduserphone(phone, usid);
+                    //string bindresult = mbll.UpdateUserInfobll("phone", phone, usid);
+                    if (bindresult == "Success")
+                    {
+                        var returndata = new
+                        {
+                            usidstr = usid
+                        };
+                        return Json(Common.ToJsonResult("Success", "绑定成功", returndata), JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(Common.ToJsonResult("Fail", "绑定失败"), JsonRequestBehavior.AllowGet);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "绑定失败",ex.Message), JsonRequestBehavior.AllowGet);
             }
         }
         /// <summary>
@@ -1247,7 +1258,9 @@ namespace PlasModel.Controllers
                 {
                     usname = usdt.Rows[0]["UserName"].ToString(),
                     phone= usdt.Rows[0]["phone"].ToString(),
-                    headimage = usdt.Rows[0]["HeadImage"].ToString()
+                    headimage = usdt.Rows[0]["HeadImage"].ToString(),
+                    usercode= usdt.Rows[0]["usercode"].ToString(),
+                    integral= usdt.Rows[0]["Balance"].ToString()
                 };
                 return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);
             }

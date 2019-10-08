@@ -46,5 +46,8 @@ namespace PlasModel
         public string RecommendPhone { get; set; }//推荐人手机号
         public string wxopenid { get; set; }//微信openid
         public string qqopenid { get; set; }//qqopenid
+        public string usercode { get; set; }//用户邀请码
+
+        public string ParentUserCode { get; set; }//上级用户邀请码
     }
 }

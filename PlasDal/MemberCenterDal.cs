@@ -27,6 +27,13 @@ namespace PlasDal
             DataTable dt = SqlHelper.GetSqlDataTable(execsql);
             return dt;
         }
+        //根据用户邀请码获取用户信息
+        public DataTable GetUserByUserCode(string usercode)
+        {
+            string sql = string.Format(@"select * from cp_user where usercode='{0}'", usercode);
+            DataTable dt = SqlHelper.GetSqlDataTable(sql);
+            return dt;
+        }
         /// <summary>
         /// 保存用户注册信息
         /// </summary>
@@ -53,8 +60,8 @@ namespace PlasDal
             else
             {
                 addsql = string.Format(@"INSERT dbo.cp_user
-                ( UserName ,UserPwd ,Email ,Phone ,Address ,TestQQ ,CreateDate ,states ,ErrorDate ,ErrorCount ,WeChat ,ContentAddress ,LeaderUserName,HeadImage,InTotal,OutTotal,Balance,ID)
-                VALUES  ( '{0}' ,'{1}' ,'{2}' ,'{3}' ,'{4}' ,N'' ,GETDATE() ,0 ,null ,0 ,N'' ,N'' ,'{5}','',100,0,100,'{6}')", model.UserName, ToolHelper.MD5_SET(model.UserPwd), string.Empty, model.Phone, string.Empty, leaderuserid, guid);
+                ( UserName ,UserPwd ,Email ,Phone ,Address ,TestQQ ,CreateDate ,states ,ErrorDate ,ErrorCount ,WeChat ,ContentAddress ,LeaderUserName,HeadImage,InTotal,OutTotal,Balance,ID,usercode)
+                VALUES  ( '{0}' ,'{1}' ,'{2}' ,'{3}' ,'{4}' ,N'' ,GETDATE() ,0 ,null ,0 ,N'' ,N'' ,'{5}','',100,0,100,'{6}','{7}')", model.UserName, ToolHelper.MD5_SET(model.UserPwd), string.Empty, model.Phone, string.Empty, leaderuserid, guid,model.usercode);
             }
 
             SqlCommand sqlcmd = new SqlCommand();
@@ -71,7 +78,7 @@ namespace PlasDal
                 sqlcmd.ExecuteNonQuery();
                 //保存注册用户的积分流水信息
                 sqlcmd.CommandText = string.Format(@"INSERT INTO dbo.Cp_UserPayDetails( UserId, InPay, Operation, FromUserId )
-                            VALUES  ( '{0}', {1}, {2},'{3}');", guid, 100, intype, "0");
+                            VALUES  ( '{0}', {1}, '{2}','{3}');", guid, 100, intype, "0");
                 sqlcmd.ExecuteNonQuery();
                 if (!string.IsNullOrWhiteSpace(leaderuserid))
                 {
@@ -80,7 +87,7 @@ namespace PlasDal
                     sqlcmd.ExecuteNonQuery();
                     //保存上级用户积分流水信息
                     sqlcmd.CommandText = string.Format(@"INSERT INTO dbo.Cp_UserPayDetails( UserId, InPay, Operation, FromUserId )
-                            VALUES  ( '{0}', {1}, {2},'{3}');", leaderuserid, 50, intype, guid);
+                            VALUES  ( '{0}', {1}, '{2}','{3}');", leaderuserid, 50, intype, guid);
                     sqlcmd.ExecuteNonQuery();
                 }
                 if (!string.IsNullOrWhiteSpace(parentid))
@@ -90,7 +97,7 @@ namespace PlasDal
                     sqlcmd.ExecuteNonQuery();
                     //保存上上级用户积分流水信息
                     sqlcmd.CommandText = string.Format(@"INSERT INTO dbo.Cp_UserPayDetails( UserId, InPay, Operation, FromUserId )
-                            VALUES  ( '{0}', {1}, {2},'{3}');", parentid, 30, intype, guid);
+                            VALUES  ( '{0}', {1}, '{2}','{3}');", parentid, 30, intype, guid);
                     sqlcmd.ExecuteNonQuery();
                 }
                 tra.Commit();//提交
@@ -120,6 +127,19 @@ namespace PlasDal
             {
                 string sqlstr = string.Format(@"update cp_user set {0}='{1}' where ID='{2}'", filestr, values, usid);
                 int row = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sqlstr, null);
+                return "Success";
+            }
+            catch (Exception)
+            {
+                return "Fail";
+            }
+        }
+        public string BindUserPhone(string phone, string usercode, string usid)
+        {
+            try
+            {
+                string wxsql = string.Format("UPDATE dbo.cp_user SET phone='{0}',usercode='{1}' WHERE ID='{2}'", phone, usercode, usid);
+                int row = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, wxsql, null);
                 return "Success";
             }
             catch (Exception)
@@ -540,6 +560,7 @@ namespace PlasDal
                     new SqlParameter("@BrowsCount",model.BrowsCount),
                     new SqlParameter("@CreateDate",DateTime.Now)
                 };
+                AddOperationPay("查看产品", model.UserId);
                 isadd = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), parm) > 0;
             }
             catch (Exception ex)
@@ -549,6 +570,12 @@ namespace PlasDal
             return isadd;
         }
 
+        //增加用户操作积分奖励
+        public void AddOperationPay(string type, string userid)
+        {
+            string addreadnumbersql = string.Format(@"exec Cp_OperationPay '{0}','{1}'", userid, type);
+            SqlHelper.ExecuteSqlNoQuery(addreadnumbersql);
+        }
         /// <summary>
         /// 浏览分页查询
         /// </summary>
@@ -580,7 +607,29 @@ namespace PlasDal
             }
             return null;
         }
-
+        //获取我的查看物性数量
+        public DataTable GetMyLookMaterial(string userid)
+        {
+            string sql = string.Format(@"SELECT * FROM (
+              SELECT DISTINCT CAST(ROW_NUMBER() over(order by COUNT(a.ProductGuid) DESC) AS INTEGER) AS Ornumber, a.ProductGuid,a.UserId,b.ProModel,b.PlaceOrigin,c.ProUse,c.characteristic,d.Name
+             from (SELECT DISTINCT  ProductGuid,UserId FROM Physics_Browse WHERE UserId='{0}') a
+              inner join Product as b on a.ProductGuid=b.ProductGuid 
+             left join Product_l as c on c.ParentGuid=a.ProductGuid 
+             left join Prd_SmallClass_l as d on d.parentguid=b.SmallClassId 
+             left join Physics_Collection e on a.ProductGuid=e.ProductGuid and a.UserId=e.UserId
+             GROUP BY a.ProductGuid,a.UserId,b.ProModel,b.PlaceOrigin,c.ProUse,c.characteristic,d.Name
+             )s ", userid);
+            DataTable dt = SqlHelper.GetSqlDataTable(sql);
+            return dt;
+        }
+        //获取任务完成次数
+        public int GetTaskNumber(string userid, string type)
+        {
+            string getsql = string.Format(@"select count(1) AS counts from Cp_UserPayDetails where UserId='{0}' and Operation='{1}'", userid, type);
+            DataTable dt = SqlHelper.GetSqlDataTable(getsql);
+            int counts = Convert.ToInt32(dt.Rows[0]["counts"]);
+            return counts;
+        }
         /// <summary>
         /// 删除浏览数据
         /// </summary>
@@ -978,6 +1027,63 @@ namespace PlasDal
 
 
 
+        #endregion
+
+        #region 获取我的下级用户
+        /// <summary>
+        /// 获取我的下级用户
+        /// </summary>
+        /// <param name="userid">我的用户id</param>
+        /// <param name="pageindex">页码</param>
+        /// <param name="pagesize">每页获取数量</param>
+        /// <returns>用户信息datatable集合</returns>
+        public DataTable GetMyUserInfo(string userid, int pageindex, int pagesize)
+        {
+            int pageBegin = 1;
+            int pageEnd = 1;
+            if (pageindex == 0)
+            {
+                pageindex = 1;
+            }
+            if (pagesize == 0)
+            {
+                pagesize = 1;
+            }
+            pageBegin = (pageindex - 1) * pagesize;
+            pageEnd = (pagesize * pageindex);
+            string sql = string.Format(@"SELECT * FROM ( SELECT ROW_NUMBER() over(order by ID desc)as rownum, UserName,HeadImage,CreateDate FROM dbo.cp_user WHERE states=0 AND  LeaderUserName='{2}' ) s WHERE s.rownum BETWEEN {0} AND {1}", pageBegin, pageEnd, userid);
+            DataTable dt = SqlHelper.GetSqlDataTable(sql);
+            return dt;
+        }
+        #endregion
+
+
+        #region 获取我的下级用户
+        /// <summary>
+        /// 获取我的下级用户
+        /// </summary>
+        /// <param name="userid">我的用户id</param>
+        /// <param name="pageindex">页码</param>
+        /// <param name="pagesize">每页获取数量</param>
+        /// <returns>用户信息datatable集合</returns>
+        public DataTable GetUserIntegralDetail(string userid, int pageindex, int pagesize)
+        {
+            int pageBegin = 1;
+            int pageEnd = 1;
+            if (pageindex == 0)
+            {
+                pageindex = 1;
+            }
+            if (pagesize == 0)
+            {
+                pagesize = 1;
+            }
+            pageBegin = (pageindex - 1) * pagesize;
+            pageEnd = (pagesize * pageindex);
+            string sql = string.Format(@"SELECT * FROM ( SELECT ROW_NUMBER() over(order by CreateTime desc)as rownum,Operation,InPay,CreateTime FROM dbo.Cp_UserPayDetails WHERE UserId='{2}') s WHERE s.rownum BETWEEN {0} AND {1}", pageBegin, pageEnd, userid);
+            DataTable dt = SqlHelper.GetSqlDataTable(sql);
+            return dt;
+        }
         #endregion
 
     }

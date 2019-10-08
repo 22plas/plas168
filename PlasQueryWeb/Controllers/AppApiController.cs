@@ -540,7 +540,7 @@ namespace PlasQueryWeb.Controllers
         /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpGet]
-        public ActionResult GetProductPDF(string prodid)
+        public ActionResult GetProductPDF(string prodid,string userid)
         {
             try
             {
@@ -560,6 +560,7 @@ namespace PlasQueryWeb.Controllers
                 bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewDetail?prodid=" + prodid, pdfUrl, Server.UrlEncode(pmodel), Server.UrlEncode(placeorigin), Server.UrlEncode(brand),"0", icopath);
                 if (success)
                 {
+                    mbll.AddOperationPay("查看下载物性", userid);
                     string path = MainHost+"/"+pdfUrl;
                     return Json(Common.ToJsonResult("Success", "获取成功", path), JsonRequestBehavior.AllowGet);
                 }
@@ -1349,7 +1350,6 @@ namespace PlasQueryWeb.Controllers
         }
         #endregion
 
-
         #region 我的收藏
         /// <summary>
         /// 我的收藏
@@ -1779,6 +1779,65 @@ namespace PlasQueryWeb.Controllers
             }
         }
         #endregion
+
+        #region 获取我的查看物性数量
+        //获取我的查看物性数量
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetMyLookMaterial(string userid)
+        {
+            try
+            {
+                List<Physics_BrowseModel> returnlist = new List<Physics_BrowseModel>();
+                if (!string.IsNullOrWhiteSpace(userid))
+                {
+                    DataTable dt = mbll.GetMyLookMaterial(userid);
+                    returnlist = Comm.ToDataList<Physics_BrowseModel>(dt);
+                    return Json(Common.ToJsonResult("Success", "获取成功", returnlist), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(Common.ToJsonResult("Fail", "获取失败"), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
+        #region 获取我的任务完成数量
+        //获取我的任务完成数量
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetMyTaskNumber(string userid)
+        {
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(userid))
+                {
+                    DataTable dt = mbll.GetMyLookMaterial(userid);//查看物性完成数量
+                    int downpdfnumber = mbll.GetTaskNumber(userid, "查看下载物性");
+                    var resultnumber = new
+                    {
+                        lookmaterialcount = dt.Rows.Count,
+                        downpdfcount= downpdfnumber
+                    };
+                    return Json(Common.ToJsonResult("Success", "获取成功", resultnumber), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(Common.ToJsonResult("Fail", "获取失败"), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
 
         #region 删除我的浏览记录
         /// <summary>
@@ -2280,6 +2339,7 @@ namespace PlasQueryWeb.Controllers
             }
         }
         #endregion
+     
         #region 查询改新厂替换详情
         [AllowCrossSiteJson]
         [HttpGet]
@@ -2291,6 +2351,177 @@ namespace PlasQueryWeb.Controllers
                 DataTable dt = mpbll.GetNewFactoryth(id);
                 list = Comm.ToDataList<NewFactoryth>(dt);
                 return Json(Common.ToJsonResult("Success", "获取成功", list), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
+        #region 绑定邀请人
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userid">用户id</param>
+        /// <param name="usercode">用户邀请码</param>
+        /// <returns>绑定结果</returns>
+        [AllowCrossSiteJson]
+        [HttpPost]
+        public ActionResult BindUserByUserCode(string userid, string usercode)
+        {
+            try
+            {
+                DataTable dt = mbll.GetUserByUserCode(usercode);//上级用户信息
+                DataTable usdt = mbll.GetUserInfo(userid);//被邀请人的用户信息
+                DateTime usercreatetime = Convert.ToDateTime(usdt.Rows[0]["CreateDate"]);
+                TimeSpan sp = DateTime.Now.Subtract(usercreatetime);
+                //验证用户是否过了绑定时间
+                if (sp.Days > 10)
+                {
+                    return Json(Common.ToJsonResult("OutTime", "已经超过绑定时间"), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    int usercount = dt.Rows.Count;
+                    if (usercount < 0)
+                    {
+                        return Json(Common.ToJsonResult("NotFind", "不存在"), JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        string parentuserid = dt.Rows[0]["ID"].ToString();
+                        string thisuserleadid = dt.Rows[0]["LeaderUserName"].ToString();
+                        //检测是否相互绑定(如果邀请人的上级用户id和当前被邀请人的用户id相同就是相互绑定)
+                        if (thisuserleadid == userid)
+                        {
+                            return Json(Common.ToJsonResult("MutualBind", "不能相互绑定"), JsonRequestBehavior.AllowGet);
+                        }
+                        else
+                        {
+                            string bindresult = mbll.UpdateUserInfobll("LeaderUserName", parentuserid, userid);
+                            if (bindresult == "Success")
+                            {
+                                mbll.AddOperationPay("注册", userid);
+                                return Json(Common.ToJsonResult("Success", "绑定成功"), JsonRequestBehavior.AllowGet);
+                            }
+                            else
+                            {
+                                return Json(Common.ToJsonResult("Fail", "绑定失败"), JsonRequestBehavior.AllowGet);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "绑定失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
+        #region 获取我的下级用户
+        /// <summary>
+        /// 获取我的下级用户
+        /// </summary>
+        /// <param name="userid">我的用户id</param>
+        /// <param name="pageindex">页码</param>
+        /// <param name="pagesize">每页获取数量</param>
+        /// <returns>用户信息datatable集合</returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult AppGetMyUser(string userid, int pageindex, int pagesize)
+        {
+            try
+            {
+                List<MyUserInfo> returnlist = new List<MyUserInfo>();
+                DataTable dt = mbll.GetMyUserInfo(userid, pageindex, pagesize);
+                returnlist = Comm.ToDataList<MyUserInfo>(dt);
+                return Json(Common.ToJsonResult("Success", "获取成功", returnlist), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
+        #region 设置邀请码
+        /// <summary>
+        /// 设置邀请码
+        /// </summary>
+        /// <param name="phone">手机号</param>
+        /// <param name="usid">用户id</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpPost]
+        public ActionResult SetUserCode(string phone, string usid)
+        {
+            try
+            {
+                int tempcode = Convert.ToInt32(phone.Substring(7, 4));
+                string usercode = mbll.getusebycode(tempcode);
+                string bindresult = mbll.binduserphone(phone, usid);
+                //string bindresult = mbll.UpdateUserInfobll("phone", phone, usid);
+                if (bindresult == "Success")
+                {
+                    var returndata = new
+                    {
+                        usercodes = usercode
+                    };
+                    return Json(Common.ToJsonResult("Success", "设置成功", returndata), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(Common.ToJsonResult("Fail", "设置失败"), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "设置失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
+        #region 设置用户积分
+        /// <summary>
+        /// 设置用户积分
+        /// </summary>
+        /// <param name="type">使用场景</param>
+        /// <param name="userid">用户id</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult SetUserIntegral(string type, string userid)
+        {
+            try
+            {
+                mbll.AddOperationPay(type, userid);
+                return Json(Common.ToJsonResult("Success", "获取成功"), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
+        #region 获取用户积分收入明细
+        /// <summary>
+        /// 获取用户积分收入明细
+        /// </summary>
+        /// <param name="userid">用户id</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetUserIntegralDetail(string userid, int pageindex, int pagesize)
+        {
+            try
+            {
+                List<UserIntegralDetail> returnlist = new List<UserIntegralDetail>();
+                DataTable dt = mbll.GetUserIntegralDetail(userid, pageindex, pagesize);
+                returnlist = Comm.ToDataList<UserIntegralDetail>(dt);
+                return Json(Common.ToJsonResult("Success", "获取成功", returnlist), JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -2484,6 +2715,24 @@ namespace PlasQueryWeb.Controllers
             public string ProductGuid { get; set; }//产品id
             public string ProModel { get; set; }//型号
             public string PlaceOrigin { get; set; }//生产厂商
+        }
+
+        //用户信息
+        public class MyUserInfo {
+            //用户名
+            public string UserName { get; set; }
+            //头像
+            public string HeadImage { get; set; }
+            //注册时间
+            public string CreateDate { get; set; }
+        }
+
+        //用户积分明细
+        public class UserIntegralDetail
+        {
+            public string Operation { get; set; }
+            public int InPay { get; set; }
+            public string CreateTime { get; set; }
         }
     }
 }
