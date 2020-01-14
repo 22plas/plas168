@@ -1,5 +1,6 @@
 ﻿using PlasDal;
 using PlasModel;
+using PlasQueryWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -35,7 +36,7 @@ namespace PlasBll
                         parentid = dt2.Rows[0]["LeaderUserName"].ToString();
                     }
                     int tempcode = Convert.ToInt32(model.Phone.Substring(7, 4));
-                    string usercode = getusebycode(tempcode);
+                    string usercode = getusebycode(model.Phone,tempcode);
                     model.usercode = usercode;
                     return mdal.SaveRegister(model, leaderuserid, parentid, "");
                 }
@@ -46,14 +47,35 @@ namespace PlasBll
             }
         }
 
-        public string getusebycode(int tempcode)
+        public string getusebycode(string phone, int tempcode)
         {
             DataTable dt = mdal.GetUserByUserCode(tempcode.ToString());
             int usercount = dt.Rows.Count;
             string returncode = string.Empty;
             if (usercount > 0)
             {
-                getusebycode(tempcode + 1);
+                //getusebycode(tempcode + 1);
+                string tempcodes = phone.Substring(6, 5);
+                DataTable dts = mdal.GetUserByUserCode(tempcodes.ToString());
+                int usercounts = dts.Rows.Count;
+                if (usercounts > 0)
+                {
+                    string tempcodess =phone.Substring(5, 6);
+                    DataTable dtss = mdal.GetUserByUserCode(tempcodess.ToString());
+                    int usercountss = dtss.Rows.Count;
+                    if (usercountss>0)
+                    {
+                        string timetr = DateTime.Now.Hour.ToString() + DateTime.Now.Minute.ToString() + DateTime.Now.Second.ToString();
+                        returncode = timetr + tempcode;
+                    }
+                    else
+                    {
+                        returncode = tempcodess.ToString();
+                    }
+                }
+                else {
+                    returncode = tempcodes.ToString();
+                }
             }
             else
             {
@@ -80,6 +102,11 @@ namespace PlasBll
                 else if (type == "1")
                 {
                     dt = mdal.GetUserDt(model.qqopenid, "qqopenid");
+                    return AddUserInfo(dt, model, type);
+                }
+                else if(type=="2")
+                {
+                    dt = mdal.GetUserDt(model.xcsopenid, "xcsopenid");
                     return AddUserInfo(dt, model, type);
                 }
                 else
@@ -109,7 +136,7 @@ namespace PlasBll
         /// 微信或者qq登录
         /// </summary>
         /// <param name="openid">微信或者QQopenid</param>
-        /// <param name="type">登录类型 0：微信登录 1：qq登录</param>
+        /// <param name="type">登录类型 0：微信登录 1：qq登录 2：小程序</param>
         /// <returns></returns>
         public string WxOrQQLoginBll(string openid, string type)
         {
@@ -120,9 +147,13 @@ namespace PlasBll
                 {
                     dt = mdal.GetUserDt(openid, "wxopenid");
                 }
-                else
+                else if (type == "1")
                 {
                     dt = mdal.GetUserDt(openid, "qqopenid");
+                }
+                else if (type == "2")
+                {
+                    dt = mdal.GetUserDt(openid, "xcsopenid");
                 }
                 if (dt.Rows.Count > 0)
                 {
@@ -246,7 +277,7 @@ namespace PlasBll
         public string binduserphone(string phone, string usid)
         {
             int tempcode = Convert.ToInt32(phone.Substring(7, 4));
-            string usercode = getusebycode(tempcode);
+            string usercode = getusebycode(phone,tempcode);
             return mdal.BindUserPhone(phone, usercode, usid);
         }
         /// <summary>
@@ -453,7 +484,22 @@ namespace PlasBll
             return mdal.AddPhysics_Browse(model, ref errMsg);
         }
         #endregion
-
+        //添加关键词搜索记录
+        public int AddHeadSearchLog(HeadSearchLog model)
+        {
+            return mdal.AddHeadSearchLog(model);
+        }
+        //修改关键词搜索记录为提醒
+        public bool UpdateSearchKeyLogToReply(int id)
+        {
+            return mdal.UpdateSearchKeyLogToReply(id);
+        }
+        //获取我的反馈问题
+        public List<Problem> GetMyProblem(string userid, int pageindex, int pagesize, ref int pagecout, ref string errMsg)
+        {
+            DataTable dt = mdal.GetMyProblem(userid, pageindex, pagesize, ref pagecout, ref errMsg);
+            return PlasCommon.ToolClass<Problem>.ConvertDataTableToModel(dt);
+        }
         //增加用户操作积分奖励
         public void AddOperationPay(string type, string userid)
         {

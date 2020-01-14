@@ -23,9 +23,14 @@ namespace PlasModel.Controllers
                 return this.GetAccountData();
             }
         }
+        public void Sidebar(string name = "超级搜索")
+        {
+            ViewBag.Sidebar = name;
+        }
         // GET:超级搜索
         public ActionResult Index()
         {
+            Sidebar();
             //int rowscount = 10;
             var ys_character = new DataTable();
             var texing = new DataTable();
@@ -112,6 +117,28 @@ namespace PlasModel.Controllers
             return View();
         }
 
+        //获取智能选材属性
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetParmData(int parentid)
+        {
+            try
+            {
+                DataSet set = bll.Sys_GetSuperSearchParamnew(parentid);
+                DataTable dt = new DataTable();
+                List<parmmodel> returnlist = new List<parmmodel>();
+                if (set.Tables.Count > 0)
+                {
+                    DataTable tempdt = set.Tables[0];
+                    returnlist = Comm.ToDataList<parmmodel>(tempdt);
+                }
+                return Json(Common.ToJsonResult("Success", "获取成功", returnlist), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
         /// <summary>
         /// 返回重复GUID
         /// </summary>
@@ -159,19 +186,30 @@ namespace PlasModel.Controllers
         //产品详情
         public ActionResult Detail(string prodid)
         {
-            
+
             #region 产品详情
-            var ds = bll.GetModelInfo(prodid);
+            var userid = "";
+            if (AccountData!=null)
+            {
+                if (!string.IsNullOrWhiteSpace(AccountData.UserID))
+                {
+                    userid = AccountData.UserID;
+                }
+            }
+            var ds = bll.GetModelInfo(prodid, userid,"");
             if (ds != null && ds.Tables.Contains("ds") && ds.Tables.Count > 0)
             {
-                if (ds.Tables.Contains("ds") &&  ds.Tables[0].Rows.Count > 0)
-                {
-                    ViewBag.ProModel = ds.Tables[0].Rows[0]["proModel"];
-                    ViewBag.ProFactory= ds.Tables[0].Rows[0]["cnname"];
-                    ViewBag.ProType = ds.Tables[0].Rows[0]["cntype"];
-                }
+                //if (ds.Tables.Contains("ds") &&  ds.Tables[0].Rows.Count > 0)
+                //{
+                //    ViewBag.ProModel =ds.Tables[0].Rows[0]["proModel"]== DBNull.Value ? "" : ds.Tables[0].Rows[0]["proModel"];
+                //    ViewBag.ProFactory = ds.Tables[0].Rows[0]["cnname"] == DBNull.Value ? "" : ds.Tables[0].Rows[0]["cnname"];
+                //    ViewBag.ProType = ds.Tables[0].Rows[0]["cntype"] == DBNull.Value ? "" : ds.Tables[0].Rows[0]["cntype"];
+                //}
                 if (ds.Tables.Contains("ds1") && ds.Tables.Count > 1)
                 {
+                    ViewBag.ProModel = ds.Tables[0].Rows[0]["proModel"] == DBNull.Value ? "" : ds.Tables[0].Rows[0]["proModel"];
+                    ViewBag.ProFactory = ds.Tables[0].Rows[0]["cnname"] == DBNull.Value ? "" : ds.Tables[0].Rows[0]["cnname"];
+                    ViewBag.ProType = ds.Tables[0].Rows[0]["cntype"] == DBNull.Value ? "" : ds.Tables[0].Rows[0]["cntype"];
                     //物性
                     ViewBag.PhysicalInfo = ds.Tables[1];
                     //从物性中匹配产品说明
@@ -186,14 +224,18 @@ namespace PlasModel.Controllers
                             break;
                         }
                     }
-
+                    ViewBag.returnstate = "Success";
+                }
+                else
+                {
+                    ViewBag.returnstate = ds.Tables[0].Rows[0][0].ToString();
                 }
                 if (ds.Tables.Count > 2)
                 {
                     //详情页标题：种类（Prd_SmallClass_l.Name）+型号（Product.ProModel）+产地（Product.PlaceOrigin）
-                    ViewBag.Title2 = ds.Tables[2].Rows[0]["Title"].ToString();
+                    ViewBag.Title2 = ds.Tables[2].Rows[0]["Title"] == DBNull.Value ? "" : ds.Tables[2].Rows[0]["Title"].ToString();
                     //关键字：特性(product_l.characteristic)+用途(product_l.ProUse)
-                    ViewBag.Keywords = ds.Tables[2].Rows[0]["keyword"].ToString();
+                    ViewBag.Keywords = ds.Tables[2].Rows[0]["keyword"] == DBNull.Value ? "" : ds.Tables[2].Rows[0]["keyword"].ToString();
                     //ViewBag.description2 =产品说明(只能用 exec readproduct '0004D924-5BD4-444F-A6D2-045D4EDB0DD3'命令中读出)
                 }
 
@@ -321,6 +363,11 @@ namespace PlasModel.Controllers
         /// <returns></returns>
         public JsonResult SuperMsgSearch(int pageindex, int pagesize, string guidstr)
         {
+            //如果在没有登录的情况下提示用户登录
+            if (pageindex >= 3 && AccountData == null)
+            {
+                return Json(new { state = "NedLogin", errmsg = "请先登录后在查看！" }, JsonRequestBehavior.AllowGet);
+            }
             string searchstr = string.Empty;//关键词
             if (!string.IsNullOrWhiteSpace(Request["searchstr"]))
             {
@@ -339,9 +386,8 @@ namespace PlasModel.Controllers
             {
                 int.TryParse(ds.Tables[1].Rows[0]["totalcount"].ToString(), out count);
             }
-            return Json(new { data = jsonstr, totalCount = count }, JsonRequestBehavior.AllowGet);
+            return Json(new { state = "Success", data = jsonstr, totalCount = count }, JsonRequestBehavior.AllowGet);
         }
-
 
 
         public DataTable DtSortA(DataTable Dt, string column)
@@ -385,7 +431,7 @@ namespace PlasModel.Controllers
                 return "";
             //prodModel = HttpUtility.UrlEncode(prodModel);
             //prodModel = prodModel.Replace(" ","+");
-            var ds = bll.GetModelInfo(prodid);
+            var ds = bll.GetModelInfo(prodid,string.Empty,string.Empty);
             string pmodel = string.Empty;
             string placeorigin = string.Empty;
             string brand = string.Empty;
@@ -411,7 +457,7 @@ namespace PlasModel.Controllers
         /// <returns></returns>
         public ActionResult ViewDetail(string prodid)
         {
-            var ds = bll.GetModelInfo(prodid);
+            var ds = bll.GetModelInfo(prodid,string.Empty,string.Empty);
             if (ds != null && ds.Tables.Count > 0)
             {
                 if ( ds.Tables[0].Rows.Count > 0)
@@ -470,7 +516,7 @@ namespace PlasModel.Controllers
         {
             try
             {
-                var ds = bll.GetModelInfo(pid);
+                var ds = bll.GetModelInfo(pid,string.Empty,string.Empty);
                 //string pmodel = string.Empty;
                 //string placeorigin = string.Empty;
                 //string brand = string.Empty;
@@ -514,6 +560,7 @@ namespace PlasModel.Controllers
                 // clist = bll.GetUl_body(ProductGuid);
             }
             ViewBag.blist = blist;
+            ViewBag.pid = ProductGuid;
             //ViewBag.clist = clist;
             return View();
         }
@@ -524,7 +571,7 @@ namespace PlasModel.Controllers
         /// 显示UL数据详情
         /// </summary>
         /// <returns></returns>
-        public ActionResult ShowUlPDF(string ProductGuid)
+        public ActionResult ShowUlPDF(string ProductGuid, string numberid)
         {
           //  ProductGuid = "1298B2AA-ED90-4B79-8ACB-535704D463FD";
             PlasBll.ProductBll bll = new ProductBll();
@@ -537,11 +584,12 @@ namespace PlasModel.Controllers
                 {
                     blist = query[0];
                 }
-                clist = bll.GetUl_body(ProductGuid);
+                clist = bll.GetUl_body(numberid);
 
             }
             ViewBag.blist = blist;
             ViewBag.clist = clist;
+            ViewBag.pid = ProductGuid;
             return View();
         }
 
@@ -551,7 +599,7 @@ namespace PlasModel.Controllers
         /// </summary>
         /// <param name="ProductGuid"></param>
         /// <returns></returns>
-        public ActionResult ViewUl_ShowPdf(string prodid)
+        public ActionResult ViewUl_ShowPdf(string prodid,string numberid)
         {
             PlasBll.ProductBll bll = new ProductBll();
             var blist = new Ul_HeadModel();
@@ -563,7 +611,7 @@ namespace PlasModel.Controllers
                 {
                     blist = query[0];
                 }
-                clist = bll.GetUl_body(prodid);
+                clist = bll.GetUl_body(numberid);
 
             }
             ViewBag.blist = blist;
@@ -573,13 +621,13 @@ namespace PlasModel.Controllers
 
 
         //
-        public string ViewUL_Pdf(string prodid, string prodModel = "")
+        public string ViewUL_Pdf(string prodid, string prodModel = "",string numberid= "")
         {
             if (string.IsNullOrWhiteSpace(prodModel))
                 return "";
             //prodModel = HttpUtility.UrlEncode(prodModel);
             //prodModel = prodModel.Replace(" ","+");
-            var ds = bll.GetModelInfo(prodid);
+            var ds = bll.GetModelInfo(numberid,string.Empty,string.Empty);
             string pmodel = string.Empty;
             string placeorigin = string.Empty;
             string brand = string.Empty;
@@ -589,8 +637,8 @@ namespace PlasModel.Controllers
                 placeorigin = ds.Tables[0].Rows[0]["PlaceOrigin"].ToString();
                 brand = ds.Tables[0].Rows[0]["Brand"].ToString();
             }
-            string pdfUrl = "pdf/" + prodid + ".pdf";
-            bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewUl_ShowPdf?prodid=" + prodid, pdfUrl, string.Empty, string.Empty, string.Empty,"1",string.Empty);
+            string pdfUrl = "pdf/" + numberid + ".pdf";
+            bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewUl_ShowPdf?prodid=" + prodid+ "&numberid=" + numberid, pdfUrl, string.Empty, string.Empty, string.Empty,"1",string.Empty);
             if (success)
                 return pdfUrl;
             return "";

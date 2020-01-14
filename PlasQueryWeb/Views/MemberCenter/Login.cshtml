@@ -9,20 +9,41 @@
 </div>
 <div class="login-bg">
     <div class="login-box">
-        <p class="login-title">帐号密码登录</p>
-        <div>
-            <span class="fa fa-user login-icon"></span><input id="usaccount" type="text" class="login-input" style="text-align: left;" placeholder="请输手机号">
+        <p class="login-title">密码登录</p>
+        <div id="pwdlogindivbox" style="display:block;">
+            <div>
+                <span class="fa fa-user login-icon"></span><input id="usaccount" type="text" class="login-input" style="text-align: left;" placeholder="请输手机号">
+            </div>
+            <div style="margin-top: 15px;">
+                <span class="fa fa-lock login-icon"></span><input id="uspassword" type="password" class="login-input" style="text-align: left;" placeholder="请输入密码">
+            </div>
         </div>
-        <div style="margin-top: 15px;">
-            <span class="fa fa-lock login-icon"></span><input id="uspassword" type="password" class="login-input" style="text-align: left;" placeholder="请输入密码">
+        <div id="codelogindivbox" style="display:none;">
+            <div class="row">
+                <span class="title">手机号码：</span>
+                <div style="display: flex;border: 1px solid #ddd;">
+                    <input id="phone" type="text" class="register-input" style="border: none;" placeholder="请输入手机号">
+                    <span id="code" class="code">获取验证码</span>
+                </div>
+            </div>
+            <div class="row">
+                <span class="title">验证码：</span><input id="verificationcode" type="text" class="register-input" style="text-align: left;" placeholder="请输入验证码">
+            </div>
         </div>
         <div style="width: 100%;margin-top: 10px;">
             <button id="savelogin" class="search-btn-screem">登录</button>
         </div>
         <div style="text-align: right;font-size: 14px;margin-top: 10px;">
-            <a href="/MemberCenter/Login" style="color: #000;margin-right: 15px;text-decoration: none;"><span class="fa fa-qq" style="color: orangered;"></span>QQ登录</a>
-            <a href="/MemberCenter/Login" style="color: #000;text-decoration: none;margin-right: 15px;"><span class="fa fa-wechat" style="color: green;"></span>微信登录</a>
-            <a href="/MemberCenter/Register" style="color: #0093dd;margin-right: 15px;">忘记密码?</a><a href="/MemberCenter/Register" style="color: #0093dd;">免费注册</a>
+            <a id="codelogin"  style="float:left;color: #000;margin-right: 15px;text-decoration: none;cursor:pointer;">
+                <span class="fa fa-mobile" style="color: #1ba9ee;font-size:24px;display:block;float:left;line-height:28px;"></span>
+                <span style="width:100px;height:30px;line-height:30px;color:#666666;font-size:14px;display:block;float:left;text-align:left;text-indent:2px;">验证码登录</span>
+            </a>
+            <a id="pwdlogin" style="float:left;color: #000;margin-right: 15px;text-decoration: none;display:none;cursor:pointer;">
+                <span class="fa fa-mobile" style="color: #1ba9ee;font-size:24px;display:block;float:left;line-height:28px;"></span>
+                <span style="width:100px;height:30px;line-height:30px;color:#666666;font-size:14px;display:block;float:left;text-align:left;text-indent:2px;">密码登录</span>
+            </a>
+            @*<a href="/MemberCenter/Login" style="color: #000;text-decoration: none;margin-right: 15px;"><span class="fa fa-wechat" style="color: green;"></span>微信登录</a>*@
+            <a href="/MemberCenter/Register" style="color: #0093dd;margin-right: 15px;line-height:30px;">忘记密码?</a><a href="/MemberCenter/Register" style="color: #0093dd;line-height:30px;">免费注册</a>
         </div>
     </div>
 </div>

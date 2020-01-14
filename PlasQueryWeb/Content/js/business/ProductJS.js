@@ -50,78 +50,92 @@ function InitData(pageindx) {
         success: function (json) {
             //   debugger;
             try {
-                var productData = json.data;
-                var bigData = json.BigType;
-                var smaillData = json.SamllType;
-                var strvar = "";
-                rowcount = json.totalCount;
-                $("#records").html(rowcount);
-                if (rowcount != 0 && productData != "") {
-                    $.each(productData, function (i, n) {
-                        tbodyui += "<tr>";
-                        tbodyui += "<td><a href=\"/PhysicalProducts/Detail/" + n.prodid + ".html\" target=\"_blank\">" + n.ProModel + "</a></td>";
-                        tbodyui += "<td>" + n.PlaceOrigin + "</td>";
-                        tbodyui += "<td>" + n.Name + "</td>";
-                        tbodyui += "<td>" + n.ProUse + "</td>";
-                        tbodyui += "<td >" + n.characteristic +  "</td>";
-                        tbodyui += "<td ><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.prodid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span>";
-                        //后期需要添加用户账户
-                        //if (n.isColl == '0') {
-                            tbodyui += "<span class='layui-btn layui-btn-sm' id=\"Contrast_" + n.prodid + "\" onClick=\"onColl('" + n.prodid + "');\"><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>";
-                        //}
-                        //else {
-                        //    tbodyui += "<span class='layui-btn layui-btn-sm'  style='background-color:#e1e1e1'><i class='Hui-iconfont'>&#xe61f;</i> 已参与</span>";
-                        //}
-                        
-                        tbodyui += " </td>";//<span class='layui-btn layui-btn-sm'><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>
-                        tbodyui += "</tr>";
-                    });
+                var state = json.state;
+                if (state == "Success") {
+                    var productData = json.data;
+                    var bigData = json.BigType;
+                    var smaillData = json.SamllType;
+                    var strvar = "";
+                    rowcount = json.totalCount;
+                    $("#records").html(rowcount);
+                    if (rowcount != 0 && productData != "") {
+                        $.each(productData, function (i, n) {
+                            tbodyui += "<tr>";
+                            tbodyui += "<td class='phtd'><a href=\"/PhysicalProducts/Detail/" + n.prodid + ".html\" target=\"_blank\">" + n.ProModel + "</a></td>";
+                            tbodyui += "<td>" + n.PlaceOrigin + "</td>";
+                            tbodyui += "<td>" + n.Name + "</td>";
+                            tbodyui += "<td>" + n.ProUse + "</td>";
+                            tbodyui += "<td >" + n.characteristic + "</td>";
+                            tbodyui += "<td ><span class='layui-btns layui-btn-sm' onclick=\"LookLoadingIcon('" + n.prodid + "');\">寻找相似</span>";
+                            //tbodyui += "<td ><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.prodid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span>";
+                            //后期需要添加用户账户
+                            //if (n.isColl == '0') {
+                            tbodyui += "<span class='layui-btns layui-btn-sm' id=\"Contrast_" + n.prodid + "\" onClick=\"onColl('" + n.prodid + "');\">添加对比</span>";
+                            //tbodyui += "<span class='layui-btn layui-btn-sm' id=\"Contrast_" + n.prodid + "\" onClick=\"onColl('" + n.prodid + "');\"><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>";
+                            //}
+                            //else {
+                            //    tbodyui += "<span class='layui-btn layui-btn-sm'  style='background-color:#e1e1e1'><i class='Hui-iconfont'>&#xe61f;</i> 已参与</span>";
+                            //}
 
-                    if (bigData != "" && istow == "0") {
-                        $.each(bigData, function (index, item) {
-                            count++;
-                            typelist += '<div class="search-item">';
-                            typelist += '<div class="search-item-type">' + item.attribute + '：</div>';
-                            typelist += '<div class="search-item-content3">';
-                            typelist += '<ul class="search-item-content" data-type="' + count + '" data-typename="' + item.attribute + '">';
-                            typelist += "<li data-guid=\"\" data-value=\"0\" id=\"" + count + "_SamllType_0\" onlick=\"onselectobj('" + count + "', '0', '" + count + "_SamllType_0','" + item.attribute + "')\" class=\"active\">全部</li>";
-                            var sammlCount = 0;
-                            if (smaillData != "") {
-                                //    debugger;
-                                //alert(eval("(" + json.SamllType + ")"));
-                                $.each(smaillData, function (a, b) {
-                                    if (item.attribute == b.attribute) {
-                                        sammlCount++;
-                                        typelist += '<li ';
-                                        if (sammlCount > 8) {
-                                            typelist += ' style="display:none" name="SamllType_' + count + '"';
+                            tbodyui += " </td>";//<span class='layui-btn layui-btn-sm'><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>
+                            tbodyui += "</tr>";
+                        });
+
+                        if (bigData != "" && istow == "0") {
+                            $.each(bigData, function (index, item) {
+                                count++;
+                                typelist += '<div class="search-item">';
+                                typelist += '<div class="search-item-type">' + item.attribute + '：</div>';
+                                typelist += '<div class="search-item-content3">';
+                                typelist += '<ul class="search-item-content" data-type="' + count + '" data-typename="' + item.attribute + '">';
+                                typelist += "<li data-guid=\"\" data-value=\"0\" id=\"" + count + "_SamllType_0\" onlick=\"onselectobj('" + count + "', '0', '" + count + "_SamllType_0','" + item.attribute + "')\" class=\"active\">全部</li>";
+                                var sammlCount = 0;
+                                if (smaillData != "") {
+                                    //    debugger;
+                                    //alert(eval("(" + json.SamllType + ")"));
+                                    $.each(smaillData, function (a, b) {
+                                        if (item.attribute == b.attribute) {
+                                            sammlCount++;
+                                            typelist += '<li ';
+                                            if (sammlCount > 8) {
+                                                typelist += ' style="display:none" name="SamllType_' + count + '"';
+                                            }
+                                            typelist += " data-value=" + b.attributevalue + " id=\"" + count + "_SamllType_" + sammlCount + "\" onClick=\"onselectobj('" + count + "', '" + b.attributevalue + "','" + count + "_SamllType_" + sammlCount + "','" + item.attribute + "');\"  data-guid=\"\" >" + b.attributevalue + "</li>";
                                         }
-                                        typelist += " data-value=" + b.attributevalue + " id=\"" + count + "_SamllType_" + sammlCount + "\" onClick=\"onselectobj('" + count + "', '" + b.attributevalue + "','" + count + "_SamllType_" + sammlCount + "','" + item.attribute + "');\"  data-guid=\"\" >" + b.attributevalue + "</li>";
-                                    }
-                                })
-                            }
-                            typelist += '</ul> </div>';
-                            if (sammlCount > 8) {
-                                //∧
-                                typelist += '<div class="search-item-btn" name="search-item-btn" data-type="' + count + '" data-typename="' + item.attribute + '">更多∨</div>';
-                            }
-                            typelist += '</div>';
-                        })
+                                    })
+                                }
+                                typelist += '</ul> </div>';
+                                if (sammlCount > 8) {
+                                    //∧
+                                    typelist += '<div class="search-item-btn" name="search-item-btn" data-type="' + count + '" data-typename="' + item.attribute + '">更多∨</div>';
+                                }
+                                typelist += '</div>';
+                            })
+
+                        }
+
 
                     }
+                    else {
+                        tbodyui += "<tr>";
+                        tbodyui += "<td colspan=\"6\" align=\"center\" class='red'>未找到数据</td>";
+                        tbodyui += "</tr>";
+                    }
+                    if (typelist != "")//未塞选条件分页
+                    {
+                        $("#selectTypeList").html(typelist);
+                    }
+                    $("#tempHtml_list").html(tbodyui);
 
-
+                }
+                else if (state == "NedLogin")
+                {
+                    pageindx = 1;
+                    layer.msg("请先登录后再查看！", { icon: 5 });
                 }
                 else {
-                    tbodyui += "<tr>";
-                    tbodyui += "<td colspan=\"6\" align=\"center\" class='red'>未找到数据</td>";
-                    tbodyui += "</tr>";
+                    layer.msg("系统异常！", { icon: 5 });
                 }
-                if (typelist != "")//未塞选条件分页
-                {
-                    $("#selectTypeList").html(typelist);
-                }
-                $("#tempHtml_list").html(tbodyui);
             } catch (e) {
                 alert(e.msg);
                 // layer.msg(e.msg, { icon: 5 });

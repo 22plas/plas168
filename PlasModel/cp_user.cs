@@ -25,6 +25,7 @@ namespace PlasModel
         public string ContentAddress { get; set; }//联系地址
         public string LeaderUserName { get; set; }//上级联系人ID
         public string HeadImage { get; set; }//头像
+        public string xcsopenid { get; set; }//小程序openid
     }
     public class cp_userview
     {
@@ -49,5 +50,6 @@ namespace PlasModel
         public string usercode { get; set; }//用户邀请码
 
         public string ParentUserCode { get; set; }//上级用户邀请码
+        public string xcsopenid { get; set; }//小程序openid
     }
 }

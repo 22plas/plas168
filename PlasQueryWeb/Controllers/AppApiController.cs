@@ -5,6 +5,7 @@ using PlasCommon;
 using PlasCommon.SqlCommonQuery;
 using PlasModel;
 using PlasModel.App_Start;
+using PlasQueryWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -144,6 +145,8 @@ namespace PlasQueryWeb.Controllers
         #endregion
 
         #region 获取助剂类别或者厂家
+        [AllowCrossSiteJson]
+        [HttpGet]
         public ActionResult GetAnnotationClassOrFactory(string typestr, string key, int? pageindex = 1, int? pagesize = 10)
         {
             try
@@ -190,11 +193,35 @@ namespace PlasQueryWeb.Controllers
         /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpGet]
-        public ActionResult AppGetPriceDateList(string priceproductguid, string bdate, string ndate,string type)
+        public ActionResult AppGetPriceDateList(string priceproductguid, string bdate, string ndate,string type,string userid)
         {
             try
             {
                 StringBuilder sql = new StringBuilder();
+                int iscollection = 0;//检查产品是否收藏 0：否 1：是
+                int isquotation = 0;//是否订阅 0：否 1：是
+                string sql2 = string.Format("SELECT * FROM dbo.Pri_Product WHERE PriceProductGuid='{0}'", priceproductguid);
+                DataTable dts = SqlHelper.GetSqlDataTable(sql2);
+                string pid = string.Empty;
+                if (dts.Rows.Count > 0)
+                {
+                    pid = dts.Rows[0]["ProductGuid"].ToString();
+                    //是否收藏
+                    string scsql = string.Format(@"SELECT * FROM dbo.Physics_Collection WHERE UserId='{0}' AND ProductGuid='{1}'", userid, pid);
+                    DataTable scdt = SqlHelper.GetSqlDataTable(scsql);
+                    if (scdt.Rows.Count > 0)
+                    {
+                        iscollection = 1;
+                    }
+                    //是否订阅
+                    string dysql = string.Format(@"SELECT * FROM dbo.Physics_Quotation WHERE UserId='{0}' AND ProductGuid='{1}'", userid, priceproductguid);
+                    DataTable dydt = SqlHelper.GetSqlDataTable(dysql);
+                    if (dydt.Rows.Count > 0)
+                    {
+                        isquotation = 1;
+                    }
+                }
+
                 string starttime = "";
                 string endtime = "";
                 if (type == "0")
@@ -252,12 +279,24 @@ namespace PlasQueryWeb.Controllers
                         }
                     }
                 }
+                if (!string.IsNullOrWhiteSpace(userid)&&!string.IsNullOrWhiteSpace(pid))
+                {
+                    Physics_BrowseModel model = new Physics_BrowseModel();
+                    model.BrowsCount = 1;
+                    model.Btype = 2;//价格行情浏览
+                    model.ProductGuid = pid;
+                    model.UserId = userid;
+                    string msg = "";
+                    mbll.AddPhysics_Browse(model, ref msg);
+                }
                 //返回的数据
                 var returndata = new
                 {
                     maxstr = max,
                     minstr = min,
-                    data = jsonstr
+                    data = jsonstr,
+                    iscollections= iscollection,
+                    isquotations= isquotation
                 };
                 return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);
             }
@@ -402,7 +441,7 @@ namespace PlasQueryWeb.Controllers
         /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpGet]
-        public ActionResult AppGetDetail(string prodid,string type,string userid)
+        public ActionResult AppGetDetail(string prodid, string type, string userid)
         {
             try
             {
@@ -420,7 +459,14 @@ namespace PlasQueryWeb.Controllers
                 {
                     pid = prodid;
                 }
-                
+                int iscollection = 0;//检查产品是否收藏 0：否 1：是
+                string scsql = string.Format(@"SELECT * FROM dbo.Physics_Collection WHERE UserId='{0}' AND ProductGuid='{1}'", userid, pid);
+                DataTable scdt = SqlHelper.GetSqlDataTable(scsql);
+                if (scdt.Rows.Count > 0)
+                {
+                    iscollection = 1;
+                }
+
                 #region 产品详情
                 var ds = bll.NewGetModelInfo(pid);//"9C37DC9C-E867-46A2-97DF-32A9489BCDC4"
                 //var ds = bll.GetModelInfo(prodid);
@@ -487,7 +533,7 @@ namespace PlasQueryWeb.Controllers
                 if (!string.IsNullOrEmpty(prodid))
                 {
                     pdfdt = bll.GetProductPdf(prodid);
-                    if (pdfdt.Rows.Count>0)
+                    if (pdfdt.Rows.Count > 0)
                     {
                         for (int i = 0; i < pdfdt.Rows.Count; i++)
                         {
@@ -496,7 +542,7 @@ namespace PlasQueryWeb.Controllers
                             tm.Guid = pdfdt.Rows[i]["Guid"].ToString();
                             tm.ID = pdfdt.Rows[i]["ID"].ToString();
                             tm.ImagesColor = pdfdt.Rows[i]["ImagesColor"].ToString();
-                            tm.PdfPath = PdfUrl+ pdfdt.Rows[i]["PdfPath"].ToString();
+                            tm.PdfPath = PdfUrl + pdfdt.Rows[i]["PdfPath"].ToString();
                             tm.ProductGuid = pdfdt.Rows[i]["ProductGuid"].ToString();
                             tm.TestType = pdfdt.Rows[i]["TestType"].ToString();
                             tm.TypeName = pdfdt.Rows[i]["TypeName"].ToString();
@@ -505,11 +551,11 @@ namespace PlasQueryWeb.Controllers
                     }
                     //pdfinfolist = Comm.ToDataList<pdfinfo>(pdfdt);
                 }
-                if (!string.IsNullOrWhiteSpace(userid))
+                if (!string.IsNullOrWhiteSpace(userid) && !string.IsNullOrWhiteSpace(pid))
                 {
                     Physics_BrowseModel model = new Physics_BrowseModel();
                     model.BrowsCount = 1;
-                    model.Btype = 1;
+                    model.Btype = 1;//物性详情浏览
                     model.ProductGuid = pid;
                     model.UserId = userid;
                     string msg = "";
@@ -518,9 +564,11 @@ namespace PlasQueryWeb.Controllers
 
                 //新增点击次数
                 //bll.ProductHit(prodid);
-                var returndata = new {
-                    prodata= listinfo,
-                    pdfdata= pdfinfolist
+                var returndata = new
+                {
+                    prodata = listinfo,
+                    pdfdata = pdfinfolist,
+                    iscollections = iscollection
                 };
                 #endregion
                 return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);
@@ -545,7 +593,7 @@ namespace PlasQueryWeb.Controllers
             try
             {
                 string pdfUrl = "pdf/" + prodid + ".pdf";
-                var ds = bll.GetModelInfo(prodid);
+                var ds = bll.GetModelInfo(prodid,string.Empty,string.Empty);
                 string pmodel = string.Empty;
                 string placeorigin = string.Empty;
                 string brand = string.Empty;
@@ -575,14 +623,77 @@ namespace PlasQueryWeb.Controllers
             }
         }
 
+
+
+        /// <summary>
+        /// 获取产品的pdf文档(带产品信息返回)
+        /// </summary>
+        /// <param name="prodid">产品id</param>
+        /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpGet]
-        public ActionResult GetProductULPDF(string prodid)
+        public ActionResult GetProductPDF2(string prodid, string userid)
         {
             try
             {
                 string pdfUrl = "pdf/" + prodid + ".pdf";
-                var ds = bll.GetModelInfo(prodid);
+                var ds = bll.GetModelInfo(prodid,string.Empty,string.Empty);
+                string pmodel = string.Empty;
+                string placeorigin = string.Empty;
+                string brand = string.Empty;
+                string icopath = string.Empty;
+                string factory = string.Empty;
+                string name = string.Empty;
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    pmodel = ds.Tables[0].Rows[0]["proModel"].ToString();
+                    placeorigin = ds.Tables[0].Rows[0]["PlaceOrigin"].ToString();
+                    brand = ds.Tables[0].Rows[0]["Brand"].ToString();
+                    icopath = ds.Tables[0].Rows[0]["IcoPath"].ToString();
+                }
+
+                DataTable dt = bll.GetProductFactoryInfo(prodid);
+                if (dt.Rows.Count > 0)
+                {
+                    factory = dt.Rows[0]["AliasName"].ToString() == "" ? dt.Rows[0]["EnglishName"].ToString() : dt.Rows[0]["AliasName"].ToString();
+                    name = dt.Rows[0]["Name"].ToString();
+                }
+
+                bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewDetail?prodid=" + prodid, pdfUrl, Server.UrlEncode(pmodel), Server.UrlEncode(placeorigin), Server.UrlEncode(brand), "0", icopath);
+                if (success)
+                {
+                    mbll.AddOperationPay("查看下载物性", userid);
+                    string path = MainHost + "/" + pdfUrl;
+                    var returndata = new
+                    {
+                        retpath = path,
+                        model = pmodel,
+                        retfactory = factory,
+                        retname = name
+
+                    };
+                    return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(Common.ToJsonResult("Fail", "获取失败"), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetProductULPDF(string prodid,string numberid="")
+        {
+            try
+            {
+                string pdfUrl = "pdf/" + prodid + ".pdf";
+                var ds = bll.GetModelInfo(prodid,string.Empty,string.Empty);
                 string pmodel = string.Empty;
                 string placeorigin = string.Empty;
                 string brand = string.Empty;
@@ -593,7 +704,7 @@ namespace PlasQueryWeb.Controllers
                     brand = ds.Tables[0].Rows[0]["Brand"].ToString();
                 }
                 //bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewDetail?prodid=" + prodid, pdfUrl);
-                bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewUl_ShowPdf?prodid=" + prodid, pdfUrl, string.Empty, string.Empty, string.Empty,"1",string.Empty);
+                bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewUl_ShowPdf?prodid=" + prodid+ "&numberid="+ numberid, pdfUrl, Server.UrlEncode(pmodel), Server.UrlEncode(placeorigin), Server.UrlEncode(brand), "1",string.Empty);
                 if (success)
                 {
                     string path = MainHost + "/" + pdfUrl;
@@ -875,6 +986,7 @@ namespace PlasQueryWeb.Controllers
             List<attributeinfo> otherlist = new List<attributeinfo>();//其他属性
             List<bigtype> bigtypelist = new List<bigtype>();//大类
             List<SearchResult> resultmodellist = new List<SearchResult>();//搜索结果
+            int resultcount = 0;//搜索结果总条数
             string tow = "0";
             //二次查询
             if (!string.IsNullOrWhiteSpace(characteristic))
@@ -920,6 +1032,7 @@ namespace PlasQueryWeb.Controllers
                 {
                     //jsonstr = ToolHelper.DataTableToJson(ds.Tables[0]);
                     resultmodellist = Comm.ToDataList<SearchResult>(ds.Tables[0]);
+                    resultcount = Convert.ToInt32(ds.Tables[1].Rows[0]["totalcount"]);
                 }
                 
                 //DataTable dt = new DataTable();
@@ -999,7 +1112,8 @@ namespace PlasQueryWeb.Controllers
                 factorydata = factoryjsonstr,
                 classdata = classjsonstr,
                 bigtypedata= bigtypelist,
-                otherdata = otherlist
+                otherdata = otherlist,
+                resultcounta= resultcount
             };
             return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);
         }
@@ -1711,12 +1825,12 @@ namespace PlasQueryWeb.Controllers
         /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpGet]
-        public ActionResult GetPhysicsQuotation(string userId, int pageindex, int pagesize)
+        public ActionResult GetPhysicsQuotation(string userId, int? pageindex=1, int? pagesize=20)
         {
             List<Physics_QuotationModel> returnlist = new List<Physics_QuotationModel>();
             if (!string.IsNullOrWhiteSpace(userId))
             {
-                DataTable dt = mbll.AppGetPhyices_Quotation(userId, pageindex, pagesize);
+                DataTable dt = mbll.AppGetPhyices_Quotation(userId, pageindex.Value, pagesize.Value);
                 returnlist = Comm.ToDataList<Physics_QuotationModel>(dt);
                 return Json(Common.ToJsonResult("Success", "获取成功", returnlist), JsonRequestBehavior.AllowGet);
             }
@@ -2044,12 +2158,12 @@ namespace PlasQueryWeb.Controllers
         /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpGet]
-        public ActionResult GetNews(int pageindex, int pagesize)
+        public ActionResult GetNews(int? pageindex=1, int? pagesize=20)
         {
             try
             {
                 List<News> returnlist = new List<News>();
-                DataTable dt = newbll.GetNews(pageindex, pagesize);
+                DataTable dt = newbll.GetNews(pageindex.Value, pagesize.Value,3);
                 returnlist = Comm.ToDataList<News>(dt);
                 return Json(Common.ToJsonResult("Success", "获取成功", returnlist), JsonRequestBehavior.AllowGet);
             }
@@ -2127,7 +2241,8 @@ namespace PlasQueryWeb.Controllers
         /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpGet]
-        public ActionResult ShowUlPDF(string ProductGuid)
+        public ActionResult ShowUlPDF(string Numberid, string ProductGuid)
+        //public ActionResult ShowUlPDF(string ProductGuid)
         {
             try
             {
@@ -2140,7 +2255,7 @@ namespace PlasQueryWeb.Controllers
                     {
                         blist = query[0];
                     }
-                    clist = bll.GetUl_body(ProductGuid);
+                    clist = bll.GetUl_body(Numberid);
 
                 }
                 var returndata = new
@@ -2455,12 +2570,12 @@ namespace PlasQueryWeb.Controllers
         /// <returns></returns>
         [AllowCrossSiteJson]
         [HttpPost]
-        public ActionResult SetUserCode(string phone, string usid)
+        public ActionResult SetUserCode(string phone, string usid,string type)
         {
             try
             {
                 int tempcode = Convert.ToInt32(phone.Substring(7, 4));
-                string usercode = mbll.getusebycode(tempcode);
+                string usercode = mbll.getusebycode(phone,tempcode);
                 string bindresult = mbll.binduserphone(phone, usid);
                 //string bindresult = mbll.UpdateUserInfobll("phone", phone, usid);
                 if (bindresult == "Success")
@@ -2530,6 +2645,201 @@ namespace PlasQueryWeb.Controllers
         }
         #endregion
 
+        #region 首页推荐pdf
+        //首页推荐pdf
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetListPDF()
+        {
+            try
+            {
+                DataTable dt = bll.GetListPDF(30);
+                List<pdflist> returnlist = new List<pdflist>();
+                returnlist = Comm.ToDataList<pdflist>(dt);
+                return Json(Common.ToJsonResult("Success", "获取成功", returnlist), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        #endregion
+
+        #region 添加关键词搜索记录
+        //首页推荐pdf
+        [AllowCrossSiteJson]
+        [HttpPost]
+        public ActionResult SaveSearchKeyLog(HeadSearchLog model)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(model.userid))
+                {
+                    model.userid = "";
+                }
+                int returnid = mbll.AddHeadSearchLog(model);
+                var returndata = new
+                {
+                    id = returnid
+                };
+                return Json(Common.ToJsonResult("Success", "添加搜索记录成功", returndata), JsonRequestBehavior.AllowGet);
+                //if (returnbool)
+                //{
+                //    return Json(Common.ToJsonResult("Success", "添加搜索记录成功"), JsonRequestBehavior.AllowGet);
+                //}
+                //else
+                //{
+                //    return Json(Common.ToJsonResult("Fail", "添加搜索记录失败"), JsonRequestBehavior.AllowGet);
+                //}
+            }
+            catch (Exception)
+            {
+                return Json(Common.ToJsonResult("Fail", "添加搜索记录失败"), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+        #region 修改关键词搜索记录为提示
+        [AllowCrossSiteJson]
+        [HttpPost]
+        public ActionResult UpdateSearchKeyLogToReply(int id)
+        {
+            try
+            {
+                bool upresult = mbll.UpdateSearchKeyLogToReply(id);
+                if (upresult)
+                {
+                    return Json(Common.ToJsonResult("Success", "操作成功"), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(Common.ToJsonResult("Fail", "操作失败"), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "操作失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+
+        #region 获取我的问题反馈记录
+        /// <summary>
+        /// 获取我的问题反馈记录
+        /// </summary>
+        /// <param name="userId">用户id</param>
+        /// <param name="pageindex">页码</param>
+        /// <param name="pagesize">每页数量</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetMyProblem(string userId, int pageindex, int pagesize)
+        {
+            List<Problem> returnlist = new List<Problem>();
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                string msg = "";
+                int pagecount = 0;
+                returnlist = mbll.GetMyProblem(userId, pageindex, pagesize, ref pagecount, ref msg);
+                return Json(Common.ToJsonResult("Success", "获取成功", returnlist), JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败"), JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetPdfInfo(string prodid)
+        {
+            try
+            {
+                var ds = bll.GetModelInfo(prodid,string.Empty,string.Empty);
+                string promodel = "";
+                string proplaceorigin = "";
+                string proband = "";
+                List<webpdfinfo> pdflist = new List<webpdfinfo>();
+
+                DataTable pdfdt = new DataTable();
+                List<pdfinfo> pdfinfolist = new List<pdfinfo>();
+                if (!string.IsNullOrEmpty(prodid))
+                {
+                    pdfdt = bll.GetProductPdf(prodid);
+                    if (pdfdt.Rows.Count > 0)
+                    {
+                        for (int i = 0; i < pdfdt.Rows.Count; i++)
+                        {
+                            pdfinfo tm = new pdfinfo();
+                            tm.BefromName = pdfdt.Rows[i]["BefromName"].ToString();
+                            tm.Guid = pdfdt.Rows[i]["Guid"].ToString();
+                            tm.ID = pdfdt.Rows[i]["ID"].ToString();
+                            tm.ImagesColor = pdfdt.Rows[i]["ImagesColor"].ToString();
+                            tm.PdfPath = PdfUrl + pdfdt.Rows[i]["PdfPath"].ToString();
+                            tm.ProductGuid = pdfdt.Rows[i]["ProductGuid"].ToString();
+                            tm.TestType = pdfdt.Rows[i]["TestType"].ToString();
+                            tm.TypeName = pdfdt.Rows[i]["TypeName"].ToString();
+                            pdfinfolist.Add(tm);
+                        }
+                    }
+                    //pdfinfolist = Comm.ToDataList<pdfinfo>(pdfdt);
+                }
+
+                if (ds != null && ds.Tables.Count > 0)
+                {
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
+                        promodel = ds.Tables[0].Rows[0]["proModel"].ToString();
+                        proplaceorigin = ds.Tables[0].Rows[0]["PlaceOrigin"].ToString();
+                        proband = ds.Tables[0].Rows[0]["Brand"].ToString();
+                    }
+                    if (ds.Tables.Count > 1)
+                    {
+                        //物性
+                        //ViewBag.PhysicalInfo = ds.Tables[1];
+                        pdflist = Comm.ToDataList<webpdfinfo>(ds.Tables[1]);
+                    }
+                    var data = new
+                    {
+                        model = promodel,
+                        placeorigin = proplaceorigin,
+                        brand = proband,
+                        list = pdflist,
+                        headlist= pdfinfolist
+                    };
+                    return Json(Common.ToJsonResult("Success", "获取成功", data), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(Common.ToJsonResult("Fail", "获取失败"), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败"), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        //获取新闻类别
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetNewClass()
+        {
+            try
+            {
+                DataTable dt = newbll.GetNewClass();
+                List<NewsClass> list = new List<NewsClass>();
+                if (dt.Rows.Count > 0)
+                {
+                    list = Comm.ToDataList<NewsClass>(dt);
+                }
+                return Json(Common.ToJsonResult("Success", "获取成功", list), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败"), JsonRequestBehavior.AllowGet);
+            }
+        }
         //pdf数据
         public class pdfinfo {
             public string TypeName { get; set; }
@@ -2540,13 +2850,6 @@ namespace PlasQueryWeb.Controllers
             public string BefromName { get; set; }
             public string ID { get; set; }
             public string ImagesColor { get; set; }
-        }
-        //选择参数类
-        public class parminfo
-        {
-            public int rownum { get; set; }
-            public string Name { get; set; }
-            public string Guid { get; set; }
         }
         //大类
         public class bigtype {
@@ -2610,6 +2913,7 @@ namespace PlasQueryWeb.Controllers
             public string characteristic { get; set; }
             public string custguid { get; set; }
             public string isColl { get; set; }
+            public string icopath { get; set; }
         }
 
         //价格对比类
@@ -2635,16 +2939,7 @@ namespace PlasQueryWeb.Controllers
             public string HomeImg { get; set; }
             public string CreateDate { get; set; }
         }
-        //产品助剂
-        public class Annotation
-        {
-            public string Model { get; set; }
-            public string Supplier { get; set; }
-            public string comments { get; set; }
-            public string Product_Type { get; set; }
-            public string Product_Status { get; set; }
-            public int id { get; set; }
-        }
+        
         //产品助剂详情
         public class AnnotationDetail {
             public string Property { get; set; }
@@ -2733,6 +3028,16 @@ namespace PlasQueryWeb.Controllers
             public string Operation { get; set; }
             public int InPay { get; set; }
             public string CreateTime { get; set; }
+        }
+        //分享页面的pdf
+        public class webpdfinfo
+        {
+            public int lev { get; set; }
+            public string Attribute1 { get; set; }
+            public string Attribute2 { get; set; }
+            public string Attribute3 { get; set; }
+            public string Attribute4 { get; set; }
+            public string Attribute5 { get; set; }
         }
     }
 }

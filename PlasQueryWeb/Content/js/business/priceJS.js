@@ -1,4 +1,4 @@
-   var pagesize = 8;
+var pagesize = 14;
     var rowcount = 0;
     var datas = "";
     var page_indx = 0;
@@ -31,18 +31,19 @@ var ProductGuid = "";
     $(".search-item-btn").click(function () {
         var dataval = $(this).attr("data-type");
         var datatile = $(this).attr("data-typename");
-
         if ($("li[name='cailiaotype_" + dataval + "']").hasClass("none")) {
             $.each($("li[name='cailiaotype_" + dataval + "']"), function (index, item) {
                 $(this).removeClass("none");
-            })
-            $(this).html("隐藏 ∧");
+            });
+            $("#search_" + dataval).css("display","block");
+            $(this).html("收起 ∧");
         }
         else {
             $.each($("li[name='cailiaotype_" + dataval + "']"), function (index, item) {
                 $(this).addClass("none");
             })
             $(this).html("更多 ∨");
+            $("#search_" + dataval).css("display","none");
         }
 
         //layer.open({
@@ -117,8 +118,9 @@ $(".search_item_contentList").find("li").click(function () {
 
 
 
-    function InitData(pageindx) {
-        page_indx = pageindx;
+function InitData(pageindx) {
+    page_indx = pageindx;
+    //$("#pagespan").html("第" + pageindx + "页");
         var tbodyui = "";
       //  alert(datas);
         $.ajax({
@@ -134,36 +136,69 @@ $(".search_item_contentList").find("li").click(function () {
                 if (rowcount != 0) {
                     $.each(JSON.parse(productData), function (i, n) {
                         strcount++;
-                        tbodyui += '<li';
+                        tbodyui += "<div class='listitem'>"
+                        tbodyui += "<div smallClass='" + n.SmallClass + "' manufacturer = '" + n.ManuFacturer + "'  ProductGuid = '" + n.PriceProductGuid + "' model ='" + n.Model+ "' class='itembox "
                         if (strcount == 1) {
-                            tbodyui += ' class="active"';
                             SmallClass = n.SmallClass;
                             Manufacturer = n.ManuFacturer;
                             Model = n.Model;
                             ProductGuid = n.PriceProductGuid;
-                            priceData="&priceDate=7"
+                            priceData = "&priceDate=7";
                             GetPriceList();
                             onLoadEchars();
+                            tbodyui += " active'>"
                         }
-                        tbodyui += ' style="cursor: pointer" smallClass="' + n.SmallClass + '" manufacturer="' + n.ManuFacturer + '"  ProductGuid="' + n.PriceProductGuid+'" model="' + n.Model+'">';
-                        tbodyui += '<div class="left">';
-                        tbodyui += '<p>' + n.SmallClass + ' | ' + n.ManuFacturer + '</p>';
-                        tbodyui += '<p>' + n.Model + '</p>';
-                        tbodyui += '</div>';
-                        tbodyui += ' <div class="right">';
-                        tbodyui += ' <p>' + n.Price + '元/吨</p>';//  
-                        tbodyui += '<p><span class="fa';
-                        if (parseInt(n.Diff) > 0) 
-                            tbodyui += ' fa-arrow-up text-red';
+                        else {
+                            tbodyui += "'>"
+                        }                        
+                        tbodyui +="<div class='itemtitle'>" + n.SmallClass + "|" + n.ManuFacturer + "</div>" 
+                        tbodyui +="<div class='itemclass'>" + n.Model + "</div>" 
+                        tbodyui += "<div class='itemzd'>" 
+                        tbodyui +="<span class='fa " 
+                            if (parseInt(n.Diff) > 0)
+                            tbodyui += " fa-arrow-up text-red"
                         else
-                            tbodyui += ' fa-arrow-down text-green';
-                        tbodyui += '" style = "margin-left: 8px;" ></span >';
-                        tbodyui += '<span class="text-red">' + n.Diff + '</span>';
-                        tbodyui += '</p> </div > </li >';
+                                tbodyui += " fa-arrow-down text-blue"
+                        tbodyui += "' style='margin - left: 8px;text-indent:5px;'> " + n.Diff+"</span>" 
+                        tbodyui += "<span> " + n.PriDatestr + "</span >"
+                        //if (parseInt(n.Diff) > 0)
+                        //    tbodyui += "class='text-red' > " + n.Price + "</span >"
+                        //else
+                        //    tbodyui += "class='text-blue' > " + n.Price + "</span >"
+                        tbodyui +="</div>"
+                        tbodyui +="</div>"
+                        tbodyui += "</div>";
+
+                        //tbodyui += '<li';
+                        //if (strcount == 1) {
+                        //    tbodyui += ' class="active"';
+                        //    SmallClass = n.SmallClass;
+                        //    Manufacturer = n.ManuFacturer;
+                        //    Model = n.Model;
+                        //    ProductGuid = n.PriceProductGuid;
+                        //    priceData="&priceDate=7"
+                        //    GetPriceList();
+                        //    onLoadEchars();
+                        //}
+                        //tbodyui += ' style="cursor: pointer" smallClass="' + n.SmallClass + '" manufacturer="' + n.ManuFacturer + '"  ProductGuid="' + n.PriceProductGuid + '" model="' + n.Model + '">';
+                        //tbodyui += '<div class="left">';
+                        //tbodyui += '<p>' + n.SmallClass + ' | ' + n.ManuFacturer + '</p>';
+                        //tbodyui += '<p>' + n.Model + '</p>';
+                        //tbodyui += '</div>';
+                        //tbodyui += ' <div class="right">';
+                        //tbodyui += ' <p>' + n.Price + '元/吨</p>';//  
+                        //tbodyui += '<p><span class="fa';
+                        //if (parseInt(n.Diff) > 0) 
+                        //    tbodyui += ' fa-arrow-up text-red';
+                        //else
+                        //    tbodyui += ' fa-arrow-down text-green';
+                        //tbodyui += '" style = "margin-left: 8px;" ></span >';
+                        //tbodyui += '<span class="text-red">' + n.Diff + '</span>';
+                        //tbodyui += '</p> </div > </li >';
 
                     });
                 }
-                $("#PriceListHTML").html(tbodyui);
+                $("#PriceListHTMLs").html(tbodyui);
 
             },
             error: function () { layer.msg('Load the data failure!', { icon: 5 }); }
@@ -178,12 +213,23 @@ $(".search_item_contentList").find("li").click(function () {
             current_page: pageindx,
             num_edge_entries: 1
         });
-
+        //上一页
+    //$("#uppage").click(function () {
+    //    if (page_indx >= 1) {
+    //        var thispageindex = page_indx - 1;
+    //        pageselectCallback(thispageindex);
+    //    }            
+    //    });
+    //    //下一页
+    //$("#dowpage").click(function () {
+    //    var thispageindex = page_indx + 1;
+    //    pageselectCallback(thispageindex);
+    //    });
         NoneLine();
 
         //点击选中
-        $("#PriceListHTML").find("li").click(function () {
-            $.each($("#PriceListHTML").find("li"), function (index, item) {
+    $("#PriceListHTMLs").find(".itembox").click(function () {
+            $.each($("#PriceListHTMLs").find(".itembox"), function (index, item) {
                 $(this).removeClass("active");
             })
             $(this).addClass("active");
@@ -195,8 +241,6 @@ $(".search_item_contentList").find("li").click(function () {
             onLoadEchars();
 
         })
-
-
     }
 
     function pageselectCallback(page_id, jq) {

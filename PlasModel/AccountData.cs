@@ -12,5 +12,7 @@ namespace PlasModel
 
         public string UserName { get; set; }
         public string HeadImage { get; set; }
+        public string WeChatOpenID { get; set; }
+        public string QQOpenID { get; set; }
     }
 }

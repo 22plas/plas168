@@ -69,5 +69,14 @@ namespace PlasCommon
             [Display(Name = "查询")]
             Select
         }
+        /// <summary>
+        /// 错误页面的Layout类别，给错误页面使用的一个枚举
+        /// </summary>
+        public enum Layout
+        {
+            Manage,
+            WebSide,
+            MoblieWebSide
+        }
     }
 }

@@ -3,10 +3,12 @@ using PlasModel.App_Start.Qiniu;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Web;
+using System.Web.Mvc;
 using static PlasCommon.Enums;
 
 namespace PlasModel.App_Start
@@ -225,5 +227,132 @@ namespace PlasModel.App_Start
             }
             return newStr;
         }
+
+        public interface QQIConfig {
+            string qqAppID { get; }
+
+            string qqAppSecret { get; }
+
+            string qqAccessToken { get; set; }
+
+            string qqRefreshToken { get; set; }
+
+            DateTime qqAccessTokenEnd { get; set; }
+        }
+        public interface IConfig
+        {
+            string AppID { get; }
+
+            string AppSecret { get; }
+
+            string AccessToken { get; set; }
+
+            string RefreshToken { get; set; }
+
+            DateTime AccessTokenEnd { get; set; }
+
+        }
+
+        public class ConfigWeChatWork : IConfig
+        {
+            /// <summary>
+            /// 网页开放平台
+            /// </summary>
+            private static string appID = "wx10e2e44e6fb65f66";
+            //public static string AppID = "1000004";
+
+            /// <summary>
+            /// 网页开放平台
+            /// </summary>
+            private static string appSecret = "317e95dd1568a3d73e5f236cda828456";
+            //public static string AppSecret = "-1k1RzNA3Z1lRsOnXF-fYPBxHv4m6fN8zgU_BOA8Y98";
+
+
+            /// <summary>
+            /// AppID对应的公共AccessToken
+            /// </summary>
+            private static string accessToken = null;
+
+            /// <summary>
+            /// AppID对应的公共RefreshToken
+            /// </summary>
+            private static string refreshToken = null;
+
+            private static DateTime accessTokenEnd;
+
+            public string AccessToken { get { return accessToken; } set { accessToken = value; } }
+
+            public string AppID { get { return appID; } }
+
+            public string AppSecret { get { return appSecret; } }
+
+            public string RefreshToken { get { return refreshToken; } set { refreshToken = value; } }
+
+            public DateTime AccessTokenEnd { get { return accessTokenEnd; } set { accessTokenEnd = value; } }
+
+
+
+        }
+
+        public class ConfigPc : IConfig
+        {
+            private const string appID = "wx10e2e44e6fb65f66";
+
+            private const string appSecret = "317e95dd1568a3d73e5f236cda828456";
+
+            private static string accessToken = null;
+
+            private static string refreshToken = null;
+
+            private static DateTime accessTokenEnd;
+
+            public string AccessToken { get { return accessToken; } set { accessToken = value; } }
+
+            public DateTime AccessTokenEnd { get { return accessTokenEnd; } set { accessTokenEnd = value; } }
+
+            public string AppID { get { return appID; } }
+
+            public string AppSecret { get { return appSecret; } }
+
+            public string RefreshToken { get { return refreshToken; } set { refreshToken = value; } }
+        }
+
+
+        public class ConfigQQtWork : QQIConfig
+        {
+            /// <summary>
+            /// 网页开放平台
+            /// </summary>
+            private static string qqappID = "101844740";
+
+            /// <summary>
+            /// 网页开放平台
+            /// </summary>
+            private static string qqappSecret = "0de90d3859ad7d5bf22dfe8d73a041d2";
+
+
+            /// <summary>
+            /// AppID对应的公共AccessToken
+            /// </summary>
+            private static string qqaccessToken = null;
+
+            /// <summary>
+            /// AppID对应的公共RefreshToken
+            /// </summary>
+            private static string qqrefreshToken = null;
+
+            private static DateTime qqaccessTokenEnd;
+
+            public string qqAccessToken { get { return qqaccessToken; } set { qqaccessToken = value; } }
+
+            public string qqAppID { get { return qqappID; } }
+
+            public string qqAppSecret { get { return qqappSecret; } }
+
+            public string qqRefreshToken { get { return qqrefreshToken; } set { qqrefreshToken = value; } }
+
+            public DateTime qqAccessTokenEnd { get { return qqaccessTokenEnd; } set { qqaccessTokenEnd = value; } }
+        }
+
     }
 }

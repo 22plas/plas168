@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PlasModel.App_Start;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,9 +10,18 @@ namespace PlasModel.Controllers
     public class PublicController : Controller
     {
        private  PlasBll.ProductBll bll = new PlasBll.ProductBll();
+        //获取当前登录的用户信息
+        AccountData AccountData
+        {
+            get
+            {
+                return this.GetAccountData();
+            }
+        }
         // 公用
         public ActionResult Header()
         {
+            ViewBag.username = AccountData.UserName;
             return View();
         }
 

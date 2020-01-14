@@ -20,9 +20,14 @@ namespace PlasModel.Controllers
                 return this.GetAccountData();
             }
         }
+        public void Sidebar(string name = "物性对比")
+        {
+            ViewBag.Sidebar = name;
+        }
         // GET: 物料对比
         public ActionResult Index()
         {
+            Sidebar();
             PlasBll.MemberCenterBll mbll = new PlasBll.MemberCenterBll();
             var userName = string.Empty;
             string errMsg = string.Empty;
@@ -60,17 +65,17 @@ namespace PlasModel.Controllers
                 txtQuery = Request["txtQuery"].ToString();
                 sql = " and ProModel like ''%" + txtQuery + "%''";
             }
-            int count = 0;
+            int count = 3;
             var ds = bll.GetProductList(pagesize, pageindex, sql);
             if (ds.Tables.Contains("ds") && ds.Tables[0] != null)
             {
                 jsonstr = ToolHelper.DataTableToJson(ds.Tables[0]);
             }
 
-            if (ds.Tables.Contains("ds1") && ds.Tables[1] != null && ds.Tables[1].Rows.Count > 0)
-            {
-                int.TryParse(ds.Tables[1].Rows[0]["totalcount"].ToString(), out count);
-            }
+            //if (ds.Tables.Contains("ds1") && ds.Tables[1] != null && ds.Tables[1].Rows.Count > 0)
+            //{
+            //    int.TryParse(ds.Tables[1].Rows[0]["totalcount"].ToString(), out count);
+            //}
 
             return Json(new { data = jsonstr, totalCount = count }, JsonRequestBehavior.AllowGet);
         }

@@ -22,12 +22,16 @@ namespace PlasModel.Controllers
         }
 
 
-
+        public void Sidebar(string name = "材料替换")
+        {
+            ViewBag.Sidebar = name;
+        }
         private PlasBll.ReplaceBll plbll = new PlasBll.ReplaceBll();
         // GET: 替换
 
         public ActionResult Index()
         {
+            Sidebar();
             return View();
         }
 
@@ -54,7 +58,7 @@ namespace PlasModel.Controllers
             string RealKey = string.Empty;
             if (!string.IsNullOrEmpty(Rpt))
             {
-                var ds = bll.GetModelInfo(Rpt);
+                var ds = bll.GetModelInfo(Rpt,"","");
                 //pt = plbll.GetAttributeAliasList_RealKey();//替换属性RealKey
                 pt = plbll.NewGetAttributeAliasList_RealKey(Rpt);//替换属性RealKey(罗志强 修改使用新的存储过程查询参数数据)
 

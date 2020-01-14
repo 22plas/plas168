@@ -986,8 +986,8 @@ namespace PlasModel.Controllers
                     {
                         UserID = resultstr[1],
                         UserName = resultstr[2],
-                        HeadImage = resultstr[3]
-
+                        HeadImage = resultstr[3],
+                        WeChatOpenID = ""
                     });
                     var returndata = new
                     {
@@ -1022,9 +1022,14 @@ namespace PlasModel.Controllers
                 tempopenid = model.wxopenid;
             }
             //qq登录
-            else
+            else if(type=="1")
             {
                 tempopenid = model.qqopenid;
+            }
+            //小程序
+            else if (type=="2")
+            {
+                tempopenid = model.xcsopenid;
             }
             model.HeadImage = Server.UrlDecode(model.HeadImage);
             string returnstr = mbll.WxOrQQLoginBll(tempopenid, type);
@@ -1119,8 +1124,8 @@ namespace PlasModel.Controllers
                     {
                         UserID = resultstr[1],
                         UserName = resultstr[2],
-                        HeadImage = resultstr[3]
-
+                        HeadImage = resultstr[3],
+                        WeChatOpenID = string.Empty
                     });
                     var returndata = new
                     {
@@ -1135,7 +1140,7 @@ namespace PlasModel.Controllers
             }
             else
             {
-                return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+                return Json(Common.ToJsonResult("NoFind", "登录失败"), JsonRequestBehavior.AllowGet);
             }
         }
         /// <summary>
@@ -1182,7 +1187,7 @@ namespace PlasModel.Controllers
             {
                 string resultstr = mbll.AccountLoginBll(phone);
                 int tempcode = Convert.ToInt32(phone.Substring(7, 4));
-                string usercode = mbll.getusebycode(tempcode);
+                string usercode = mbll.getusebycode(phone,tempcode);
                 //手机号已存在
                 if (resultstr != "NoFind" && resultstr != "Fail")
                 {
@@ -1201,13 +1206,21 @@ namespace PlasModel.Controllers
                         string wxsql = string.Format("UPDATE dbo.cp_user SET HeadImage='{0}',UserName='{1}',wxopenid='{2}',usercode='{4}' WHERE ID='{3}'", wxheadimage, wxusername, wxopenid, tempusid, usercode);
                         row = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, wxsql, null);
                     }
-                    else
+                    else if(type=="1")
                     {
                         string qqheadimage = newuserinfo.Rows[0]["HeadImage"].ToString();
                         string qqusername = newuserinfo.Rows[0]["UserName"].ToString();
                         string qqopenid = newuserinfo.Rows[0]["qqopenid"].ToString();
                         string qqsql = string.Format("UPDATE dbo.cp_user SET HeadImage='{0}',UserName='{1}',qqopenid='{2}',usercode='{4}' WHERE ID='{3}'", qqheadimage, qqusername, qqopenid, tempusid, usercode);
                         row = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, qqsql, null);
+                    }
+                    else if (type=="2")
+                    {
+                        string xcxheadimage = newuserinfo.Rows[0]["HeadImage"].ToString();
+                        string xcxusername = newuserinfo.Rows[0]["UserName"].ToString();
+                        string xcxopenid = newuserinfo.Rows[0]["xcsopenid"].ToString();
+                        string xcxsql = string.Format("UPDATE dbo.cp_user SET HeadImage='{0}',UserName='{1}',xcsopenid='{2}',usercode='{4}' WHERE ID='{3}'", xcxheadimage, xcxusername, xcxopenid, tempusid, usercode);
+                        row = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, xcxsql, null);
                     }
                     string deletesql = string.Format("delete from cp_user where ID='{0}'", usid);
                     int delrow = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, deletesql, null);
@@ -1254,12 +1267,26 @@ namespace PlasModel.Controllers
             DataTable usdt = mbll.GetUserInfo(usid);
             if (usdt.Rows.Count > 0)
             {
+                string usercodes = string.Empty;
+                var phone = usdt.Rows[0]["phone"].ToString();
+                var tempusercode= usdt.Rows[0]["usercode"].ToString();
+                if (!string.IsNullOrWhiteSpace(phone) && string.IsNullOrWhiteSpace(tempusercode))
+                {
+                    string resultstr = mbll.AccountLoginBll(phone);
+                    int tempcode = Convert.ToInt32(phone.Substring(7, 4));
+                    usercodes = mbll.getusebycode(phone,tempcode);
+                    string bindresult = mbll.UpdateUserInfobll("usercode", usercodes, usid);
+                }
+                else
+                {
+                    usercodes = tempusercode;
+                }
                 var returndata = new
                 {
                     usname = usdt.Rows[0]["UserName"].ToString(),
                     phone= usdt.Rows[0]["phone"].ToString(),
                     headimage = usdt.Rows[0]["HeadImage"].ToString(),
-                    usercode= usdt.Rows[0]["usercode"].ToString(),
+                    usercode= usercodes,//usdt.Rows[0]["usercode"].ToString(),
                     integral= usdt.Rows[0]["Balance"].ToString()
                 };
                 return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);
@@ -1281,6 +1308,80 @@ namespace PlasModel.Controllers
             cp_userview um = new cp_userview();
             um.UserName = AccountData.UserName;
             return Json(Common.ToJsonResult("Success", "成功", um), JsonRequestBehavior.AllowGet);
+        }
+        //根据手机号检查用户是否存在
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetUserByPhone(string phone)
+        {
+            try
+            {
+                string resultstr = mbll.AccountLoginBll(phone);
+                if (resultstr != "NoFind" && resultstr != "Fail")
+                {
+                    return Json(Common.ToJsonResult("Success", "获取成功"), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(Common.ToJsonResult("NotFind", "用户不存在"), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败"), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// 短信登录(只用手机号登录,如果没注册则先注册)
+        /// </summary>
+        /// <param name="account">手机号</param>
+        /// <returns></returns>
+        [AllowCrossSiteJson]
+        [HttpPost]
+        public ActionResult AccountLogin(string account)
+        {
+            string returnstr = mbll.AccountLoginBll(account);
+            if (returnstr != "NoFind" && returnstr != "Fail")
+            {
+                string[] returnstrs = returnstr.Split(',');
+                //把重要的用户信息进行加密，存放到cookie
+                this.SetAccountData(new AccountData
+                {
+                    UserID = returnstrs[1],
+                    UserName = returnstrs[2],
+                    HeadImage = returnstrs[3],
+                    WeChatOpenID = string.Empty
+                });
+                var returndata = new
+                {
+                    usid = returnstrs[1]
+                };
+                return Json(Common.ToJsonResult("Success", "登录成功"), JsonRequestBehavior.AllowGet);
+            }
+            else if (returnstr == "NoFind")
+            {
+                cp_userview model = new cp_userview();
+                model.Phone = account;
+                model.UserName = account;
+                string r = mbll.SaveRegister(model);
+                if (r == "AlreadyExist")
+                {
+                    return Json(Common.ToJsonResult("Success", "登录成功"), JsonRequestBehavior.AllowGet);
+                }
+                else if (r == "Success")
+                {
+                    return Json(Common.ToJsonResult("Success", "登录成功"), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }

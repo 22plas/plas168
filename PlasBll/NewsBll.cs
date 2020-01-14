@@ -12,14 +12,19 @@ namespace PlasBll
     {
         NewsDal dal = new NewsDal();
         //获取案例
-        public DataTable GetNews(int pageindex, int pagesize)
+        public DataTable GetNews(int pageindex, int pagesize, int? type = 3)
         {
-            return dal.GetNews(pageindex, pagesize);
+            return dal.GetNews(pageindex, pagesize, type);
         }
         //获取案例详情
         public DataTable GetNewsDetail(int ID)
         {
             return dal.GetNewsDetail(ID);
+        }
+        //获取新闻分类
+        public DataTable GetNewClass()
+        {
+            return dal.GetNewClass();
         }
     }
 }

@@ -14,9 +14,9 @@ namespace PlasBll
 
         ProductDal dal = new ProductDal();
         //产品详情
-        public DataSet GetModelInfo(string pguid)
+        public DataSet GetModelInfo(string pguid,string userid,string ipaddress)
         {
-            return dal.GetModelInfo(pguid);
+            return dal.GetModelInfo(pguid, userid, ipaddress);
         }
         public DataSet NewGetModelInfo(string pguid)
         {
@@ -70,6 +70,11 @@ namespace PlasBll
         {
             return dal.Sys_GetSuperSearchParam(parentID);
         }
+        //属性值新方法
+        public DataSet Sys_GetSuperSearchParamnew(int parentID = -1)
+        {
+            return dal.Sys_GetSuperSearchParamnew(parentID);
+        }
         //app获取搜索属性值
         public DataTable Sys_GetSuperSearchParamForApp(string type, string keyname)
         {
@@ -77,7 +82,7 @@ namespace PlasBll
         }
 
         //超级搜索
-        public DataSet Sys_SuperSearch(string searchStr = "", int languageid = 2052, int pageCount = 0, int pageSize = 20, string guidstr = "", string isNavLink = "")
+        public DataSet Sys_SuperSearch(string searchStr = "", int languageid = 2052, int pageCount = 0, int? pageSize = 10, string guidstr = "", string isNavLink = "")
         {
             return dal.Sys_SuperSearch(searchStr, languageid, pageCount, pageSize, guidstr, isNavLink);
         }
@@ -100,7 +105,7 @@ namespace PlasBll
             return dal.GetGeneralSearch(key, pageIndex, pageSize, strGuid, isapp);
         }
         //二次检索
-        public DataSet GetTwoSearch(int pageIndex, int pageSize, string ver, string Characteristic, string Used, string Kind, string Method, string Factory, string Additive, string AddingMaterial,string addghdq)
+        public DataSet GetTwoSearch(int pageIndex, int pageSize, string ver, string Characteristic, string Used, string Kind, string Method, string Factory, string Additive, string AddingMaterial, string addghdq)
         {
             return dal.GetTwoSearch(pageIndex, pageSize, ver, Characteristic, Used, Kind, Method, Factory, Additive, AddingMaterial, addghdq);
         }
@@ -307,6 +312,26 @@ namespace PlasBll
         public DataSet GetAnnotationDetail(int id)
         {
             return dal.GetAnnotationDetail(id);
+        }
+
+        //获取厂家
+        public DataTable GetManufacturer()
+        {
+            return dal.GetManufacturer();
+        }
+        //获取轮播pdf数据
+        public DataTable GetListPDF(int ? pagesize=30)
+        {
+            return dal.GetListPDF(pagesize);
+        }
+        /// <summary>
+        /// 获取产品信息
+        /// </summary>
+        /// <param name="pagesize"></param>
+        /// <returns></returns>
+        public DataTable GetProductList(int? pagesize = 10)
+        {
+            return dal.GetProductList(pagesize);
         }
     }
 }

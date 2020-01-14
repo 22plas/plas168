@@ -1,6 +1,7 @@
 ﻿using PlasCommon;
 using PlasCommon.SqlCommonQuery;
 using PlasModel;
+using PlasQueryWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -45,18 +46,28 @@ namespace PlasDal
         {
             string guid = Guid.NewGuid().ToString();
             string addsql = "";
+            //微信注册
             if (type == "0")
             {
                 addsql = string.Format(@"INSERT dbo.cp_user
                 ( UserName ,UserPwd ,Email ,Phone ,Address ,TestQQ ,CreateDate ,states ,ErrorDate ,ErrorCount ,WeChat ,ContentAddress ,LeaderUserName,HeadImage,InTotal,OutTotal,Balance,ID,wxopenid)
                 VALUES  ( '{0}' ,'{1}' ,'{2}' ,'{3}' ,'{4}' ,N'' ,GETDATE() ,0 ,null ,0 ,N'' ,N'' ,'{5}','{8}',100,0,100,'{6}','{7}')", model.UserName, "", string.Empty, "", string.Empty, leaderuserid, guid,model.wxopenid,model.HeadImage);
             }
+            //qq注册
             else if (type == "1")
             {
                 addsql = string.Format(@"INSERT dbo.cp_user
                 ( UserName ,UserPwd ,Email ,Phone ,Address ,TestQQ ,CreateDate ,states ,ErrorDate ,ErrorCount ,WeChat ,ContentAddress ,LeaderUserName,HeadImage,InTotal,OutTotal,Balance,ID,qqopenid)
                 VALUES  ( '{0}' ,'{1}' ,'{2}' ,'{3}' ,'{4}' ,N'' ,GETDATE() ,0 ,null ,0 ,N'' ,N'' ,'{5}','{8}',100,0,100,'{6}','{7}')", model.UserName, "", string.Empty,"", string.Empty, leaderuserid, guid, model.qqopenid, model.HeadImage);
             }
+            //小程序注册
+            else if (type == "2")
+            {
+                addsql = string.Format(@"INSERT dbo.cp_user
+                ( UserName ,UserPwd ,Email ,Phone ,Address ,TestQQ ,CreateDate ,states ,ErrorDate ,ErrorCount ,WeChat ,ContentAddress ,LeaderUserName,HeadImage,InTotal,OutTotal,Balance,ID,xcsopenid)
+                VALUES  ( '{0}' ,'{1}' ,'{2}' ,'{3}' ,'{4}' ,N'' ,GETDATE() ,0 ,null ,0 ,N'' ,N'' ,'{5}','{8}',100,0,100,'{6}','{7}')", model.UserName, "", string.Empty, "", string.Empty, leaderuserid, guid, model.xcsopenid, model.HeadImage);
+            }
+            //电脑端注册
             else
             {
                 addsql = string.Format(@"INSERT dbo.cp_user
@@ -568,6 +579,87 @@ namespace PlasDal
                 errMsg = ex.Message.ToString();
             }
             return isadd;
+        }
+
+        /// <summary>
+        /// 添加关键词搜索记录
+        /// </summary>
+        /// <returns></returns>
+        public int AddHeadSearchLog(HeadSearchLog model)
+        {
+            int returnid = 0;
+            try
+            {
+                StringBuilder sql = new StringBuilder();
+                string temptime = DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss");
+                sql.Append("INSERT INTO dbo.Sys_HeadSearchLog( userid ,searchstring ,createtime ,hasresult)");
+                sql.Append("values(@userid,@searchstring,@createtime,@hasresult)");
+                SqlParameter[] parm = {
+                    new SqlParameter("@userid",model.userid),
+                    new SqlParameter("@searchstring",model.searchstring),
+                    new SqlParameter("@createtime",temptime),
+                    new SqlParameter("@hasresult",model.hasresult),
+                };
+                bool result = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), parm) > 0;
+                if (!string.IsNullOrWhiteSpace(model.userid))
+                {
+                    string selectsql = string.Format(@"SELECT  * FROM dbo.Sys_HeadSearchLog WHERE userid='{0}' AND searchstring='{1}' AND createtime='{2}' AND hasresult={3}", model.userid, model.searchstring, temptime, model.hasresult);
+                    DataTable dt = SqlHelper.GetSqlDataTable(selectsql);
+                    if (dt.Rows.Count > 0)
+                    {
+                        returnid = Convert.ToInt32(dt.Rows[0]["fid"]);
+                    }
+                    else
+                    {
+                        returnid = 0;
+                    }
+                }
+                else
+                {
+                    returnid = 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                returnid = 0;
+            }
+            return returnid;
+        }
+        //修改关键词搜索记录为提示
+        public bool UpdateSearchKeyLogToReply(int id)
+        {
+            bool result = false;
+            try
+            {
+                string sql = string.Format(@"UPDATE dbo.Sys_HeadSearchLog SET MustReply=1 WHERE fid={0}", id);
+                int row = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql, null);
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                result = false;
+            }
+            return result;
+        }
+        //获取我的反馈问题
+        public DataTable GetMyProblem(string userid, int pageindex, int pagesize, ref int pagecout, ref string errMsg)
+        {
+            try
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.Append("SELECT userid,searchstring,CONVERT(varchar(100), createtime, 20) AS createtime,hasresult,fid,completeed,CASE WHEN completeed=0 THEN '未解决' ELSE '已解决' END AS completeedstr FROM dbo.Sys_HeadSearchLog WHERE MustReply=1 ");
+                if (!string.IsNullOrEmpty(userid))
+                {
+                    sql.Append(" and userid='" + userid + "'");
+                }
+                var dt = GetPhysicsAttr(sql.ToString(), "userid,searchstring,createtime,hasresult,fid", pageindex, pagesize, ref pagecout, ref errMsg);
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message.ToString();
+            }
+            return null;
         }
 
         //增加用户操作积分奖励

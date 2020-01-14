@@ -226,33 +226,41 @@ function InitData(pageindx, isNavLink) {
         async: false,
         success: function (json) {
             //debugger;
-            var productData = json.data;
-            var strvar = "";
-            rowcount = json.totalCount;
-            $("#records").html(rowcount);
-            //alert(JSON.parse(productData));
-            if (rowcount != 0 && productData != "") {
-                $.each(JSON.parse(productData), function (i, n) {
-                    tbodyui += "<tr title='" + n.ProUse + "'>";
-                    tbodyui += "<td><a href=\"/PhysicalProducts/Detail/" + n.productid + ".html\" style='color:#535353' target=\"_blank\">" + n.ProModel + "</a></td>";
-                    tbodyui += "<td>" + n.PlaceOrigin + "</td>";
-                    tbodyui += "<td>" + n.Name + "</td>";
-                    tbodyui += "<td>" + n.ProUse + "</td>";
-                    tbodyui += "<td>" + n.characteristic + "</td>";
-                    tbodyui += "<td><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.productid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span>";
-                    tbodyui += "<span class='layui-btn layui-btn-sm' id=\"Contrast_" + n.productid + "\" onClick=\"onColl('" + n.productid + "');\"><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>";
-                    tbodyui +="</td>";// <span class='layui-btn layui-btn-sm'><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>
+            var state = json.state;
+            if (state == "Success") {
+                var productData = json.data;
+                var strvar = "";
+                rowcount = json.totalCount;
+                $("#records").html(rowcount);
+                //alert(JSON.parse(productData));
+                if (rowcount != 0 && productData != "") {
+                    $.each(JSON.parse(productData), function (i, n) {
+                        tbodyui += "<tr title='" + n.ProUse + "'>";
+                        tbodyui += "<td><a href=\"/PhysicalProducts/Detail/" + n.productid + ".html\" style='color:#535353' target=\"_blank\">" + n.ProModel + "</a></td>";
+                        tbodyui += "<td>" + n.PlaceOrigin + "</td>";
+                        tbodyui += "<td>" + n.Name + "</td>";
+                        tbodyui += "<td>" + n.ProUse + "</td>";
+                        tbodyui += "<td>" + n.characteristic + "</td>";
+                        tbodyui += "<td><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.productid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span>";
+                        tbodyui += "<span class='layui-btn layui-btn-sm' id=\"Contrast_" + n.productid + "\" onClick=\"onColl('" + n.productid + "');\"><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>";
+                        tbodyui += "</td>";// <span class='layui-btn layui-btn-sm'><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>
+                        tbodyui += "</tr>";
+                    });
+                }
+                else {
+                    tbodyui += "<tr>";
+                    tbodyui += "<td colspan=\"6\" align=\"center\" class='red'>未找到数据</td>";
                     tbodyui += "</tr>";
-                });
+                }
+                $("#DataList").html(tbodyui);
+            }
+            else if (state == "NedLogin") {
+                pageindx = 1;
+                layer.msg("请先登录后再查看！", { icon: 5 });
             }
             else {
-                tbodyui += "<tr>";
-                tbodyui += "<td colspan=\"6\" align=\"center\" class='red'>未找到数据</td>";
-                tbodyui += "</tr>";
+                layer.msg("系统异常！", { icon: 5 });
             }
-            $("#DataList").html(tbodyui);
-
-
         },
         error: function () { layer.msg('Load the data failure!', { icon: 5 }); }
     });

@@ -19,17 +19,22 @@ namespace PlasModel.Controllers
                 return this.GetAccountData();
             }
         }
+        public void Sidebar(string name = "价格行情")
+        {
+            ViewBag.Sidebar = name;
+        }
         private PlasBll.ProductBll bll = new PlasBll.ProductBll();
         // GET: 价格
         public ActionResult Index()
         {
+            
             var companyAndtype = new DataSet();
             //在Pri_DayAvgPrice 取
             //种类
             //生产厂家
 
             companyAndtype = bll.GetPriceType(0);
- 
+            Sidebar();
             ViewBag.company = companyAndtype;
             return View();
         }

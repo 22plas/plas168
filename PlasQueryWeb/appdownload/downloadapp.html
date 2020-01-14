@@ -6,13 +6,16 @@
     <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
     <title>塑蚁网app下载</title>
     <link rel="stylesheet" type="text/css" href="iconfont.css" />
+    <script type="text/javascript" charset="UTF-8" src="//res.cdn.openinstall.io/openinstall.js"></script>
     <style type="text/css">
         html, body {
             background: #ffffff;
         }
+
         a {
             text-decoration: none;
         }
+
         img {
             max-width: 100%;
             height: auto;
@@ -35,8 +38,39 @@
                 text-align: center;
                 margin-top: 10%;
                 padding: 0 5%;
-            } 
+            }
     </style>
+    <!--<script type="text/javascript">
+        //openinstall初始化时将与openinstall服务器交互，应尽可能早的调用
+        /*web页面向app传递的json数据(json string/js Object)，应用被拉起或是首次安装时，通过相应的android/ios api可以获取此数据*/
+        var data = OpenInstall.parseUrlParams();//openinstall.js中提供的工具函数，解析url中的所有查询参数
+        new OpenInstall({
+            /*appKey必选参数，openinstall平台为每个应用分配的ID*/
+            appKey: "s4pt2h",
+            /*可选参数，自定义android平台的apk下载文件名；个别andriod浏览器下载时，中文文件名显示乱码，请慎用中文文件名！*/
+            //apkFileName : 'com.fm.openinstalldemo-v2.2.0.apk',
+            /*可选参数，是否优先考虑拉起app，以牺牲下载体验为代价*/
+            //preferWakeup:true,
+            /*自定义遮罩的html*/
+            //mask:function(){
+            //  return "<div id='openinstall_shadow' style='position:fixed;left:0;top:0;background:rgba(0,255,0,0.5);filter:alpha(opacity=50);width:100%;height:100%;z-index:10000;'></div>"
+            //},
+            /*openinstall初始化完成的回调函数，可选*/
+            onready: function () {
+                var m = this, button = document.getElementById("downloadButton");
+                button.style.visibility = "visible";
+
+
+                /*用户点击某个按钮时(假定按钮id为downloadButton)，安装app*/
+                button.onclick = function () {
+                    /*在app已安装的情况尝试拉起app*/
+                    m.schemeWakeup();
+                    m.wakeupOrInstall();
+                    return false;
+                }
+            }
+        }, data);
+    </script>-->
 </head>
 <body>
     <div id="contentdiv" style="width:95%;margin:0 auto; height:auto;min-height:500px;">
@@ -53,22 +87,25 @@
             </div>
             <div style="width:200px;height:60px;margin:0 auto;">
                 <div v-if="systemtype=='1'" style="width:100%;height:30px;line-height:30px;font-size:14px;color:#999999;text-align:center;">
-                    版本：1.0.6 - 19.53 MB
+                    版本：1.0.18 - 20.5 MB
                 </div>
                 <div v-if="systemtype=='0'" style="width:100%;height:30px;line-height:30px;font-size:14px;color:#999999;text-align:center;">
-                    版本：1.0.6 - 9.6 MB
+                    版本：1.0.18 - 19.7 MB
                 </div>
                 <div style="width:100%;height:30px;line-height:30px;font-size:14px;color:#999999;text-align:center;">
-                    更新于：2019-07-22 17:15
+                    更新于：2019-11-26 11:09
                 </div>
             </div>
             <div style="width:200px;height:60px;margin:0 auto;">
                 <a v-if="systemtype=='1'" href="https://apps.apple.com/cn/app/%E5%A1%91%E8%9A%81%E7%BD%91/id1471629019" style="width:90%;height:40px;text-decoration: none; display:block; margin:50px auto;background:#1281D4;border-radius:40px;text-align:center;line-height:40px;font-size:14px;color:#ffffff;">
                     下载安装
                 </a>
-                <a v-if="systemtype=='0'" href="http://168plas.com/appdownload/android.apk" style="width:90%;height:40px;text-decoration: none; display:block; margin:50px auto;background:green;border-radius:40px;text-align:center;line-height:40px;font-size:14px;color:#ffffff;">
+                <a v-if="systemtype=='0'" href="http://168plas.com/appdownload/android.apk" style="width:90%;height:40px;text-decoration: none; display:block; margin:50px auto;background:#1281D4;border-radius:40px;text-align:center;line-height:40px;font-size:14px;color:#ffffff;">
                     下载安装
                 </a>
+                <!--<div v-if="systemtype=='0'" id="downloadButton" style="width:90%;height:40px;text-decoration: none; display:block; margin:50px auto;background:green;border-radius:40px;text-align:center;line-height:40px;font-size:14px;color:#ffffff;">
+                    下载安装
+                </div>-->
             </div>
         </div>
         <div class="weixin-tip">
@@ -79,7 +116,6 @@
     </div>
 </body>
 </html>
-<script type="text/javascript" src="api.js"></script>
 <script type="text/javascript" src="vue.js"></script>
 <script type="text/javascript" src="jquery-2.1.1.js"></script>
 <script type="text/javascript">

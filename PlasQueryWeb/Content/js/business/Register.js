@@ -51,9 +51,9 @@ $("#code").click(function () {
 //保存
 $("#savebtn").click(function () {
     var thiscode = $("#verificationcode").val();
-    var account = $("#account").val();
+    //var account = $("#account").val();
     var password = $("#password").val();
-    var passwordtwo = $("#passwordtwo").val();
+    //var passwordtwo = $("#passwordtwo").val();
     var phonestr = $("#phone").val();
     var recommendcode = $("#recommendcode").val();
     //验证输入的验证码是否匹配
@@ -64,7 +64,7 @@ $("#savebtn").click(function () {
             $.ajax({
                 type: "get",
                 url: comm.action("SaveRegister", "MemberCenter"),
-                data: { UserName: account, UserPwd: password, Phone: phonestr, RecommendPhone: recommendcode },
+                data: { UserName: phonestr, UserPwd: password, Phone: phonestr, RecommendPhone: recommendcode },
                 dataType: "json",
                 success: function (data) {
                     console.log(data);
@@ -98,18 +98,18 @@ $("#savebtn").click(function () {
 //验证保存数据
 function verification() {
     var thiscode = $("#verificationcode").val();
-    var account = $("#account").val();
+    //var account = $("#account").val();
     var password = $("#password").val();
     var passwordtwo = $("#passwordtwo").val();
     var phonestr = $("#phone").val();
     var returnstr = true;
     
-    if (returnstr) {
-        if (account == "" || account == null || account == undefined || account == "请输入帐号") {
-            layer.alert("请输入账号！");
-            returnstr = false;
-        }
-    }
+    //if (returnstr) {
+    //    if (account == "" || account == null || account == undefined || account == "请输入帐号") {
+    //        layer.alert("请输入账号！");
+    //        returnstr = false;
+    //    }
+    //}
     if (returnstr) {
         if (password == "" || password == null || password == undefined || password == "请输入登录密码") {
             layer.alert("请输入登录密码！");

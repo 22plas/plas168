@@ -13,10 +13,11 @@ namespace PlasDal
     {
 
         #region 产品详情：查询型号名称及物性
-        public DataSet GetModelInfo(string pguid)
+        public DataSet GetModelInfo(string pguid,string userid, string ipaddress)
         {
-            var ds = SqlHelper.GetSqlDataSet(string.Format(@"exec PROC_GetInfoByPguid '{0}' ", pguid));
-            return ds;
+            DataSet set = new DataSet();
+            set = SqlHelper.GetSqlDataSet(string.Format(@"exec PROC_GetInfoByPguid '{0}',2052,'{1}','{2}' ", pguid, userid,ipaddress));
+            return set;
         }
         public DataSet NewGetModelInfo(string pguid)
         {
@@ -36,6 +37,9 @@ namespace PlasDal
         public DataTable HotProducts(int showNum = 5)
         {
 
+  //          var ds = SqlHelper.GetSqlDataTable(string.Format(@"select a.*,(select top 1 prodsn from [168plasdata].dbo.ProductLevel1 b where a.smallclassidint=b.smallclassidint) as ProductID from
+  //(SELECT TOP {0} bigclassidint,smallclassidint,ProModel,PlaceOrigin,ProductGuid,HitCount,Brand,Edition
+  //FROM dbo.Product where isShow=1 order by HitCount desc) a ", showNum));
             var ds = SqlHelper.GetSqlDataTable(string.Format(@"select a.*,(select top 1 ProductID from dbo.ProductLevel1 b where a.SmallClassId=b.SmallClassID) as ProductID from
   (SELECT TOP {0} BigClassId,SmallClassId,ProModel,PlaceOrigin,ProductGuid,HitCount,Brand,Edition
   FROM dbo.Product where isShow=1 order by HitCount desc) a ", showNum));
@@ -161,16 +165,16 @@ namespace PlasDal
             string sql = "";
             if (type == "0")
             {
-                sql = string.Format("select Name,parentguid from Prd_BigClass_l");
+                sql = string.Format("select Name,parentguid from Prd_BigClass_l order by ts desc");
             }
             else if (type == "1")
             {
                 sql = string.Format(@"select distinct a.MidClassName as Name,'' as parentguid from Prd_SmallClass_l a inner join Prd_SmallClass b on a.parentguid=b.guid 
-                                      inner join Prd_BigClass c on c.guid = b.parentguid where c.guid = '{0}' and a.LanguageId = 2052 order by a.MidClassName", parentid);
+                                      inner join Prd_BigClass c on c.guid = b.parentguid where c.guid = '{0}' and a.LanguageId = 2052", parentid);
             }
             else
             {
-                sql = string.Format(@"select Name,parentguid as parentguid from Prd_SmallClass_l where MidClassName='{0}' and LanguageId=2052 order by Name", middlename);
+                sql = string.Format(@"select Name,parentguid as parentguid from Prd_SmallClass_l where MidClassName='{0}' and LanguageId=2052 order by Weight desc", middlename);
             }
             DataTable dt = SqlHelper.GetSqlDataTable(sql);
             return dt;
@@ -216,6 +220,19 @@ namespace PlasDal
            // ds.Tables.Add(tblDatas);
             return ds;
         }
+
+        //属性值
+        public DataSet Sys_GetSuperSearchParamnew(int parentID = -1)
+        {
+            var ds = new DataSet();
+            string sql = string.Format("exec proc_supersearch_getParam {0}", parentID);
+            var dt = SqlHelper.GetSqlDataTable(sql);
+            dt.TableName = "dt1n";
+            ds.Tables.Add(dt.Copy());
+            // ds.Tables.Add(tblDatas);
+            return ds;
+        }
+
         //app获取搜索属性值
         public DataTable Sys_GetSuperSearchParamForApp(string type, string keyname)
         {
@@ -262,7 +279,7 @@ namespace PlasDal
 
 
         //超级搜索
-        public DataSet Sys_SuperSearch(string searchStr = "", int languageid = 2052, int pageCount = 0, int pageSize = 20, string guidstr = "", string isNavLink = "")
+        public DataSet Sys_SuperSearch(string searchStr = "", int languageid = 2052, int pageCount = 0, int? pageSize = 10, string guidstr = "", string isNavLink = "")
         {
             //{产品种类=>''尼龙 6 弹性体;MMS;EA'',0,0}{产品特性=>''Broad Seal Range ;半结晶'',0,0}	
             // { 机械性能 =)拉伸模量 => '''',0,10600}
@@ -335,6 +352,7 @@ namespace PlasDal
         public DataSet GetGeneralSearch(string key = "", int pageIndex = 1, int pageSize = 20, string strGuid = "", int? isapp = 0)
         {
             string sql = string.Format("exec headsearch '{0}','{1}',{2},{3},{4},{5}", strGuid, key, 2052, pageIndex, pageSize, isapp);
+            //string sql = string.Format("exec headsearchnew '{0}',{1},{2},{3},{4}",  key, 2052, pageIndex, pageSize, isapp);
             var ds = SqlHelper.GetSqlDataSet(sql);
             return ds;
         }
@@ -555,7 +573,12 @@ namespace PlasDal
         /// <returns></returns>
         public DataTable GetUl_HeadNumber(string NumberId)
         {
-            string sql = string.Format("select top 1* from Ul_Head where FileNumber=@NumberId");
+            //string sql = string.Format(@"SELECT uh.*,p.ProModel FROM Ul_Head uh
+            //                            INNER JOIN dbo.UL_Product up ON uh.FileNumber = up.FileNumber
+            //                            INNER JOIN dbo.Product p ON p.ProductGuid = up.ProductId where p.ProductGuid=@NumberId");
+            string sql = string.Format(@"SELECT uh.*,p.ProModel FROM Ul_Head uh
+                                        INNER JOIN dbo.UL_Product up ON uh.FileNumber = up.FileNumber
+                                        INNER JOIN dbo.Product p ON p.ProductGuid = up.ProductId where p.ProductGuid=@NumberId");
             SqlParameter[] parm = { new SqlParameter("@NumberId", NumberId) };
             DataTable dt = SqlHelper.GetSqlDataTable_Param(sql.ToString(), parm);
             return dt;
@@ -624,6 +647,39 @@ namespace PlasDal
             dset.Tables.Add(dt.Copy());
             dset.Tables.Add(dt2.Copy());
             return dset;
+        }
+        //获取厂家信息
+        public DataTable GetManufacturer()
+        {
+            string sql = string.Format(@"SELECT TOP 20 Guid,CreateDate,EnglishName,AliasName,Weight,ShortName,'http://www.admin.168plas.com'+IcoPath AS IcoPath FROM Sys_Manufacturer WHERE IcoPath IS NOT NULL AND IcoPath<>'' and IsRecommend=1");
+            DataTable dt = SqlHelper.GetSqlDataTable(sql);
+            return dt;
+        }
+        //获取轮播pdf数据
+        public DataTable GetListPDF(int? pagesize=30)
+        {
+            string sql = string.Format(@"SELECT TOP {0} p.ProductGuid,ptp.TypeName,ptp.ImagesColor,p.ProModel,sm.AliasName,psl.Name,pt.createtime FROM dbo.Product_TestPdf pt
+                                        INNER JOIN dbo.Product_TypePdf ptp ON pt.TestType=ptp.ID
+                                        INNER JOIN dbo.Product p ON p.ProductGuid=pt.ProductGuid
+                                        INNER JOIN dbo.Prd_SmallClass_l psl ON p.SmallClassId=psl.parentguid
+                                        INNER JOIN dbo.Sys_Manufacturer sm ON p.PlaceOrigin=sm.EnglishName
+                                        ORDER BY pt.createtime DESC", pagesize);
+            DataTable dt = SqlHelper.GetSqlDataTable(sql);
+            return dt;
+        }
+        /// <summary>
+        /// 获取产品信息
+        /// </summary>
+        /// <param name="pagesize"></param>
+        /// <returns></returns>
+        public DataTable GetProductList(int? pagesize=10)
+        {
+            string sql = string.Format(@"SELECT TOP {0} p.ProductGuid,p.ProModel,CASE WHEN sm.AliasName IS NULL THEN sm.EnglishName WHEN sm.AliasName='' THEN sm.EnglishName end AS AliasName,psl.Name, 
+                                        CONVERT(varchar(100), p.CreateDate, 23) AS CreateDate FROM Product p
+										INNER JOIN dbo.Prd_SmallClass_l psl ON p.SmallClassId=psl.parentguid
+										INNER JOIN dbo.Sys_Manufacturer sm ON sm.EnglishName=p.PlaceOrigin ORDER BY p.CreateDate DESC", pagesize);
+            DataTable dt = SqlHelper.GetSqlDataTable(sql);
+            return dt;
         }
     }
 }

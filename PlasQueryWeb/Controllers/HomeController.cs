@@ -22,6 +22,10 @@ namespace PlasQueryWeb.Controllers
                 return this.GetAccountData();
             }
         }
+        public void Sidebar(string name = "首页")
+        {
+            ViewBag.Sidebar = name;
+        }
         //首页
         public ActionResult Index2()
         {
@@ -38,11 +42,12 @@ namespace PlasQueryWeb.Controllers
 
         public ActionResult Index()
         {
+            Sidebar();
             var ds = bll.HotProducts(5);
             if (ds != null && ds.Rows.Count > 0)
             {
-                var list = PlasCommon.ToolClass<PlasModel.ProductViewModel>.ConvertDataTableToModel(ds);
-                ViewBag.HotList = list;
+                //var list = PlasCommon.ToolClass<PlasModel.ProductViewModel>.ConvertDataTableToModel(ds);
+                //ViewBag.HotList = list;
             }
             return View();
         }
@@ -78,7 +83,29 @@ namespace PlasQueryWeb.Controllers
             }
             return Json(new { result = strJson, count= count }, JsonRequestBehavior.AllowGet);
         }
-
+        //获取常用型号
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetHitData()
+        {
+            try
+            {
+                var ds = bll.HotProducts(5);
+                if (ds != null && ds.Rows.Count > 0)
+                {
+                    var list = PlasCommon.ToolClass<PlasModel.ProductViewModel>.ConvertDataTableToModel(ds);
+                    return Json(Common.ToJsonResult("Success", "获取成功", list), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(Common.ToJsonResult("NotData", "获取成功"), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
 
      
 

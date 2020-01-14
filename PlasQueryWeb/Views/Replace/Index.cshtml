@@ -5,7 +5,7 @@
     var bigName = string.Empty;
     var samllName = string.Empty;
     var count = 0;
-    }
+}
 
 <style type="text/css">
     a {
@@ -89,6 +89,7 @@
         color: #009887 !important;
         background: #e1e1e1;
     }
+
     .tabTitle {
         height: 40px;
         line-height: 40px;
@@ -111,10 +112,6 @@
         color: #000;
     }
 
-    .borderfiter {
-        border: solid 1px #f2f2f2;
-    }
-
     .checkedtitle {
         background: #f2f2f2;
     }
@@ -122,6 +119,7 @@
     .none {
         display: none;
     }
+
     .ButCheckBox {
         border: solid 1px #CCCCCC;
         height: 20px;
@@ -129,12 +127,15 @@
         color: #CCCCCC;
         outline: none;
     }
-    .xiangshidu a{
-        color:#000;
+
+    .xiangshidu a {
+        color: #000;
     }
+
         .xiangshidu a:hover {
-            color:#f95c00;
+            color: #f95c00;
         }
+
     .duibichanshu {
         height: 100px;
         line-height: 100px;
@@ -142,10 +143,11 @@
         font-size: 18px;
     }
 </style>
-@Html.Partial("~/Views/Public/SubPageNav.cshtml")
-@{
-    Html.RenderAction("PubSearch", "Public");
-}
+@*@Html.Partial("~/Views/Public/SubPageNav.cshtml")*@
+@Html.Partial("~/Views/Public/PubSearch.cshtml")
+@*@{
+        Html.RenderAction("PubSearch", "Public");
+    }*@
 <link href="~/Content/css/Pagination.css" rel="stylesheet" />
 <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
 <link href="~/Content/css/replace.css" rel="stylesheet" />
@@ -155,86 +157,88 @@
 产品说明；注射;注射说明;备注   这些都不参与对比
 ，说明，加工方法，备注不允许选择-->
 <!--总体参与对比的有（（RoHS 合规性；供货地区；加工方法；树脂ID (ISO 1043)；特性；添加剂；填料/增强材料；用途 ）这个是总体里要参与对比的）-->
-<div style="font-size: 14px;">
-    <p class="contrast_remark" style="text-align: center;"></p>
-    <div class="borderfiter">
-        <div style="height:20px;"></div>
-        <div class="auto-box">
-            <div class="main-box">
-                <div class="index-tit">
-                    <h1>替 代 搜 索</h1>
-                    <p>替代搜索可帮助您在几分钟之内找到已停产产品的替代材料或找到性价比更高的材料从而降低制造成本</p>
-                </div>
-                <div class="header-search-box" style="margin:0 auto;">
-                    <input type="text" class="search-input-orange" style="border: 2px solid #1593ff;" id="search_input_Replace" placeholder="请输入任意塑料类型、型号、厂家、性能、用途进行智能搜索"><span onclick="onSearch_Replace_select();" class="fa fa-search search-icon search-icon-orange" style="background-color: #1593ff;">搜索</span>
-
-                </div>
+<div style="width:100%;height:auto;">
+    <div style="width:70%;height:auto;margin:0 auto;">
+        <div style="font-size: 14px;">
+            <div>
                 <div style="height:20px;"></div>
-                <ul class="index-tserver">
-                    <li class="tserver-list1">
-                        搜索要替换的型号
-                        <p class="animated zoomin">
-                            <a href="javascript:void(0);">通过上面的搜索框找到您要替换的产品</a>
-                        </p>
-                    </li>
-                    <li class="tserver-list2">
-                        替代牌号列表
-                        <p class="animated zoomin">
-                            <a href="javascript:void(0);">这里面的替代牌号是根据系统权重算出来的结果</a>
-                        </p>
-                    </li>
-                    <li class="tserver-list3">
-                        <div>对比详情查看</div>厂商过滤
+                <div class="auto-box">
+                    <div class="main-box">
+                        <div class="index-tit">
+                            <h1>替 代 搜 索</h1>
+                            <p>替代搜索可帮助您在几分钟之内找到已停产产品的替代材料或找到性价比更高的材料从而降低制造成本</p>
+                        </div>
+                        <div class="header-search-box" style="margin:0 auto;">
+                            <input type="text" class="search-input-orange" style="border: 2px solid #1593ff;" id="search_input_Replace" placeholder="请输入任意塑料类型、型号、厂家、性能、用途进行智能搜索"><span onclick="onSearch_Replace_select();" class="fa fa-search search-icon search-icon-orange" style="background-color: #1593ff;">搜索</span>
 
-                        <p class="animated zoomin">
-                            <a href="javascript:void(0);">这里可以选择自己想要的厂商还可以查看每一个型号的对比详情</a>
-                        </p>
-                    </li>
-                    <li class="tserver-list4">
-                        用户自定义权重
-                        <p class="animated zoomin">
-                            <a href="javascript:void(0);">如果觉得系统算的结果不好您可以自己定义每项子标的权重分重新运算</a>
-                        </p>
-                    </li>
-                    <li class="tserver-list5">
-                        自定义替代牌号列表
-                        <p class="animated zoomin">
-                            <a href="javascript:void(0);">根据您设置的权重计算出可替代产品,您可以过滤厂商查看每项子标的对比详情</a>
-                        </p>
-                    </li>
-                    <li class="tserver-list6">
-                        结果收藏和产品比较
-                        <p class="animated zoomin">
-                            <a href="javascript:void(0);">您可以收藏比较满意的产品还可以把对比结果生成PDF档</a>
-                        </p>
-                    </li>
-                    <li class="tserver-list7">
-                        扣积分说明
-                        <p class="animated zoomin">
-                            <a href="javascript:void(0);">自定义计算对服务器资源占用太多,每计算一次扣10积分,新注册用户送100积分</a>
-                        </p>
-                    </li>
-                </ul>
+                        </div>
+                        <div style="height:20px;"></div>
+                        <ul class="index-tserver">
+                            <li class="tserver-list1">
+                                搜索要替换的型号
+                                <p class="animated zoomin">
+                                    <a href="javascript:void(0);">通过上面的搜索框找到您要替换的产品</a>
+                                </p>
+                            </li>
+                            <li class="tserver-list2">
+                                替代牌号列表
+                                <p class="animated zoomin">
+                                    <a href="javascript:void(0);">这里面的替代牌号是根据系统权重算出来的结果</a>
+                                </p>
+                            </li>
+                            <li class="tserver-list3">
+                                <div>对比详情查看</div>厂商过滤
+
+                                <p class="animated zoomin">
+                                    <a href="javascript:void(0);">这里可以选择自己想要的厂商还可以查看每一个型号的对比详情</a>
+                                </p>
+                            </li>
+                            <li class="tserver-list4">
+                                用户自定义权重
+                                <p class="animated zoomin">
+                                    <a href="javascript:void(0);">如果觉得系统算的结果不好您可以自己定义每项子标的权重分重新运算</a>
+                                </p>
+                            </li>
+                            <li class="tserver-list5">
+                                自定义替代牌号列表
+                                <p class="animated zoomin">
+                                    <a href="javascript:void(0);">根据您设置的权重计算出可替代产品,您可以过滤厂商查看每项子标的对比详情</a>
+                                </p>
+                            </li>
+                            <li class="tserver-list6">
+                                结果收藏和产品比较
+                                <p class="animated zoomin">
+                                    <a href="javascript:void(0);">您可以收藏比较满意的产品还可以把对比结果生成PDF档</a>
+                                </p>
+                            </li>
+                            <li class="tserver-list7">
+                                扣积分说明
+                                <p class="animated zoomin">
+                                    <a href="javascript:void(0);">自定义计算对服务器资源占用太多,每计算一次扣10积分,新注册用户送100积分</a>
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+
+                <div style="height:50px;"></div>
             </div>
-
         </div>
-
-        <div style="height:50px;"></div>
     </div>
-
-
 </div>
+
 <script type="text/javascript">
     $(function () {
         $(".navBox").find(".nav").find("li").eq(3).children("a").addClass("active");
         $("div[name='isHideDiv']").parent().parent().remove();//删除单行数据
     })
 
- 
+
     function onSearch_Replace_select() {
         var keyword = $.trim($("#search_input_Replace").val());
         if (keyword == "") {
-            alert("请输入任意塑料类型、型号、厂家、性能、用途!");
+            //alert("请输入任意塑料类型、型号、厂家、性能、用途!");
             $("#search_input_Replace").focus();
             return false;
         }

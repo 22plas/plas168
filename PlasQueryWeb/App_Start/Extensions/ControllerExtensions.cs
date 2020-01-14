@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using static PlasCommon.Enums;
 
 namespace PlasModel.App_Start
 {
@@ -92,6 +93,97 @@ namespace PlasModel.App_Start
             var data = controller.Request.Cookies["AccountData"].Value;
             var decData = Common.Decrypt(data);
             return JsonConvert.DeserializeObject<AccountData>(decData);
+        }
+        /// <summary>
+        /// 跳转到错误页面
+        /// </summary>
+        /// <param name="controller"></param>
+        /// <param name="head"></param>
+        /// <param name="message"></param>
+        /// <param name="returnUrl"></param>
+        /// <returns></returns>
+        public static ActionResult ToError(this Controller controller, string head,
+            string message, string returnUrl = null, Layout layout = Layout.Manage)
+        {
+            var view = new ViewResult();
+            view.ViewName = "Error";
+            view.ViewBag.Head = string.IsNullOrWhiteSpace(head) ? "错误" : head;
+            view.ViewBag.Message = message + (string.IsNullOrWhiteSpace(returnUrl) ? "" : $"<a href='{controller.Url.Content(returnUrl)}'>点击返回</a>");
+            view.ViewBag.Layout = layout;
+            return view;
+        }
+        public static string Download(this Controller controller, string url, string path = "~/Upload",
+          string requestName = null, bool isResetName = false)
+        {
+            var request = System.Net.WebRequest.Create(url);
+            request.Method = "GET";
+            request.ContentType = "application/octet-stream";
+            using (var response = request.GetResponse())
+            {
+                if (response.ContentLength == 0)
+                    return null;
+
+                string name = null;
+
+                string extension = null;
+                switch (response.ContentType.ToLower())
+                {
+                    case "image/jpeg":
+                        extension = ".jpg";
+                        break;
+                    case "image/png":
+                        extension = ".png";
+                        break;
+                    case "image/gif":
+                        extension = ".gif";
+                        break;
+                    case "video/mpeg4":
+                        extension = ".mp4";
+                        break;
+                    case "audio/mp3":
+                        extension = ".mp3";
+                        break;
+                    default:
+                        extension = "." + response.ContentType.Remove(0, response.ContentType.IndexOf("/"));
+                        break;
+                }
+                string filePath;
+                do
+                {
+
+                    name = $"{path}/{DateTime.Now:yyyyMMddHHmmss}{Comm.Random.Next(1000, 9999)}{extension}";
+
+                    filePath = controller.Server.MapPath(name);
+                } while (File.Exists(filePath));
+                using (var responseStream = response.GetResponseStream())
+                {
+
+                    using (var stream = new MemoryStream())
+                    {
+                        const int bufferLength = 1024;
+                        int actual;
+                        byte[] buffer = new byte[bufferLength];
+                        while ((actual = responseStream.Read(buffer, 0, bufferLength)) > 0)
+                        {
+                            stream.Write(buffer, 0, actual);
+                        }
+                        stream.Position = 0;
+                        using (FileStream fileStream = System.IO.File.Create(filePath, (int)stream.Length))
+                        {
+                            // Fill the bytes[] array with the stream data
+                            byte[] bytesInStream = new byte[response.ContentLength];
+                            stream.Read(bytesInStream, 0, (int)bytesInStream.Length);
+
+                            // Use FileStream object to write to the specified file
+                            fileStream.Write(bytesInStream, 0, bytesInStream.Length);
+                        }
+                    }
+
+
+                }
+
+                return name;
+            }
         }
     }
 }

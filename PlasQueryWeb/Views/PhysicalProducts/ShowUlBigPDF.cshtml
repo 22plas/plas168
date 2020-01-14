@@ -1,6 +1,7 @@
 ﻿@{
     Layout = null;
     var blist = ViewBag.blist as List<PlasModel.Ul_HeadModel>;
+    var pid = ViewBag.pid;
 }
 <link href="~/Content/css/H-ui.min.css" rel="stylesheet" />
 <style type="text/css">
@@ -25,7 +26,7 @@
             {
                 foreach (var item in blist)
                 {
-                    <tr  onclick="showUlmsgpdf('@item.FileNumber')" style="cursor:pointer;">
+                    <tr  onclick="showUlmsgpdf('@item.FileNumber','@pid')" style="cursor:pointer;">
                         <td>@item.FileNumber</td>
                         <td>@item.Serires</td>
                         <td>@item.Category</td>
@@ -48,12 +49,12 @@
 <script src="~/Content/layui/lay/modules/layer.js"></script>
 <script type="text/javascript">
     ///生成
-    function showUlmsgpdf(prodid) {
+    function showUlmsgpdf(numberid, prodid) {
         window.parent.layer.open({
             type: 2,
             title: '黄卡UL',
             area: ['90%', '90%'],
-            content: '/PhysicalProducts/ShowUlPDF?ProductGuid=' + prodid
+            content: '/PhysicalProducts/ShowUlPDF?ProductGuid=' + prodid + '&numberid=' + numberid
         }); 
 
     }

@@ -2,31 +2,294 @@
 @{
     Layout = null;
 }
-@{var hotProducts = ViewBag.HotList == null ? (new List<PlasModel.ProductViewModel>()) : (ViewBag.HotList as List<PlasModel.ProductViewModel>);}
-<div class="header-white">
-    <div class="logo">
-        <a href="/"> <img src="/Content/img/logo.png" alt="塑蚁网-全国最精准永久免费塑胶和助剂材料物性搜索网站" title="塑蚁网-全国最精准永久免费塑胶和助剂材料物性搜索网站"></a>
-    </div>
-    <div class="header-search-box">
-        <input type="text" class="search-input-orange" id="search_input_top" placeholder="请输入任意塑料类型、型号、厂家、性能、用途进行智能搜索">
-        <span onclick="onSearch_Top_select(0, $('#search_input_top').val());" class="fa fa-search search-icon search-icon-orange">搜索</span>
-        <div class="common-models">
-            常用型号：
-            @foreach (var item in hotProducts)
-            {
-                <span class="item"><a href="/PhysicalProducts/Detail/@(item.ProductGuid).html" target="_blank">@item.ProModel</a></span>
-            }
-            <!---<span class="item">VSTOUT@L13-PYX</span><span class="item">VSTOUT@L17-PYX</span>--->
+@*@{var hotProducts = ViewBag.HotList == null ? (new List<PlasModel.ProductViewModel>()) : (ViewBag.HotList as List<PlasModel.ProductViewModel>);}*@
+<style type="text/css">
+    .actives div{
+        /*background: #278cd2;*/
+        color: #1593FF !important;
+        font-weight:700;
+    }
+    .actives .menuborderb div {
+        border-top: 2px solid #1593FF;
+    }
+    .blanadiv, .blanadivleft {
+        display: block;
+        width: 12%;
+        height: 50px;
+        float: left;
+        /*cursor: pointer;*/
+    }
+        .blanadiv div, .blanadivleft div{
+            height: 40px;
+            text-align: center;
+            line-height: 45px;
+            font-size: 16px;
+            color: #666666;
+            cursor: pointer;
+            letter-spacing:1px;font-weight:700;
+        }
+        .blanadiv:hover div {
+            color: #1593FF !important;
+            font-weight: 700;
+        }
+        .blanadiv:hover .menuborderb div {
+            border-top: 2px solid #1593FF;
+        }
+        .blanadivleft {
+            width: 180px;
+            height: 50px;
+            background: rgba(21,147,255,1);
+            /*border-top-left-radius:5px;
+        border-top-right-radius:5px;*/
+        }
+        .blanadivleft div {
+            font-size: 18px;
+            letter-spacing: 2px;
+            height:50px;
+            line-height:50px;
+        }
+    .menuborderb {
+        width: 100%;
+        height: 10px;
+    }
+        .menuborderb div {
+            width: 50%;
+            height: 5px;
+            margin: 0 auto;
+        }
+
+        .qoercode {
+            box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.35);
+            width: 250px;
+            height: 170px;
+            border-radius: 3px;
+            float: right;
+            /*margin-right: -50px;*/
+            margin-top: -20px;
+            background: #ffffff;
+        }
+
+    #showphone:hover{
+        color:#dddddd !important;
+    }
+</style>
+<div class="header-white" style="width:100%;height:262px;display:block;padding:0px;">
+
+    <div class="header-gray text-gray" style="line-height: 30px;background:#1593FF;">
+        <div style="width:70%;margin:0 auto;">
+            <div class="logo-register-btn" style="border: none;margin-top: 5px;">
+                <span id="isLogin_0">
+                    <a class="btn" href="/Home/Index" style="color: #ffffff;padding:0px;">塑蚁网首页</a>
+                    @*<span style="color:#ffffff;"> | </span>
+                    <a class="btn" href="/MemberCenter/Register" style="color: #ffffff;">注册</a><span style="color:#ffffff;"> | </span>
+                    <a class="btn" href="/MemberCenter/Login" style="color: #ffffff;">登录</a>*@
+                </span>
+            </div>
+            <div class="logo-register-btn" style="border: none;margin-top: 5px;float:right;">
+                <span id="isLogin_0">
+                    @*<a class="btn" href="/MemberCenter/Index" style="color: #ffffff;">会员中心</a><span style="color:#ffffff;"> | </span>*@
+                    <a class="btn" onclick="tomenmber()" style="color: #ffffff;">会员中心</a><span style="color:#ffffff;"> | </span>
+                    <a class="btn" href="/MemberCenter/Register" style="color: #ffffff;">合作伙伴</a><span style="color:#ffffff;"> | </span>
+                    <a class="btn" href="/MemberCenter/Index" style="color: #ffffff;">帮助中心</a><span style="color:#ffffff;"> | </span>
+                    <a class="btn" id="showphone" style="color: #ffffff;">手机版</a>
+                </span>
+            </div>
         </div>
+    </div>
+
+    <div style="width:100%;height:150px;">
+        <div style="width:70%;height:110px;margin:0 auto;">
+            <div style="width:210px;height:110px;float:left;margin-top:20px;">
+                <div class="logo">
+                    <a href="/">
+                        <img src="~/Content/img/icon.png" style="width:80px;height:80px;margin-bottom:-5px;margin-right:5px;margin-top:0px;" />
+                        <img src="/Content/img/logo.png" style="margin-top:0px;" alt="塑蚁网-全国最精准永久免费塑胶和助剂材料物性搜索网站" title="塑蚁网-全国最精准永久免费塑胶和助剂材料物性搜索网站">
+                    </a>
+                    <div style="width:100%;height:25px;">
+                        <img src="/Content/img/topsm.png" style="margin-top:5px;width:180px;height:25px;float:right;" alt="塑蚁网-全国最精准永久免费塑胶和助剂材料物性搜索网站" title="塑蚁网-全国最精准永久免费塑胶和助剂材料物性搜索网站">
+                    </div>
+                </div>
+                </div>
+                <div style="width:calc(100% - 210px);height:110px;float:left;margin-top:20px;">
+                    <div style="width:80%;height:110px;float:left;">
+                        <div style="width:100%;height:50px;margin-top:20px;">
+                            <div style="width:90%;height:50px;margin:0 auto;">
+                                <input type="text" class="search-input-orange" id="search_input_top" placeholder="请输入任意塑料类型、型号、厂家、性能、用途进行智能搜索" style="float:left;width:calc(100% - 115px)">
+                                <div onclick="onSearch_Top_select(0, $('#search_input_top').val());" style="width:100px;height:50px;background:#0094ff;color:#ffffff;line-height:50px;font-size:14px;text-align:center;float:left;margin-right:15px;border-top-right-radius:3px;border-bottom-right-radius:3px;cursor:pointer;">
+                                    <i class="fa fa-search"></i>搜索
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width:100%;height:50px;margin-top:10px;">
+                            <div id="cydiv" style="width:90%;height:50px;margin:0 auto;">
+                                @*常用型号：*@
+                                @*@foreach (var item in hotProducts)
+                        {
+                            <span class="item" style="margin-left:5px;"><a href="/PhysicalProducts/Detail/@(item.ProductGuid).html" target="_blank">@item.ProModel</a></span>
+                        }*@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="showphonebox"  style="width:20%;height:110px;float:left;display:none;">
+                        <div class="qoercode">
+                            <div style="width:220px;height:170px;margin:0 auto;">
+                                <div style="width:110px;height:170px;float:left;">
+                                    <img src="~/Content/img/code.png" style="width:80px;height:80px;border:none;margin-left:15px;margin-top:30px;" />
+                                    <div style="width:110px;height:30px;color:#666666;font-size:14px;line-height:30px;text-align:center;">
+                                        <i class="iconfont suyianzhuo" style="color:#666666;margin-right:2px;"></i>安卓
+                                    </div>
+                                </div>
+                                <div style="width:110px;height:170px;float:left;">
+                                    <img src="~/Content/img/code.png" style="width:80px;height:80px;border:none;margin-left:15px;margin-top:30px;" />
+                                    <div style="width:110px;height:30px;color:#666666;font-size:14px;line-height:30px;text-align:center;">
+                                        <i class="iconfont suyiios" style="margin-right:2px;color:#666666;"></i>苹果
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*<div class="header-search-box">
+                <input type="text" class="search-input-orange" id="search_input_top" placeholder="请输入任意塑料类型、型号、厂家、性能、用途进行智能搜索" style="float:left;">
+                <span onclick="onSearch_Top_select(0, $('#search_input_top').val());" class="fa fa-search search-icon search-icon-orange" style="float:left;position:relative;">搜索</span>
+                <div class="common-models">
+                    常用型号：
+                    @foreach (var item in hotProducts)
+                    {
+                        <span class="item"><a href="/PhysicalProducts/Detail/@(item.ProductGuid).html" target="_blank">@item.ProModel</a></span>
+                    }
+                </div>
+            </div>*@
+                </div>
+            </div>
+    </div>
+    <div style="width:100%;height:auto;background:#ffffff;border-bottom:3px solid #1593FF;margin-top:20px;">
+        <div style="width:70%;height:50px;margin:0 auto;">
+            <div id="indexitem" onclick="selectbalanaitem(this)" class="blanadivleft">
+                <a>
+                    <div style="color:#ffffff !important;">
+                        搜索导航栏
+                    </div>
+                </a>
+            </div>
+            <div id="sidebar" style="width:calc(100% - 180px);height:50px;margin:0 auto;">
+                <div id="indexitem" onclick="selectbalanaitem(this)" class="blanadiv">
+                    <a href="/Home/Index" title="首页">
+                        <div>
+                            首页
+                        </div>
+                        <div class="menuborderb">
+                            <div></div>
+                        </div>
+                    </a>
+                </div>
+                <div id="pricehqitem" onclick="selectbalanaitem(this)" class="blanadiv">
+                    <a href="/Price/Index" title="价格行情">
+                        <div>
+                            价格走势
+                        </div>
+                        <div class="menuborderb">
+                            <div></div>
+                        </div>
+                    </a>
+                </div>
+                <div id="cjssitem" onclick="selectbalanaitem(this)" class="blanadiv">
+                    <a href="/PhysicalProducts/Index" title="超级搜索">
+                        <div>
+                            高级搜索
+                        </div>
+                        <div class="menuborderb">
+                            <div></div>
+                        </div>
+                    </a>
+                </div>
+                <div id="clthitem" onclick="selectbalanaitem(this)" class="blanadiv">
+                    <a href="/Replace/Index" title="材料替换">
+                        <div>
+                            材料替换
+                        </div>
+                        <div class="menuborderb">
+                            <div></div>
+                        </div>
+                    </a>
+                </div>
+                @*<div id="wxdbitem" onclick="selectbalanaitem(this)" class="blanadiv">
+                    <a href="/Contrast/Index" title="检测中心">
+                        <div>
+                            检测中心
+                        </div>
+                        <div class="menuborderb">
+                            <div></div>
+                        </div>
+                    </a>
+                </div>*@
+                @*<div id="slzjitem" onclick="selectbalanaitem(this)" class="blanadiv">
+            <a href="/Price/Index" title="塑料助剂">
+                <div>
+                    塑料助剂
+                </div>
+                <div class="menuborderb">
+                    <div></div>
+                </div>
+            </a>
+        </div>*@
+                @*<div id="yyalitem" onclick="selectbalanaitem(this)" class="blanadiv">
+                    <a href="/Price/Index" title="应用案例">
+                        <div>
+                            应用案例
+                        </div>
+                        <div class="menuborderb">
+                            <div></div>
+                        </div>
+                    </a>
+                </div>*@
+                <div id="yyalitem" onclick="selectbalanaitem(this)" class="blanadiv">
+                    <a href="/News/Index" title="行业资讯">
+                        <div>
+                            行业资讯
+                        </div>
+                        <div class="menuborderb">
+                            <div></div>
+                        </div>
+                    </a>
+                </div>
+                @*<div id="gywmitem" onclick="selectbalanaitem(this)" class="blanadiv">
+            <a href="/Price/Index" title="关于我们">
+                <div>
+                    关于我们
+                </div>
+                <div class="menuborderb">
+                    <div></div>
+                </div>
+            </a>
+        </div>*@
+            </div>
+        </div>
+
+        
     </div>
 </div>
 <script type="text/javascript" src="/Content/src/js/search-suggest.js"></script>
 
 <script type="text/javascript">
+    //回车执行搜索事件
+    $(document).keyup(function (event)
+    {
+        if (event.keyCode == 13)
+        {
+            var keyword = $("#search_input_top").val();
+            if (keyword=="") {
+                $("#search_input_top").focus();
+                return false;
+            }
+            else {
+                window.location.href = "/Product/Index?key=" + encodeURI(encodeURIComponent(keyword)) + "&keyid=" + 0;
+            }
+        }
+    }); 
     function onSearch_Top_select(id, keyword) {
       //  var keyword = $.trim($("#search_input_top").val());
         if (keyword == "") {
-            alert("请输入任意塑料类型、型号、厂家、性能、用途!");
             $("#search_input_top").focus();
             return false;
         }
@@ -37,7 +300,56 @@
     var inputwidht = "650";
     $(function () {
         inputwidht = $("#search_input_top").width();
-    })
+        $(".blanadiv").removeClass("actives");
+        $("#sidebar a[title='@ViewBag.Sidebar']").parent().addClass("actives");
+        loadhitdata();
+    });
+    //加载常用型号
+    function loadhitdata() {
+        $.ajax({
+            type: "GET",
+            dataType: "JSON",
+            url: '/Home/GetHitData',
+            data: "",
+            async: false,
+            success: function (json) {
+                //alert(JSON.stringify(json));
+                var state = json.State;
+                if (state =="Success") {
+                    var data = json.Result;
+                    var htmlstr = "";
+                    for (var i = 0; i < data.length; i++) {
+                        if (htmlstr=="") {
+
+                            htmlstr = '常用型号：<span class="item" style="margin-left:10px;"><a href="/PhysicalProducts/Detail/' + data[i].ProductGuid + '.html" target="_blank">' + data[i].ProModel+'</a></span>';
+                        }
+                        else {
+                            htmlstr = htmlstr + '<span class="item" style="margin-left:10px;"><a href="/PhysicalProducts/Detail/' + data[i].ProductGuid + '.html" target="_blank">' + data[i].ProModel + '</a></span>';
+                        }
+                    }
+                    $("#cydiv").html(htmlstr);
+                }
+                //if (json.count > 0) {
+                //    var resultData = json.result;
+                //    callback(parent, resultData);
+                //}
+            },
+            error: function () {
+
+            }
+        });
+    }
+    //选择菜单
+    //$(".blanadiv").click(function () {
+    //    $(".blanadiv").removeClass("active");
+    //    var item = this;
+    //    item.add
+    //});
+    function selectbalanaitem(t) {
+        $(".blanadiv").removeClass("actives");
+        var id = t.id;
+        $("#" + id).addClass("actives");
+    }
     //淘宝搜索建议
     $("#search_input_top").searchSuggest({
         url: 'http://suggest.taobao.com/sug?code=utf-8&extras=1&q=',
@@ -120,6 +432,15 @@
         }
         
     }
-
-
+    //显示或者隐藏手机版二维码
+    $("#showphone").hover(function () {
+        $(".showphonebox").slideDown();
+    }, function () {
+        $(".showphonebox").slideUp();
+        });
+    //跳转会员中心
+    function tomenmber() {
+        //alert("sdf");
+        window.open = '/MemberCenter/Index';
+    }
 </script>

@@ -191,40 +191,39 @@
                             <div id="wrapper" class="wrapper">
                                 <div id="scroller" class="scroller">
                                     <ul class="tpl-task-list">
-                                        @foreach (var item in blist)
+                                        @if (blist!=null)
                                         {
-                                            <li>
-                                                <div class="task-checkbox">
-                                                    <input type="hidden" value="1" name="test">
-                                                    <input type="checkbox" class="liChild" value="2" name="test">
-                                                </div>
-                                                <div class="task-title">
-                                                    <span class="task-title-sp">@(item.PlaceOrigin+" "+ item.characteristic+" "+item.ProUse)</span>
-                                                    <span class="label label-sm label-success">@item.ProModel</span>
-                                                    <span class="task-bell">
-                                                        <i class="am-icon-bell-o"></i>
-                                                    </span>
-                                                </div>
-                                                <div class="task-config">
-                                                    <div class="am-dropdown tpl-task-list-dropdown" data-am-dropdown>
-                                                        <a href="###" class="am-dropdown-toggle tpl-task-list-hover " data-am-dropdown-toggle>
-                                                            <i class="am-icon-cog"></i> <span class="am-icon-caret-down"></span>
-                                                        </a>
-                                                        <ul class="am-dropdown-content tpl-task-list-dropdown-ul">
-                                                            <li>
-                                                                <a href="javascript:;">
-                                                                    <i class="am-icon-trash-o"></i> 删除
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-
-
+                                            foreach (var item in blist)
+                                            {
+                                                <li>
+                                                    <div class="task-checkbox">
+                                                        <input type="hidden" value="1" name="test">
+                                                        <input type="checkbox" class="liChild" value="2" name="test">
                                                     </div>
-                                                </div>
-                                            </li>
+                                                    <div class="task-title">
+                                                        <span class="task-title-sp">@(item.PlaceOrigin + " " + item.characteristic + " " + item.ProUse)</span>
+                                                        <span class="label label-sm label-success">@item.ProModel</span>
+                                                        <span class="task-bell">
+                                                            <i class="am-icon-bell-o"></i>
+                                                        </span>
+                                                    </div>
+                                                    <div class="task-config">
+                                                        <div class="am-dropdown tpl-task-list-dropdown" data-am-dropdown>
+                                                            <a href="###" class="am-dropdown-toggle tpl-task-list-hover " data-am-dropdown-toggle>
+                                                                <i class="am-icon-cog"></i> <span class="am-icon-caret-down"></span>
+                                                            </a>
+                                                            <ul class="am-dropdown-content tpl-task-list-dropdown-ul">
+                                                                <li>
+                                                                    <a href="javascript:;">
+                                                                        <i class="am-icon-trash-o"></i> 删除
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            }
                                         }
-
-
                                     </ul>
                                 </div>
                             </div>
@@ -250,29 +249,30 @@
                                         <div id="wrapperA" class="wrapper">
                                             <div id="scroller" class="scroller">
                                                 <ul class="tpl-task-list tpl-task-remind">
-
-                                                    @foreach (var item in clist)
+                                                    @if (clist != null)
                                                     {
-                                                        <li>
-                                                            <div class="cosB">
-                                                                @item.CreateDate
-                                                            </div>
-                                                            <div class="cosA">
-                                                                <span class="cosIco">
-                                                                    <i class="am-icon-bell-o"></i>
-                                                                </span>
-
-                                                                <span>
-                                                                    @(item.PlaceOrigin + " " + item.characteristic + " " + item.ProUse)<span class="tpl-label-info">
-                                                                        @item.ProModel
-                                                                        <i class="am-icon-share"></i>
+                                                        foreach(var item in clist)
+                                                        {
+                                                            <li>
+                                                                <div class="cosB">
+                                                                    @item.CreateDate
+                                                                </div>
+                                                                <div class="cosA">
+                                                                    <span class="cosIco">
+                                                                        <i class="am-icon-bell-o"></i>
                                                                     </span>
-                                                                </span>
-                                                            </div>
 
-                                                        </li>
+                                                                    <span>
+                                                                        @(item.PlaceOrigin + " " + item.characteristic + " " + item.ProUse)<span class="tpl-label-info">
+                                                                            @item.ProModel
+                                                                            <i class="am-icon-share"></i>
+                                                                        </span>
+                                                                    </span>
+                                                                </div>
+
+                                                            </li>
+                                                        }
                                                     }
-
                                                   </ul>
                                             </div>
                                         </div>

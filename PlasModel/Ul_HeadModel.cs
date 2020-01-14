@@ -22,6 +22,7 @@ namespace PlasModel
         public string Field12 { get; set; }
         public string field13 { get; set; }
         public string field14 { get; set; }
+        public string ProModel { get; set; }
 
     }
 }

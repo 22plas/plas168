@@ -2,6 +2,7 @@
     Layout = null;
     var clist = ViewBag.clist as List<PlasModel.Ul_bodyModel>;
     var bModel = ViewBag.blist as PlasModel.Ul_HeadModel;
+    var pid = ViewBag.pid;
 }
 
 <!DOCTYPE html>
@@ -140,7 +141,7 @@
                     <tr>
                         <td width="100" class="logimg" rowspan="2"><img src="~/Content/images/ul_Logo.jpg" style="margin-left:10px;" /></td>
                         <td class="titleCenter"><h1>@bModel.Category</h1></td>
-                        <td width="200" class="titleCenter" rowspan="2"><a href="javascript:void(0);" onclick="viewpdf('@bModel.FileNumber','@bModel.Serires');"><h1>Download UL</h1></a></td>
+                        <td width="200" class="titleCenter" rowspan="2"><a href="javascript:void(0);" onclick="viewpdf('@pid','@bModel.Serires','@bModel.FileNumber');"><h1>Download UL</h1></a></td>
                     </tr>
                     <tr>
                         <td class="titleCenter"><h2>File Number : @bModel.FileNumber</h2></td>
@@ -230,7 +231,7 @@
 <script src="~/Content/layui/lay/modules/layer.js"></script>
 
 <script type="text/javascript">
-    function viewpdf(prodid, prodModel) {
+    function viewpdf(prodid, prodModel, numberid) {
         debugger;
         var index = layer.load(2, { shade: false });
         var url = location.href;
@@ -240,7 +241,7 @@
         $.ajax({
             type: "get",
             url: '/PhysicalProducts/ViewUL_Pdf',
-            data: { prodid: prodid, prodModel: prodModel },
+            data: { prodid: prodid, prodModel: prodModel, numberid: numberid },
             success: function (data) {
                 //生成pdf成功，返回pdf路径
                 debugger;

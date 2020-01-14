@@ -1,0 +1,480 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,user-scalable=0,width=device-width,initial-scale=1.0" />
+    <meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
+    <title>塑蚁网黄卡pdf查看</title>
+    <link rel="stylesheet" type="text/css" href="iconfont.css" />
+    <!--<script type="text/javascript" charset="UTF-8" src="//res.cdn.openinstall.io/openinstall.js"></script>-->
+    <script type="text/javascript" src="//www.shareinstall.com.cn/js/page/jshareinstall.min.js?v=363c2a83b8"></script>
+    <style type="text/css">
+        html, body {
+            background: #ffffff;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        .topbox {
+            width: 100%;
+            min-height: 115px;
+            height: auto;
+            FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#ffffff,endColorStr=red);
+            background: -webkit-linear-gradient(left, #315DEB, #2688EB);
+            background: -o-linear-gradient(left, #315DEB, #2688EB);
+            padding-top: 15px;
+            padding-bottom: 15px;
+            /*float: left;*/
+        }
+
+        .phdiv {
+            width: 88%;
+            min-height: 30px;
+            height: :auto;
+            margin: 0 auto;
+            line-height: 30px;
+            font-size: 14px;
+            color: #ffffff;
+        }
+
+            .phdiv .phdivleft, .phdiv .phtitle {
+                width: 20%;
+                float: left;
+                height: auto;
+                min-height: 30px;
+                text-align: center;
+            }
+
+            .phdiv .phtitle {
+                font-size: 16px;
+                width: 80%;
+                line-height: 25px;
+                text-align: left;
+            }
+
+            .phdiv span {
+                font-size: 14px;
+            }
+
+        .pricedivbox {
+            width: 100%;
+            height: 85px;
+        }
+
+            .pricedivbox .pricedivitem {
+                width: 33%;
+                height: 85px;
+                float: left;
+            }
+
+                .pricedivbox .pricedivitem .itemcontent {
+                    width: 100%;
+                    height: 40px;
+                    line-height: 50px;
+                    font-size: 12px;
+                    color: #8F9DA6;
+                    text-align: left;
+                    padding-left: 15px;
+                }
+
+                .pricedivbox .pricedivitem .itempricecontent {
+                    width: 100%;
+                    height: 45px;
+                    line-height: 30px;
+                    font-size: 24px;
+                    color: #02AD8F;
+                    text-align: left;
+                    padding-left: 15px;
+                }
+
+                    .pricedivbox .pricedivitem .itempricecontent .itembtn {
+                        width: 60px;
+                        height: 25px;
+                        float: left;
+                        font-size: 14px;
+                        color: #ffffff;
+                        background: #02AD8F;
+                        border-radius: 2px;
+                        text-align: center;
+                        line-height: 28px;
+                    }
+
+        .addbackgroundcolor {
+            background: #D04B63 !important;
+        }
+
+        .timedivbox {
+            width: 100%;
+            height: 46px;
+        }
+
+            .timedivbox .timeitemdiv {
+                width: 25%;
+                height: 45px;
+                float: left;
+                text-align: center;
+                color: #8F9DA6;
+                font-size: 14px;
+                background: #F2F2F2;
+                line-height: 45px;
+            }
+
+        .borderbox {
+            width: 100%;
+            height: 45px;
+        }
+
+        .timeitemaddbackground {
+            background: #ffffff !important;
+            color: #25455D !important;
+        }
+
+        .basicparam {
+            width: 100%;
+            height: auto;
+        }
+
+            .basicparam .basicparamtitle {
+                width: 85%;
+                min-height: 40px;
+                margin: 0 auto;
+                height: auto;
+                font-size: 14px;
+                color: #25455D;
+                line-height: 40px;
+            }
+
+            .basicparam .basicparamtb {
+                width: 100%;
+                height: auto;
+            }
+
+                .basicparam .basicparamtb .tbrow, .basicparam .basicparamtb .tbrowf {
+                    width: 100%;
+                    min-height: 40px;
+                    height: auto;
+                    background: #F9F9F9;
+                    border-bottom: 1px solid #f2f2f2;
+                }
+
+                .basicparam .basicparamtb .tbrowf {
+                    background: #ffffff;
+                }
+
+        .tbrowtitle, .tbrowcontent {
+            width: 30%;
+            min-height: 40px;
+            height: auto;
+            float: left;
+            font-size: 12px;
+            line-height: 40px;
+            text-align: center;
+        }
+
+        .tbrowcontent {
+            width: 70%;
+        }
+
+
+        .boxtable tbody tr td {
+            height: auto;
+            min-height: 40px;
+            line-height: 20px;
+            vertical-align: middle;
+            display: table-cell;
+            width: 15%;
+            font-size: 12px;
+            text-align: center;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+
+        .boxtable tbody tr {
+            width: 100%;
+            height: auto;
+            min-height: 40px;
+            background: #f2f2f2;
+            border-bottom: 1px solid #e8e8e8;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        .boxtable thead tr {
+            background: #be0f34;
+            color: #ffffff;
+        }
+
+            .boxtable thead tr td {
+                height: 40px;
+                line-height: 40px;
+                vertical-align: middle;
+                display: table-cell;
+                width: 25%;
+                font-size: 12px;
+                text-align: center;
+                padding-left: 15px;
+                padding-right: 15px;
+                /*padding-top: 10px;
+        padding-bottom: 10px;*/
+            }
+
+        .boxtable tbody .bctr {
+            background: #ffffff;
+        }
+
+        .boxtable tbody .headtr {
+            background: #be0f34 !important;
+            color: #ffffff !important;
+        }
+
+        .boxtable tbody .contenttr {
+            background: #fffacd !important;
+            color: #3e3f3a !important;
+        }
+
+        .dowbtn {
+            width: 100%;
+            height: 100px;
+            line-height: 100px;
+            text-align: center;
+            font-size: 14px;
+            color: #ffffff;
+        }
+
+            .dowbtn:active {
+                color: #cccccc;
+            }
+    </style>
+    <!--<script type="text/javascript">
+        //openinstall初始化时将与openinstall服务器交互，应尽可能早的调用
+        /*web页面向app传递的json数据(json string/js Object)，应用被拉起或是首次安装时，通过相应的android/ios api可以获取此数据*/
+        var data = OpenInstall.parseUrlParams();//openinstall.js中提供的工具函数，解析url中的所有查询参数
+        new OpenInstall({
+            /*appKey必选参数，openinstall平台为每个应用分配的ID*/
+            appKey: "s4pt2h",
+            /*可选参数，自定义android平台的apk下载文件名；个别andriod浏览器下载时，中文文件名显示乱码，请慎用中文文件名！*/
+            //apkFileName : 'com.fm.openinstalldemo-v2.2.0.apk',
+            /*可选参数，是否优先考虑拉起app，以牺牲下载体验为代价*/
+            //preferWakeup:true,
+            /*自定义遮罩的html*/
+            //mask:function(){
+            //  return "<div id='openinstall_shadow' style='position:fixed;left:0;top:0;background:rgba(0,255,0,0.5);filter:alpha(opacity=50);width:100%;height:100%;z-index:10000;'></div>"
+            //},
+            /*openinstall初始化完成的回调函数，可选*/
+            onready: function () {
+                var m = this, button = document.getElementById("downloadButton");
+                button.style.visibility = "visible";
+
+
+                /*用户点击某个按钮时(假定按钮id为downloadButton)，安装app*/
+                button.onclick = function () {
+                    /*在app已安装的情况尝试拉起app*/
+                    m.schemeWakeup();
+                    m.wakeupOrInstall();
+                    return false;
+                }
+            }
+        }, data);
+    </script>-->
+    <script type="text/javascript">
+        //shareinstall初始化，初始化时将与shareinstall服务器交互，应尽可能早的调用
+        /*web页面向app传递的json数据(json string/js Object)，应用被拉起或是首次安装时，通过相应的
+         android/ios api可以获取此数据*/
+        var data = ShareInstall.parseUrlParams();//shareinstall.js中提供的工具函数，解析url中的所有查询参数
+        new ShareInstall({
+            appKey: '22BKEKHRH226EA',
+            //可选项，微信中打开自定义遮罩层
+            //shadow : function(){
+            //  return "<div id='shareinstall_shadow' style='position:fixed;left:0;top:0;background:rgba(0,255,0,0.5);filter:alpha(opacity=50);width:100%;height:100%;z-index:10000;'></div>"
+            // },
+            /*可选参数，是否优先考虑下载app，以牺牲唤醒为代价*/
+            //preferInstall:true,
+            /*可选参数，是否优先考虑拉起app，以牺牲下载体验为代价*/
+            preferWakeup:true,
+            /*可选参数，微信中直接跳下载*/
+            //weChatdownload:true,
+            onready: function () {
+                //shareinstall已成功回调
+                var m = this, button = document.getElementById("downloadButton");
+                button.style.visibility = "visible";
+
+                //用户点击某个按钮时(假定按钮id为downloadButton)，安装app
+                button.onclick = function () {
+                    m.wakeupOrInstall();
+                }
+            }
+        }, data);
+    </script>
+</head>
+<body>
+    <div v-if="showdiv=='1'" id="contentdiv" style="width:100%; height:auto;min-height:500px;margin-bottom:100px;">
+        <div class="basicparam">
+            <div style="width:100%;height:100px;background:#be0f34;">
+                <div style="width:95%;height:100px;margin:0 auto;">
+                    <div style="width:75%;height:100px;float:left;">
+                        <div style="width:100%;height:100px;float:left;">
+                            <div style="width:25%; height:100px;float:left;">
+                                <img src="ul_Logo.jpg" style="width:50px;height:50px;margin-top:25px;">
+                            </div>
+                            <div style="width:75%;height:100px;float:left;">
+                                <div style="width:100%;height:50px; line-height:70px;color:#ffffff;font-size:16px;text-align:left;">
+                                    {{Category}}
+                                </div>
+                                <div style="width:100%;height:50px;line-height:25px;color:#ffffff;font-size:14px;text-align:left;">
+                                    File Number :{{FileNumber}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width:25%;height:100px;float:left;">
+                        <div class="dowbtn" onclick="downloadfiles()">
+                            下载PDF
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="width:100%;min-height:120px;height:auto; background:#ffffff;margin-bottom:15px;">
+                <div style="width:70%;min-height:120px;height:auto;float:left;">
+                    <div style="width:100%;min-height:30px;height:auto;font-size:16px;padding-left:10px;">
+                        {{Serires}}
+                    </div>
+                    <div style="width:100%;min-height:40px;height:auto;font-size:12px;padding-left:10px;">
+                        {{Field8}}
+                    </div>
+                    <div style="width:100%;min-height:30px;height:auto;font-size:12px;padding-left:10px;">
+                        {{Manufactory}}
+                    </div>
+                    <div style="width:100%;min-height:20px;height:auto;font-size:10px;padding-left:10px;">
+                        {{Field10}}
+                    </div>
+                </div>
+                <div style="width:30%;height:120px;float:left;">
+                    <img src="ul_rjus.jpg" style="width:80px;height:30px;margin-top:25px;float:right;margin-right:10px;">
+                </div>
+            </div>
+            <div class="basicparamtb">
+                <table class="boxtable" style="width:100%;height:auto;">
+                    <tbody v-for="(vo,index) in clist">
+                        <tr v-if="vo.Attribute2==null&&vo.Attribute3==null" class="bctr headtr" onclick="touldetail()">
+                            <td style="width:35%;">{{vo.Attribute1}}</td>
+                            <td style="text-align:right;">额定值</td>
+                            <td style="text-align:left;">单位制</td>
+                            <td style="width:35%;">测试方法</td>
+                        </tr>
+                        <tr v-if="vo.Attribute2!=null&&vo.Attribute3!=null" class="bctr contenttr" onclick="touldetail()">
+                            <td style="width:35%;">{{vo.Attribute2}}" "{{vo.Attribute3}}</td>
+                            <td style="text-align:right;">{{vo.Value}}</td>
+                            <td style="text-align:left;">{{vo.Unit}}</td>
+                            <td style="width:35%;">{{vo.TestType}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div v-if="field14!=''&&field14!=null" style="width:100%;height:auto;min-height:50px;font-size:12px;text-align:center;padding-left:10px;padding-right:10px;">
+                {{field14}}
+            </div>
+        </div>
+    </div>
+    <div id="downloadButton" style="width:100%;height:50px;background:#f2f2f2;position:fixed;bottom:0px;clear:both;">
+        <div style="width:30%;height:50px;float:left;">
+            <img style="width:30px;height:30px;margin-top:10px;margin-left:15px;float:left;" src="../Content/img/icon.png" />
+        </div>
+        <div style="width:70%;height:50px;color:#666666;text-align:center;font-size:14px;line-height:50px;float:left;">
+            <div style="width:70%;height:35px;margin-top:8px;background:#0094ff;color:#ffffff;font-size:14px;line-height:35px;text-align:center;border-radius:10px;">
+                去APP查看更多物性表
+            </div>            
+        </div>        
+    </div>
+</body>
+</html>
+<script type="text/javascript" src="vue.js"></script>
+<script type="text/javascript" src="jquery-2.1.1.js"></script>
+<!--<script src="~/Scripts/jquery.pagination.js" type="text/javascript"></script>-->
+<script src="../Content/js/Common.js" type="text/javascript"></script>
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#contentdiv',
+        data: {
+            showdiv:"0",//是否显示所有div
+            Category: "",
+            FileNumber: "",
+            Serires: "",
+            Field8: "",
+            Manufactory: "",
+            Field10: "",
+            NumberId: "",
+            clist: [],
+            field14: "",
+            ProModel: "",
+            systemtype: "0"//0:安卓 1：苹果
+        },
+        methods: {
+            init: function (numberid,pid) {
+                $.ajax({
+                    type: "get",
+                    dataType: "JSON",
+                    url: '/AppApi/ShowUlPDF',
+                    data: { "Numberid": numberid, "ProductGuid": pid},
+                    async: false,
+                    success: function (json) {
+                        //alert(JSON.stringify(json));
+                        var data = json.Result;
+                        var productinfo = data.blistdata;
+                        //alert(JSON.parse(productData));
+                        if (data != "") {
+                            vm.Category = productinfo.Category;
+                            vm.FileNumber = productinfo.FileNumber;
+                            vm.Serires = productinfo.Serires;
+                            vm.Field8 = productinfo.Field8;
+                            vm.Manufactory = productinfo.Manufactory;
+                            vm.Field10 = productinfo.Field10;
+                            vm.NumberId = productinfo.NumberId;
+                            vm.field14 = productinfo.field14;
+                            vm.clist = data.clistdata;
+                            vm.ProModel = productinfo.ProModel;
+                            vm.showdiv = "1";
+                        }
+                        else {
+                        }
+                    },
+                    error: function () { layer.msg('Load the data failure!', { icon: 5 }); }
+                });
+            }
+        }
+    });
+    $(window).on("load", function () {
+        var winHeight = $(window).height();
+        //var pdfid = decodeURI(getQueryString("id"));
+        //var pid = getQueryString("id");
+        var pid = getQueryString("id");
+        var numberid = getQueryString("numberid");
+        //alert(pid + "," + numberid);
+        vm.init(numberid, pid);
+        console.log(pid);
+        //function is_weixin() {
+        //    var ua = navigator.userAgent.toLowerCase();
+        //    if (ua.match(/MicroMessenger/i) == "micromessenger") {
+        //        return true;
+        //    } else {
+        //        return false;
+        //    }
+        //}
+        //var u = navigator.userAgent;
+        //if (u.indexOf("Android") > -1 || u.indexOf("Linux") > -1) {
+        //    vm.systemtype = "0";
+        //    var isWeixin = is_weixin();
+        //    //是在微信中打开
+        //    if (isWeixin) {
+        //        $(".weixin-tip").css("height", winHeight);
+        //        $(".weixin-tip").show();
+        //    }
+        //    else {
+        //        $(".weixin-tip").hide();
+        //    }
+        //}
+        //else if (u.indexOf("iPhone") > -1 || u.indexOf("iOS") > -1) {
+        //    vm.systemtype = "1";
+        //}
+    });
+</script>
