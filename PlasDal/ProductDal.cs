@@ -169,8 +169,14 @@ namespace PlasDal
             }
             else if (type == "1")
             {
-                sql = string.Format(@"select distinct a.MidClassName as Name,'' as parentguid from Prd_SmallClass_l a inner join Prd_SmallClass b on a.parentguid=b.guid 
-                                      inner join Prd_BigClass c on c.guid = b.parentguid where c.guid = '{0}' and a.LanguageId = 2052", parentid);
+                //sql = string.Format(@"select distinct a.MidClassName as Name,'' as parentguid from Prd_SmallClass_l a inner join Prd_SmallClass b on a.parentguid=b.guid 
+                //                      inner join Prd_BigClass c on c.guid = b.parentguid where c.guid = '{0}' and a.LanguageId = 2052", parentid);
+                sql = string.Format(@"select a.MidClassName as name,'' as parentguid,max(a.Weight) as weight from Prd_SmallClass_l a 
+                                        INNER join Prd_SmallClass b on a.parentguid=b.guid 
+                                        inner join Prd_BigClass c on c.guid = b.parentguid 
+                                        WHERE c.guid = '{0}' 
+                                        AND a.LanguageId = 2052 group by a.MidClassName 
+                                        order by Weight desc", parentid);
             }
             else
             {
