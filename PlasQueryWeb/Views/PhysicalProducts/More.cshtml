@@ -4,6 +4,9 @@
 }
 
 <style type="text/css">
+    html {
+        overflow:hidden;
+    }
     .selectTitle {
         line-height: 45px;
         height: 45px;
@@ -66,95 +69,327 @@
     .warning {
         color: #f37b1d !important;
     }
+
+    .selectitemtitle {
+        height: 30px;
+        line-height: 30px;
+        font-size: 14px;
+        color: #ff5500;
+        float: left;
+        margin-left: 30px;
+    }
+
+    .selecmoreparmtitem {
+        height: 30px;
+        line-height: 30px;
+        font-size: 14px;
+        color: #666666;
+        text-align: center;
+        float: left;
+        margin-left: 30px;
+    }
+
+
+    .showdivbox {
+        width: 100%; /*宽度设置为100%，这样才能使隐藏背景层覆盖原页面*/
+        height: 100%;
+    }
+
+
+    .selectitemtitle {
+        height: 30px;
+        line-height: 30px;
+        font-size: 14px;
+        color: #ff5500;
+        float: left;
+        margin-left: 30px;
+    }
+    .selecmoreparmtitem {
+        height: 30px;
+        line-height: 30px;
+        font-size: 14px;
+        color: #666666;
+        text-align: center;
+        float: left;
+        margin-left: 30px;
+    }
+
+    .selectmoreparmokbtn {
+        width: 70%;
+        height: 30px;
+        line-height: 30px;
+        border-radius: 3px;
+        text-align: center;
+        font-size: 14px;
+        background: #0094ff;
+        color: #ffffff;
+        cursor: pointer;
+        margin-top: 20px;
+        letter-spacing: 2px;
+    }
+    .selectmoreparmleft {
+        width: 100%;
+        height: auto;
+        min-height: 40px;
+        text-indent: 30px;
+        border-bottom: 1px solid #dddddd;
+        font-size: 14px;
+        color: #333333;
+        letter-spacing: 3px;
+        cursor: pointer;
+        padding-top:20px;
+    }
+
+        .selectmoreparmleft:hover {
+            color: #0094ff;
+            border-bottom: 1px solid #0094ff;
+        }
+    .search-item-content li {
+        color: #666666;
+    }
+    .typechildname {
+        width: 25%;
+        height: 35px;
+        float: left;
+        font-size: 14px;
+        color: #666666;
+        cursor: pointer;
+        line-height:15px;
+        margin-top:5px;
+        margin-bottom:5px;
+    }
+        .typechildname span:hover {
+            color:#ff5500;
+        }
 </style>
 <link href="~/Content/css/H-ui.min.css" rel="stylesheet" />
+<script src="~/Content/js/vue.js" type="text/javascript"></script>
 <script src="~/Scripts/ChinesePY.js" type="text/javascript"></script>
-<div c style="margin:40px;">
-    <div class="selectTitle">请选择你要选择的<span id="MoreCheckName">@ViewBag.rname</span><input type="hidden" id="TypeID" value="@ViewBag.rid" /></div>
-    <div>
-        <div class="left" style="width:78%;">
-            <input type="text" id="txtQuery" class="input-text" />
+<div id="allboxdiv">
+    <div id="topidv" style="margin:40px;">
+        <div v-show="selectitemlsit.length>0" style="display:none;width:100%;height:auto;min-height:60px;border:1px dashed #dddddd;margin-bottom:10px;">
+            <div style="width:70%;height:auto;min-height:60px;float:left;">
+                <div class="selectitemtitle">
+                    已选择:
+                </div>
+                <div class="selecmoreparmtitem" v-for="(vi,index) in selectitemlsit" v-bind:id="index" onclick="deleteselect(this)">
+                    {{vi.Name}}<i class="iconfont suyiguanbi1" style="font-size:18px;margin-left:5px;color:#ff5500;cursor:pointer;"></i>
+                </div>
+            </div>
+            <div style="width:30%;height:auto;min-height:60px;float:left;">
+                <button class="btn btn-success-outline radius" id="btn-True" type="button" style="width:25%;margin-top:15px;margin-left:10%;">确定</button>
+            </div>
         </div>
-        <div class="right" style="width:20%;">
-            <button class="btn btn-secondary-outline radius" id="btn-Query" type="button">检索</button>
-            <button class="btn btn-success-outline radius" id="btn-True" type="button">确定</button>
+        @*<div class="selectTitle">选择<span id="MoreCheckName">@ViewBag.rname</span><input type="hidden" id="TypeID" value="@ViewBag.rid" /></div>*@
+        <div>
+            <div class="left" style="width:78%;">
+                <input type="text" id="txtQuery" class="input-text" />
+                <input type="hidden" id="TypeID" value="@ViewBag.rid" />
+                <input type="hidden" id="MoreCheckName" value="@ViewBag.rname" />
+            </div>
+            <div class="right" style="width:20%;">
+                <button class="btn btn-secondary-outline radius" id="btn-Query" type="button">检索</button>
+            </div>
+            <div class="clear"></div>
         </div>
-        <div class="clear"></div>
-    </div>
-    <div class="AandZ"><a>#</a></div>
-    <div class="clearfix" data-type="" data-typename="" data-checkmore="true">
-        @for (var i = 0; i < all.Rows.Count; i++)
-        {
-        <span class="pagelist">
-            <span class="text_2" data-guid="@all.Rows[i]["SmallGuid"].ToString()" title="@all.Rows[i]["AliasName"].ToString()" data-value="@all.Rows[i]["Name"].ToString()">@all.Rows[i]["Name"].ToString()</span>
-        </span>
+        <div class="AandZ"><a>#</a></div>
+        <div class="clearfix" data-type="" data-typename="" data-checkmore="true" style="height:570px;overflow-y:auto;">
+            @for (var i = 0; i < all.Rows.Count; i++)
+            {
+                <span class="pagelist">
+                    <span id="@i" class="text_2" data-guid="@all.Rows[i]["SmallGuid"].ToString()" title="@all.Rows[i]["AliasName"].ToString()" data-value="@all.Rows[i]["Name"].ToString()">@all.Rows[i]["Name"].ToString()</span>
+                </span>
 
-        }
+            }
+        </div>
     </div>
+    <div id="typediv">
+        <div class="showdivbox">
+            <div style="width:100%;min-height:700px;height:auto;margin:0 auto;background:#ffffff;border-radius:5px;">
+                <div v-show="selecttypeitemlsit.length>0" style="display:none;width:100%;height:auto;min-height:80px;margin-top:10px;">
+                    <div style="width:90%;height:auto;min-height:80px;float:left;">
+                        <div class="selectitemtitle">
+                            已选择:
+                        </div>
+                        <div class="selecmoreparmtitem" v-for="(vcs,index) in selecttypeitemlsit">
+                            {{vcs.Name}}<i class="iconfont suyiguanbi1" style="font-size:18px;margin-left:5px;color:#ff5500;cursor:pointer;" v-bind:id="index" onclick="dtype(this)"></i>
+                        </div>
+                    </div>
+                    <div style="width:10%;height:auto;min-height:80px;float:left;">
+                        <div class="selectmoreparmokbtn" onclick="typeisok()">
+                            确定
+                        </div>
+                    </div>
+                </div>
 
+                <div style="width:100%;height:735px;border-top:1px solid #dddddd;margin-top:10px;">
+                    <div style="width:16%;height:735px;float:left;border-right:1px solid #dddddd;">
+                        <div class="selectmoreparmleft" v-for="(vs,index) in typelistdata" v-bind:id="index" onmousemove="itemmousemove(this)">
+                            <div style="width:25px;height:40px;float:left;text-align:center;">
+                                <img v-bind:src="vs.Image" style="width:20px;height:20px;margin:0 auto;" />
+                            </div>{{vs.Name}}
+                        </div>
+                    </div>
+                    <div style="width:83%;height:735px;float:left;overflow-y:auto;">
+                        <div style="width:98%;height:auto;margin:0 auto;margin-top:20px;">
+                            <div style="width:100%;height:auto;float:left; border-bottom:1px solid #dddddd;margin-bottom:15px;" v-for="(vc,i) in childlist">
+                                <div style="width:12%;height:auto;float:left;text-indent:20px;color:#333333;font-weight:700;font-size:14px;">
+                                    {{vc.MiddleName}}
+                                </div>
+                                <div style="width:88%;height:auto;float:left;min-height:100px;">
+                                    <div class="typechildname" v-for="(vl,index) in vc.childclasslist">
+                                        <span  v-bind:id="i+','+index" onclick="selectitemparm(this)">
+                                            {{vl.Name}}
+                                        </span>                                        
+                                    </div>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script type="text/javascript">
-    var isMore = '@ViewBag.more';
-    $(function () {
-        //加载字母
-        var aandz = "";
-        for (var i = 0; i < 26; i++) {
-            aandz += ("<a>" + String.fromCharCode(65 + i) + "</a>");//输出A-Z  26个大写字母
+    //初始化vue组件
+    var vm = new Vue({
+        el: '#allboxdiv',
+        data: {
+            selectitemlsit: [],//选中的
+            typelistdata: [],//类别数据集合
+            childlist: [],//二级和三级类别数据集合
+            selecttypeitemlsit:[]//选中的类别
+        }, methods: {
+            load: function () {
+                $.ajax({
+                    type: "GET",
+                    dataType: "JSON",
+                    url: '/PhysicalProducts/GetTopTypeData',
+                    data: "",
+                    async: false,
+                    success: function (data) {
+                        //alert(JSON.stringify(data));
+                        console.log(data);
+                        var returnstate = data.State;
+                        if (returnstate == "Success") {
+                            var resultdata = data.Result;
+                            var tlist = resultdata.typelistdata;
+                            vm.typelistdata = tlist
+                            vm.loadchild(tlist[0].Guid);
+                        }
+                    },
+                    error: function () { layer.msg('数据请求异常', { icon: 2 }); }
+                });
+            },
+            //获取二级或者三级
+            loadchild: function (id) {
+                vm.childlist = [];
+                $.ajax({
+                    type: "GET",
+                    dataType: "JSON",
+                    url: '/Product/GetIndexClass',
+                    data: "classid=" + id,
+                    async: false,
+                    success: function (data) {
+                        //alert(JSON.stringify(data));
+                        var returnstate = data.State;
+                        if (returnstate == "Success") {
+                            var resultdata = data.Result;
+                            vm.childlist = resultdata;
+                        }
+                    },
+                    error: function () { layer.msg('数据请求异常', { icon: 2 }); }
+                });
+            }
         }
-        $(".AandZ").append(aandz);
+    });
+    var isMore = '@ViewBag.more';
+    var rid = '@ViewBag.rid';
+    $(function () {
+        //选择类别
+        if (rid == 1) {
+            $("#typediv").css("display", "block");
+            $("#topidv").css("display", "none");
+            vm.load();
+        }
+        else {
+            $("#topidv").css("display", "block");
+            $("#typediv").css("display", "none");
+            //加载字母
+            var aandz = "";
+            for (var i = 0; i < 26; i++) {
+                aandz += ("<a>" + String.fromCharCode(65 + i) + "</a>");//输出A-Z  26个大写字母
+            }
+            $(".AandZ").append(aandz);
 
-        $(".AandZ").find("a").click(function () {
-            var str = $(this).html();
-            //Pinyin.GetJP(this.value)
-            $.each($(".pagelist").find(".text_2"), function (index, item) {
-                $(this).removeClass("warning");
-                $(this).parent().show();
-                if ($(this).html() != "") {
-                    var pinval = Pinyin.GetJP($(this).html()).toUpperCase().substring(0, 1);
-                    if (str == pinval)
-                        {
-                           $(this).parent().show();
+            $(".AandZ").find("a").click(function () {
+                var str = $(this).html();
+                //Pinyin.GetJP(this.value)
+                $.each($(".pagelist").find(".text_2"), function (index, item) {
+                    $(this).removeClass("warning");
+                    $(this).parent().show();
+                    if ($(this).html() != "") {
+                        var pinval = Pinyin.GetJP($(this).html()).toUpperCase().substring(0, 1);
+                        if (str == pinval) {
+                            $(this).parent().show();
                         }
-                    else
-                    {
-                        $(this).parent().hide();
+                        else {
+                            $(this).parent().hide();
                         }
-                    //if (str == pinval) {
-                    //    $(this).addClass("warning");
-                    //    if ($("span[data-value='" + $(this).html() + "']").length > 0) {
-                    //        $("html, body").stop().animate({ scrollTop: $("span[data-value='" + $(this).html() + "']").offset().top - 200 }, 400);
-                    //    }
-                    //}
+                        //if (str == pinval) {
+                        //    $(this).addClass("warning");
+                        //    if ($("span[data-value='" + $(this).html() + "']").length > 0) {
+                        //        $("html, body").stop().animate({ scrollTop: $("span[data-value='" + $(this).html() + "']").offset().top - 200 }, 400);
+                        //    }
+                        //}
 
+                    }
+                })
+                if (str == "#") {
+                    $(".pagelist").show();
                 }
             })
-            if (str == "#")
-            {
-                $(".pagelist").show();
-            }
-        })
+        }
+        
 
         $(".pagelist").find(".text_2").click(function () {
             var datatype = $("#TypeID").val();
+            var thisselcttext = $(this).html();
+            var thisselectid = $(this).attr("id");
             if (datatype == "3") {//阻燃等级特殊处理，只能单选
                 $(".pagelist").find(".text_2").removeClass("text2check");
                 $(this).addClass("text2check");
+                deleteselectcomm(thisselcttext, function () {
+                    var titem = { "Name": thisselcttext, "id": thisselectid }
+                    vm.selectitemlsit.push(titem);
+                });
             }
             else {
                 if (isMore == "1")//单选
                 {
                     $.each($(".pagelist").find(".text_2"), function (index, item) {
                         $(this).removeClass("text2check");
+                        deleteselectcomm(thisselcttext);
                     })
                     $(this).addClass("text2check");
+                    deleteselectcomm(thisselcttext, function () {
+                        var titem = { "Name": thisselcttext, "id": thisselectid }
+                        vm.selectitemlsit.push(titem);
+                    });
                 }
                 else//多选
                 {
                     if ($(this).hasClass("text2check")) {
                         $(this).removeClass("text2check");
+                        deleteselectcomm(thisselcttext);
                     }
                     else {
                         $(this).addClass("text2check");
+                        deleteselectcomm(thisselcttext, function () {
+                            var titem = { "Name": thisselcttext, "id": thisselectid }
+                            vm.selectitemlsit.push(titem);
+                        });
                     }
 
                 }
@@ -186,18 +421,23 @@
     $("#btn-True").click(function () {
         var str = "";
         var datatype = $("#TypeID").val();
-        var dataname = $("#MoreCheckName").html();
+        var dataname = $("#MoreCheckName").val();
         $.each($(".pagelist").find(".text_2"), function (index, item) {
             if ($(this).hasClass("text2check")) {
                 // alert($(this).attr("data-value"));
                 var dataval = $(this).attr("data-value");
                 var dataguid = $(this).attr("data-guid");
-                if (window.parent.$(".search_condition_wrap").find(".search-select-item").length == 0) {
-                    str += '<span class="search-select-item" dataguid="' + $(this).attr("data-guid") +'" title="' + $(this).attr("data-value") + '"  datatype="' + datatype + '" bigTitle="' + dataname + '">' + dataname + ':' + $(this).attr("data-value") + '<span class="fa fa-close" title="删除"></span></span>';
+                if (window.parent.$("#selectparmdivbox").find(".selectparmitem").length == 0) {
+                    str += '<div class="selectparmitem" dataguid="' + dataguid + '" title="' + $(this).attr("data-value") + '" datatype="' + datatype + '" bigTitle="' + dataname + '">' +
+                        dataname + '：' + '<span style="color:#1593FF;">' + $(this).attr("data-value") +
+                        '</span> <i class="iconfont suyiguanbi1" style="font-size:18px;margin-left:5px;color:#1593FF;cursor:pointer;"></i></div >';
+
+                    //str += '<span class="search-select-item" dataguid="' + $(this).attr("data-guid") + '" title="' + $(this).attr("data-value") + '"  datatype="' + datatype + '" bigTitle="' + dataname + '">' +
+                    //    dataname + ':' + $(this).attr("data-value") + '<span class="fa fa-close" title="删除"></span></span>';
                 }
                 else {//否则判断是否已经添加
                     var istrue = false;
-                    $.each(window.parent.$(".search_condition_wrap").find(".search-select-item"), function (index, item) {
+                    $.each(window.parent.$("#selectparmdivbox").find(".selectparmitem"), function (index, item) {
                         if (datatype == 3) {//3 阻燃等级特殊处理，只允许单选
                             if ($(this).find("i").attr("datatype") == "3") {
                                 $(this).remove();
@@ -209,18 +449,26 @@
 
                     })
                     if (!istrue) {
-                        str += '<span class="search-select-item" dataguid="' + dataguid +'"  title="' + dataval + '"  datatype="' + datatype + '" bigTitle="' + dataname + '">' + dataname + ':' + dataval + '<span class="fa fa-close" title="删除"></span></span>';
+
+                        str += '<div class="selectparmitem" dataguid="' + dataguid + '" title="' + dataval + '" datatype="' + datatype + '" bigTitle="' + dataname + '">' +
+                            dataname + '：' + '<span style="color:#1593FF;">' + dataval +
+                            '</span> <i class="iconfont suyiguanbi1" style="font-size:18px;margin-left:5px;color:#1593FF;cursor:pointer;"></i></div >';
+
+                        //str += '<span class="search-select-item" dataguid="' + dataguid + '"  title="' + dataval + '"  datatype="' + datatype + '" bigTitle="' + dataname + '">'
+                        //    + dataname + ':' + dataval + '<span class="fa fa-close" title="删除"></span></span>';
                     }
                 }
             }
         })
-        if (window.parent.$(".search_condition_wrap").length > 0) {
+        if (window.parent.$("#selectparmdivbox").length > 0) {
             //单选的，要清除父类值
-            if (isMore == "1" && window.parent.$(".search_condition_wrap").find("span[datatype='" + datatype + "']").length > 0) {
-                window.parent.$(".search_condition_wrap").find("span[datatype='" + datatype + "']").remove();
+            if (isMore == "1" && window.parent.$("#selectparmdivbox").find("div[datatype='" + datatype + "']").length > 0) {
+                window.parent.$("#selectparmdivbox").find("div[datatype='" + datatype + "']").remove();
             }
-            window.parent.$(".search_condition_wrap").append(str);
-            window.parent.$(".fa-close").click(function () {
+            window.parent.$("#selectparmdivbox").append(str);
+            window.parent.$("#searchbtnbottom").show();
+            window.parent.$("#searchbottom").show();
+            window.parent.$(".suyiguanbi1").click(function () {
 
                 $(this).parent().remove();
             })
@@ -228,6 +476,7 @@
                 tips: [4, '#78BA32'],
                 time: 3000
             });
+            
             CloseWindow();
         }
         else {
@@ -242,5 +491,99 @@
         parent.layer.close(index);
 
     }
+    //删除选中事件
+    function deleteselect(t)
+    {
+        var index = t.id;
+        var name = vm.selectitemlsit[index].Name;
+        var tid = vm.selectitemlsit[index].id;
+        deleteselectcomm(name, function () {
+            $("#" + tid).removeClass("text2check");
+        });
+    }
+    //删除选中的
+    function deleteselectcomm(name, callback) {
+        for (var k = 0; k < vm.selectitemlsit.length; k++) {
+            if (vm.selectitemlsit[k].Name == name) {
+                vm.selectitemlsit.splice(k, 1);
+                k--;
+            }
+        }
+        callback();
+    }
 
+
+    //鼠标移入大类时显示下级分类
+    function itemmousemove(t) {
+        var index = t.id;
+        var id = vm.typelistdata[index].Guid;
+        vm.loadchild(id);
+    }
+    //选中类别
+    function selectitemparm(t)
+    {
+        var index = t.id;
+        var splitlist = index.split(",");
+        var bigindex = splitlist[0];
+        var smallindex = splitlist[1];
+        var childlist = vm.childlist[bigindex].childclasslist;
+        var tname = childlist[smallindex].Name;
+        var guid = childlist[smallindex].Guid;
+        var titem = { "Name": tname, "id": guid}
+        vm.selecttypeitemlsit.push(titem);
+    }
+    //删除选中的类别方法
+    function dtype(t)
+    {
+        var index = t.id;
+        var name = vm.selecttypeitemlsit[index].Name;
+        deleteselecttypecomm(name);
+    }
+    //删除选中的类别
+    function deleteselecttypecomm(name, callback) {
+        for (var k = 0; k < vm.selecttypeitemlsit.length; k++) {
+            if (vm.selecttypeitemlsit[k].Name == name) {
+                vm.selecttypeitemlsit.splice(k, 1);
+                k--;
+            }
+        }
+        callback();
+    }
+    //类别确定
+    function typeisok()
+    {
+        getparm(function (str) {
+            var datatype = $("#TypeID").val();
+            //单选的，要清除父类值
+            if (isMore == "1" && window.parent.$("#selectparmdivbox").find("div[datatype='" + datatype + "']").length > 0) {
+                window.parent.$("#selectparmdivbox").find("div[datatype='" + datatype + "']").remove();
+            }
+            window.parent.$("#selectparmdivbox").append(str);
+            window.parent.$("#searchbtnbottom").show();
+            window.parent.$("#searchbottom").show();
+            window.parent.$(".suyiguanbi1").click(function () {
+
+                $(this).parent().remove();
+            })
+            parent.layer.tips('Filled', "#selectCheckValue", {
+                tips: [4, '#78BA32'],
+                time: 3000
+            });
+
+            CloseWindow();
+        });       
+    }
+    //获取参数
+    function getparm(callback) {
+        var datatype = $("#TypeID").val();
+        var dataname = $("#MoreCheckName").val();
+        var str = "";
+        for (var i = 0; i < vm.selecttypeitemlsit.length; i++) {
+            var tname = vm.selecttypeitemlsit[i].Name;
+            str += '<div class="selectparmitem" dataguid="' + vm.selecttypeitemlsit[i].id + '" title="' + tname + '" datatype="' + datatype + '" bigTitle="' + dataname + '">' +
+                dataname + '：' + '<span style="color:#1593FF;">' + tname +
+                '</span> <i class="iconfont suyiguanbi1" style="font-size:18px;margin-left:5px;color:#1593FF;cursor:pointer;"></i></div >';
+        }
+        callback(str);
+    }
 </script>

@@ -1,8 +1,23 @@
 ﻿var keywork = decodeURI(getQueryString("key"));
+var _kind = decodeURI(getQueryString("kind"));
+var _kindname = decodeURI(getQueryString("kindname"));
+var temptype = decodeURI(getQueryString("searchtype"));
+var _searchtype = 1;//0：根据类别id查询 1：根据关键词搜索
+if (temptype == "" || temptype == null || temptype == undefined) {
+    _searchtype= 1;
+}
+else {
+    _searchtype = temptype;
+}
 $(function () {
-    if (keywork != "") {
-        $(".search_condition_wrap").append('<span class="search-select-item" title="搜索" datatype="66" bigtitle="搜索">搜索:' + keywork + '</span>');
+    if (_searchtype==0) {
+        $(".search_condition_wrap").append('<span class="search-select-item" title="搜索" datatype="66" bigtitle="搜索">搜索:' + _kindname + '</span>');
     }
+    else {
+        if (keywork != "") {
+            $(".search_condition_wrap").append('<span class="search-select-item" title="搜索" datatype="66" bigtitle="搜索">搜索:' + keywork + '</span>');
+        }
+    }    
 })
 function LookLoadingIcon(obj) {
     //alert("调用到了e");
@@ -31,6 +46,9 @@ var datas = "";
 var page_indx = 0;
 var count = 0;
 $().ready(function () {
+    if (_kind != "" && _kind != null && _kind != undefined) {
+        datas += "&kindid=" + _kind;
+    }
     InitData(0);
 });
 
@@ -45,7 +63,7 @@ function InitData(pageindx) {
         type: "POST",
         dataType: "JSON",
         url: '/Product/MsgSearch',
-        data: "pageindex=" + (pageindx + 1) + "&pagesize=" + pagesize + "&key=" + keywork + "&strGuid=" + strGuid + "" + datas,
+        data: "pageindex=" + (pageindx + 1) + "&pagesize=" + pagesize + "&searchtype=" + _searchtype + "&key=" + keywork + "&strGuid=" + strGuid + "" + datas,
         async: false,
         success: function (json) {
             //   debugger;
@@ -88,7 +106,7 @@ function InitData(pageindx) {
                                 typelist += '<div class="search-item-type">' + item.attribute + '：</div>';
                                 typelist += '<div class="search-item-content3">';
                                 typelist += '<ul class="search-item-content" data-type="' + count + '" data-typename="' + item.attribute + '">';
-                                typelist += "<li data-guid=\"\" data-value=\"0\" id=\"" + count + "_SamllType_0\" onlick=\"onselectobj('" + count + "', '0', '" + count + "_SamllType_0','" + item.attribute + "')\" class=\"active\">全部</li>";
+                                typelist += "";//"<li data-guid=\"\" data-value=\"0\" id=\"" + count + "_SamllType_0\" onlick=\"onselectobj('" + count + "', '0', '" + count + "_SamllType_0','" + item.attribute + "')\" class=\"active\">全部</li>";
                                 var sammlCount = 0;
                                 if (smaillData != "") {
                                     //    debugger;
@@ -107,7 +125,7 @@ function InitData(pageindx) {
                                 typelist += '</ul> </div>';
                                 if (sammlCount > 8) {
                                     //∧
-                                    typelist += '<div class="search-item-btn" name="search-item-btn" data-type="' + count + '" data-typename="' + item.attribute + '">更多∨</div>';
+                                    typelist += '<div onclick="selectmore(' + count +')" class="search-item-btn" style="cursor: pointer;" name="search-item-btn" data-type="' + count + '" data-typename="' + item.attribute + '">更多∨</div>';
                                 }
                                 typelist += '</div>';
                             })
@@ -131,7 +149,8 @@ function InitData(pageindx) {
                 else if (state == "NedLogin")
                 {
                     pageindx = 1;
-                    layer.msg("请先登录后再查看！", { icon: 5 });
+                    //layer.msg("请先登录后再查看！", { icon: 5 });
+                    showlogindivbox();
                 }
                 else {
                     layer.msg("系统异常！", { icon: 5 });
@@ -160,20 +179,35 @@ function InitData(pageindx) {
 
 
     ///重置结束
-    ///点击更多显示
-    $("div[name='search-item-btn']").click(function () {
-        var ty = $(this).attr("data-type");
-        if ($("li[name='SamllType_" + ty + "']").css("display") == "none") {
-            $("li[name='SamllType_" + ty + "']").show();
-            $(this).html("隐藏∧");
-        }
-        else {
-            $("li[name='SamllType_" + ty + "']").hide();
-            $(this).html("更多∨");
-        }
-    });
+
  
 
+}
+///点击更多显示
+//$("div[name='search-item-btn']").click(function () {
+//    alert("sdf");
+//    var ty = $(this).attr("data-type");
+//    if ($("li[name='SamllType_" + ty + "']").css("display") == "none") {
+//        $("li[name='SamllType_" + ty + "']").show();
+//        $(this).html("隐藏∧");
+//    }
+//    else {
+//        $("li[name='SamllType_" + ty + "']").hide();
+//        $(this).html("更多∨");
+//    }
+//});
+//查看更多
+function selectmore(t)
+{
+    var ty = t;//$(this).attr("data-type");
+    if ($("li[name='SamllType_" + ty + "']").css("display") == "none") {
+        $("li[name='SamllType_" + ty + "']").show();
+        $(this).html("隐藏∧");
+    }
+    else {
+        $("li[name='SamllType_" + ty + "']").hide();
+        $(this).html("更多∨");
+    }
 }
 
 function pageselectCallback(page_id, jq) {
@@ -310,4 +344,9 @@ function romve(self, obj) {
     }
 
     sharet();
+}
+function showlogindivbox() {
+    $(".showlogin").show();
+    //$(".showdivbox").show();
+    $('body').css("overflow", "hidden");
 }

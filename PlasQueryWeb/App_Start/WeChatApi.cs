@@ -44,6 +44,7 @@ namespace PlasQueryWeb.App_Start
             p.Add("code", code);
             p.Add("grant_type", "authorization_code");
             string url = $"https://api.weixin.qq.com/sns/oauth2/access_token{p.ToParam("?")}";
+            PlasCommon.Common.AddLog("", "请求获取acess_token的url", url, "");
             //Comm.WriteLog("GetAccessTokenSns", url, DebugLogLevel.Normal);
             var result = new CommonApi.BaseApi(url, "GET").CreateRequestReturnJson();
             if (result["errcode"] != null)
@@ -131,11 +132,14 @@ namespace PlasQueryWeb.App_Start
         /// <returns></returns>
         public UserInfoResult GetUserInfoSns(string openID)
         {
+            PlasCommon.Common.AddLog("", "检测token是否存储成功", _config.AccessToken, "");
             var p = new Dictionary<string, string>();
             p.Add("access_token", _config.AccessToken);
             p.Add("openid", openID);
             p.Add("lang", "zh_CN");
+            PlasCommon.Common.AddLog("", "获取微信用户信息开始", "获取微信用户信息开始", "");
             var result = new CommonApi.BaseApi($"https://api.weixin.qq.com/sns/userinfo{p.ToParam("?")}", "GET").CreateRequestReturnJson();
+            PlasCommon.Common.AddLog("", "获取微信用户信息成功", "获取微信用户信息成功", "");
             if (result["errcode"] != null)
             {
                 throw new Exception(JsonConvert.SerializeObject(result));

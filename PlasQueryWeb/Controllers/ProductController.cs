@@ -47,7 +47,7 @@ namespace PlasModel.Controllers
         }
 
 
-        public JsonResult MsgSearch(int pageindex, int pagesize)
+        public JsonResult MsgSearch(int pageindex, int pagesize,int searchtype)
         {
             //如果在没有登录的情况下提示用户登录
             if (pageindex >= 3 && AccountData == null)
@@ -63,6 +63,11 @@ namespace PlasModel.Controllers
             if (!string.IsNullOrWhiteSpace(Request["strGuid"]))
             {
                 strGuid = Request["strGuid"].ToString();
+            }
+            var kindid = "";//分类id
+            if (!string.IsNullOrWhiteSpace(Request["kindid"]))
+            {
+                kindid = Request["kindid"].ToString();
             }
             //二次查询
             var Characteristic = string.Empty;//特性
@@ -115,7 +120,7 @@ namespace PlasModel.Controllers
             var  BigType = new List<ProductAttr>();
             var SamllType = new List<ProductAttr>();
 
-            if (!string.IsNullOrWhiteSpace(key))
+            if (!string.IsNullOrWhiteSpace(key)|| searchtype==0)
             {
                 DataSet ds = new DataSet();
                 if (isTow)//第二次分页，查询数据
@@ -124,7 +129,15 @@ namespace PlasModel.Controllers
                 }
                 else
                 {
-                    ds = bll.GetGeneralSearch(key, pageindex, pagesize, strGuid);
+                    //根据分类id查询
+                    if (searchtype==0)
+                    {
+                        ds = bll.GetGeneralSearch(kindid, pageindex, pagesize, strGuid,0, searchtype);
+                    }
+                    else
+                    {
+                        ds = bll.GetGeneralSearch(key, pageindex, pagesize, strGuid,0, searchtype);
+                    }                    
                 }
                 if (ds.Tables.Contains("ds") && ds.Tables[0] != null)
                 {
@@ -185,6 +198,13 @@ namespace PlasModel.Controllers
                 List<Manufacturer> mlist = Comm.ToDataList<Manufacturer>(manufacturerdt);
                 DataTable dt = productbll.GetAnnotationList(16, 1, "", 0);
                 var annotationlist = Comm.ToDataList<Annotation>(dt);
+                string username = string.Empty;
+                string userimg = string.Empty;
+                if (AccountData!=null)
+                {
+                    username = AccountData.UserName;
+                    userimg = AccountData.HeadImage;
+                }
                 var returndata = new
                 {
                     newdata = listnew,
@@ -197,7 +217,9 @@ namespace PlasModel.Controllers
                     annotationdata = annotationlist,
                     typelistdata= typelist,
                     pdfdata= pdflist,
-                    prodata= prolist
+                    prodata= prolist,
+                    usname= username,
+                    usimg= userimg
                 };
                 return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);
             }

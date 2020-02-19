@@ -8,7 +8,6 @@
             onLoadUnit(this, $(this).attr("bigtypename"), $(this).attr("smalltypename"));
         })
     })
-
 })
 
 //获取列表
@@ -57,7 +56,7 @@ $(".search-item-btn").click(function () {
     var datatile = $(this).attr("data-typename");
     layer.open({
         type: 2,
-        title: 'MORE-' + datatile,
+        title: '选择—' + datatile,
         shadeClose: true,
         shade: 0.8,
         maxmin: true,
@@ -228,11 +227,12 @@ function InitData(pageindx, isNavLink) {
             //debugger;
             var state = json.state;
             if (state == "Success") {
+                //alert(JSON.stringify(json));
                 var productData = json.data;
                 var strvar = "";
                 rowcount = json.totalCount;
                 $("#records").html(rowcount);
-                //alert(JSON.parse(productData));
+                
                 if (rowcount != 0 && productData != "") {
                     $.each(JSON.parse(productData), function (i, n) {
                         tbodyui += "<tr title='" + n.ProUse + "'>";
@@ -241,7 +241,7 @@ function InitData(pageindx, isNavLink) {
                         tbodyui += "<td>" + n.Name + "</td>";
                         tbodyui += "<td>" + n.ProUse + "</td>";
                         tbodyui += "<td>" + n.characteristic + "</td>";
-                        tbodyui += "<td><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.productid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span>";
+                        tbodyui += "<td><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.productid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似s</span>";
                         tbodyui += "<span class='layui-btn layui-btn-sm' id=\"Contrast_" + n.productid + "\" onClick=\"onColl('" + n.productid + "');\"><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>";
                         tbodyui += "</td>";// <span class='layui-btn layui-btn-sm'><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>
                         tbodyui += "</tr>";
@@ -278,9 +278,9 @@ function InitData(pageindx, isNavLink) {
 
 }
 
-function pageselectCallback(page_id, jq) {
-    InitData(page_id, '1');
-}
+//function pageselectCallback(page_id, jq) {
+//    InitData(page_id, '1');
+//}
 
 //查询
 $("#QueryBtnSuper").click(function () {
@@ -371,4 +371,5 @@ $("td[name='samllHit']").click(function () {
         $("tr[name='samll_" + idx + "']").addClass("none");
         $(this).html("点击更多&nbsp;↓");
     }
-})
+});
+

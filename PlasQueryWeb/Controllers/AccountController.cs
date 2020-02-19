@@ -1,10 +1,13 @@
-﻿using PlasCommon;
+﻿using Newtonsoft.Json;
+using PlasBll;
+using PlasCommon;
 using PlasModel;
 using PlasModel.App_Start;
 using PlasQueryWeb.App_Start;
 using PlasQueryWeb.App_Start.CommonApi;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -51,117 +54,174 @@ namespace PlasQueryWeb.Controllers
         [AllowCrossSiteJson]
         public ActionResult LoginByWeiXin(string code, string state = null)
         {
+            string returnresultstr = string.Empty;
+            int returncode = 0;
+            //Func<string, string, ActionResult> error = (content, detail) =>
+            //{
+            //    return this.ToError("错误", detail, Url.Action("Login", "Account"));
+            //};
 
-            Func<string, string, ActionResult> error = (content, detail) =>
-            {
-                return this.ToError("错误", detail, Url.Action("Login", "Account"));
-            };
-            if (string.IsNullOrWhiteSpace(code))
-            {
-                return error("请求有误", "Code不能为空");
-            }
-
+            
             IConfig config = new ConfigWeChatWork();
             WeChatApi wechat = new WeChatApi(config);
             AccessTokenResult result;
+            CommonBll cbll = new CommonBll();
+            DataTable codetb = cbll.GetWxCodeCheck(code);
             try
             {
-                result = wechat.GetAccessTokenSns(code);
-                var openID = result.OpenID;
-                if (state == "openid")
+                if (string.IsNullOrWhiteSpace(code))
                 {
-                    config.AccessToken = result.AccessToken;
-                    //Response.Cookies["WeChatOpenID"].Value = openID;
-                    AccountData.WeChatOpenID = openID;
-                    var userInfo = wechat.GetUserInfoSns(openID);
-                    string returnstr = mbll.WxOrQQLoginBll(openID, "0");
-                    if (returnstr != "Fail")
+                    //return error("请求有误", "Code不能为空");
+                    returnresultstr = "请求错误！";
+                }
+                else if (codetb.Rows.Count<=0)
+                {
+                    //PlasCommon.Common.AddLog("", "开始请求access_token", "开始请求access_token", "");
+                    cbll.AddWxCode(code);
+                    //PlasCommon.Common.AddLog("", "开始请求access_token", "请求access_token结束", "");
+                    //PlasCommon.Common.AddLog("", "开始请求access_token", "开始请求access_token", "");
+                    result = wechat.GetAccessTokenSns(code);
+                    //PlasCommon.Common.AddLog("", "请求access_token成功", "请求access_token成功", "");
+                    var openID = result.OpenID;
+                    if (state == "openid")
                     {
-                        string[] resultstr = returnstr.Split(',');
-                        //如果微信已经存在则登录
-                        if (resultstr.Length > 0)
+                        PlasCommon.Common.AddLog("", "access_token", result.AccessToken, "");
+
+                        config.AccessToken = result.AccessToken;
+                        //Response.Cookies["WeChatOpenID"].Value = openID;
+                        //AccountData.WeChatOpenID = openID;
+                        //PlasCommon.Common.AddLog("", "获取用户信息开始1", "获取用户信息开始1", "");
+                        var userInfo = wechat.GetUserInfoSns(openID);
+                        //PlasCommon.Common.AddLog("", "获取用户信息成功", "获取用户信息成功", "");
+                        string returnstr = mbll.WxOrQQLoginBll(openID, "0");
+                        if (returnstr != "Fail")
                         {
-                            
-                            mbll.UpdateUserInfobll("HeadImage", userInfo.HeadImgUrl, resultstr[1]);
-                            mbll.UpdateUserInfobll("UserName", userInfo.NickName, resultstr[1]);
-                            if (resultstr[0].Equals("Success"))
+                            string[] resultstr = returnstr.Split(',');
+                            //如果微信已经存在则登录
+                            if (resultstr.Length > 0)
                             {
-                                var returndata = new
+
+                                mbll.UpdateUserInfobll("HeadImage", userInfo.HeadImgUrl, resultstr[3]);
+                                mbll.UpdateUserInfobll("UserName", userInfo.NickName, resultstr[2]);
+                                if (resultstr[0].Equals("Success"))
                                 {
-                                    usid = resultstr[1],
-                                    phone = resultstr[4]
-                                };
-                                PlasCommon.Common.AddLog("", "微信登录成功", "登录成功" + AccountData.WeChatOpenID, "");
-                                return RedirectToAction("Home", "Index");
-                            }
-                            else
-                            {
-                                return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
-                            }
-                        }
-                        else
-                        {
-                            return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
-                        }
-                    }
-                    //不存在则注册,注册成功则返回用户id，注册失败则返回失败状态
-                    else
-                    {
-                        cp_userview model = new cp_userview();
-                        model.UserName = userInfo.NickName;
-                        model.wxopenid = openID;
-                        model.HeadImage = userInfo.HeadImgUrl;
-                        string registerresultstr = mbll.WxOrQQSaveRegister(model,"0");
-                        //已经存在
-                        if (registerresultstr == "AlreadyExist")
-                        {
-                            return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
-                        }
-                        else if (registerresultstr == "Fail")
-                        {
-                            return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
-                        }
-                        else if (registerresultstr == "Success")
-                        {
-                            string returnstr2 = mbll.WxOrQQLoginBll(openID, "0");
-                            string[] resultstr2 = returnstr2.Split(',');
-                            if (resultstr2.Length > 0)
-                            {
-                                if (resultstr2[0].Equals("Success"))
-                                {
-                                    var returndata2 = new
+                                    //var returndata = new
+                                    //{
+                                    //    usid = resultstr[1],
+                                    //    phone = resultstr[4]
+                                    //};
+                                    //把重要的用户信息进行加密，存放到cookie
+                                    this.SetAccountData(new AccountData
                                     {
-                                        usid = resultstr2[1],
-                                        phone = resultstr2[4]
-                                    };
-                                    PlasCommon.Common.AddLog("", "微信登录成功", "登录成功" + AccountData.WeChatOpenID, "");
-                                    return RedirectToAction("Home", "Index");
+                                        UserID = resultstr[1],
+                                        UserName = resultstr[2],
+                                        HeadImage = resultstr[3],
+                                        WeChatOpenID = openID
+                                    });
+                                    //PlasCommon.Common.AddLog("", "微信登录成功", "登录成功", "");
+                                    //return RedirectToAction("Home", "Index");
+                                    //return new RedirectResult("/Home/Index");
+                                    returnresultstr = "登录成功！";
+                                    returncode = 1;
                                 }
                                 else
                                 {
-                                    return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+                                    //return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+                                    returnresultstr = "登录失败！";
                                 }
                             }
                             else
                             {
-                                return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+                                //return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+                                returnresultstr = "登录失败！";
                             }
                         }
+                        //不存在则注册,注册成功则返回用户id，注册失败则返回失败状态
                         else
                         {
-                            return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+                            cp_userview model = new cp_userview();
+                            model.UserName = userInfo.NickName;
+                            model.wxopenid = openID;
+                            model.HeadImage = userInfo.HeadImgUrl;
+                            string registerresultstr = mbll.WxOrQQSaveRegister(model, "0");
+                            //已经存在
+                            if (registerresultstr == "AlreadyExist")
+                            {
+                                //return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+                                returnresultstr = "登录失败！";
+                            }
+                            else if (registerresultstr == "Fail")
+                            {
+                                //return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+                                returnresultstr = "登录失败！";
+                            }
+                            else if (registerresultstr == "Success")
+                            {
+                                string returnstr2 = mbll.WxOrQQLoginBll(openID, "0");
+                                string[] resultstr2 = returnstr2.Split(',');
+                                if (resultstr2.Length > 0)
+                                {
+                                    if (resultstr2[0].Equals("Success"))
+                                    {
+                                        //var returndata2 = new
+                                        //{
+                                        //    usid = resultstr2[1],
+                                        //    phone = resultstr2[4]
+                                        //};
+                                        this.SetAccountData(new AccountData
+                                        {
+                                            UserID = resultstr2[1],
+                                            UserName = resultstr2[2],
+                                            HeadImage = resultstr2[3],
+                                            WeChatOpenID = openID
+                                        });
+                                        //PlasCommon.Common.AddLog("", "微信登录成功", "登录成功", "");
+                                        //return RedirectToAction("Index", "Home");
+                                        //return Redirect("/Home/Index");
+                                        returnresultstr = "登录成功！";
+                                        returncode = 2;
+                                        //return new RedirectResult("/Home/Index");
+                                    }
+                                    else
+                                    {
+                                        //return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+                                        returnresultstr = "登录失败！";
+                                    }
+                                }
+                                else
+                                {
+                                    //return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+                                    returnresultstr = "登录失败!";
+                                }
+                            }
+                            else
+                            {
+                                //return Json(Common.ToJsonResult("Fail", "登录失败"), JsonRequestBehavior.AllowGet);
+                                returnresultstr = "登录失败！";
+                            }
                         }
+                    }
+                    else
+                    {
+                        //return Json(Common.ToJsonResult("Error", "登录失败"));
+                        returnresultstr = "登录失败！";
                     }
                 }
                 else
                 {
-                    return Json(Common.ToJsonResult("Error", "登录成功"));
+                    returnresultstr = "登录成功！";
+                    returncode = 3;
                 }
             }
             catch (Exception ex)
             {
-                return error("请求有误", ex.Message);
+                //PlasCommon.Common.AddLog("", "微信请求错误", ex.Message, "");
+                //return error("请求有误", ex.Message);
+                returnresultstr = "系统错误：" + ex.Message;
             }
+            ViewBag.texing = returnresultstr;
+            ViewBag.typecode = returncode;
+            return View();
         }
         #endregion
 
@@ -189,9 +249,9 @@ namespace PlasQueryWeb.Controllers
                 {
                     config.qqAccessToken = result.qqAccessToken;
                     //Response.Cookies["WeChatOpenID"].Value = openID;
-                    AccountData.QQOpenID = openID;
+                    //AccountData.QQOpenID = openID;
                     //return Json(Common.ToJsonResult("Success", "成功", new { OpenID = openID }));
-                    PlasCommon.Common.AddLog("", "qq登录成功", "登录成功" + AccountData.WeChatOpenID, "");
+                    PlasCommon.Common.AddLog("", "qq登录成功", "登录成功", "");
                     return RedirectToAction("Home", "Index");
                 }
                 else

@@ -10,6 +10,12 @@
     Html.RenderAction("PubSearch", "Public");
 }
 <style type="text/css">
+    * {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        border: 0;
+    }
     .search-content-box > .search-content > table > thead > tr > th {
         background-color: #1593FF;
         color: #ffffff;
@@ -54,6 +60,16 @@
         border: 1px solid #1593FF !important;
         border-radius:3px;
     }
+    .showlogin {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        background: rgba(0, 0, 0, 0.4);
+        width: 100%; /*宽度设置为100%，这样才能使隐藏背景层覆盖原页面*/
+        height: 100%;
+        display: none;
+        z-Index: 1001;
+    }
 </style>
 <div style="width:100%;height:auto;">
     <div style="width:70%;height:auto;margin:0 auto;">
@@ -72,7 +88,7 @@
         <div style="padding: 0 20px;box-sizing: border-box;" id="Query_btnData">
             <p class="search-btn-screem"><span class="fa fa-search"></span>开始搜索</p>
         </div>*@
-        <div class="search-content-box" style="margin-top:20px;">
+        <div class="search-content-box" style="margin-top:20px;margin-bottom:20px;">
             <div class="search-content-page">
                 共搜索到<span style="color: red;" id="records">0</span>条相关商品信息
             </div>
@@ -100,7 +116,9 @@
         </div>
     </div>
 </div>
-
+@*<div id="Product" class="showlogin" style="display:none;">
+    @Html.Partial("~/Views/Public/Login.cshtml")
+</div>*@
 @Html.Partial("~/Views/Public/Bottom.cshtml")
 
 @Scripts.Render("~/ProductJS/BesPdtJS")

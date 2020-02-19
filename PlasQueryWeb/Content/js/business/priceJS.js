@@ -1,3 +1,38 @@
+
+//初始化vue组件
+var vm = new Vue({
+    el: '#allbox',
+    data: {
+        parmlist: [],//条件列表
+        showtitle: "点击查看更多查询条件",
+        selectitemlist:[]//选中的搜索条件
+    }, methods: {
+        //加载头部条件数据
+        loaddata: function () {
+            $.ajax({
+                type: "get",
+                dataType: "JSON",
+                url: '/Price/GetTopParmList',
+                data: "",
+                async: true,
+                success: function (json) {
+                    //alert(JSON.stringify(json));
+                    var state = json.State;
+                    if (state == "Success") {
+                        vm.parmlist = json.Result;
+                    }
+                    else {
+                        layer.msg("系统异常！", { icon: 5 });
+                    }
+                },
+                error: function () { layer.msg('未找到数据', { icon: 5 }); }
+            });
+
+            //$("html, body").stop().animate({ scrollTop: $("#records").offset().top - 200 }, 400);
+        }
+    }
+});
+
 var pagesize = 14;
     var rowcount = 0;
     var datas = "";
@@ -70,6 +105,10 @@ $(".search_item_contentList").find("li").click(function () {
         if (dataval == "0") {
             $.each($("ul[data-type='" + datatype + "']").find("li"), function (index, item) {
                 $(this).removeClass("active");
+                if (datatype=="0") {
+                    deleteselectcomm("厂家选择", function () {
+                    });
+                }
             })
             $("ul[data-type='" + datatype + "']").find("li").eq(0).addClass("active");
             datas = "";
@@ -92,9 +131,14 @@ $(".search_item_contentList").find("li").click(function () {
                     strwhere += '&SmallClass=' + $(this).attr("data-value");
                 }
             })
-            $.each($("ul[data-type='4']").find("li"), function (index, item) {
-                if ($(this).hasClass("active") && $(this).attr("data-value")!="0") {
-                    strwhere += '&Manufacturer=' + $(this).attr("data-value");
+            $.each($("ul[data-type='0']").find("li"), function (index, item) {
+                if ($(this).hasClass("active") && $(this).attr("data-value") != "0") {
+                    var tvalue = $(this).attr("data-value");
+                    deleteselectcomm("厂家选择", function () {
+                        var titem = { "Name": tvalue, "ParnetName": "厂家选择", "TypeName":"厂家选择" }
+                        vm.selectitemlist.push(titem);
+                    });
+                    strwhere += '&Manufacturer=' + tvalue;
                 }
             })
             datas = strwhere;
@@ -114,10 +158,9 @@ $(".search_item_contentList").find("li").click(function () {
 
     $().ready(function () {
         InitData(0);
+        vm.loaddata();
+
     });
-
-
-
 function InitData(pageindx) {
     page_indx = pageindx;
     //$("#pagespan").html("第" + pageindx + "页");
@@ -436,5 +479,106 @@ $("#QuotationBtn").click(function () {
  
 	
 	
-	
-	
+//展开大类
+function openitembox() {
+    if (vm.showtitle == "点击查看更多查询条件") {
+        vm.showtitle = "收起";
+        for (var i = 0; i < vm.parmlist.length; i++) {
+            var tempclass = vm.parmlist[i].classstr;
+            if (tempclass == "itemboxclass") {
+                vm.parmlist[i].classstr = "itemboxclassshow";
+            }
+        }
+    }
+    else {
+        vm.showtitle = "点击查看更多查询条件";
+        for (var i = 0; i < vm.parmlist.length; i++) {
+            var tempclass = vm.parmlist[i].classstr;
+            if (tempclass == "itemboxclassshow") {
+                vm.parmlist[i].classstr = "itemboxclass";
+            }
+        }
+    }   
+}
+//展开小类
+function childmore(t)
+{
+    var index = t.id;
+    var tempname = vm.parmlist[index].tname;
+    var tlist = vm.parmlist[index].childlist;
+    if (tempname =="更多 ∨") {
+        vm.parmlist[index].tname = "收起 ∧";
+        for (var i = 0; i < tlist.length; i++) {
+            if (tlist[i].classstr =="none") {
+                vm.parmlist[index].childlist[i].classstr = "childshowclass";
+            }
+        }
+    }
+    else {
+        vm.parmlist[index].tname = "更多 ∨";
+        for (var i = 0; i < tlist.length; i++) {
+            if (tlist[i].classstr == "childshowclass") {
+                vm.parmlist[index].childlist[i].classstr = "none";
+            }
+        }
+    }
+}
+//选择类别属性
+function selectitem(t)
+{
+    var indexstr = t.id;
+    var indexsplit = indexstr.split(',');
+    var parentindex = indexsplit[0];
+    var thisindex = indexsplit[1];
+    var tlist = vm.parmlist[parentindex].childlist;
+    var selectname = tlist[thisindex].Name;
+    var parnemtname = vm.parmlist[parentindex].Name;
+    deleteselectcomm("分类", function () {
+        var titem = { "Name": selectname, "ParnetName": parnemtname,"TypeName":"分类" }
+        vm.selectitemlist.push(titem);
+    });
+    //刷新数据
+    getparmstr(function (parmstr) {
+        datas = parmstr;
+        InitData(0);
+    });
+}
+//删除选中的搜索条件
+function deleteselectitem(ts)
+{
+    var index = ts.id;
+    var name = vm.selectitemlist[index].TypeName;
+    deleteselectcomm(name, function () {
+        //刷新数据
+        getparmstr(function (parmstr) {
+            datas = parmstr;
+            InitData(0);
+        });
+    });
+}
+function deleteselectcomm(name,callback)
+{
+    for (var k = 0; k < vm.selectitemlist.length; k++) {
+        if (vm.selectitemlist[k].TypeName == name) {
+            vm.selectitemlist.splice(k, 1);
+            k--;
+        }
+    }
+    callback();
+}
+//获取最终执行参数值
+function getparmstr(callback)
+{
+    var tresultstr = "";
+    for (var i = 0; i < vm.selectitemlist.length; i++) {
+        var typename = vm.selectitemlist[i].TypeName;
+        var name = vm.selectitemlist[i].Name;
+        if (typename=="分类") {
+            tresultstr += '&SmallClass=' + name;
+        }
+        else {
+            tresultstr += '&Manufacturer=' + name;
+        }        
+    }
+    callback(tresultstr);
+}

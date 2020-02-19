@@ -1,0 +1,509 @@
+﻿
+@{
+    Layout = null;
+}
+<script src="~/Content/js/vue.js" type="text/javascript"></script>
+<div style="width:700px;height:516px;background-color:#ffffff;border-radius:5px;margin:0 auto;margin-top:10%;z-index:1102;opacity:1.0;">
+    <div style="width:240px;height:516px;float:left;border-right:1px dashed #dddddd;">
+        <img style="width:100%;height:516px;border:none;" src="~/Content/img/loginleft.png" />
+    </div>
+    <div style="width:calc(100% - 241px);height:516px;float:left;">
+        <div style="width:100%;height:50px;">
+            <div id="toaccountdiv" style="width:120px;height:50px;float:left;line-height:50px;font-size:14px;text-align:left;color:#333333;background:#ffffff;cursor:pointer;margin-left:10px;padding-left:15px;display:none;" onclick="toaccountlogin(1)">
+                <i class="iconfont suyiback_light" style="color:#333333;font-size:16px;"></i>返回账号登录
+            </div>
+            <div id="toaccountdiv1" style="width:120px;height:50px;float:left;line-height:50px;font-size:14px;text-align:left;color:#333333;background:#ffffff;cursor:pointer;margin-left:10px;padding-left:15px;display:none;" onclick="toaccountlogin(2)">
+                <i class="iconfont suyiback_light" style="color:#333333;font-size:16px;"></i>返回账号注册
+            </div>
+            <div style="width:120px;height:50px;float:right;line-height:50px;font-size:14px;text-align:right;color:#333333;background:#ffffff;cursor:pointer;margin-right:10px;padding-right:15px;" onclick="closeshowdiv()">
+                关闭
+            </div>
+        </div>
+        <div id="accountlogin" style="width:100%;height:460px;">
+            <div style="width:100%;height:70px;">
+                <div style="height:70px;line-height:70px;float:left;font-size:22px;color:#333333;padding-left:50px;letter-spacing:1px;font-weight:700;">
+                    账号密码登录
+                </div>
+                <div style="height:70px;line-height:70px;float:right;font-size:14px;color:#333333;padding-right:35px;cursor:pointer;" onclick="tomessagelogin()">
+                    短信登录
+                </div>
+            </div>
+            <div style="width:100%;height:380px;margin-top:5px;">
+                <div style="width:100%;height:50px;">
+                    <div style="width:400px;height:50px;background:#f8f9fb;border-radius:3px;margin:0 auto;">
+                        <div style="width:50px;height:50px;float:left;line-height:50px;text-align:center;">
+                            <i class="iconfont suyiphone_icon" style="color:#999999;margin-left:10px;font-size:24px;"></i>
+                        </div>
+                        <div style="width:350px;height:50px;float:left;background:#f8f9fb;">
+                            <input id="loginphone" placeholder="请输入手机号" type="text" style="width:100%;height:40px;margin-top:7px;line-height:50px;font-size:14px;color:#666666;text-indent:10px;background:#f8f9fb;" />
+                        </div>
+                    </div>
+                </div>
+                <div style="width:100%;height:25px;">
+                    @*<div style="width:400px;height:25px;margin:0 auto;color:#FF6600;font-size:10px;line-height:20px;display:none; ">
+                       {{loginphonemessage}}
+                    </div>*@
+                </div>
+                <div style="width:100%;height:50px;">
+                    <div style="width:400px;height:50px;margin-top:5px;background:#f8f9fb;border-radius:3px;margin:0 auto;">
+                        <div style="width:50px;height:50px;float:left;line-height:50px;text-align:center;">
+                            <i class="iconfont suyimima" style="color:#999999;margin-left:10px;font-size:24px;"></i>
+                        </div>
+                        <div style="width:350px;height:50px;float:left;background:#f8f9fb;">
+                            <input id="loginpwd" placeholder="请输入密码" type="password" style="width:100%;height:40px;margin-top:7px;line-height:50px;font-size:14px;color:#666666;text-indent:10px;background:#f8f9fb;" />
+                        </div>
+                    </div>
+                </div>
+                <div style="width:100%;height:30px;">
+                    <div id="accountloginmessage" style="width:400px;height:30px;margin:0 auto;color:#FF6600;font-size:12px;line-height:25px;"></div>
+                </div>
+                <div style="width:100%;height:50px;">
+                    <div style="width:400px;height:50px;margin:0 auto;background:#1593FF;color:#ffffff;font-size:16px;letter-spacing:2px;line-height:50px;border-radius:5px;cursor:pointer;text-align:center;" onclick="pwdlogin()">
+                        立即登录
+                    </div>
+                </div>
+                <div style="width:100%;height:40px;">
+                    <div style="width:400px;height:40px;margin:0 auto;">
+                        <div style="width:50%;height:40px;float:left;color:#1594FF;font-size:12px;line-height:35px;cursor:pointer;" onclick="toforgetpwd()">
+                            忘记密码？
+                        </div>
+                        <div style="width:50%;height:40px;float:right;color:#666666;font-size:12px;line-height:35px;text-align:right;" onclick="toregister()">
+                            没有账号？<span style="color:#1594FF;cursor:pointer">立即注册</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="width:100%;height:40px;">
+                    <div style="width:400px;height:40px;margin:0 auto;color:#333333;font-size:12px;line-height:25px;text-align:center;">
+                        其他登录方式
+                    </div>
+                </div>
+                <div style="width:100%;height:70px;">
+                    <div style="width:160px;height:70px;margin:0 auto;">
+                        <div style="width:70px;height:70px;float:left;">
+                            <div style="width:50px;height:50px;border:1px solid #1594FF;line-height:50px;text-align:center;border-radius:180px;cursor:pointer;" onclick="towxorqqlogin(2)">
+                                <i class="iconfont suyiqq1" style="color:#1594FF;font-size:30px;"></i>
+                            </div>
+                        </div>
+                        <div style="width:70px;height:70px;float:right;">
+                            <div style="width:50px;height:50px;border:1px solid #3CB950;line-height:50px;text-align:center;border-radius:180px;cursor:pointer;" onclick="towxorqqlogin(1)">
+                                <i class="iconfont suyiweixin" style="color:#3CB950;font-size:30px;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="messagelogin" style="width:100%;height:460px;display:none;">
+            <div style="width:100%;height:70px;">
+                <div style="height:70px;line-height:70px;float:left;font-size:22px;color:#333333;padding-left:50px;letter-spacing:1px;font-weight:700;">
+                    短信登录
+                </div>
+                <div style="height:70px;line-height:70px;float:right;font-size:14px;color:#333333;padding-right:35px;cursor:pointer;" onclick="toaccountlogin(1)">
+                    账号密码登录
+                </div>
+            </div>
+            <div style="width:100%;height:380px;margin-top:5px;">
+                <div style="width:100%;height:50px;">
+                    <div style="width:400px;height:50px;background:#f8f9fb;border-radius:3px;margin:0 auto;">
+                        <div style="width:50px;height:50px;float:left;line-height:50px;text-align:center;">
+                            <i class="iconfont suyiphone_icon" style="color:#999999;margin-left:10px;font-size:24px;"></i>
+                        </div>
+                        <div style="width:350px;height:50px;float:left;background:#f8f9fb;">
+                            <input id="codeloginphone" placeholder="请输入手机号" type="text" style="width:100%;height:40px;margin-top:7px;line-height:50px;font-size:14px;color:#666666;text-indent:10px;background:#f8f9fb;" />
+                        </div>
+                        @*<div style="width:80px;height:50px;float:left;line-height:50px;font-size:12px;color:#666666;text-align:center;cursor:pointer;">
+                            获取验证码
+                        </div>*@
+                    </div>
+                </div>
+                <div style="width:100%;height:25px;">
+                    @*<div style="width:400px;height:25px;margin:0 auto;color:#FF6600;font-size:10px;line-height:20px;display:none; ">
+                        请输入正确的手机号
+                    </div>*@
+                </div>
+                <div style="width:100%;height:50px;">
+                    <div style="width:400px;height:50px;margin:0 auto;">
+                        <div style="width:270px;height:50px;margin-top:5px;background:#f8f9fb;border-radius:3px;float:left;">
+                            <div style="width:50px;height:50px;float:left;line-height:50px;text-align:center;">
+                                <i class="iconfont suyiyanzhengma" style="color:#999999;margin-left:10px;font-size:24px;"></i>
+                            </div>
+                            <div style="width:220px;height:50px;float:left;background:#f8f9fb;">
+                                <input id="codelogincode" placeholder="请输入验证码" type="text" style="width:100%;height:40px;margin-top:7px;line-height:50px;font-size:14px;color:#666666;text-indent:10px;background:#f8f9fb;" />
+                            </div>
+                        </div>
+                        <div style="width:130px;height:50px;margin-top:5px;float:left;">
+                            <div id="code" onclick="setcode()" style="width:105px;height:50px;float:left;line-height:50px;font-size:12px;color:#ffffff;background:#9BC9FF;text-align:center;cursor:pointer;border-radius:3px;margin-left:25px;letter-spacing:1px;">
+                                获取验证码
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="width:100%;height:30px;">
+                    <div id="codeloginmessage" style="width:400px;height:30px;margin:0 auto;color:#FF6600;font-size:12px;line-height:25px;">
+                        @*{{codeloginmessage}}*@
+                    </div>
+                </div>
+                <div style="width:100%;height:50px;">
+                    <div style="width:400px;height:50px;margin:0 auto;background:#1593FF;color:#ffffff;font-size:16px;letter-spacing:2px;line-height:50px;border-radius:5px;cursor:pointer;text-align:center;" onclick="codelogin()">
+                        立即登录
+                    </div>
+                </div>
+                <div style="width:100%;height:40px;">
+                    <div style="width:400px;height:40px;margin:0 auto;color:#1594FF;font-size:12px;line-height:25px;cursor:pointer;" onclick="toforgetpwd()">
+                        忘记密码？
+                    </div>
+                </div>
+                <div style="width:100%;height:40px;">
+                    <div style="width:400px;height:40px;margin:0 auto;color:#333333;font-size:12px;line-height:25px;text-align:center;">
+                        其他登录方式
+                    </div>
+                </div>
+                <div style="width:100%;height:70px;">
+                    <div style="width:160px;height:70px;margin:0 auto;">
+                        <div style="width:70px;height:70px;float:left;">
+                            <div style="width:50px;height:50px;border:1px solid #1594FF;line-height:50px;text-align:center;border-radius:180px;cursor:pointer;" onclick="towxorqqlogin(2)">
+                                <i class="iconfont suyiqq1" style="color:#1594FF;font-size:30px;"></i>
+                            </div>
+                        </div>
+                        <div style="width:70px;height:70px;float:right;">
+                            <div style="width:50px;height:50px;border:1px solid #3CB950;line-height:50px;text-align:center;border-radius:180px;cursor:pointer;" onclick="towxorqqlogin(1)">
+                                <i class="iconfont suyiweixin" style="color:#3CB950;font-size:30px;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="wxorqqlogin" style="width:100%;height:460px;display:none;">
+            @*<div style="width:100%;height:70px;">
+                <div style="height:70px;line-height:70px;float:right;font-size:14px;color:#333333;padding-right:35px;cursor:pointer;">
+                    <span style="cursor:pointer;">短信登录</span>/<span style="cursor:pointer;">账号密码登录</span>
+                </div>
+            </div>*@
+            <div style="width:100%;height:460px;">
+                <div style="width:100%;height:400px;">
+                    <div id="wxqrcodediv" style="width:100%;height:400px;text-align:center;">
+
+                    </div>
+                </div>
+                <div id="showcodediv" style="width:100%;height:60px;">
+                    <div style="width:160px;height:60px;margin:0 auto;">
+                        <div style="width:60px;height:60px;float:left;">
+                            <div style="width:50px;height:50px;border:1px solid #1594FF;line-height:50px;text-align:center;border-radius:180px;cursor:pointer;" onclick="towxorqqlogin(2)">
+                                <i class="iconfont suyiqq1" style="color:#1594FF;font-size:30px;"></i>
+                            </div>
+                        </div>
+                        <div style="width:60px;height:60px;float:right;">
+                            <div style="width:50px;height:50px;border:1px solid #3CB950;line-height:50px;text-align:center;border-radius:180px;cursor:pointer;" onclick="towxorqqlogin(1)">
+                                <i class="iconfont suyiweixin" style="color:#3CB950;font-size:30px;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="forgetpwd" style="width:100%;height:460px;display:none;">
+            <div style="width:100%;height:70px;">
+                <div style="height:70px;line-height:70px;float:left;font-size:22px;color:#333333;padding-left:50px;letter-spacing:1px;font-weight:700;">
+                    找回密码
+                </div>
+                <div style="height:70px;line-height:70px;float:right;font-size:14px;color:#333333;padding-right:35px;cursor:pointer;" onclick="toaccountlogin(1)">
+                    返回登录
+                </div>
+            </div>
+            <div style="width:100%;height:380px;margin-top:5px;" id="forget1">
+                <div style="width:100%;height:50px;">
+                    <div style="width:400px;height:50px;background:#f8f9fb;border-radius:3px;margin:0 auto;">
+                        <div style="width:50px;height:50px;float:left;line-height:50px;text-align:center;">
+                            <i class="iconfont suyiphone_icon" style="color:#999999;margin-left:10px;font-size:24px;"></i>
+                        </div>
+                        <div style="width:350px;height:50px;float:left;background:#f8f9fb;">
+                            <input id="forgetphone" placeholder="请输入手机号" type="text" style="width:100%;height:40px;margin-top:7px;line-height:50px;font-size:14px;color:#666666;text-indent:10px;background:#f8f9fb;" />
+                        </div>
+                    </div>
+                </div>
+                <div style="width:100%;height:25px;">
+                    @*<div style="width:400px;height:25px;margin:0 auto;color:#FF6600;font-size:10px;line-height:20px;display:none; ">
+                        请输入正确的手机号
+                    </div>*@
+                </div>
+                <div style="width:100%;height:50px;">
+                    <div style="width:400px;height:50px;margin:0 auto;">
+                        <div style="width:270px;height:50px;margin-top:5px;background:#f8f9fb;border-radius:3px;float:left;">
+                            <div style="width:50px;height:50px;float:left;line-height:50px;text-align:center;">
+                                <i class="iconfont suyiyanzhengma" style="color:#999999;margin-left:10px;font-size:24px;"></i>
+                            </div>
+                            <div style="width:220px;height:50px;float:left;background:#f8f9fb;">
+                                <input id="forgetcode" placeholder="请输入验证码" type="text" style="width:100%;height:40px;margin-top:7px;line-height:50px;font-size:14px;color:#666666;text-indent:10px;background:#f8f9fb;" />
+                            </div>
+                        </div>
+                        <div style="width:130px;height:50px;margin-top:5px;float:left;">
+                            <div id="forgetcodetimestr" onclick="forgetpwdsetcode()" style="width:105px;height:50px;float:left;line-height:50px;font-size:12px;color:#ffffff;background:#9BC9FF;text-align:center;cursor:pointer;border-radius:3px;margin-left:25px;letter-spacing:1px;">
+                                获取验证码
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="width:100%;height:30px;">
+                    <div id="forgetcodemessage1" style="width:400px;height:30px;margin:0 auto;color:#FF6600;font-size:12px;line-height:25px;">
+                    </div>
+                </div>
+                <div style="width:100%;height:50px;margin-top:20px;">
+                    <div style="width:400px;height:50px;margin:0 auto;background:#1593FF;color:#ffffff;font-size:16px;letter-spacing:2px;line-height:50px;border-radius:5px;cursor:pointer;text-align:center;" onclick="tonextforget()">
+                        下一步
+                    </div>
+                </div>
+            </div>
+            <div id="forget2" style="width:100%;height:380px;margin-top:5px;display:none;">
+                <div style="width:100%;height:50px;">
+                    <div style="width:400px;height:50px;background:#f8f9fb;border-radius:3px;margin:0 auto;">
+                        <div style="width:50px;height:50px;float:left;line-height:50px;text-align:center;">
+                            <i class="iconfont suyiphone_icon" style="color:#999999;margin-left:10px;font-size:24px;"></i>
+                        </div>
+                        <div style="width:350px;height:50px;float:left;background:#f8f9fb;">
+                            <input id="newpwd" placeholder="设置新密码" type="password" style="width:100%;height:40px;margin-top:7px;line-height:50px;font-size:14px;color:#666666;text-indent:10px;background:#f8f9fb;" />
+                        </div>
+                    </div>
+                </div>
+                <div style="width:100%;height:25px;">
+                    @*<div style="width:400px;height:25px;margin:0 auto;color:#FF6600;font-size:10px;line-height:20px;display:none; ">
+                        请输入新密码
+                    </div>*@
+                </div>
+                <div style="width:100%;height:50px;">
+                    <div style="width:400px;height:50px;margin:0 auto;">
+                        <div style="width:400px;height:50px;margin-top:5px;background:#f8f9fb;border-radius:3px;float:left;">
+                            <div style="width:50px;height:50px;float:left;line-height:50px;text-align:center;">
+                                <i class="iconfont suyimima" style="color:#999999;margin-left:10px;font-size:24px;"></i>
+                            </div>
+                            <div style="width:350px;height:50px;float:left;background:#f8f9fb;">
+                                <input id="confirmnewpwd" placeholder="确认新密码" type="password" style="width:100%;height:40px;margin-top:7px;line-height:50px;font-size:14px;color:#666666;text-indent:10px;background:#f8f9fb;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="width:100%;height:30px;">
+                    <div id="forgetcodemessage2" style="width:400px;height:30px;margin:0 auto;color:#FF6600;font-size:12px;line-height:25px;">
+                    </div>
+                </div>
+                <div style="width:100%;height:50px;margin-top:20px;">
+                    <div style="width:400px;height:50px;margin:0 auto;background:#1593FF;color:#ffffff;font-size:16px;letter-spacing:2px;line-height:50px;border-radius:5px;cursor:pointer;text-align:center;" onclick="tosumbitforget()">
+                        提交
+                    </div>
+                </div>
+                <div style="width:100%;height:40px;">
+                    <div style="width:400px;height:40px;margin:0 auto;color:#1594FF;font-size:12px;line-height:25px;cursor:pointer;" onclick="toforgetpwdup()">
+                        上一步
+                    </div>
+                </div>
+            </div>
+            <div id="forget3" style="width:100%;height:380px;margin-top:5px;display:none;">
+                <div style="width:400px;height:100px;margin:0 auto;">
+                    <div style="width:100%;height:50px;margin-top:80px;line-height:50px;">
+                        <span style="display:block;width:30px;height:30px;line-height:30px;text-align:center;background:rgb(21, 147, 255);float:left;border-radius:30px;margin-left:30%;">
+                            <i class="iconfont suyiqueding" style="color:#ffffff;font-size:24px;"></i>
+                        </span>
+                        <span style="display:block;height:30px;line-height:30px;color:#333333;font-size:18px;margin-left:10px;float:left;">
+                            重置成功
+                        </span>
+                    </div>
+                </div>
+                <div style="width:100%;height:50px;margin-top:20px;">
+                    <div style="width:400px;height:50px;margin:0 auto;background:#1593FF;color:#ffffff;font-size:16px;letter-spacing:2px;line-height:50px;border-radius:5px;cursor:pointer;text-align:center;" onclick="completeforgetpwd()">
+                        完成
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="registerdiv" style="width:100%;height:460px;display:none;">
+            @*<div style="width:100%;height:70px;">
+                <div style="height:70px;line-height:70px;float:left;font-size:22px;color:#333333;padding-left:50px;letter-spacing:1px;font-weight:700;">
+                    注册
+                </div>
+                <div style="height:70px;line-height:70px;float:right;font-size:14px;color:#333333;padding-right:35px;cursor:pointer;" onclick="toaccountlogin()">
+                    返回登录
+                </div>
+            </div>*@
+            <div style="width:100%;height:380px;margin-top:25px;">
+                <div style="width:400px;height:120px;margin:0 auto;">
+                    <div style="width:100%;height:80px;text-align:center;">
+                        <img src="~/Content/img/syicobd.jpg" style="width:180px;" />
+                    </div>
+                    <div style="width:400px;height:40px;margin:0 auto;">
+                        <div style="width:25%;height:20px;float:left;border-bottom:1px solid #dddddd;"></div>
+                        <div style="width:50%;height:40px;float:left;line-height:40px;text-align:center;color:#666666;letter-spacing:2px;">一键注册，即可登录</div>
+                        <div style="width:25%;height:20px;float:left;border-bottom:1px solid #dddddd;"></div>
+                    </div>
+                </div>
+                <div style="width:400px;height:120px;margin:0 auto;margin-top:25px;">
+                    <div style="width:80%;height:120px;margin:0 auto;">
+                        <div style="float:left;margin-left:35px;">
+                            <div style="text-align:center;border-radius:180px;cursor:pointer;" onclick="towxorqqlogin(12)">
+                                <i class="iconfont suyiqq" style="color:#1594FF;font-size:88px;"></i>
+                            </div>
+                            <div style="height:20px;text-align:center;line-height:20px;color:#666666;letter-spacing:1px;">QQ注册</div>
+                        </div>
+                        <div style="float:right;margin-right:35px;">
+                            <div style="text-align:center;border-radius:180px;cursor:pointer;" onclick="towxorqqlogin(11)">
+                                <i class="iconfont suyiwx" style="color:#3CB950;font-size:88px;"></i>
+                            </div>
+                            <div style="height:20px;text-align:center;line-height:20px;color:#666666;letter-spacing:1px;">微信注册</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="width:400px;margin:0 auto;height:50px;line-height:60px;color:#666666;margin-top:30px;text-align:right;">
+                        已有账号？<span style="cursor:pointer;color:#1594FF;margin-left:15px;font-size:14px;" onclick="toaccountlogin(1)">立即登录</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="~/Scripts/comm.js" type="text/javascript"></script>
+<script src="~/Content/js/business/Login.js" type="text/javascript"></script>
+<script src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js" type="text/javascript"></script>
+<script type="text/javascript">
+    $(function () {
+        //判断一下当前是不是做顶层，如果不是，则做一下顶层页面重定向
+        if (window != top) {
+            top.location.href = location.href;
+        }
+    });
+    //关闭登录界面
+    function closeshowdiv() {
+        $(".showlogin").hide();
+        $('body').css("overflow", "scroll");
+    }
+    //微信登录
+    function wxlogin() {
+        var turl = encodeURIComponent("https://168plas.com/Account/LoginByWeiXin");
+        var obj = new WxLogin({
+            self_redirect: false,
+            id: "wxqrcodediv",
+            appid: "wx10e2e44e6fb65f66",
+            scope: "snsapi_login",
+            redirect_uri: turl,
+            state: "openid",
+            style: "",
+            href: ""
+        });
+    }
+
+    //跳转到短信登录
+    function tomessagelogin() {
+        $("#accountlogin").hide();
+        $("#messagelogin").show();
+        $("#wxorqqlogin").hide();
+        $("#showcodediv").hide();
+        $("#toaccountdiv").hide();
+        $("#toaccountdiv1").hide();
+        $("#forgetpwd").hide();
+    }
+    //跳转到账号密码登录
+    function toaccountlogin(type) {
+        
+        $("#messagelogin").hide();
+        $("#wxorqqlogin").hide();
+        $("#showcodediv").hide();
+        $("#toaccountdiv").hide();
+        $("#toaccountdiv1").hide();
+        $("#forgetpwd").hide();
+        $("#forget1").hide();
+        $("#forget2").hide();
+        $("#forget3").hide();
+        if (type=="1") {
+            $("#accountlogin").show();
+            $("#registerdiv").hide();
+        }
+        else {
+            $("#accountlogin").hide();
+            $("#registerdiv").show();
+        }        
+    }
+    //跳转到微信或者qq登录
+    function towxorqqlogin(type) {
+        //微信登录
+        if (type == 1) {
+            $("#accountlogin").hide();
+            $("#messagelogin").hide();
+            $("#wxorqqlogin").show();
+            $("#showcodediv").hide();
+            $("#toaccountdiv").show();
+            $("#toaccountdiv1").hide();
+            $("#wxqrcodediv").show();
+            $("#forgetpwd").hide();
+            $("#registerdiv").hide();
+            wxlogin();
+        }
+        else if (type==11) {
+            $("#accountlogin").hide();
+            $("#messagelogin").hide();
+            $("#wxorqqlogin").show();
+            $("#showcodediv").hide();
+            $("#toaccountdiv").hide();
+            $("#toaccountdiv1").show();
+            $("#wxqrcodediv").show();
+            $("#forgetpwd").hide();
+            $("#registerdiv").hide();
+            wxlogin();
+        }
+        //qq登录
+        else {
+            var tbackurl = encodeURIComponent("http://168plas.com/Account/LoginByQQ");
+            var tqqurl = "https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101844740&redirect_uri=" + tbackurl + "&state=suyiqqlogin";
+            window.open(tqqurl);
+        }
+    }
+    //忘记密码
+    function toforgetpwd() {
+        $("#accountlogin").hide();
+        $("#messagelogin").hide();
+        $("#wxorqqlogin").hide();
+        $("#showcodediv").hide();
+        $("#toaccountdiv").hide();
+        $("#toaccountdiv1").hide();
+        $("#wxqrcodediv").hide();
+        $("#forgetpwd").show();
+        $("#forget1").show();
+        $("#forget2").hide();
+        $("#forget3").hide();
+        $("#registerdiv").hide();
+    }
+    function toforgetpwdup() {
+        $("#forget1").show();
+        $("#forget2").hide();
+        $("#forget3").hide();
+    }
+    //完成密码重置
+    function completeforgetpwd() {
+        $("#accountlogin").show();
+        $("#messagelogin").hide();
+        $("#wxorqqlogin").hide();
+        $("#showcodediv").hide();
+        $("#toaccountdiv").hide();
+        $("#toaccountdiv1").hide();
+        $("#forgetpwd").hide();
+        $("#forget1").hide();
+        $("#forget2").hide();
+        $("#forget3").hide();
+        $("#registerdiv").hide();
+    }
+    //注册
+    function toregister()
+    {
+        $("#registerdiv").show();
+        $("#accountlogin").hide();
+        $("#messagelogin").hide();
+        $("#wxorqqlogin").hide();
+        $("#showcodediv").hide();
+        $("#toaccountdiv").hide();
+        $("#toaccountdiv1").hide();
+        $("#forgetpwd").hide();
+        $("#forget1").hide();
+        $("#forget2").hide();
+        $("#forget3").hide();
+
+    }
+</script>

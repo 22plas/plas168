@@ -12,6 +12,7 @@ namespace PlasModel.Controllers
 {
     public class PhysicalProductsController : Controller
     {
+        CommonBll cbll = new CommonBll();
         private PlasBll.ProductBll bll = new PlasBll.ProductBll();
         private PlasBll.ContrastBll pcbll = new PlasBll.ContrastBll();
         protected string MainHost = System.Web.Configuration.WebConfigurationManager.AppSettings["MainHost"];
@@ -32,7 +33,7 @@ namespace PlasModel.Controllers
         {
             Sidebar();
             //int rowscount = 10;
-            var ys_character = new DataTable();
+            DataTable ys_character = new DataTable();
             var texing = new DataTable();
             var zuran = new DataTable();
             var company = new DataTable();
@@ -47,9 +48,9 @@ namespace PlasModel.Controllers
             //特性
             texing = bll.GetSearchParam(2, "");
             //阻燃等级
-            zuran = bll.GetSearchParam(3, "");
+            zuran = bll.GetSearchParam(3, "",20);
             //生产厂家
-           var  comp = bll.GetSearchParam(4, "");
+           var  comp = bll.GetSearchParam(4, "",20);
             if (comp != null && comp.Rows.Count > 0)
             {
                 DataTable tblDatas = new DataTable("Datas");
@@ -189,13 +190,23 @@ namespace PlasModel.Controllers
 
             #region 产品详情
             var userid = "";
+            //if (AccountData==null)
+            //{
+            //    ViewBag.returnstate = "NoLogin";
+            //    return View();                
+            //}
             if (AccountData!=null)
             {
+                //if (string.IsNullOrWhiteSpace(AccountData.UserID))
+                //{
+                //    return View();
+                //}
                 if (!string.IsNullOrWhiteSpace(AccountData.UserID))
                 {
                     userid = AccountData.UserID;
                 }
             }
+            PlasCommon.Common.AddLog("", "检查用户id值", "用户id值"+ userid+",产品id"+ prodid, "");
             var ds = bll.GetModelInfo(prodid, userid,"");
             if (ds != null && ds.Tables.Contains("ds") && ds.Tables.Count > 0)
             {
@@ -266,18 +277,18 @@ namespace PlasModel.Controllers
             }
 
             ///添加用户浏览
-            if (AccountData != null && !string.IsNullOrWhiteSpace(AccountData.UserID) && !string.IsNullOrWhiteSpace(prodid))
-            {
-                MemberCenterBll mbll = new MemberCenterBll();
-                PlasModel.Physics_BrowseModel mModels = new Physics_BrowseModel();
-                mModels.BrowsCount = 1;
-                mModels.Btype = 1;
-                mModels.CreateDate = DateTime.Now;
-                mModels.ProductGuid = prodid;
-                mModels.UserId = AccountData.UserID;
-                string errMsg = string.Empty;
-                mbll.AddPhysics_Browse(mModels, ref errMsg);
-            }
+            //if (AccountData != null && !string.IsNullOrWhiteSpace(AccountData.UserID) && !string.IsNullOrWhiteSpace(prodid))
+            //{
+            //    MemberCenterBll mbll = new MemberCenterBll();
+            //    PlasModel.Physics_BrowseModel mModels = new Physics_BrowseModel();
+            //    mModels.BrowsCount = 1;
+            //    mModels.Btype = 1;
+            //    mModels.CreateDate = DateTime.Now;
+            //    mModels.ProductGuid = prodid;
+            //    mModels.UserId = AccountData.UserID;
+            //    string errMsg = string.Empty;
+            //    mbll.AddPhysics_Browse(mModels, ref errMsg);
+            //}
             //System.Text.RegularExpressions.Regex reg = new System.Text.RegularExpressions.Regex(@"(?<=^|>)[^<>]+(?=<|$)");
             ViewBag.PdfUrl = PdfUrl;
             ViewBag.ProdID = prodid;
@@ -294,7 +305,7 @@ namespace PlasModel.Controllers
             int datatCount = 1000000;
             var allData = new DataTable();
             var restuesDt = new DataTable();
-            if (rid > 0)
+            if (rid > 0&&rid!=1)
             {
                 allData = bll.GetSearchParam(rid,"", datatCount);
             }
@@ -339,7 +350,26 @@ namespace PlasModel.Controllers
             ViewBag.more = more;
             return View();
         }
+        //获取高级搜索类别
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetTopTypeData()
+        {
+            try
+            {
+                List<parminfo> typelist = cbll.listparminfo("", "", "0");
+                var returndata = new
+                {
+                    typelistdata = typelist
+                };
+                return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
 
+        }
         public static DataTable Distinct(DataTable dt, string[] filedNames)
         {
             DataView dv = dt.DefaultView;
@@ -361,7 +391,7 @@ namespace PlasModel.Controllers
         /// 超级搜素
         /// </summary>
         /// <returns></returns>
-        public JsonResult SuperMsgSearch(int pageindex, int pagesize, string guidstr)
+        public JsonResult SuperMsgSearch(int pageindex, int pagesize, string guidstr,int searchtype)
         {
             //如果在没有登录的情况下提示用户登录
             if (pageindex >= 3 && AccountData == null)
@@ -378,13 +408,23 @@ namespace PlasModel.Controllers
             {
                 isNavLink = Request["isNavLink"].ToString();
             }
-
-            var ds = bll.Sys_SuperSearch(searchstr, 2052, pageindex, pagesize, guidstr, isNavLink);
-            string jsonstr = PlasCommon.ToolHelper.DataTableToJson(ds.Tables[0]);
+            string jsonstr = string.Empty;
             int count = 0;
-            if (ds.Tables.Contains("ds1") && ds.Tables[1] != null && ds.Tables[1].Rows.Count > 0)
+            //首次加载时
+            if (searchtype==0)
             {
-                int.TryParse(ds.Tables[1].Rows[0]["totalcount"].ToString(), out count);
+                DataTable tdatable = bll.SuperSearchOneLoad();
+                jsonstr = PlasCommon.ToolHelper.DataTableToJson(tdatable);
+                count = 10;
+            }
+            else
+            {
+                var ds = bll.Sys_SuperSearch(searchstr, 2052, pageindex, pagesize, guidstr, isNavLink);
+                jsonstr = PlasCommon.ToolHelper.DataTableToJson(ds.Tables[0]);
+                if (ds.Tables.Contains("ds1") && ds.Tables[1] != null && ds.Tables[1].Rows.Count > 0)
+                {
+                    int.TryParse(ds.Tables[1].Rows[0]["totalcount"].ToString(), out count);
+                }
             }
             return Json(new { state = "Success", data = jsonstr, totalCount = count }, JsonRequestBehavior.AllowGet);
         }

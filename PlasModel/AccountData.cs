@@ -14,5 +14,6 @@ namespace PlasModel
         public string HeadImage { get; set; }
         public string WeChatOpenID { get; set; }
         public string QQOpenID { get; set; }
+        public string WxPostCode { get; set; }//微信请求code
     }
 }

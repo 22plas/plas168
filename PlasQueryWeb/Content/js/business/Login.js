@@ -11,7 +11,8 @@ $("#savelogin").click(function () {
 //验证码登录
 function codelogin() {
     var yzreturn = verificationforcode();
-    var phone = vm.codeloginphone;
+    var refreshpagename = $(".showlogin").attr("id");
+    var phone = $("#codeloginphone").val();
     if (yzreturn) {
         $.ajax({
             type: "post",
@@ -22,16 +23,16 @@ function codelogin() {
                 console.log(data);
                 if (data.State == "Success") {
                     //var rs = data.Result;
-                    vm.codeloginmessage = "";
+                    $("#codeloginmessage").html("");
                     window.location.href = comm.action("Index", "Home");
                 }
                 else if (data.State == "Fail") {
                     //layer.alert("登录失败！");
-                    vm.codeloginmessage = "登录失败！";
+                    $("#codeloginmessage").html("登录失败！");
                 }
                 else {
                     //layer.alert("系统异常！");
-                    vm.codeloginmessage = "系统异常！";
+                    $("#codeloginmessage").html("系统异常！");
                 }
             }
         });
@@ -43,30 +44,31 @@ var _phone = "";
 var _vcodereturn = false;//是否发送验证码
 //发送验证码
 function setcode() {
-    vm.codeloginmessage = "";
-    var phonestr = vm.codeloginphone;
+    $("#codeloginmessage").html("");
+    var phonestr = $("#codeloginphone").val();
     if (phonestr == "" || phonestr == null || phonestr == undefined) {
         //layer.alert("请输入手机号！");
-        vm.codeloginmessage = "请输入手机号！";
+        $("#codeloginmessage").html("请输入手机号！");
         return;
     }
     var myreg = /^[1][3,4,5,7,8,9][0-9]{9}$/;
     if (!myreg.test(phonestr)) {
-        vm.codeloginmessage = "请输入正确的手机号！";
+        $("#codeloginmessage").html("请输入正确的手机号！");
         return;
     }
-    if (vm.codetimestr == "获取验证码" || vm.codetimestr == "重新获取") {
+    var timecode = $("#code").html();
+    if (timecode.trim() == "获取验证码" || timecode.trim() == "重新获取") {
         var a = 59;
         clearInterval(timer);
-        vm.codetimestr = a;
+        $("#code").html(a);
         //获取验证码倒计时
         var timer = setInterval(function () {
             if (a > 1) {
                 a--;
-                vm.codetimestr = a;
+                $("#code").html(a);
             } else if (a == 1) {
                 clearInterval(timer);
-                vm.codetimestr = "重新获取";
+                $("#code").html("重新获取");
             }
         }, 1000);
         //发送验证码
@@ -82,15 +84,15 @@ function setcode() {
                     _returncode = rs.code;
                     _phone = phonestr;
                     _vcodereturn = true;
-                    vm.codeloginmessage = "";
+                    $("#codeloginmessage").html("");
                 }
                 else if (data.State == "Fail") {
                     //layer.alert("发送失败！");
-                    vm.codeloginmessage = "发送失败！";
+                    $("#codeloginmessage").html("发送失败！");
                 }
                 else {
                     //layer.alert("系统异常！");
-                    vm.codeloginmessage = "系统异常！";
+                    $("#codeloginmessage").html("系统异常！");
                 }
             }
         });
@@ -99,13 +101,13 @@ function setcode() {
 
 //验证码登录数据验证
 function verificationforcode() {
-    var phone = vm.codeloginphone;
-    var thiscode = vm.codelogincode;
+    var phone = $("#codeloginphone").val();
+    var thiscode = $("#codelogincode").val();
     var returnstr = true;
     if (returnstr) {
         if (phone == "" || phone == null || phone == undefined || phone == "请输手机号") {
             //layer.alert("请输手机号！");
-            vm.codeloginmessage = "请输手机号！";
+            $("#codeloginmessage").html("请输手机号！");
             returnstr = false;
         }
     }
@@ -113,7 +115,7 @@ function verificationforcode() {
         //验证输入的验证码是否匹配
         if (thiscode=="") {
             //layer.alert("验证码不正确！");
-            vm.codeloginmessage = "请输入验证码！";
+            $("#codeloginmessage").html("请输入验证码！");
             returnstr = false;
         }
     }
@@ -121,7 +123,7 @@ function verificationforcode() {
         //验证输入的验证码是否匹配
         if (thiscode != _returncode) {
             //layer.alert("验证码不正确！");
-            vm.codeloginmessage = "验证码不正确！";
+            $("#codeloginmessage").html("验证码不正确！");
             returnstr = false;
         }
     }
@@ -130,8 +132,9 @@ function verificationforcode() {
 
 //密码登录方法
 function pwdlogin() {
-    var usaccount = vm.loginphone;
-    var uspassword = vm.loginpwd;
+    var usaccount = $("#loginphone").val();
+    var uspassword = $("#loginpwd").val();
+    var refreshpagename = $(".showlogin").attr("id");
     var returnv = verification();
     if (returnv) {
         //保存用户注册信息
@@ -145,19 +148,19 @@ function pwdlogin() {
                 if (data.State == "Success") {
                     //var rs = data.Result;
                     window.location.href = comm.action("Index", "Home");
-                    vm.accountloginmessage = "";
+                    $("#accountloginmessage").html("");
                 }
                 else if (data.State == "NoFind") {
                     //layer.alert("账号不存在！");
-                    vm.accountloginmessage = "账号不存在！";
+                    $("#accountloginmessage").html("账号不存在！");
                 }
                 else if (data.State == "Fail") {
                     //layer.alert("登录失败！");
-                    vm.accountloginmessage = "账号或密码错误！";
+                    $("#accountloginmessage").html("账号或密码错误！");
                 }
                 else {
                     //layer.alert("系统异常！");
-                    vm.accountloginmessage = "系统异常！";
+                    $("#accountloginmessage").html("系统异常！");
                 }
             }
         });
@@ -165,20 +168,20 @@ function pwdlogin() {
 }
 //验证保存数据
 function verification() {
-    var usaccount = vm.loginphone;
-    var uspassword = vm.loginpwd;
+    var usaccount = $("#loginphone").val();
+    var uspassword = $("#loginpwd").val();
     var returnstr = true;
     if (returnstr) {
         if (usaccount == "" || usaccount == null || usaccount == undefined || usaccount == "请输手机号") {
             //layer.alert("请输手机号！");
-            vm.accountloginmessage = "请输手机号！";
+            $("#accountloginmessage").html("请输手机号！");
             returnstr = false;
         }
     }
     if (returnstr) {
         if (uspassword == "" || uspassword == null || uspassword == undefined || uspassword == "请输入密码") {
             //layer.alert("请输入登录密码！");
-            vm.accountloginmessage = "请输入登录密码！";
+            $("#accountloginmessage").html("请输入登录密码！");
             returnstr = false;
         }
     }
@@ -215,12 +218,12 @@ function tonextforget() {
         $.ajax({
             type: "get",
             url: comm.action("GetUserByPhone", "MemberCenter"),
-            data: { phone: vm.forgetphone },
+            data: { phone: $("#forgetphone").val() },
             dataType: "json",
             success: function (data) {
                 console.log(data);
                 if (data.State == "Success") {
-                    vm.forgetcodemessage1 = "";
+                    $("#forgetcodemessage1").html("");
                     $("#forget1").hide();
                     $("#forget2").show();
                     $("#forget3").hide();
@@ -230,15 +233,15 @@ function tonextforget() {
                 }
                 else if (data.State == "NotFind") {
                     //layer.alert("发送失败！");
-                    vm.forgetcodemessage1 = "账号不存在！";
+                    $("#forgetcodemessage1").html("账号不存在！");
                 }
                 else if (data.State == "Fail") {
                     //layer.alert("发送失败！");
-                    vm.forgetcodemessage1 = "发送失败！";
+                    $("#forgetcodemessage1").html("发送失败！");
                 }
                 else {
                     //layer.alert("系统异常！");
-                    vm.forgetcodemessage1 = "系统异常！";
+                    $("#forgetcodemessage1").html("系统异常！");
                 }
             }
         });
@@ -246,13 +249,13 @@ function tonextforget() {
 }
 //修改密码数据验证
 function forgetpwdverificationforcode() {
-    var forgetphone = vm.forgetphone;
-    var forgetthiscode = vm.forgetcode;
+    var forgetphone = $("#forgetphone").val();
+    var forgetthiscode = $("#forgetcode").val();
     var returnstr = true;
     if (returnstr) {
         if (forgetphone == "" || forgetphone == null || forgetphone == undefined || forgetphone == "请输手机号") {
             //layer.alert("请输手机号！");
-            vm.forgetcodemessage1 = "请输手机号！";
+            $("#forgetcodemessage1").html("请输手机号！");
             returnstr = false;
         }
     }
@@ -260,7 +263,7 @@ function forgetpwdverificationforcode() {
         //验证输入的验证码是否匹配
         if (forgetthiscode == "") {
             //layer.alert("验证码不正确！");
-            vm.forgetcodemessage1 = "请输入验证码！";
+            $("#forgetcodemessage1").html("请输入验证码！");
             returnstr = false;
         }
     }
@@ -268,7 +271,7 @@ function forgetpwdverificationforcode() {
         //验证输入的验证码是否匹配
         if (forgetthiscode != _forgetpwdreturncode) {
             //layer.alert("验证码不正确！");
-            vm.forgetcodemessage1 = "验证码不正确！";
+            $("#forgetcodemessage1").html("验证码不正确！");
             returnstr = false;
         }
     }
@@ -276,30 +279,32 @@ function forgetpwdverificationforcode() {
 }
 //修改密码发送验证码
 function forgetpwdsetcode() {
-    vm.forgetcodemessage1 = "";
-    var phonestr = vm.forgetphone;
+    $("#forgetcodemessage1").html("");
+    var phonestr = $("#forgetphone").val();
     if (phonestr == "" || phonestr == null || phonestr == undefined) {
         //layer.alert("请输入手机号！");
-        vm.forgetcodemessage1 = "请输入手机号！";
+        $("#forgetcodemessage1").html("请输入手机号！");
         return;
     }
     var myreg = /^[1][3,4,5,7,8,9][0-9]{9}$/;
     if (!myreg.test(phonestr)) {
-        vm.forgetcodemessage1 = "请输入正确的手机号！";
+        $("#forgetcodemessage1").html("请输入正确的手机号！");
         return;
     }
-    if (vm.forgetcodetimestr == "获取验证码" || vm.forgetcodetimestr == "重新获取") {
+    var tempforgetcodetimestr = $("#forgetcodetimestr").html();
+    if (tempforgetcodetimestr.trim() == "获取验证码" || tempforgetcodetimestr.trim() == "重新获取") {
         var a = 59;
         clearInterval(timer);
-        vm.forgetcodetimestr = a;
+        $("#forgetcodetimestr").html(a);
         //获取验证码倒计时
         var timer = setInterval(function () {
             if (a > 1) {
                 a--;
-                vm.forgetcodetimestr = a;
+                $("#forgetcodetimestr").html(a);
             } else if (a == 1) {
                 clearInterval(timer);
-                vm.forgetcodetimestr = "重新获取";
+                $("#forgetcodetimestr").html("重新获取");
+
             }
         }, 1000);
         //发送验证码
@@ -315,15 +320,15 @@ function forgetpwdsetcode() {
                     _forgetpwdreturncode = rs.code;
                     _forgetpwdphone = phonestr;
                     _forgetpwdvcodereturn = true;
-                    vm.forgetcodemessage1 = "";
+                    $("#forgetcodemessage1").html("");
                 }
                 else if (data.State == "Fail") {
                     //layer.alert("发送失败！");
-                    vm.forgetcodemessage1 = "发送失败！";
+                    $("#forgetcodemessage1").html("发送失败！");
                 }
                 else {
                     //layer.alert("系统异常！");
-                    vm.forgetcodemessage1 = "系统异常！";
+                    $("#forgetcodemessage1").html("系统异常！");
                 }
             }
         });
@@ -337,7 +342,7 @@ function tosumbitforget()
         $.ajax({
             type: "post",
             url: comm.action("UpdateUserPwd", "MemberCenter"),
-            data: { phone: vm.forgetphone, newpwd: vm.confirmnewpwd },
+            data: { phone: $("#forgetphone").val(), newpwd: $("#confirmnewpwd").val() },
             dataType: "json",
             success: function (data) {
                 console.log(data);
@@ -345,15 +350,15 @@ function tosumbitforget()
                     $("#forget1").hide();
                     $("#forget2").hide();
                     $("#forget3").show();
-                    vm.forgetcodemessage2 = "";
+                    $("#forgetcodemessage2").html();
                 }
                 else if (data.State == "Fail") {
                     //layer.alert("发送失败！");
-                    vm.forgetcodemessage2 = "发送失败！";
+                    $("#forgetcodemessage2").html("发送失败！");
                 }
                 else {
                     //layer.alert("系统异常！");
-                    vm.forgetcodemessage2 = "系统异常！";
+                    $("#forgetcodemessage2").html("系统异常！");
                 }
             }
         });
@@ -362,36 +367,38 @@ function tosumbitforget()
 //验证修改密码
 function submitverification()
 {
+    var tempconfirmnewpwd = $("#confirmnewpwd").val();
+    var tempnewpwd = $("#newpwd").val();
     var returnstr = true;
     if (returnstr) {
-        if (vm.newpwd == "" || vm.newpwd == null || vm.newpwd == undefined || vm.newpwd == "设置新密码") {
+        if (tempnewpwd == "" || tempnewpwd == null || tempnewpwd == undefined || tempnewpwd == "设置新密码") {
             //layer.alert("请输手机号！");
-            vm.forgetcodemessage2 = "请输入新密码！";
+            $("#forgetcodemessage2").html("请输入新密码！");
             returnstr = false;
         }
     }
     if (returnstr) {
         var number = /[0-9]/i;
         var letter = /[a-z]/i;
-        var numberres = number.test(vm.newpwd);
-        var letterres = letter.test(vm.newpwd);
-        var length = vm.newpwd.length;
+        var numberres = number.test(tempnewpwd);
+        var letterres = letter.test(tempnewpwd);
+        var length = tempnewpwd.length;
         if (!numberres || !letterres || length < 8 || length > 20) {
-            vm.forgetcodemessage2 = "密码长度必须为8-20位且包含字母和数字";
+            $("#forgetcodemessage2").html("密码长度必须为8-20位且包含字母和数字！");
             returnstr = false;
         }
     }
     if (returnstr) {
-        if (vm.confirmnewpwd == "" || vm.confirmnewpwd == null || vm.confirmnewpwd == undefined || vm.confirmnewpwd == "确认新密码") {
+        if (tempconfirmnewpwd == "" || tempconfirmnewpwd == null || tempconfirmnewpwd == undefined || tempconfirmnewpwd == "确认新密码") {
             //layer.alert("验证码不正确！");
-            vm.forgetcodemessage2 = "请输入确认新密码！";
+            $("#forgetcodemessage2").html("请输入确认新密码！");
             returnstr = false;
         }
     }
     if (returnstr) {
         //对比新密码和二次输入新密码
-        if (vm.newpwd != vm.confirmnewpwd) {
-            vm.forgetcodemessage2 = "两次输入的密码不匹配！";
+        if (tempnewpwd != tempconfirmnewpwd) {
+            $("#forgetcodemessage2").html("两次输入的密码不匹配！");
             returnstr = false;
         }
     }

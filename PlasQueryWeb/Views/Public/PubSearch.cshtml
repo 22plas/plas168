@@ -4,6 +4,12 @@
 }
 @*@{var hotProducts = ViewBag.HotList == null ? (new List<PlasModel.ProductViewModel>()) : (ViewBag.HotList as List<PlasModel.ProductViewModel>);}*@
 <style type="text/css">
+    * {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        border: 0;
+    }
     .actives div{
         /*background: #278cd2;*/
         color: #1593FF !important;
@@ -72,6 +78,17 @@
     #showphone:hover{
         color:#dddddd !important;
     }
+
+    .showlogin {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        background: rgba(0, 0, 0, 0.4);
+        width: 100%; /*宽度设置为100%，这样才能使隐藏背景层覆盖原页面*/
+        height: 100%;
+        display: none;
+        z-Index: 1001;
+    }
 </style>
 <div class="header-white" style="width:100%;height:262px;display:block;padding:0px;">
 
@@ -89,9 +106,11 @@
                 <span id="isLogin_0">
                     @*<a class="btn" href="/MemberCenter/Index" style="color: #ffffff;">会员中心</a><span style="color:#ffffff;"> | </span>*@
                     <a class="btn" onclick="tomenmber()" style="color: #ffffff;">会员中心</a><span style="color:#ffffff;"> | </span>
-                    <a class="btn" href="/MemberCenter/Register" style="color: #ffffff;">合作伙伴</a><span style="color:#ffffff;"> | </span>
-                    <a class="btn" href="/MemberCenter/Index" style="color: #ffffff;">帮助中心</a><span style="color:#ffffff;"> | </span>
-                    <a class="btn" id="showphone" style="color: #ffffff;">手机版</a>
+                    <a class="btn" href="" style="color: #ffffff;">合作伙伴</a><span style="color:#ffffff;"> | </span>
+                    <a class="btn" href="" style="color: #ffffff;">帮助中心</a><span style="color:#ffffff;"> | </span>
+                    <a class="btn" id="showphone" style="color: #ffffff;">手机版</a><span style="color:#ffffff;"> | </span>
+                    <a id="loginoutbtn" class="btn" href="/MemberCenter/LoginOut" style="color: #ffffff;">退出</a>
+                    <a id="loginbtn" class="btn" onclick="publidshowlogindiv()" style="display:none; color: #ffffff;">登录</a>
                 </span>
             </div>
         </div>
@@ -269,6 +288,9 @@
         
     </div>
 </div>
+<div id="Comm" class="showlogin" style="display:none;">
+    @Html.Partial("~/Views/Public/Login.cshtml")
+</div>
 <script type="text/javascript" src="/Content/src/js/search-suggest.js"></script>
 
 <script type="text/javascript">
@@ -283,7 +305,7 @@
                 return false;
             }
             else {
-                window.location.href = "/Product/Index?key=" + encodeURI(encodeURIComponent(keyword)) + "&keyid=" + 0;
+                window.location.href = "/Product/Index?key=" + encodeURI(encodeURIComponent(keyword)) + "&searchtype=1&keyid=" + 0;
             }
         }
     }); 
@@ -294,7 +316,7 @@
             return false;
         }
         else {
-            window.location.href = "/Product/Index?key=" + encodeURI(encodeURIComponent(keyword)) + "&keyid=" + id;
+            window.location.href = "/Product/Index?key=" + encodeURI(encodeURIComponent(keyword)) + "&searchtype=1&keyid=" + id;
         }
     }
     var inputwidht = "650";
@@ -315,8 +337,18 @@
             success: function (json) {
                 //alert(JSON.stringify(json));
                 var state = json.State;
-                if (state =="Success") {
-                    var data = json.Result;
+                if (state == "Success") {
+                    var d = json.Result;
+                    var loginstate = d.loginstatestr;
+                    if (loginstate == "1") {
+                        $("#loginoutbtn").show();
+                        $("#loginbtn").hide();
+                    }
+                    else {
+                        $("#loginoutbtn").hide();
+                        $("#loginbtn").show();
+                    }
+                    var data = d.listdata;
                     var htmlstr = "";
                     for (var i = 0; i < data.length; i++) {
                         if (htmlstr=="") {
@@ -440,7 +472,27 @@
         });
     //跳转会员中心
     function tomenmber() {
-        //alert("sdf");
-        window.open = '/MemberCenter/Index';
+        $.ajax({
+            type: "POST",
+            dataType: "JSON",
+            url: '/Home/SetJs',
+            data: "keyword=" + word,
+            async: false,
+            success: function (json) {
+                //debugger;
+                if (json.count > 0) {
+                    var resultData = json.result;
+                    callback(parent, resultData);
+                }
+            },
+            error: function () {
+            }
+        });
+    }
+    //显示登录
+    function publidshowlogindiv() {
+        $(".showlogin").show();
+        //$(".showdivbox").show();
+        $('body').css("overflow", "hidden");
     }
 </script>

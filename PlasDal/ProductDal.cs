@@ -16,7 +16,8 @@ namespace PlasDal
         public DataSet GetModelInfo(string pguid,string userid, string ipaddress)
         {
             DataSet set = new DataSet();
-            set = SqlHelper.GetSqlDataSet(string.Format(@"exec PROC_GetInfoByPguid '{0}',2052,'{1}','{2}' ", pguid, userid,ipaddress));
+            string sqlstr = string.Format(@"exec PROC_GetInfoByPguid '{0}',2052,'{1}','{2}' ", pguid, userid, ipaddress);
+            set = SqlHelper.GetSqlDataSet(sqlstr);
             return set;
         }
         public DataSet NewGetModelInfo(string pguid)
@@ -180,7 +181,7 @@ namespace PlasDal
             }
             else
             {
-                sql = string.Format(@"select Name,parentguid as parentguid from Prd_SmallClass_l where MidClassName='{0}' and LanguageId=2052 order by Weight desc", middlename);
+                sql = string.Format(@"select Name,parentguid as parentguid,Guid from Prd_SmallClass_l where MidClassName='{0}' and LanguageId=2052 order by Weight desc", middlename);
             }
             DataTable dt = SqlHelper.GetSqlDataTable(sql);
             return dt;
@@ -283,7 +284,20 @@ namespace PlasDal
             return models;
         }
 
-
+        //超级搜索页面加载首次加载数据方法
+        public DataTable SuperSearchOneLoad()
+        {
+            //新版修改为此查询语句
+//            string sql = string.Format(@"select top 10 a.ProModel,b.AliasName,c.Name,d.ProUse,d.characteristic from Product a inner join Sys_Manufacturer b on a.PlaceOrigin=b.EnglishName 
+//inner join Prd_SmallClass_l c on a.smallclassidint=c.Fid inner join Product_l d on a.prodsn=d.prodsn
+//where c.LanguageId=2052 and d.LanguageId=2052
+//order by a.hitcount desc");
+            string sql = string.Format(@"select top 10 a.ProductGuid AS productid, a.ProModel,b.AliasName AS PlaceOrigin,c.Name,d.ProUse,d.characteristic from Product a inner join Sys_Manufacturer b on a.PlaceOrigin=b.EnglishName 
+                                        inner join Prd_SmallClass_l c on a.SmallClassId = c.parentguid inner join Product_l d on a.prodsn = d.prodsn
+                                        where c.LanguageId = 2052 and d.LanguageId = 2052
+                                        order by a.hitcount desc");
+            return SqlHelper.GetSqlDataTable(sql);
+        }
         //超级搜索
         public DataSet Sys_SuperSearch(string searchStr = "", int languageid = 2052, int pageCount = 0, int? pageSize = 10, string guidstr = "", string isNavLink = "")
         {
@@ -355,9 +369,17 @@ namespace PlasDal
         }
 
         //普通搜索
-        public DataSet GetGeneralSearch(string key = "", int pageIndex = 1, int pageSize = 20, string strGuid = "", int? isapp = 0)
+        public DataSet GetGeneralSearch(string key = "", int pageIndex = 1, int pageSize = 20, string strGuid = "", int? isapp = 0,int? searchtype=1)
         {
-            string sql = string.Format("exec headsearch '{0}','{1}',{2},{3},{4},{5}", strGuid, key, 2052, pageIndex, pageSize, isapp);
+            string sql = string.Empty;
+            if (searchtype==0)
+            {
+                sql = string.Format("exec headsearchbyclassid '{0}','{1}',{2},{3},{4},{5}", strGuid, key, 2052, pageIndex, pageSize, isapp);
+            }
+            else
+            {
+                sql = string.Format("exec headsearch '{0}','{1}',{2},{3},{4},{5}", strGuid, key, 2052, pageIndex, pageSize, isapp);
+            }            
             //string sql = string.Format("exec headsearchnew '{0}',{1},{2},{3},{4}",  key, 2052, pageIndex, pageSize, isapp);
             var ds = SqlHelper.GetSqlDataSet(sql);
             return ds;
@@ -417,13 +439,13 @@ namespace PlasDal
         public DataSet GetPriceType(int numtop = 10)
         {
             StringBuilder sql = new StringBuilder();
-            sql.Append("select ");
-            if (numtop > 0)
-            {
-                sql.Append(" top " + numtop + " ");
-            }
-            sql.Append("SmallClass as Name from Pri_DayAvgPrice group by SmallClass ");
-            sql.Append("select ");
+            //sql.Append("select ");
+            //if (numtop > 0)
+            //{
+            //    sql.Append(" top " + numtop + " ");
+            //}
+            //sql.Append("SmallClass as Name from Pri_DayAvgPrice group by SmallClass ");
+            sql.Append("select DISTINCT ");
             if (numtop > 0)
             {
                 sql.Append(" top " + numtop + " ");
@@ -432,7 +454,25 @@ namespace PlasDal
             var ds = SqlHelper.GetSqlDataSet(sql.ToString());
             return ds;
         }
+        //头部一级条件
+        public DataTable GetPriceParentParm()
+        {
+            //string sql = "SELECT DISTINCT parentname FROM [v_prdclass]";
+            string sql = "select distinct a.bigclass as parentname,b.ts from Pri_DayAvgPrice a inner join Prd_BigClass_l b on a.BigClass=b.Name  order by b.ts DESC";
+            return SqlHelper.GetSqlDataTable(sql);
+        }
+        //获取头部二级条件
+        public DataTable GetPriceTopChildParm(string parentname)
+        {
+            //string sql =string.Format("SELECT Name FROM [v_prdclass]  WHERE parentname='{0}' ORDER BY [Weight]  DESC",parentname);
+            //string sql = string.Format("select DISTINCT a.SmallClass as Name,b.ts from Pri_DayAvgPrice a inner join Prd_BigClass_l b on a.BigClass = b.Name WHERE a.BigClass = '{0}'  order by b.ts DESC", parentname);
+            string sql = string.Format(@"select DISTINCT a.SmallClass as Name,c.Weight,c.Important from Pri_DayAvgPrice a 
+                                        INNER join Prd_BigClass_l b on a.BigClass = b.Name
+                                        INNER JOIN dbo.Pri_SmallClass c ON c.SmallClass = a.SmallClass
+                                         WHERE a.BigClass = '{0}'  order by c.Weight DESC", parentname);
 
+            return SqlHelper.GetSqlDataTable(sql);
+        }
         //获取行情走势中的分类\厂家
         public DataSet GetPagePriceTypeOrFactory(string key, string type, int? pageindex = 1, int? pagesize = 10)
         {

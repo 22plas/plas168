@@ -26,5 +26,25 @@ namespace PlasBll
         {
             return dal.GetNewClass();
         }
+        //获取新闻首页顶部数据
+        public DataTable GetNewsIndexTopData()
+        {
+            return dal.GetNewsIndexTopData();
+        }
+        //获取新闻首页最新新闻数据
+        public DataTable GetNewsIndexDataList()
+        {
+            return dal.GetNewsIndexDataList();
+        }
+        //获取新闻首页最新排行数据
+        public DataTable GetNewsIndexDataListOrderByHitAndTime()
+        {
+            return dal.GetNewsIndexDataListOrderByHitAndTime();
+        }
+        //获取新闻首页热点推荐
+        public DataTable GetNewsIndexDataListByHot()
+        {
+            return dal.GetNewsIndexDataListByHot();
+        }
     }
 }

@@ -344,6 +344,7 @@
     <Content Include="Content\img\logo.png" />
     <Content Include="Content\img\logo1.png" />
     <Content Include="Content\img\newsico.jpg" />
+    <Content Include="Content\img\newstest.png" />
     <Content Include="Content\img\newstop.jpg" />
     <Content Include="Content\img\qtsl.png" />
     <Content Include="Content\img\rgxsl.png" />
@@ -353,6 +354,7 @@
     <Content Include="Content\img\slzj.jpg" />
     <Content Include="Content\img\standard.png" />
     <Content Include="Content\img\syico.jpg" />
+    <Content Include="Content\img\syicobd.jpg" />
     <Content Include="Content\img\syncfusion-icons-white.png" />
     <Content Include="Content\img\t1.jpg" />
     <Content Include="Content\img\tanxingti.jpg" />
@@ -654,6 +656,7 @@
     <Content Include="Views\Account\LoginByWeiXin.cshtml" />
     <Content Include="Views\PhysicalProducts\Index - 复制.cshtml" />
     <Content Include="Views\News\Detail.cshtml" />
+    <Content Include="Views\Public\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -13,5 +13,6 @@ namespace PlasModel
         public string Name { get; set; }
         public string Guid { get; set; }
         public string Image { get; set; }
+        public string parentguid { get; set; }
     }
 }

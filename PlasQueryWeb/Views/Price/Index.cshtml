@@ -4,6 +4,7 @@
 @{
     var company = (ViewBag.company) as System.Data.DataSet;
 }
+<link href="~/Content/css/iconfont/iconfont.css" rel="stylesheet" />
 <link href="~/Content/css/Pagination.css" rel="stylesheet" />
 <link href="~/Content/css/iconfont.css" rel="stylesheet" />
 <script src="~/Content/layui/lay/modules/layer.js" type="text/javascript"></script>
@@ -265,9 +266,34 @@
     }*/
 
     /*新版数据列表*/
-</style>
 
+    .newitem {
+        float: left;
+        margin-left: 30px;
+        cursor: pointer;
+        border-bottom: 1px solid #ffffff;
+    }
+        .newitem:hover {
+            border-bottom: 1px solid #1593FF;
+        }
+        .itemactive {
+            color: #ff4200;
+            text-decoration: underline;
+        }
+
+    .itemboxclass {
+        display:none !important;
+    }
+    .itemboxclassshow {
+        display: flex !important;
+    }
+
+    .childshowclass {
+        display:block !important;
+    }
+</style>
 <script src="~/Content/js/jeDate/jedate.js" type="text/javascript"></script>
+<script src="~/Content/js/vue.js" type="text/javascript"></script>
 
 @*@Html.Partial("~/Views/Public/SubPageNav.cshtml")*@
 @Html.Partial("~/Views/Public/PubSearch.cshtml")
@@ -282,59 +308,79 @@
     </div>*@
     <div style="width:70%;height:auto;min-height:200px;border:1px solid #dddddd;margin:20px auto;">
         <div class="search-item-box">
+            @*<div class="search-item">
+            <div class="search-item-type" style="background:#f2f2f2;text-align: center;margin-right: 10px;color: #333333;width:100px;font-size:14px;height:30px;">材料类别 :</div>
+            <div class="search-item-content3" style="max-height:none;overflow-y:hidden;">
+                <ul data-type="1" class="search_item_contentList" data-typename="材料类别" style="clear:both;">
+                    <li data-guid="" data-value="0" class="active">全部</li>
+                    @if (company.Tables.Contains("ds") && company.Tables[0].Rows.Count > 0)
+                    {
+                        for (var i = 0; i < company.Tables[0].Rows.Count; i++)
+                        {
+                            <li data-guid="1" @(i > 12 ? "class=none name=cailiaotype_1" : "") data-value="@company.Tables[0].Rows[i]["Name"].ToString()">@company.Tables[0].Rows[i]["Name"].ToString()</li>
+                        }
+                    }
+                </ul>
+            </div>
+            <div class="search-item-btn" data-type="1" data-typename="材料类别" style="width:75px;">更多 ∨</div>
+        </div>*@
             <div class="search-item">
-                <div class="search-item-type" style="background:#f2f2f2;text-align: center;margin-right: 10px;color: #333333;width:100px;font-size:14px;height:30px;">材料类别 :</div>
-                <div class="search-item-content3" style="max-height:none;overflow-y:hidden;">
-                    <div id="search_1" style="width:100%;height:50px;border-bottom:1px solid #f2f2f2; display:none;">
-                        <div style="width:500px;height:50px;float:right;margin-left:100px;">
-                            <div style="width:80px;height:30px;margin-left:15px; background:#1593ff;text-align:center;line-height:30px;margin-top:5px;border-radius:5px;font-size:12px;color:#ffffff;float:right;cursor:pointer;">
-                                搜索
-                            </div>
-                            <div style="width:200px;height:30px;margin-top:5px;float:right;">
-                                <input type="text" id="classkey" style="width:200px;height:30px;line-height:30px;text-indent:5px;border:1px solid #cccccc;border-radius:3px;" placeholder="搜索类别" />
-                            </div>
+                <div class="search-item-type" style="background:#ffffff;text-align: center;margin-right: 10px;color: #333333;width:100px;font-size:14px;height:30px;line-height:30px;">厂家选择 :</div>
+                <div class="search-item-content3" style="max-height:250px;">
+                    @*<div id="search_4" style="width:100%;height:50px;border-bottom:1px solid #f2f2f2;display:none;">
+                    <div style="width:500px;height:50px;float:right;margin-left:100px;">
+                        <div style="width:80px;height:30px;margin-left:15px; background:#1593ff;text-align:center;line-height:30px;margin-top:5px;border-radius:5px;font-size:12px;color:#ffffff;float:right;cursor:pointer;">
+                            搜索
+                        </div>
+                        <div style="width:200px;height:30px;margin-top:5px;float:right;">
+                            <input type="text" id="classkey" style="width:200px;height:30px;line-height:30px;text-indent:5px;border:1px solid #cccccc;border-radius:3px;" placeholder="搜索厂家" />
                         </div>
                     </div>
-                    <ul data-type="1" class="search_item_contentList" data-typename="材料类别" style="clear:both;">
-                        <li data-guid="" data-value="0" class="active">全部</li>
+                </div>*@
+                    <ul data-type="0" class="search_item_contentList" data-typename="生产厂家">
+                        @*<li data-guid="" data-value="0" class="active">全部</li>*@
                         @if (company.Tables.Contains("ds") && company.Tables[0].Rows.Count > 0)
                         {
                             for (var i = 0; i < company.Tables[0].Rows.Count; i++)
                             {
-                                <li data-guid="1" @(i > 12 ? "class=none name=cailiaotype_1" : "") data-value="@company.Tables[0].Rows[i]["Name"].ToString()">@company.Tables[0].Rows[i]["Name"].ToString()</li>
+                                <li data-guid="1" @(i > 12 ? "class=none name=cailiaotype_0" : "") data-value="@company.Tables[0].Rows[i]["Name"].ToString()" style="color:#666666;margin-left:30px;margin-right:0px;">@company.Tables[0].Rows[i]["Name"].ToString()</li>
                             }
                         }
                     </ul>
                 </div>
-                <div class="search-item-btn" data-type="1" data-typename="材料类别" style="width:75px;">更多 ∨</div>
+                <div class="search-item-btn" data-type="0" data-typename="生产厂家" style="width:75px;">更多 ∨</div>
             </div>
-            <div class="search-item">
-                <div class="search-item-type" style="background:#f2f2f2;text-align: center;margin-right: 10px;color: #333333;width:100px;font-size:14px;height:30px;">厂家选择 :</div>
-                <div class="search-item-content3" style="max-height:350px;">
-                    <div id="search_4" style="width:100%;height:50px;border-bottom:1px solid #f2f2f2;display:none;">
+            
+            <div class="search-item" v-for="(vi,index) in parmlist" v-bind:class="vi.classstr">
+                <div class="search-item-type" style="background:#ffffff;text-align: center;margin-right: 10px;color: #333333;width:100px;font-size:14px;height:30px;line-height:30px;">{{vi.Name}} :</div>
+                <div class="search-item-content3" style="max-height:none;overflow-y:hidden;">
+                    @*<div id="search_2" style="width:100%;height:50px;border-bottom:1px solid #f2f2f2;display:none;">
                         <div style="width:500px;height:50px;float:right;margin-left:100px;">
                             <div style="width:80px;height:30px;margin-left:15px; background:#1593ff;text-align:center;line-height:30px;margin-top:5px;border-radius:5px;font-size:12px;color:#ffffff;float:right;cursor:pointer;">
                                 搜索
                             </div>
                             <div style="width:200px;height:30px;margin-top:5px;float:right;">
-                                <input type="text" id="classkey" style="width:200px;height:30px;line-height:30px;text-indent:5px;border:1px solid #cccccc;border-radius:3px;" placeholder="搜索厂家" />
+                                <input type="text" id="classkey" style="width:200px;height:30px;line-height:30px;text-indent:5px;border:1px solid #cccccc;border-radius:3px;" placeholder="搜索通用塑料" />
+                            </div>
+                        </div>
+                    </div>*@
+                    <div class="search_item_contentList" style="max-height:250px;overflow-y:auto;">
+                        @*<div data-guid="" data-value="0" class="itemactive" style="float:left;cursor:pointer;">全部</div>*@
+                        <div v-for="(vo,indexc) in vi.childlist" class="newitem" >
+                            <div style="height:100%;color:#666666;" v-bind:data-value="vo.Name" v-bind:id="index+','+indexc" v-bind:class="vo.classstr" onclick="selectitem(this)">
+                                {{vo.Name}}
                             </div>
                         </div>
                     </div>
-                    <ul data-type="4" class="search_item_contentList" data-typename="生产厂家">
-                        <li data-guid="" data-value="0" class="active">全部</li>
-                        @if (company.Tables.Contains("ds1") && company.Tables[1].Rows.Count > 0)
-                        {
-                            for (var i = 0; i < company.Tables[1].Rows.Count; i++)
-                            {
-                                <li data-guid="4" @(i > 12 ? "class=none name=cailiaotype_4" : "") data-value="@company.Tables[1].Rows[i]["Name"].ToString()">@company.Tables[1].Rows[i]["Name"].ToString()</li>
-                            }
-                        }
-                    </ul>
                 </div>
-                <div class="search-item-btn" data-type="4" data-typename="生产厂家" style="width:75px;">更多 ∨</div>
+                <div v-if="vi.childlist.length>12" class="search-item-btn" v-bind:id="index" style="width:75px;" onclick="childmore(this)">{{vi.tname}}</div>
             </div>
-            <div class="search-item">
+            <div style="width:100%;height:40px;cursor:pointer;font-size:14px;color:#0094ff;line-height:40px;text-align:center;letter-spacing:1px;font-weight:700;" onclick="openitembox()">
+                {{showtitle}}<span  v-show="showtitle=='点击查看更多查询条件'" class="fa fa-angle-down"></span><span v-show="showtitle=='收起'" class="fa fa-angle-up"></span>
+                @*<i v-show="showtitle=='点击查看更多查询条件'" class="iconfont suyixia" style="margin-right:5px;"></i><i v-show="showtitle=='收起'" class="iconfont suyixiangshang" style="margin-right:5px;"></i>*@
+            </div>
+
+            @*<div class="search-item">
                 <div class="search-item-type" style="background:#f2f2f2;text-align: center;margin-right: 10px;color: #333333;width:100px;font-size:14px;height:30px;">通用塑料 :</div>
                 <div class="search-item-content3" style="max-height:none;overflow-y:hidden;">
                     <div id="search_2" style="width:100%;height:50px;border-bottom:1px solid #f2f2f2;display:none;">
@@ -360,6 +406,7 @@
                 </div>
                 <div class="search-item-btn" data-type="2" data-typename="通用塑料" style="width:75px;">更多 ∨</div>
             </div>
+
             <div class="search-item">
                 <div class="search-item-type" style="background:#f2f2f2;text-align: center;margin-right: 10px;color: #333333;width:100px;font-size:14px;height:30px;">工程塑料 :</div>
                 <div class="search-item-content3" style="max-height:none;overflow-y:hidden;">
@@ -385,7 +432,8 @@
                     </ul>
                 </div>
                 <div class="search-item-btn" data-type="3" data-typename="工程塑料" style="width:75px;">更多 ∨</div>
-            </div>
+            </div>*@
+
         </div>
         @*<div style="width:100%;height:50px; background:#f2f2f2;margin-top:20px;">
                 <div style="width:250px;height:50px;background:#278cd2; text-align:center;font-size:16px;color:#ffffff;line-height:50px;">
@@ -403,7 +451,17 @@
                 </div>
             </div>*@
     </div>
-    <div style="width:70%;height:auto;min-height:200px;border:1px solid #dddddd;margin:20px auto;">
+    <div v-if="selectitemlist.length>0" style="width:100%;height:auto;height:70px;">
+        <div style="width:70%;height:auto; margin:0 auto;height:70px;border:1px solid #dddddd;">
+            <div style="width:100%;height:40px;">
+                <div style="height:40px;line-height:40px; color:#0094ff;font-weight:700;letter-spacing:1px;text-indent:15px;font-size:16px;float:left;">已选择条件：</div> 
+                <div v-for="(vs,index) in selectitemlist" style="height:30px;min-width:60px; text-align:center;line-height:26px;font-size:14px;color:#0094ff;border:1px solid #dddddd;border-radius:5px;float:left;margin-left:25px;margin-top:15px;padding-left:10px;">
+                    {{vs.ParnetName}}：{{vs.Name}}<i v-bind:id="index" onclick="deleteselectitem(this)" class="iconfont suyiguanbi" style="float:right;margin-left:15px;margin-top:-7px;cursor:pointer;color:#ff4200;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="width:70%;height:auto;min-height:200px;margin:20px auto;border:1px solid #dddddd;">
         <div style="width:99%;height:60px;margin:0 auto;margin-top:10px; background:#f2f2f2;">
             <div style="width:100px;height:60px;line-height:60px;font-size:16px;text-align:center;color:#278cd2;border-right:1px solid #ffffff;float:left;cursor:pointer;">
                 综合排序

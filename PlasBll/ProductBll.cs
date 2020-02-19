@@ -1,4 +1,5 @@
-﻿using PlasDal;
+﻿using PlasCommon;
+using PlasDal;
 using PlasModel;
 using System;
 using System.Collections.Generic;
@@ -81,6 +82,11 @@ namespace PlasBll
             return dal.Sys_GetSuperSearchParamForApp(type, keyname);
         }
 
+        //超级搜索页面加载首次加载数据方法
+        public DataTable SuperSearchOneLoad()
+        {
+            return dal.SuperSearchOneLoad();
+        }
         //超级搜索
         public DataSet Sys_SuperSearch(string searchStr = "", int languageid = 2052, int pageCount = 0, int? pageSize = 10, string guidstr = "", string isNavLink = "")
         {
@@ -100,9 +106,9 @@ namespace PlasBll
         #endregion
 
         //普通搜索
-        public DataSet GetGeneralSearch(string key = "", int pageIndex = 1, int pageSize = 20, string strGuid = "", int? isapp = 0)
+        public DataSet GetGeneralSearch(string key = "", int pageIndex = 1, int pageSize = 20, string strGuid = "", int? isapp = 0, int? searchtype = 1)
         {
-            return dal.GetGeneralSearch(key, pageIndex, pageSize, strGuid, isapp);
+            return dal.GetGeneralSearch(key, pageIndex, pageSize, strGuid, isapp, searchtype);
         }
         //二次检索
         public DataSet GetTwoSearch(int pageIndex, int pageSize, string ver, string Characteristic, string Used, string Kind, string Method, string Factory, string Additive, string AddingMaterial, string addghdq)
@@ -128,7 +134,16 @@ namespace PlasBll
         {
             return dal.GetPriceType(numtop);
         }
-
+        //头部一级条件
+        public DataTable GetPriceParentParm()
+        {
+            return dal.GetPriceParentParm();
+        }
+        //获取头部二级条件
+        public DataTable GetPriceTopChildParm(string parentname)
+        {
+            return dal.GetPriceTopChildParm(parentname);
+        }
         //价格趋势分类\厂家列表
         public DataSet GetPagePriceTypeOrFactory(string key, string type, int? pageindex = 1, int? pagesize = 10)
         {
@@ -174,6 +189,39 @@ namespace PlasBll
         public DataTable GetClass(string parentid, string middlename, string type)
         {
             return dal.GetClass(parentid, middlename, type);
+        }
+        //最新读取分类方法(采用缓存机制)
+        public List<parminfo> GetClassNew(string parentid, string middlename, string type)
+        {
+            string tempname = string.Empty;
+            //如果是读取二级分类则传一级分类的id作为缓存值标识
+            if (type=="1")
+            {
+                tempname = parentid;
+            }
+            //如果是读取三级级分类则传二级分类的名称作为缓存值标识
+            else if (type=="2")
+            {
+                tempname = middlename;
+            }
+            //直接读取一级分类
+            else
+            {
+                tempname = "onelevel";
+            }
+            var cache=CacheHelper.GetCache(tempname);//先读取
+            if (cache == null)//如果没有该缓存
+            {
+                var dt = dal.GetClass(parentid, middlename, type);
+                var enumerable = ToolClass<parminfo>.ConvertDataTableToModel(dt);
+                CacheHelper.SetCache(tempname, enumerable);//添加缓存
+                return enumerable;
+            }
+            else
+            {
+                var result = (List<parminfo>)cache;//有就直接返回该缓存
+                return result;
+            }            
         }
 
         //获取超级搜索填料属性

@@ -1,11 +1,37 @@
 ﻿@{
-    ViewBag.Title = (ViewBag.Title2 + "" + ViewBag.ProModel + "|" + ViewBag.ProFactory + "|" + ViewBag.ProType + "物性表, ROHS|MSDS|UL|COC等资料下载");
-    ViewBag.keywords = (ViewBag.Keywords + "" + ViewBag.ProModel);
+    ViewBag.Title = (ViewBag.Title2);
+    ViewBag.keywords = (ViewBag.Keywords);
     ViewBag.DescCentent = ViewBag.description;
 }
-@{
-}
+<link rel="stylesheet" type="text/css" href="~/Content/css/iconfont.css" />
 <style type="text/css">
+    html, body {
+        background: #f2f2f2;
+    }
+    .aui-ellipsis {
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        word-break: break-all;
+        white-space: normal !important;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
+
+    .aui-ellipsis-1 {
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        word-break: break-all;
+        white-space: normal !important;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
+    #contentdiv table {
+        width:100% !important;
+    }
 </style>
 <link href="~/Content/css/iconfont/iconfont.css" rel="stylesheet" />
 <script src="~/Content/layui/lay/modules/layer.js" type="text/javascript"></script>
@@ -17,23 +43,106 @@
 @{Html.RenderAction("PubSearch", "Public");}
 @*Success*@
 <div id="allbox" style="width:100%;height:auto;">
-    <div style="width:70%;height:auto;margin:0 auto;border:1px solid #dddddd;">
-        <div id="contentdiv" style="width:95%;height:auto;min-height:200px;margin:0 auto;">
+    <div style="width:70%;height:auto;margin:0 auto;margin-top:20px;">
+        @* <div id="contentdiv" style="width:95%;height:auto;min-height:200px;margin:0 auto;"> *@
+        <div style="width:calc(100% - 286px);height:auto;min-height:200px;float:left; background:#ffffff;">
+            <div style="width:100%;height:100px;">
+                <div style="width:92%;height:100px; margin:0 auto;border-bottom:1px solid #dddddd;">
+                    <div style="width:100%;height:50px;line-height:70px;color:#646464;font-size:20px; margin:0 auto;">
+                        {{newstitle}}
+                    </div>
+                    <div style="width:100%;height:50px;line-height:60px;color:#646464;font-size:20px; margin:0 auto;">
+                        <div style="width:30%;height:50px;float:left;line-height:70px;font-size:14px;color:#999999;">
+                            {{timestr}}
+                        </div>
+                        <div style="width:30%;height:50px;float:right;line-height:70px;font-size:14px;color:#999999;text-align:right;">
+                            <i class="iconfont suyiliulan" style="font-size:16px;margin-left:2px;color:#666666;margin-right:3px;"></i>{{bowercount}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="contentdiv" style="width:92%;height:auto;min-height:200px;margin:0 auto;margin-top:15px;">
 
+            </div>
+        </div>
+        <div style="width:265px;height:auto;float:left;margin-left:21px;">
+            <div style="width:95%;height:auto;float:right;background:#ffffff;">
+                <div style="width:100%;height:50px;border-bottom:1px solid #dddddd;line-height:50px;color:#333333;font-size:16px;font-weight:700;text-indent:15px;letter-spacing:2px;">
+                    本周排行榜
+                </div>
+                <div style="width:100%;height:10px;"></div>
+                <div style="width:100%;height:auto;">
+                    <div style="width:100%;height:40px;" v-for="(vb,index) in bzphlist">
+                        <div style="width:85%;height:40px;margin:0 auto;cursor:pointer;" v-bind:id="vb.ID" onclick="todetail(this)">
+                            <span style="width:18px;height:18px;border-radius:180px;line-height:17px;text-align:center;font-size:10px;float:left;display:block;margin-top:10px;" v-bind:style="vb.stylestr">
+                                {{index+1}}
+                            </span>
+                            <span style="width:190px;height:40px;float:left;font-size:14px;color:#666666;line-height:40px;text-indent:10px;" class="aui-ellipsis-1">
+                                {{vb.Title}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div style="width:100%;height:10px;"></div>
+            </div>
+
+            <div style="width:95%;height:auto;min-height:120px; float:right;background:#ffffff;margin-top:20px;">
+                <div style="width:100%;height:50px;border-bottom:1px solid #dddddd;line-height:50px;color:#333333;font-size:16px;font-weight:700;text-indent:15px;letter-spacing:2px;">
+                    网站公告
+                </div>
+                <div style="width:100%;height:10px;"></div>
+                <div style="width:100%;height:auto;">
+                    <div style="width:100%;height:40px;" v-for="(vg,index) in gglist">
+                        <div style="width:85%;height:40px;margin:0 auto;cursor:pointer;" v-bind:id="vg.ID" onclick="todetail(this)">
+                            <span style="height:40px;line-height:40px;text-align:center;float:left;display:block;color:#ffffff;">
+                                <i class="iconfont suyidian" style="margin-right:2px;color:#666666;font-size:12px;"></i>
+                            </span>
+                            <span style="width:190px;height:40px;line-height:40px;float:left;font-size:14px;color:#666666;text-indent:10px;" class="aui-ellipsis-1">
+                                {{vg.Title}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="width:95%;height:auto;float:right;background:#ffffff;margin-top:20px;">
+                <div style="width:100%;height:50px;border-bottom:1px solid #dddddd;line-height:50px;color:#333333;font-size:16px;font-weight:700;text-indent:15px;letter-spacing:2px;">
+                    热点推荐
+                </div>
+                <div style="width:100%;height:10px;"></div>
+                <div style="width:100%;height:auto;">
+                    <div style="width:100%;height:40px;" v-for="(vr,index) in rdtjlist">
+                        <div style="width:85%;height:40px;margin:0 auto;cursor:pointer;" v-bind:id="vr.ID" onclick="todetail(this)">
+                            <span style="width:18px;height:18px;border-radius:180px;line-height:17px;text-align:center;font-size:10px;float:left;display:block;margin-top:10px;" v-bind:style="vr.stylestr">
+                                {{index+1}}
+                            </span>
+                            <span style="width:190px;height:40px;float:left;font-size:14px;color:#666666;line-height:40px;text-indent:10px;" class="aui-ellipsis-1">
+                                {{vr.Title}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div style="width:100%;height:10px;"></div>
+            </div>
         </div>
     </div>
+    <div style="width:100%;height:50px;clear:both;"></div>
 </div>
 <script type="text/javascript">
     //初始化vue组件
     var vm = new Vue({
         el: '#allbox',
         data: {
-
+            gglist: [],
+            bzphlist: [],
+            rdtjlist:[],
+            newstitle: "",//标题
+            timestr: "",//时间
+            bowercount:0//浏览数
         }, methods: {
             //加载数据
             loaddata: function (id) {
                 var tbodyui = "";
-                page_indx = pageindex;
                 $.ajax({
                     type: "Get",
                     dataType: "JSON",
@@ -42,9 +151,12 @@
                     async: true,
                     success: function (json) {
                         console.log(JSON.stringify(json))
-                        var state = json.state;
+                        var state = json.State;
                         if (state == "Success") {
-                            var returndata = json.data;
+                            var returndata = json.Result;
+                            vm.newstitle = returndata.Title;
+                            vm.timestr = returndata.CreateDate;
+                            vm.bowercount = returndata.HIt;
                             $("#contentdiv").html(returndata.ContentAll);
                         }
                         else {
@@ -54,13 +166,67 @@
                     error: function () { layer.msg('未找到数据', { icon: 5 }); }
                 })
                 //$("html, body").stop().animate({ scrollTop: $("#records").offset().top - 200 }, 400);
+            },
+            init: function () {
+                $.ajax({
+                    type: "get",
+                    dataType: "JSON",
+                    url: '/News/GetNewsData',
+                    data: "",
+                    async: false,
+                    success: function (data) {
+                        var returnstate = data.State;
+                        if (returnstate == "Success") {
+                            var resultdata = data.Result;
+                            vm.gglist = resultdata.gglist;
+
+                            var temprdtjlist = resultdata.rdtjlist;
+                            var tempbzphlist = resultdata.bzphlist;
+                            if (tempbzphlist.length > 0) {
+                                for (var i = 0; i < tempbzphlist.length; i++) {
+                                    if (i == 0) {
+                                        tempbzphlist[i]["stylestr"] = "background:#FF6450;color:#ffffff;";
+                                    }
+                                    else if (i > 0 && i <= 2) {
+                                        tempbzphlist[i]["stylestr"] = "background:#FFA800;color:#ffffff;";
+                                    }
+                                    else {
+                                        tempbzphlist[i]["stylestr"] = "background:#EFEFEF;color:#333333;";
+                                    }
+                                    vm.bzphlist.push(tempbzphlist[i]);
+                                }
+                            }
+                            if (temprdtjlist.length > 0) {
+                                for (var i = 0; i < temprdtjlist.length; i++) {
+                                    if (i == 0) {
+                                        temprdtjlist[i]["stylestr"] = "background:#FF6450;color:#ffffff;";
+                                    }
+                                    else if (i > 0 && i <= 2) {
+                                        temprdtjlist[i]["stylestr"] = "background:#FFA800;color:#ffffff;";
+                                    }
+                                    else {
+                                        temprdtjlist[i]["stylestr"] = "background:#EFEFEF;color:#333333;";
+                                    }
+                                    vm.rdtjlist.push(temprdtjlist[i]);
+                                }
+                            }
+                        }
+                    },
+                    error: function () { layer.msg('Load the data failure!', { icon: 5 }); }
+                });
             }
         }
     });
     $(function () {
         var id = decodeURI(getQueryString("id"));
-        alert(id);
         vm.loaddata(id);
+        vm.init();
     });
+    //跳转详情
+    function todetail(t) {
+        var id = t.id;
+        var turl = "/News/Detail/?id=" + id;
+        window.open(turl);
+    }
 </script>
 @Html.Partial("~/Views/Public/Bottom.cshtml")

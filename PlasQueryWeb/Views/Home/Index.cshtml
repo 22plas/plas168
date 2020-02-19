@@ -87,7 +87,7 @@
     }
 
     .img_gallery {
-        height: 350px;
+        height: 420px;
         overflow: hidden;
         position: relative;
         width: 100%;
@@ -225,17 +225,19 @@
     .itembox {
         cursor: pointer;
     }
+
         .itembox:hover {
             color: #14a5ef;
         }
+
             .itembox:hover .itemtitle span, .itembox:hover .itemtitle {
                 color: #14a5ef !important;
             }
 
-            .itembox.active {
-                background-color: #14a5ef;
-                color: #fff;
-            }
+        .itembox.active {
+            background-color: #14a5ef;
+            color: #fff;
+        }
 
             .itembox.active .itemtitle, .itembox.active .itemtitle span {
                 color: #fff !important;
@@ -283,9 +285,9 @@
     /*新版样式*/
     .topleftbox, .toprightbox {
         width: 212px;
-        height: 480px;
+        height: 430px;
         float: left;
-        padding-top: 30px;
+        /*padding-top: 30px;*/
     }
 
         .topleftbox img，.toprightbox img {
@@ -295,13 +297,13 @@
 
     .topcenterbox {
         width: calc(100% - 424px);
-        height: 480px;
+        height: 430px;
         float: left;
     }
 
     .topcenterboxleft {
         width: 180px;
-        height: 480px;
+        height: 430px;
         background: rgba(255,255,255,1);
         box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.35);
         float: left;
@@ -315,7 +317,7 @@
         background: rgba(255,255,255,1);
         box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.35);
         width: 100%;
-        height: 300px;
+        height: 250px;
         margin-top: 10px;
     }
 
@@ -333,6 +335,20 @@
         background: #1593FF;
         line-height: 40px;
         color: #ffffff;
+        font-size: 14px;
+        margin: 0 auto;
+        text-align: center;
+        border: 1px solid #1593FF;
+        border-radius: 40px;
+        cursor: pointer;
+    }
+
+    .toprightbtnjc {
+        width: 70%;
+        height: 40px;
+        background: #ffffff;
+        line-height: 40px;
+        color: #1593FF;
         font-size: 14px;
         margin: 0 auto;
         text-align: center;
@@ -380,7 +396,7 @@
 
     .showclassdivbox {
         width: calc(70% - 470px);
-        height: 480px;
+        height: 430px;
         background: #ffffff;
         z-index: 1000;
         position: absolute;
@@ -411,7 +427,7 @@
         margin-top: 5px;
     }
 
-    .showdivbox {
+    .showdivbox,.showlogin {
         position: fixed;
         left: 0px;
         top: 0px;
@@ -424,8 +440,8 @@
     /*新版样式*/
 </style>
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" charset=“utf-8” />
-<script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js" type="text/javascript"></script>
-<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js" type="text/javascript"></script>
+<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
 <script type="text/javascript" src="/Content/src/js/search-suggest.js"></script>
 <script type="text/javascript" src="/Content/js/jquery.event.drag.js"></script>
 <script type="text/javascript" src="/Content/js/jquery.touchSlider.js"></script>
@@ -434,8 +450,8 @@
 @Html.Partial("~/Views/Public/PubSearch.cshtml")
 <link href="~/Content/css/iconfont/iconfont.css" rel="stylesheet" />
 <div id="allboxdiv">
-    <div class="topboxdiv" style="width:100%;height:500px;">
-        <div style="width:calc(70% + 424px);height:500px;margin:0 auto;">
+    <div class="topboxdiv" style="width:100%;height:450px;">
+        <div style="width:calc(70% + 424px);height:450px;margin:0 auto;">
             <div class="topleftbox">
                 <img src="~/Content/img/topbgleft.jpg" />
             </div>
@@ -455,61 +471,50 @@
                         </div>
                     </div>
                 </div>
-                <div style="width:calc(100% - 516px);height:480px;float:left;margin-left:17px;">
+                <div style="width:calc(100% - 516px);height:430px;float:left;margin-left:17px;">
                     <div style="width:100%;height:350px;margin-top:10px;">
                         <div class="img_gallery">
                             <div class="point">
                                 <a href="#">1</a>
                                 @*<a href="#">2</a>*@
                                 @*<a href="#">3</a>
-                        <a href="#">4</a>
-                        <a href="#">5</a>*@
+                                    <a href="#">4</a>
+                                    <a href="#">5</a>*@
                             </div>
                             <div class="main_img">
                                 <ul>
                                     <li>
                                         @*<span class="img_1">
-                                </span>*@
+                                            </span>*@
                                         <img src="~/Content/img/toplb.jpg" style="width:100%;height:100%;border:none;" />
                                     </li>
                                     @*<li>
-                                <img src="~/Content/img/banner/1.jpg" style="width:100%;height:100%;border:none;" />
-                            </li>*@
+                                            <img src="~/Content/img/banner/1.jpg" style="width:100%;height:100%;border:none;" />
+                                        </li>*@
                                     @*<li><span class="img_3"></span></li>
-                            <li><span class="img_4"></span></li>
-                            <li><span class="img_5"></span></li>*@
+                                        <li><span class="img_4"></span></li>
+                                        <li><span class="img_5"></span></li>*@
                                 </ul>
                                 <a href="javascript:;" id="btn_prev"></a>
                                 <a href="javascript:;" id="btn_next"></a>
                             </div>
                             @*<div class="img_font">
-                        <span>img 1/5</span>
-                        <span>img 2/5</span>
-                        <span>img 3/5</span>
-                        <span>img 4/5</span>
-                        <span>img 5/5</span>
-                    </div>*@
+                                    <span>img 1/5</span>
+                                    <span>img 2/5</span>
+                                    <span>img 3/5</span>
+                                    <span>img 4/5</span>
+                                    <span>img 5/5</span>
+                                </div>*@
                         </div>
                     </div>
-                    <div style="width:100%;height:120px;">
-                        @*<div style="width:30%;height:100px;float:left;border:1px solid #f2f2f2;margin-top:20px;border-radius:3px;margin-left:2%;">
-
-                </div>
-                <div style="width:30%;height:100px;float:left;border:1px solid #f2f2f2;margin-left:3%;margin-top:20px;border-radius:3px;">
-
-                </div>
-                <div style="width:30%;height:100px;float:left;border:1px solid #f2f2f2;margin-left:3%;margin-top:20px;border-radius:3px;">
-
-                </div>*@
+                    @*<div style="width:100%;height:120px;">
                         <div class="wc1200 row rowE">
                             <div class="bd mt20">
                                 <div id="sca2" class="warp-pic-list" style="height:120px;">
                                     <div id="wrapBox2" class="wrapBox" style="height:120px;">
                                         <ul id="counttop" class="count clearfix" style="height:120px;">
-                                            @* <li v-for="(vm,index) in manufacturerlist">*@
                                             <li style="margin-left:0px;padding:0px;margin-top:8px;margin-right:25px;height:110px;">
                                                 <a href="#2685" class="img_wrap">
-                                                    @*<img v-bind:src="vm.IcoPath" border="0">*@
                                                     <div style="width:100%;height:110px; color:#333333;font-size:14px;">
                                                         <div style="width:70px;height:110px;float:left;">
                                                             <img src="~/Content/img/t1.jpg" style="width:70px;height:70px;margin-top:20px;" />
@@ -527,7 +532,6 @@
                                             </li>
                                             <li style="margin-left:0px;padding:0px;margin-top:8px;margin-right:25px;height:110px;">
                                                 <a href="#2685" class="img_wrap">
-                                                    @*<img v-bind:src="vm.IcoPath" border="0">*@
                                                     <div style="width:100%;height:110px; color:#333333;font-size:14px;">
                                                         <div style="width:70px;height:110px;float:left;">
                                                             <img src="~/Content/img/t1.jpg" style="width:70px;height:70px;margin-top:20px;" />
@@ -545,7 +549,6 @@
                                             </li>
                                             <li style="margin-left:0px;padding:0px;margin-top:8px;margin-right:25px;height:110px;">
                                                 <a href="#2685" class="img_wrap">
-                                                    @*<img v-bind:src="vm.IcoPath" border="0">*@
                                                     <div style="width:100%;height:110px; color:#333333;font-size:14px;">
                                                         <div style="width:70px;height:110px;float:left;">
                                                             <img src="~/Content/img/t1.jpg" style="width:70px;height:70px;margin-top:20px;" />
@@ -563,7 +566,6 @@
                                             </li>
                                             <li style="margin-left:0px;padding:0px;margin-top:8px;margin-right:25px;height:110px;">
                                                 <a href="#2685" class="img_wrap">
-                                                    @*<img v-bind:src="vm.IcoPath" border="0">*@
                                                     <div style="width:100%;height:110px; color:#333333;font-size:14px;">
                                                         <div style="width:70px;height:110px;float:left;">
                                                             <img src="~/Content/img/t1.jpg" style="width:70px;height:70px;margin-top:20px;" />
@@ -581,7 +583,6 @@
                                             </li>
                                             <li style="margin-left:0px;padding:0px;margin-top:8px;margin-right:25px;height:110px;">
                                                 <a href="#2685" class="img_wrap">
-                                                    @*<img v-bind:src="vm.IcoPath" border="0">*@
                                                     <div style="width:100%;height:110px; color:#333333;font-size:14px;">
                                                         <div style="width:70px;height:110px;float:left;">
                                                             <img src="~/Content/img/t1.jpg" style="width:70px;height:70px;margin-top:20px;" />
@@ -599,7 +600,6 @@
                                             </li>
                                             <li style="margin-left:0px;padding:0px;margin-top:8px;margin-right:25px;height:110px;">
                                                 <a href="#2685" class="img_wrap">
-                                                    @*<img v-bind:src="vm.IcoPath" border="0">*@
                                                     <div style="width:100%;height:110px; color:#333333;font-size:14px;">
                                                         <div style="width:70px;height:110px;float:left;">
                                                             <img src="~/Content/img/t1.jpg" style="width:70px;height:70px;margin-top:20px;" />
@@ -617,7 +617,6 @@
                                             </li>
                                             <li style="margin-left:0px;padding:0px;margin-top:8px;margin-right:25px;height:110px;">
                                                 <a href="#2685" class="img_wrap">
-                                                    @*<img v-bind:src="vm.IcoPath" border="0">*@
                                                     <div style="width:100%;height:110px; color:#333333;font-size:14px;">
                                                         <div style="width:70px;height:110px;float:left;">
                                                             <img src="~/Content/img/t1.jpg" style="width:70px;height:70px;margin-top:20px;" />
@@ -635,7 +634,6 @@
                                             </li>
                                             <li style="margin-left:0px;padding:0px;margin-top:8px;margin-right:25px;height:110px;">
                                                 <a href="#2685" class="img_wrap">
-                                                    @*<img v-bind:src="vm.IcoPath" border="0">*@
                                                     <div style="width:100%;height:110px; color:#333333;font-size:14px;">
                                                         <div style="width:70px;height:110px;float:left;">
                                                             <img src="~/Content/img/t1.jpg" style="width:70px;height:70px;margin-top:20px;" />
@@ -658,36 +656,59 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                                </div>*@
                 </div>
-                <div style="width:300px;height:480px;float:left;margin-left:17px;">
+                <div style="width:300px;height:430px;float:left;margin-left:17px;">
                     <div class="toprightboxtop">
-                        <div style="width:100%;height:40px;margin-top:60px;float:left;">
-                            <div style="width:60%;height:40px;margin:0 auto;">
-                                <div style="width:40px;height:40px;float:left;">
-                                    <img src="~/Content/img/icon.png" style="width:40px;height:40px;" />
-                                </div>
-                                <div style="width:calc(100% - 50px);height:40px;float:left;margin-left:10px;">
-                                    <div style="width:100%;height:20px;color:#666666;line-height:20px;font-size:16px;">
-                                        Hi，下午好
+                        <div v-show="usname==''" style="width:100%;height:150px;">
+                            <div style="width:100%;height:40px;margin-top:30px;float:left;">
+                                <div style="width:60%;height:40px;margin:0 auto;">
+                                    <div style="width:40px;height:40px;float:left;">
+                                        @*<img v-bind:src="usimg" style="width:40px;height:40px;" />*@
+                                        <img src="~/Content/img/icon.png" style="width:40px;height:40px;" />
+
                                     </div>
-                                    <div style="width:100%;height:20px;color:#666666;line-height:20px;font-size:16px;">
-                                        欢迎来到塑蚁网
+                                    <div style="width:calc(100% - 50px);height:40px;float:left;margin-left:10px;">
+                                        <div style="width:100%;height:20px;color:#666666;line-height:20px;font-size:16px;">
+                                            Hi，下午好
+                                        </div>
+                                        <div style="width:100%;height:20px;color:#666666;line-height:20px;font-size:16px;">
+                                            欢迎来到塑蚁网
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div style="width:100%;height:50px;float:left;margin-top:35px;">
-                            <div class="toprightbtn" onclick="showlogindivbox()">
-                                登录/注册
+                            <div style="width:100%;height:50px;float:left;margin-top:35px;">
+                                <div class="toprightbtn" onclick="showlogindivbox()">
+                                    登录/注册
+                                </div>
                             </div>
                         </div>
-                        @*<div style="width:100%;height:50px;float:left;margin-top:5px;">
-                    <div class="toprightbtn rigistbtn">
-                        注册
-                    </div>
-                </div>*@
-                        <div style="width:100%;height:85px;float:left;margin-top:35px;">
+                        <div v-show="usname!=''" style="width:100%;height:150px;">
+                            <div style="width:100%;height:150px;float:left;">
+                                <div style="width:80%;height:90px;margin:0 auto;">
+                                    <div style="width:100%;height:50px;margin-top:30px;">
+                                        <div style="width:50px;height:50px;margin:0 auto;">
+                                            <img v-bind:src="usimg" style="width:50px;height:50px;border-radius:180px;" />
+                                        </div>
+                                    </div>
+                                    <div style="width:100%;height:40px;float:left;margin-left:10px;">
+                                        <div style="width:100%;color:#333333;line-height:20px;font-size:16px;text-align:center;margin-top:5px;">
+                                            {{usname}}
+                                        </div>
+                                        <div style="width:100%;height:20px;color:#666666;line-height:20px;font-size:14px;text-align:center;margin-top:5px;">
+                                            欢迎来到塑蚁网
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div style="width:100%;height:50px;float:left;margin-top:5px;">
+                                    <div class="toprightbtnjc" onclick="">
+                                        立即认证 赠送检测<i class="iconfont suyigengduo" style="margin-left:5px;"></i>
+                                    </div>
+                                </div>*@
+                        </div>
+                        <div style="width:100%;height:85px;float:left;border-top:1px dashed #dddddd;margin-top:10px;">
                             <div style="width:30%;height:80px;float:left;margin-top:5px;margin-left:3%;">
                                 <div style="width:100%;height:50px;text-align:center;">
                                     <img src="~/Content/img/gyshz.png" style="width:40px;height:30px;margin:0 auto;margin-top:10px;" />
@@ -723,8 +744,8 @@
                                 平台公告
                             </div>
                             @*<div style="height:25px;line-height:25px;font-size:14px;color:#333333;cursor:pointer;text-align:center;margin-right:15px;float:right;">
-                        更多<i class="iconfont suyigengduo" style="margin-right:2px;color:#333333;font-size:12px;"></i>
-                    </div>*@
+                                    更多<i class="iconfont suyigengduo" style="margin-right:2px;color:#333333;font-size:12px;"></i>
+                                </div>*@
                         </div>
                         <div v-if="newstype=='0'" style="width:100%;height:auto;margin-top:10px;">
                             <div class="newstitle aui-ellipsis-1" v-for="(vo,index) in newlist">
@@ -761,8 +782,8 @@
         </div>
     </div>
 
-    <div style="width:100%;height:130px;margin-top:20px;">
-        <div id="sliderdiv" style="width:70%;height:130px;margin:0 auto;">
+    <div style="width:100%;height:100px;">
+        <div id="sliderdiv" style="width:70%;height:100px;margin:0 auto;">
             @*<div  class="slider1">
                     <div class="slide" style="border:1px solid #cccccc;padding-bottom:10px;padding-top:10px;border-radius:3px;">
                         <img style="width:230px;height:100px;margin:0 auto;" src="~/Content/img/brand/1.png">
@@ -780,11 +801,10 @@
                 <div class="bd mt20" style="margin: 10px;">
                     <div id="sca1" class="warp-pic-list">
                         <div id="wrapBox1" class="wrapBox">
-                            <ul id="count1" class="count clearfix" style="height:120px !important;">
-                            </ul>
+                            <ul id="count1" class="count clearfix" style="height:100px !important;"></ul>
                         </div>
-                        <a id="right1" class="prev icon btn" style="top:20px !important;"></a>
-                        <a id="left1" class="next icon btn" style="top:20px !important;"></a>
+                        <a id="right1" class="prev icon btn" style="top:15px !important;"></a>
+                        <a id="left1" class="next icon btn" style="top:15px !important;"></a>
                     </div>
                 </div>
             </div>
@@ -932,8 +952,8 @@
                             <i class="iconfont suyiiconfontroundright" style="color:#ffffff;margin-left:10px;font-size:30px;"></i>
                         </div>
                         @*<div style="width:100px;height:50px;color:#666666;float:right;margin-right:15px;line-height:50px;text-align:right;cursor:pointer;">
-                            更多<i class="fa fa-angle-double-right" style="font-size:16px;margin-left:2px;color:#666666;"></i>
-                        </div>*@
+                                更多<i class="fa fa-angle-double-right" style="font-size:16px;margin-left:2px;color:#666666;"></i>
+                            </div>*@
                     </div>
                     <div style="width:100%;height:300px;margin-top:10px;">
                         <div style="width:100%;height:300px;">
@@ -972,8 +992,8 @@
                             <i class="iconfont suyiiconfontroundright" style="color:#ffffff;margin-left:10px;font-size:30px;"></i>
                         </div>
                         @*<div style="width:100px;height:50px;color:#666666;float:right;margin-right:15px;line-height:50px;text-align:right;cursor:pointer;">
-                            更多<i class="fa fa-angle-double-right" style="font-size:16px;margin-left:2px;color:#666666;"></i>
-                        </div>*@
+                                更多<i class="fa fa-angle-double-right" style="font-size:16px;margin-left:2px;color:#666666;"></i>
+                            </div>*@
                     </div>
                 </div>
                 <div style="width:100%;height:300px;margin-top:10px;">
@@ -991,7 +1011,7 @@
                                             </div>
                                         </div>
                                         <div style="width:30%;height:70px;float:left;">
-                                            <div class="aui-ellipsis-1" style="position:relative;height:30px;margin-top:20px;text-align:center;font-size:12px;color:#ffffff;background:#0B68F5;opacity:0.7;border-radius:30px;line-height:30px;box-shadow:0px 2px 4px 0px rgba(0, 0, 0, 0.35);" v-bind:style="vpdf.typenamebcstyle" >
+                                            <div class="aui-ellipsis-1" style="position:relative;height:30px;margin-top:20px;text-align:center;font-size:12px;color:#ffffff;background:#0B68F5;opacity:0.7;border-radius:30px;line-height:30px;box-shadow:0px 2px 4px 0px rgba(0, 0, 0, 0.35);" v-bind:style="vpdf.typenamebcstyle">
                                                 {{vpdf.TypeName}}
                                             </div>
                                         </div>
@@ -1015,13 +1035,13 @@
                             塑料行情
                         </div>
                         @*<div style="width:calc(30% - 15px);height:70px;float:left;text-align:right;font-size:14px;line-height:50px;margin-right:15px;color:#666666;cursor:pointer;">
-                            更多<i class="fa fa-angle-double-right" style="font-size:16px;margin-left:2px;color:#666666;"></i>
-                        </div>*@
+                                更多<i class="fa fa-angle-double-right" style="font-size:16px;margin-left:2px;color:#666666;"></i>
+                            </div>*@
                     </div>
                 </div>
                 <div style="width:274px;height:610px;border-right:1px solid #dddddd;">
-                    <div style="width:100%;height:70px;"  v-for="(vslhq,index) in slhqdata">
-                        <div style="width:100%;height:70px;cursor:pointer;" v-bind:id="index" onclick="tonewsdetail(this)">
+                    <div style="width:100%;height:70px;" v-for="(vslhq,index) in slhqdata">
+                        <div style="width:100%;height:70px;cursor:pointer;" v-bind:id="vslhq.ID" onclick="tonewsdetail(this)">
                             <div style="width:30%;height:70px;float:left;">
                                 <div style="min-width:50px;width:auto;display:inline-block !important; display:inline;position:relative;float:right;top:20px;text-align:center;padding-left:5px;padding-right:5px;font-size:12px;color:#4BADFF;border:1px solid #dddddd;border-radius:3px;">
                                     {{vslhq.CreateDate}}
@@ -1061,7 +1081,7 @@
                             <img v-bind:src="val.HomeImg" style="width:200px;height:105px;margin:2px auto;" />
                         </div>
                         <div style="width:calc(100% - 220px);height:110px;float:left;">
-                            <div style="width:100%;height:110px;cursor:pointer;" v-bind:id="index">
+                            <div style="width:100%;height:110px;cursor:pointer;" v-bind:id="val.ID" onclick="tonewsdetail(this)">
                                 <div style="width:100%;height:25px;">
                                     <div class="aui-ellipsis-1" style="width:70%;height:25px;float:left;font-size:16px;color:#333333;line-height:25px;font-weight:700;">
                                         {{val.Title}}
@@ -1076,11 +1096,11 @@
                                 <div style="width:100%;height:35px;margin-top:5px;">
                                     <div style="width:60%;height:35px;float:left;">
                                         @*<div style="height:15px;line-height:15px;font-size:10px;color:#dddddd;border:1px solid #dddddd;text-align:center;padding-left:3px;padding-right:3px;float:left;margin-right:10px;border-radius:3px;margin-top:10px;">
-                                            聚丙烯
-                                        </div>
-                                        <div style="height:15px;line-height:15px;font-size:10px;color:#dddddd;border:1px solid #dddddd;text-align:center;padding-left:3px;padding-right:3px;float:left;margin-right:10px;border-radius:3px;margin-top:10px;">
-                                            聚丙烯
-                                        </div>*@
+                                                聚丙烯
+                                            </div>
+                                            <div style="height:15px;line-height:15px;font-size:10px;color:#dddddd;border:1px solid #dddddd;text-align:center;padding-left:3px;padding-right:3px;float:left;margin-right:10px;border-radius:3px;margin-top:10px;">
+                                                聚丙烯
+                                            </div>*@
                                     </div>
                                     <div style="width:40%;height:35px;float:left;text-align:right;font-size:14px;color:#999999;line-height:35px;">
                                         <div style="height:35px;font-size:12px;color:#808080;line-height:35px;float:right;margin-left:15px;">
@@ -1093,7 +1113,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -1114,7 +1134,7 @@
                 </div>
                 <div style="width:100%;height:500px;">
                     <div style="width:90%;height:140px;margin:0 auto;border-bottom:1px solid #f2f2f2;margin-top:15px;" v-for="(vbc,index) in btnewdata">
-                        <div v-bind:id="index" style="width:100%;height:140px; cursor:pointer;">
+                        <div v-bind:id="vbc.ID" onclick="tonewsdetail(this)" style="width:100%;height:140px; cursor:pointer;">
                             <div style="width:100%;max-height:50px; font-size:14px;color:#333333;line-height:20px;" class="aui-ellipsis-2">
                                 {{vbc.Title}}
                             </div>
@@ -1154,322 +1174,10 @@
     </div>
 
 
-    <div class="showdivbox">
-        <div style="width:700px;height:516px;background-color:#ffffff;border-radius:5px;margin:0 auto;margin-top:10%;z-index:1102;opacity:1.0;">
-            <div style="width:240px;height:516px;float:left;border-right:1px dashed #dddddd;">
-                <img style="width:100%;height:516px;border:none;" src="~/Content/img/loginleft.png" />
-            </div>
-            <div style="width:calc(100% - 241px);height:516px;float:left;">
-                <div style="width:100%;height:50px;">
-                    <div id="toaccountdiv" style="width:120px;height:50px;float:left;line-height:50px;font-size:14px;text-align:left;color:#333333;background:#ffffff;cursor:pointer;margin-left:10px;padding-left:15px;display:none;" onclick="toaccountlogin()">
-                        <i class="iconfont suyiback_light" style="color:#333333;font-size:16px;"></i>返回账号登录
-                    </div>
-                    <div style="width:120px;height:50px;float:right;line-height:50px;font-size:14px;text-align:right;color:#333333;background:#ffffff;cursor:pointer;margin-right:10px;padding-right:15px;" onclick="closeshowdiv()">
-                        关闭
-                    </div>
-                </div>
-                <div id="accountlogin" style="width:100%;height:460px;">
-                    <div style="width:100%;height:70px;">
-                        <div style="height:70px;line-height:70px;float:left;font-size:22px;color:#333333;padding-left:50px;letter-spacing:1px;font-weight:700;">
-                            账号密码登录
-                        </div>
-                        <div style="height:70px;line-height:70px;float:right;font-size:14px;color:#333333;padding-right:35px;cursor:pointer;" onclick="tomessagelogin()">
-                            短信登录
-                        </div>
-                    </div>
-                    <div style="width:100%;height:380px;margin-top:5px;">
-                        <div style="width:100%;height:50px;">
-                            <div style="width:400px;height:50px;background:#f8f9fb;border-radius:3px;margin:0 auto;">
-                                <div style="width:50px;height:50px;float:left;line-height:50px;text-align:center;">
-                                    <i class="iconfont suyiphone_icon" style="color:#999999;margin-left:10px;font-size:24px;"></i>
-                                </div>
-                                <div style="width:350px;height:50px;float:left;background:#f8f9fb;">
-                                    <input v-model="loginphone" id="username" placeholder="请输入手机号" type="text" style="width:100%;height:40px;margin-top:7px;line-height:50px;font-size:14px;color:#666666;text-indent:10px;background:#f8f9fb;" />
-                                </div>
-                            </div>
-                        </div>
-                        <div style="width:100%;height:25px;">
-                            @*<div style="width:400px;height:25px;margin:0 auto;color:#FF6600;font-size:10px;line-height:20px;display:none; ">
-                               {{loginphonemessage}}
-                            </div>*@
-                        </div>
-                        <div style="width:100%;height:50px;">
-                            <div style="width:400px;height:50px;margin-top:5px;background:#f8f9fb;border-radius:3px;margin:0 auto;">
-                                <div style="width:50px;height:50px;float:left;line-height:50px;text-align:center;">
-                                    <i class="iconfont suyimima" style="color:#999999;margin-left:10px;font-size:24px;"></i>
-                                </div>
-                                <div style="width:350px;height:50px;float:left;background:#f8f9fb;">
-                                    <input v-model="loginpwd" id="userpwd" placeholder="请输入密码" type="password" style="width:100%;height:40px;margin-top:7px;line-height:50px;font-size:14px;color:#666666;text-indent:10px;background:#f8f9fb;" />
-                                </div>
-                            </div>
-                        </div>
-                        <div style="width:100%;height:30px;">
-                            <div style="width:400px;height:30px;margin:0 auto;color:#FF6600;font-size:12px;line-height:25px;">
-                                {{accountloginmessage}}
-                            </div>
-                        </div>
-                        <div style="width:100%;height:50px;">
-                            <div style="width:400px;height:50px;margin:0 auto;background:#1593FF;color:#ffffff;font-size:16px;letter-spacing:2px;line-height:50px;border-radius:5px;cursor:pointer;text-align:center;" onclick="pwdlogin()">
-                                立即登录
-                            </div>
-                        </div>
-                        <div style="width:100%;height:40px;">
-                            <div style="width:400px;height:40px;margin:0 auto;color:#1594FF;font-size:12px;line-height:25px;cursor:pointer;" onclick="toforgetpwd()">
-                                忘记密码？
-                            </div>
-                        </div>
-                        <div style="width:100%;height:40px;">
-                            <div style="width:400px;height:40px;margin:0 auto;color:#333333;font-size:12px;line-height:25px;text-align:center;">
-                                其他登录方式
-                            </div>
-                        </div>
-                        <div style="width:100%;height:70px;">
-                            <div style="width:160px;height:70px;margin:0 auto;">
-                                <div style="width:70px;height:70px;float:left;">
-                                    <div style="width:50px;height:50px;border:1px solid #1594FF;line-height:50px;text-align:center;border-radius:180px;cursor:pointer;" onclick="towxorqqlogin(2)">
-                                        <i class="iconfont suyiqq1" style="color:#1594FF;font-size:30px;"></i>
-                                    </div>
-                                </div>
-                                <div style="width:70px;height:70px;float:right;">
-                                    <div style="width:50px;height:50px;border:1px solid #3CB950;line-height:50px;text-align:center;border-radius:180px;cursor:pointer;" onclick="towxorqqlogin(1)">
-                                        <i class="iconfont suyiweixin" style="color:#3CB950;font-size:30px;"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="messagelogin" style="width:100%;height:460px;display:none;">
-                    <div style="width:100%;height:70px;">
-                        <div style="height:70px;line-height:70px;float:left;font-size:22px;color:#333333;padding-left:50px;letter-spacing:1px;font-weight:700;">
-                            短信登录
-                        </div>
-                        <div style="height:70px;line-height:70px;float:right;font-size:14px;color:#333333;padding-right:35px;cursor:pointer;" onclick="toaccountlogin()">
-                            账号密码登录
-                        </div>
-                    </div>
-                    <div style="width:100%;height:380px;margin-top:5px;">
-                        <div style="width:100%;height:50px;">
-                            <div style="width:400px;height:50px;background:#f8f9fb;border-radius:3px;margin:0 auto;">
-                                <div style="width:50px;height:50px;float:left;line-height:50px;text-align:center;">
-                                    <i class="iconfont suyiphone_icon" style="color:#999999;margin-left:10px;font-size:24px;"></i>
-                                </div>
-                                <div style="width:350px;height:50px;float:left;background:#f8f9fb;">
-                                    <input id="phone" v-model="codeloginphone" placeholder="请输入手机号" type="text" style="width:100%;height:40px;margin-top:7px;line-height:50px;font-size:14px;color:#666666;text-indent:10px;background:#f8f9fb;" />
-                                </div>
-                                @*<div style="width:80px;height:50px;float:left;line-height:50px;font-size:12px;color:#666666;text-align:center;cursor:pointer;">
-                                    获取验证码
-                                </div>*@
-                            </div>
-                        </div>
-                        <div style="width:100%;height:25px;">
-                            @*<div style="width:400px;height:25px;margin:0 auto;color:#FF6600;font-size:10px;line-height:20px;display:none; ">
-                                请输入正确的手机号
-                            </div>*@
-                        </div>
-                        <div style="width:100%;height:50px;">
-                            <div style="width:400px;height:50px;margin:0 auto;">
-                                <div style="width:270px;height:50px;margin-top:5px;background:#f8f9fb;border-radius:3px;float:left;">
-                                    <div style="width:50px;height:50px;float:left;line-height:50px;text-align:center;">
-                                        <i class="iconfont suyiyanzhengma" style="color:#999999;margin-left:10px;font-size:24px;"></i>
-                                    </div>
-                                    <div style="width:220px;height:50px;float:left;background:#f8f9fb;">
-                                        <input id="message" v-model="codelogincode" placeholder="请输入验证码" type="text" style="width:100%;height:40px;margin-top:7px;line-height:50px;font-size:14px;color:#666666;text-indent:10px;background:#f8f9fb;" />
-                                    </div>
-                                </div>
-                                <div style="width:130px;height:50px;margin-top:5px;float:left;">
-                                    <div id="code" onclick="setcode()" style="width:105px;height:50px;float:left;line-height:50px;font-size:12px;color:#ffffff;background:#9BC9FF;text-align:center;cursor:pointer;border-radius:3px;margin-left:25px;letter-spacing:1px;">
-                                        {{codetimestr}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="width:100%;height:30px;">
-                            <div style="width:400px;height:30px;margin:0 auto;color:#FF6600;font-size:12px;line-height:25px;">
-                                {{codeloginmessage}}
-                            </div>
-                        </div>
-                        <div style="width:100%;height:50px;">
-                            <div style="width:400px;height:50px;margin:0 auto;background:#1593FF;color:#ffffff;font-size:16px;letter-spacing:2px;line-height:50px;border-radius:5px;cursor:pointer;text-align:center;" onclick="codelogin()">
-                                立即登录
-                            </div>
-                        </div>
-                        <div style="width:100%;height:40px;">
-                            <div style="width:400px;height:40px;margin:0 auto;color:#1594FF;font-size:12px;line-height:25px;cursor:pointer;" onclick="toforgetpwd()">
-                                忘记密码？
-                            </div>
-                        </div>
-                        <div style="width:100%;height:40px;">
-                            <div style="width:400px;height:40px;margin:0 auto;color:#333333;font-size:12px;line-height:25px;text-align:center;">
-                                其他登录方式
-                            </div>
-                        </div>
-                        <div style="width:100%;height:70px;">
-                            <div style="width:160px;height:70px;margin:0 auto;">
-                                <div style="width:70px;height:70px;float:left;">
-                                    <div style="width:50px;height:50px;border:1px solid #1594FF;line-height:50px;text-align:center;border-radius:180px;cursor:pointer;" onclick="towxorqqlogin(2)">
-                                        <i class="iconfont suyiqq1" style="color:#1594FF;font-size:30px;"></i>
-                                    </div>
-                                </div>
-                                <div style="width:70px;height:70px;float:right;">
-                                    <div style="width:50px;height:50px;border:1px solid #3CB950;line-height:50px;text-align:center;border-radius:180px;cursor:pointer;" onclick="towxorqqlogin(1)">
-                                        <i class="iconfont suyiweixin" style="color:#3CB950;font-size:30px;"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="wxorqqlogin" style="width:100%;height:460px;display:none;">
-                    @*<div style="width:100%;height:70px;">
-                        <div style="height:70px;line-height:70px;float:right;font-size:14px;color:#333333;padding-right:35px;cursor:pointer;">
-                            <span style="cursor:pointer;">短信登录</span>/<span style="cursor:pointer;">账号密码登录</span>
-                        </div>
-                    </div>*@
-                    <div style="width:100%;height:460px;">
-                        <div style="width:100%;height:400px;">
-                            <div id="wxqrcodediv" style="width:100%;height:400px;text-align:center;">
-
-                            </div>
-                        </div>
-                        <div style="width:100%;height:60px;">
-                            <div style="width:160px;height:60px;margin:0 auto;">
-                                <div style="width:60px;height:60px;float:left;">
-                                    <div style="width:50px;height:50px;border:1px solid #1594FF;line-height:50px;text-align:center;border-radius:180px;cursor:pointer;" onclick="towxorqqlogin(2)">
-                                        <i class="iconfont suyiqq1" style="color:#1594FF;font-size:30px;"></i>
-                                    </div>
-                                </div>
-                                <div style="width:60px;height:60px;float:right;">
-                                    <div style="width:50px;height:50px;border:1px solid #3CB950;line-height:50px;text-align:center;border-radius:180px;cursor:pointer;" onclick="towxorqqlogin(1)">
-                                        <i class="iconfont suyiweixin" style="color:#3CB950;font-size:30px;"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="forgetpwd" style="width:100%;height:460px;display:none;">
-                    <div style="width:100%;height:70px;">
-                        <div style="height:70px;line-height:70px;float:left;font-size:22px;color:#333333;padding-left:50px;letter-spacing:1px;font-weight:700;">
-                            找回密码
-                        </div>
-                        <div style="height:70px;line-height:70px;float:right;font-size:14px;color:#333333;padding-right:35px;cursor:pointer;" onclick="toaccountlogin()">
-                            返回登录
-                        </div>
-                    </div>
-                    <div style="width:100%;height:380px;margin-top:5px;" id="forget1">
-                        <div style="width:100%;height:50px;">
-                            <div style="width:400px;height:50px;background:#f8f9fb;border-radius:3px;margin:0 auto;">
-                                <div style="width:50px;height:50px;float:left;line-height:50px;text-align:center;">
-                                    <i class="iconfont suyiphone_icon" style="color:#999999;margin-left:10px;font-size:24px;"></i>
-                                </div>
-                                <div style="width:350px;height:50px;float:left;background:#f8f9fb;">
-                                    <input v-model="forgetphone" placeholder="请输入手机号" type="text" style="width:100%;height:40px;margin-top:7px;line-height:50px;font-size:14px;color:#666666;text-indent:10px;background:#f8f9fb;" />
-                                </div>
-                            </div>
-                        </div>
-                        <div style="width:100%;height:25px;">
-                            @*<div style="width:400px;height:25px;margin:0 auto;color:#FF6600;font-size:10px;line-height:20px;display:none; ">
-                                请输入正确的手机号
-                            </div>*@
-                        </div>
-                        <div style="width:100%;height:50px;">
-                            <div style="width:400px;height:50px;margin:0 auto;">
-                                <div style="width:270px;height:50px;margin-top:5px;background:#f8f9fb;border-radius:3px;float:left;">
-                                    <div style="width:50px;height:50px;float:left;line-height:50px;text-align:center;">
-                                        <i class="iconfont suyiyanzhengma" style="color:#999999;margin-left:10px;font-size:24px;"></i>
-                                    </div>
-                                    <div style="width:220px;height:50px;float:left;background:#f8f9fb;">
-                                        <input v-model="forgetcode" placeholder="请输入验证码" type="text" style="width:100%;height:40px;margin-top:7px;line-height:50px;font-size:14px;color:#666666;text-indent:10px;background:#f8f9fb;" />
-                                    </div>
-                                </div>
-                                <div style="width:130px;height:50px;margin-top:5px;float:left;">
-                                    <div onclick="forgetpwdsetcode()" style="width:105px;height:50px;float:left;line-height:50px;font-size:12px;color:#ffffff;background:#9BC9FF;text-align:center;cursor:pointer;border-radius:3px;margin-left:25px;letter-spacing:1px;">
-                                        {{forgetcodetimestr}}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="width:100%;height:30px;">
-                            <div style="width:400px;height:30px;margin:0 auto;color:#FF6600;font-size:12px;line-height:25px;">
-                                {{forgetcodemessage1}}
-                            </div>
-                        </div>
-                        <div style="width:100%;height:50px;margin-top:20px;">
-                            <div style="width:400px;height:50px;margin:0 auto;background:#1593FF;color:#ffffff;font-size:16px;letter-spacing:2px;line-height:50px;border-radius:5px;cursor:pointer;text-align:center;" onclick="tonextforget()">
-                                下一步
-                            </div>
-                        </div>
-                    </div>
-                    <div id="forget2" style="width:100%;height:380px;margin-top:5px;display:none;">
-                        <div style="width:100%;height:50px;">
-                            <div style="width:400px;height:50px;background:#f8f9fb;border-radius:3px;margin:0 auto;">
-                                <div style="width:50px;height:50px;float:left;line-height:50px;text-align:center;">
-                                    <i class="iconfont suyiphone_icon" style="color:#999999;margin-left:10px;font-size:24px;"></i>
-                                </div>
-                                <div style="width:350px;height:50px;float:left;background:#f8f9fb;">
-                                    <input id="newpwd" v-model="newpwd" placeholder="设置新密码" type="password" style="width:100%;height:40px;margin-top:7px;line-height:50px;font-size:14px;color:#666666;text-indent:10px;background:#f8f9fb;" />
-                                </div>
-                            </div>
-                        </div>
-                        <div style="width:100%;height:25px;">
-                            @*<div style="width:400px;height:25px;margin:0 auto;color:#FF6600;font-size:10px;line-height:20px;display:none; ">
-                                请输入新密码
-                            </div>*@
-                        </div>
-                        <div style="width:100%;height:50px;">
-                            <div style="width:400px;height:50px;margin:0 auto;">
-                                <div style="width:400px;height:50px;margin-top:5px;background:#f8f9fb;border-radius:3px;float:left;">
-                                    <div style="width:50px;height:50px;float:left;line-height:50px;text-align:center;">
-                                        <i class="iconfont suyimima" style="color:#999999;margin-left:10px;font-size:24px;"></i>
-                                    </div>
-                                    <div style="width:350px;height:50px;float:left;background:#f8f9fb;">
-                                        <input id="confirmnewpwd" v-model="confirmnewpwd" placeholder="确认新密码" type="password" style="width:100%;height:40px;margin-top:7px;line-height:50px;font-size:14px;color:#666666;text-indent:10px;background:#f8f9fb;" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="width:100%;height:30px;">
-                            <div style="width:400px;height:30px;margin:0 auto;color:#FF6600;font-size:12px;line-height:25px;">
-                                {{forgetcodemessage2}}
-                            </div>
-                        </div>
-                        <div style="width:100%;height:50px;margin-top:20px;">
-                            <div style="width:400px;height:50px;margin:0 auto;background:#1593FF;color:#ffffff;font-size:16px;letter-spacing:2px;line-height:50px;border-radius:5px;cursor:pointer;text-align:center;" onclick="tosumbitforget()">
-                                提交
-                            </div>
-                        </div>
-                        <div style="width:100%;height:40px;">
-                            <div style="width:400px;height:40px;margin:0 auto;color:#1594FF;font-size:12px;line-height:25px;cursor:pointer;" onclick="toforgetpwdup()">
-                                上一步
-                            </div>
-                        </div>
-                    </div>
-                    <div id="forget3" style="width:100%;height:380px;margin-top:5px;display:none;">
-                        <div style="width:400px;height:100px;margin:0 auto;">
-                            <div style="width:100%;height:50px;margin-top:80px;line-height:50px;">
-                                <span style="display:block;width:30px;height:30px;line-height:30px;text-align:center;background:rgb(21, 147, 255);float:left;border-radius:30px;margin-left:30%;">
-                                    <i class="iconfont suyiqueding" style="color:#ffffff;font-size:24px;"></i>
-                                </span>
-                                <span style="display:block;height:30px;line-height:30px;color:#333333;font-size:18px;margin-left:10px;float:left;">
-                                    重置成功
-                                </span>
-                            </div>
-                        </div>
-                        <div style="width:100%;height:50px;margin-top:20px;">
-                            <div style="width:400px;height:50px;margin:0 auto;background:#1593FF;color:#ffffff;font-size:16px;letter-spacing:2px;line-height:50px;border-radius:5px;cursor:pointer;text-align:center;" onclick="completeforgetpwd()">
-                                完成
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
 </div>
-
+@*<div id="Home" class="showlogin" style="display:none;">
+    @Html.Partial("~/Views/Public/Login.cshtml")
+</div>*@
 
 @*<div class="header-orange">
         <div class="logo">
@@ -1605,15 +1313,13 @@
 
 <script src="~/Content/js/echarts.min.js" type="text/javascript"></script>
 <script src="~/Content/js/vue.js" type="text/javascript"></script>
-<script src="~/Scripts/comm.js" type="text/javascript"></script>
-<script src="~/Content/js/business/Login.js" type="text/javascript"></script>
 <script type="text/javascript">
     //初始化vue组件
     var vm = new Vue({
         el: '#allboxdiv',
         data: {
             newlist: [],//热点资讯新闻数据
-            ggnewlist:[],//平台公告新闻数据
+            ggnewlist: [],//平台公告新闻数据
             pricelist: [],//价格趋势数据
             manufacturerlist: [],//厂家数据
             SmallClass: "",//选中的价格类别
@@ -1627,24 +1333,13 @@
             childlist: [],//下级分类数据
             btnewdata: [],//底部资讯数据
             yyaldata: [],//应用案例
-            slhqdata:[],//塑料行情数据
+            slhqdata: [],//塑料行情数据
             pdfdata: [],//pdf认证报告数据
             prodata: [],//物性报告数据
-            loginphone: "",//登录手机号
-            loginpwd: "",//登录密码
-            accountloginmessage: "",//账号登录提示
-            codeloginphone: "",//短信登录手机号
-            codelogincode: "",//短信登录验证码
-            codeloginmessage: "",//短信登录提示
-            codetimestr: "获取验证码",//短信登录倒计时提示
-            forgetphone: "",//重置密码手机号
-            newpwd: "",//新密码
-            confirmnewpwd: "",//确认新密码
-            forgetcode: "",//重置密码验证码
-            forgetcodetimestr:"获取验证码",//重置密码倒计时提示
-            forgetcodemessage1: "",//重置密码提示
-            forgetcodemessage2: "",//重置密码提示
-            
+
+            usname: "",//用户名
+            usimg: "~/Content/img/icon.png"//头像
+
         }, methods: {
             load: function () {
                 $.ajax({
@@ -1659,6 +1354,8 @@
                         var returnstate = data.State;
                         if (returnstate == "Success") {
                             var resultdata = data.Result;
+                            vm.usname = resultdata.usname;
+                            vm.usimg = resultdata.usimg;
                             vm.newlist = resultdata.newdata;
                             vm.yyaldata = resultdata.yyaldata;
                             vm.slhqdata = resultdata.slhqldata;
@@ -1695,9 +1392,9 @@
                             if (tempmanufacturerlist.length > 0) {
                                 var tempstr = "";
                                 for (var i = 0; i < tempmanufacturerlist.length; i++) {
-                                    tempstr = tempstr + "<li style='margin - left: 0px; padding: 0px; margin - top: 8px; margin - right: 25px; width: 230px; height:100px !important;'>" +
+                                    tempstr = tempstr + "<li style='margin - left: 0px; padding: 0px; margin - top: 8px; margin - right: 15px; width: 170px; height:90px !important;border:0px !important;'>" +
                                         //"< a href = '#2685' class='img_wrap' >" +
-                                        "<img src='" + tempmanufacturerlist[i].IcoPath + "' border='0' style='width:97%;height:95px;margin:2px auto;display:block;border:0px;'>" +
+                                        "<img src='" + tempmanufacturerlist[i].IcoPath + "' border='0' style='width:97%;height:85px;margin:2px auto;display:block;border:0px;'>" +
                                         //"</a>" +
                                         "</li >";
                                 }
@@ -1735,7 +1432,7 @@
             return false;
         }
         else {
-            window.location.href = "/Product/Index?key=" + encodeURI(encodeURIComponent(keyword)) + "&keyid=" + id;
+            window.location.href = "/Product/Index?key=" + encodeURI(encodeURIComponent(keyword)) + "&searchtype=1&keyid=" + id;
         }
     }
     var inputwidht = "650";
@@ -1835,8 +1532,8 @@
             path: 'left',
             auto: false,
             time: 3000,
-            num: 6,
-            gd_num: 6,
+            num: 7,
+            gd_num: 7,
             waite_time: 1000
 
         })
@@ -2040,28 +1737,27 @@
         $("#selectdivbox").show();
     }, function () {
         $("#selectdivbox").hide();
-        });
+    });
     //鼠标移入大类时显示下级分类
-    function itemmousemove(t)
-    {
+    function itemmousemove(t) {
         var index = t.id;
         var id = vm.typelistdata[index].Guid;
-            $.ajax({
-                type: "GET",
-                dataType: "JSON",
-                url: '/Product/GetIndexClass',
-                data: "classid=" + id,
-                async: false,
-                success: function (data) {
-                    //alert(JSON.stringify(data));
-                    var returnstate = data.State;
-                    if (returnstate == "Success") {
-                        var resultdata = data.Result;
-                        vm.childlist = resultdata;
-                    }
-                },
-                error: function () { layer.msg('数据请求异常', { icon: 2 }); }
-            });
+        $.ajax({
+            type: "GET",
+            dataType: "JSON",
+            url: '/Product/GetIndexClass',
+            data: "classid=" + id,
+            async: false,
+            success: function (data) {
+                //alert(JSON.stringify(data));
+                var returnstate = data.State;
+                if (returnstate == "Success") {
+                    var resultdata = data.Result;
+                    vm.childlist = resultdata;
+                }
+            },
+            error: function () { layer.msg('数据请求异常', { icon: 2 }); }
+        });
         $("#selectdivbox").show();
     }
     //鼠标移出大类时隐藏下级分类
@@ -2077,102 +1773,11 @@
     //    //$("#left1").css("display","none");
     //});
     //显示登录页面
-    function showlogindivbox()
-    {
-        $(".showdivbox").show();
+    function showlogindivbox() {
+        $(".showlogin").show();
+        //$(".showdivbox").show();
         $('body').css("overflow", "hidden");
     }
-    //微信登录
-    function wxlogin() {
-        var turl = encodeURIComponent("https://168plas.com/Account/LoginByWeiXin");
-        var obj = new WxLogin({
-            self_redirect: true,
-            id: "wxqrcodediv",
-            appid: "wx10e2e44e6fb65f66",
-            scope: "snsapi_login",
-            redirect_uri: turl,
-            state: "openid",
-            style: "",
-            href: ""
-        });
-    }
-    //关闭登录界面
-    function closeshowdiv()
-    {
-        $(".showdivbox").hide();
-        $('body').css("overflow", "scroll");        
-    }
-    //跳转到短信登录
-    function tomessagelogin() {
-        $("#accountlogin").hide();
-        $("#messagelogin").show();
-        $("#wxorqqlogin").hide();
-        $("#toaccountdiv").hide();
-        $("#forgetpwd").hide();
-    }
-    //跳转到账号密码登录
-    function toaccountlogin() {
-        $("#accountlogin").show();
-        $("#messagelogin").hide();
-        $("#wxorqqlogin").hide();
-        $("#toaccountdiv").hide();
-        $("#forgetpwd").hide();
-        $("#forget1").hide();
-        $("#forget2").hide();
-        $("#forget3").hide();
-    }
-    //跳转到微信或者qq登录
-    function towxorqqlogin(type) {
-        //微信登录
-        if (type == 1) {
-            $("#accountlogin").hide();
-            $("#messagelogin").hide();
-            $("#wxorqqlogin").show();
-            $("#toaccountdiv").show();
-            $("#wxqrcodediv").show();
-            $("#forgetpwd").hide();
-            wxlogin();
-        }
-        //qq登录
-        else
-        {
-            var tbackurl = encodeURIComponent("http://168plas.com/Account/LoginByQQ");
-            var tqqurl = "https://graph.qq.com/oauth2.0/authorize?response_type=code&client_id=101844740&redirect_uri=" + tbackurl + "&state=suyiqqlogin";
-            window.open(tqqurl);  
-        }
-    }
-    //忘记密码
-    function toforgetpwd()
-    {
-        $("#accountlogin").hide();
-        $("#messagelogin").hide();
-        $("#wxorqqlogin").hide();
-        $("#toaccountdiv").hide();
-        $("#wxqrcodediv").hide();
-        $("#forgetpwd").show();
-        $("#forget1").show();
-        $("#forget2").hide();
-        $("#forget3").hide();
-    }
-    function toforgetpwdup()
-    {
-        $("#forget1").show();
-        $("#forget2").hide();
-        $("#forget3").hide();
-    }
-    //完成密码重置
-    function completeforgetpwd()
-    {
-        $("#accountlogin").show();
-        $("#messagelogin").hide();
-        $("#wxorqqlogin").hide();
-        $("#toaccountdiv").hide();
-        $("#forgetpwd").hide();
-        $("#forget1").hide();
-        $("#forget2").hide();
-        $("#forget3").hide();
-    }
-    //选择热点资讯和平台公告
     function selectnews(type) {
         if (type == 0) {
             vm.newstype = "0";
@@ -2182,21 +1787,21 @@
         }
     }
     //选择二级或者三级分类跳转到搜索页
-    function selectclassitem(t)
-    {
+    function selectclassitem(t) {
         var index = t.id;
         var splitlist = index.split(",");
         var bigindex = splitlist[0];
         var smallindex = splitlist[1];
         var childlist = vm.childlist[bigindex].childclasslist;
+        var tempguid = childlist[smallindex].Guid;
         var classitemname = childlist[smallindex].Name;
         //window.location.href = "/Product/Index?key=" + encodeURI(encodeURIComponent(classitemname)) + "&keyid=" + 0;
-        var turl = "/Product/Index?key=" + encodeURI(encodeURIComponent(classitemname)) + "&keyid=" + 0;
+        //var turl = "/Product/Index?key=" + encodeURI(encodeURIComponent(classitemname)) + "&keyid=" + 0;
+        var turl = "/Product/Index?kind=" + encodeURI(encodeURIComponent(tempguid)) + "&kindname=" + encodeURI(encodeURIComponent(classitemname)) + "&searchtype=0&keyid=" + 0;
         window.open(turl);
     }
     //认证报告跳转到详情
-    function bgtodetailt(t)
-    {
+    function bgtodetailt(t) {
         var index = t.id;
         var tid = vm.pdfdata[index].ProductGuid;
         //window.location.href = "/PhysicalProducts/Detail/" + tid + ".html";
@@ -2204,17 +1809,14 @@
         window.open(turl);
     }
     //物性报告跳转到详情
-    function selectproitem(t)
-    {
+    function selectproitem(t) {
         var index = t.id;
         var tid = vm.prodata[index].ProductGuid;
         var turl = "/PhysicalProducts/Detail/" + tid + ".html";
         window.open(turl);
     }
-    function tonewsdetail(t)
-    {
-        var index = t.id;
-        var id = vm.slhqdata[index].ID;
+    function tonewsdetail(t) {
+        var id = t.id;
         var turl = "/News/Detail/?id=" + id;
         window.open(turl);
     }

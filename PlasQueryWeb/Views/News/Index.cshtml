@@ -17,13 +17,12 @@
         .allboxdiv {
             width: 100%;
             height: auto;
-            bottom: 120px;
         }
         .topnewsitem {
             width: 100%;
-            line-height: 30px;
+            line-height: 25px;
             font-size: 14px;
-            color: #666666;
+            color: #333333;
             letter-spacing: 2px;
             text-indent:15px;
         }
@@ -46,14 +45,14 @@
             -webkit-box-orient: vertical;
         }
 
-        .aui-ellipsis-6 {
+        .aui-ellipsis-1 {
             display: -webkit-box;
             overflow: hidden;
             text-overflow: ellipsis;
             word-wrap: break-word;
             word-break: break-all;
             white-space: normal !important;
-            -webkit-line-clamp: 6;
+            -webkit-line-clamp: 1;
             -webkit-box-orient: vertical;
         }
     </style>
@@ -64,31 +63,32 @@
     <div id="allboxdiv" class="allboxdiv">
         <div style="width:70%;height:auto;margin:0 auto;margin-top:20px;">
             <div style="width:calc(100% - 286px);height:auto;float:left;">
-                <div style="width:100%;height:610px; background:#ffffff;">
-                    <div style="width:95%;height:310px;margin:0 auto;">
-                        <div style="width:100%;height:50px;line-height:50px;color:#666666;font-size:20px;font-weight:700;letter-spacing:1px;cursor:pointer;">
-                            2019智能建筑生态大会西安站 推动技术从实验室走出
-                        </div>
-                        <div style="width:100%;height:260px;">
-                            <div style="width:60%;height:260px;float:left;">
-                                <img src="~/Content/img/123ss.jpg" style="width:98%;height:250px;margin:0 auto;margin-top:5px;" />
+                <div style="width:100%;height:auto; background:#ffffff;">
+                    <div style="width:95%;height:310px;margin:0 auto;" v-for="(vi,index) in toplist">
+                        <div style="width:100%;height:310px;cursor:pointer;" v-bind:id="vi.ID" onclick="todetail(this)">
+                            <div style="width:100%;height:50px;line-height:50px;color:#666666;font-size:20px;font-weight:700;letter-spacing:1px;cursor:pointer;" class="aui-ellipsis-1">
+                                {{vi.Title}}
                             </div>
-                            <div style="width:40%;height:260px;float:left;">
-                                <div style="width:95%;height:260px;margin:0 auto;">
-                                    <div style="width:100%;height:50px;">
-                                        <span style="height:50px;line-height:50px;color:#FF776F;font-size:14px;font-weight:700;letter-spacing:1px;">热点推荐</span>
-                                        <span style="height:50px;line-height:50px;color:#FF776F;font-size:14px;font-weight:700;letter-spacing:1px;">|</span>
-                                        <span style="height:50px;line-height:50px;color:#666666;font-size:14px;font-weight:700;letter-spacing:1px;">2019年12月16日</span>
+                            <div style="width:100%;height:260px;">
+                                <div style="width:60%;height:260px;float:left;">
+                                    <img v-bind:src="vi.HomeImg" style="width:98%;height:250px;margin:0 auto;margin-top:5px;" />
+                                </div>
+                                <div style="width:40%;height:260px;float:left;">
+                                    <div style="width:95%;height:260px;margin:0 auto;">
+                                        <div style="width:100%;height:50px;">
+                                            <span style="height:50px;line-height:50px;color:#FF776F;font-size:14px;font-weight:700;letter-spacing:1px;">热点推荐</span>
+                                            <span style="height:50px;line-height:50px;color:#FF776F;font-size:14px;font-weight:700;letter-spacing:1px;">|</span>
+                                            <span style="height:50px;line-height:50px;color:#666666;font-size:14px;font-weight:700;letter-spacing:1px;">{{vi.CreateDate}}</span>
+                                        </div>
+                                        <div class="topnewsitem aui-ellipsis-6">
+                                            {{vi.DescMsg}}
+                                        </div><span class="topnewsitemspan">[阅读全文]</span>
                                     </div>
-                                    <div class="topnewsitem aui-ellipsis-6">
-                                        技术发展为西安提供了前所未有的土壤和机遇。经过二十多年的发展，互联网已经走向成熟，互联网思维和技术已经全面渗透到各行各业，用新思维、新技术进行赋能，全面改善生产关系，
-                                        提高生产力。再加上最近两年人工智能、大数据、云计算、5G通讯技术的成熟与落，互联网思维和技术已经全面渗透到各行各业，用新思维、新技术进行赋能，全面改善生产关系，
-                                        提高生产力。再加上最近两年人工智能、大数据、云计算、5G通讯技术的成熟与落
-                                    </div><span class="topnewsitemspan">[阅读全文]</span>
                                 </div>
                             </div>
                         </div>
                     </div>
+
                     <div style="width:100%;height:300px;">
                         <div style="width:95%;height:300px;margin:0 auto;">
                             <div style="width:30%;height:260px;float:left;margin-top:20px;cursor:pointer;">
@@ -133,12 +133,96 @@
                         </div>
                     </div>
                 </div>
+
+                <div style="width:100%;min-height:100px;height:auto;margin-top:20px; background:#ffffff;border-radius:2px;" v-for="(vn,index) in newlist">
+                    <div style="width:100%;height:auto;cursor:pointer;" v-bind:id="vn.ID" onclick="todetail(this)">
+                        <div style="width:95%;height:50px;margin:0 auto;line-height:50px;font-size:20px;color:#646464;font-weight:700;letter-spacing:1.5px;" class="aui-ellipsis-1">
+                            {{vn.Title}}
+                        </div>
+                        <div style="width:95%;height:30px;margin:0 auto;margin-bottom:5px;">
+                            <div style="width:30%;height:30px;float:left;line-height:30px;font-size:14px;color:#999999;">
+                                {{vn.CreateDate}}
+                            </div>
+                            <div style="width:30%;height:30px;float:right;line-height:30px;font-size:14px;color:#999999;text-align:right;">
+                                <i class="iconfont suyiliulan" style="font-size:16px;margin-left:2px;color:#666666;margin-right:3px;"></i>{{vn.HIt}}
+                            </div>
+                        </div>
+                        <div v-if="vn.HomeImg!=''" style="width:95%;height:270px;margin:0 auto;">
+                            <img v-bind:src="vn.HomeImg" style="width:100%;height:100%;border:0px;" />
+                        </div>
+                        <div style="width:100%;min-height:60px;max-height:120px;margin-top:15px;">
+                            <div style="width:95%;min-height:60px;max-height:120px;margin:0 auto;font-size:14px;color:#646464;line-height:25px;">
+                                {{vn.DescMsg}}
+                            </div>
+                        </div>
+                    </div>                    
+                    <div style="width:100%;height:15px;"></div>
+                </div>
             </div>
             <div style="width:265px;height:auto;float:left;margin-left:21px;">
+                <div style="width:95%;height:auto;float:right;background:#ffffff;">
+                    <div style="width:100%;height:50px;border-bottom:1px solid #dddddd;line-height:50px;color:#333333;font-size:16px;font-weight:700;text-indent:15px;letter-spacing:2px;">
+                        本周排行榜
+                    </div>
+                    <div style="width:100%;height:10px;"></div>
+                    <div style="width:100%;height:auto;">
+                        <div style="width:100%;height:40px;" v-for="(vb,index) in bzphlist">
+                            <div style="width:85%;height:40px;margin:0 auto;cursor:pointer;" v-bind:id="vb.ID" onclick="todetail(this)">
+                                <span style="width:18px;height:18px;border-radius:180px;line-height:17px;text-align:center;font-size:10px;float:left;display:block;margin-top:10px;" v-bind:style="vb.stylestr">
+                                    {{index+1}}
+                                </span>
+                                <span style="width:190px;height:40px;float:left;font-size:14px;color:#666666;line-height:40px;text-indent:10px;" class="aui-ellipsis-1">
+                                    {{vb.Title}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width:100%;height:10px;"></div>
+                </div>
+
+                <div style="width:95%;height:auto;min-height:120px; float:right;background:#ffffff;margin-top:20px;">
+                    <div style="width:100%;height:50px;border-bottom:1px solid #dddddd;line-height:50px;color:#333333;font-size:16px;font-weight:700;text-indent:15px;letter-spacing:2px;">
+                        网站公告
+                    </div>
+                    <div style="width:100%;height:10px;"></div>
+                    <div style="width:100%;height:auto;">
+                        <div style="width:100%;height:40px;" v-for="(vg,index) in gglist">
+                            <div style="width:85%;height:40px;margin:0 auto;cursor:pointer;" v-bind:id="vg.ID" onclick="todetail(this)">
+                                <span style="height:40px;line-height:40px;text-align:center;float:left;display:block;color:#ffffff;">
+                                    <i class="iconfont suyidian" style="margin-right:2px;color:#666666;font-size:12px;"></i>
+                                </span>
+                                <span style="width:190px;height:40px;line-height:40px;float:left;font-size:14px;color:#666666;text-indent:10px;" class="aui-ellipsis-1">
+                                    {{vg.Title}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="width:95%;height:auto;float:right;background:#ffffff;margin-top:20px;">
+                    <div style="width:100%;height:50px;border-bottom:1px solid #dddddd;line-height:50px;color:#333333;font-size:16px;font-weight:700;text-indent:15px;letter-spacing:2px;">
+                        热点推荐
+                    </div>
+                    <div style="width:100%;height:10px;"></div>
+                    <div style="width:100%;height:auto;">
+                        <div style="width:100%;height:40px;" v-for="(vr,index) in rdtjlist">
+                            <div style="width:85%;height:40px;margin:0 auto;cursor:pointer;" v-bind:id="vr.ID" onclick="todetail(this)">
+                                <span style="width:18px;height:18px;border-radius:180px;line-height:17px;text-align:center;font-size:10px;float:left;display:block;margin-top:10px;" v-bind:style="vr.stylestr">
+                                    {{index+1}}
+                                </span>
+                                <span style="width:190px;height:40px;float:left;font-size:14px;color:#666666;line-height:40px;text-indent:10px;" class="aui-ellipsis-1">
+                                    {{vr.Title}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width:100%;height:10px;"></div>
+                </div>
 
             </div>
         </div>
-    </div>
+        <div style="width:100%;height:50px;clear:both;"></div>
+    </div>    
 </body>
 </html>
 
@@ -150,33 +234,59 @@
     var vm = new Vue({
         el: '#allboxdiv',
         data: {
-            classlist: [],//新闻分类数据集
-            newslist:[]//新闻数据集
+            toplist: [],//顶部热门推荐
+            newlist: [],//最新
+            gglist: [],//首页平台公告新闻数据
+            bzphlist: [], //本周排行
+            rdtjlist: []//热点推荐
         },
         methods: {
-            init: function (pid) {
+            init: function () {
                 $.ajax({
                     type: "get",
                     dataType: "JSON",
-                    url: '/AppApi/GetNewClass',
-                    data: "prodid=" + pid,
+                    url: '/News/GetNewsData',
+                    data: "",
                     async: false,
-                    success: function (json) {
-                        //alert(JSON.stringify(json));
-                        var productData = json.Result;
-                        if (productData.length>0) {
-                            //vm.classlist = productData;
-                            for (var i = 0; i < productData.length; i++) {
-                                if (i==0) {
-                                    productData[i]["class"] = "activebtn";
+                    success: function (data) {
+                        var returnstate = data.State;
+                        if (returnstate == "Success")
+                        {
+                            var resultdata = data.Result;
+                            vm.toplist = resultdata.toplist;
+                            vm.newlist = resultdata.newlist;
+                            vm.gglist = resultdata.gglist;
+
+                            var temprdtjlist = resultdata.rdtjlist;
+                            var tempbzphlist = resultdata.bzphlist;
+                            if (tempbzphlist.length>0) {
+                                for (var i = 0; i < tempbzphlist.length; i++) {
+                                    if (i == 0) {
+                                        tempbzphlist[i]["stylestr"] = "background:#FF6450;color:#ffffff;";
+                                    }
+                                    else if (i > 0 && i <= 2) {
+                                        tempbzphlist[i]["stylestr"] = "background:#FFA800;color:#ffffff;";
+                                    }
+                                    else {
+                                        tempbzphlist[i]["stylestr"] = "background:#EFEFEF;color:#333333;";
+                                    }
+                                    vm.bzphlist.push(tempbzphlist[i]);
                                 }
-                                else {
-                                    productData[i]["class"] = "";
-                                }
-                                vm.classlist.push(productData[i]);
                             }
-                        }
-                        else {
+                            if (temprdtjlist.length>0) {
+                                for (var i = 0; i < temprdtjlist.length; i++) {
+                                    if (i == 0) {
+                                        temprdtjlist[i]["stylestr"] = "background:#FF6450;color:#ffffff;";
+                                    }
+                                    else if (i > 0 && i <= 2) {
+                                        temprdtjlist[i]["stylestr"] = "background:#FFA800;color:#ffffff;";
+                                    }
+                                    else {
+                                        temprdtjlist[i]["stylestr"] = "background:#EFEFEF;color:#333333;";
+                                    }
+                                    vm.rdtjlist.push(temprdtjlist[i]);
+                                }
+                            }
                         }
                     },
                     error: function () { layer.msg('Load the data failure!', { icon: 5 }); }
@@ -215,23 +325,12 @@
     });
 
     $(document).ready(function () {
-        $(".topnav").accordion({
-            accordion: false,
-            speed: 500,
-            closedSign: '<i class="iconfont suyigengduo titlei" style="color:#0094ff;font-weight:normal;"></i>',
-            openedSign: '<i class="iconfont suyixia titlei" style="color:#0094ff;font-weight:normal;"></i>'
-        });
         vm.init();
     });
-    //选择分类菜单
-    function selectitem(t) {
-        var index = t.id;
-        var id = vm.classlist[index].ID;
-        $(".topnav").find("li a").each(function () {
-            $(this).removeClass("activebtn");
-        });
-        $("#" + index + " a").addClass("activebtn");
-
+    //跳转详情
+    function todetail(t) {
+        var id = t.id;
+        var turl = "/News/Detail/?id=" + id;
+        window.open(turl);
     }
-
 </script>

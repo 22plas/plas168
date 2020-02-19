@@ -93,8 +93,21 @@ namespace PlasQueryWeb.Controllers
                 var ds = bll.HotProducts(5);
                 if (ds != null && ds.Rows.Count > 0)
                 {
+                    string loginstate = string.Empty;
+                    if (AccountData != null)
+                    {
+                        if (!string.IsNullOrWhiteSpace(AccountData.UserID))
+                        {
+                            loginstate = "1";
+                        }
+                    }
                     var list = PlasCommon.ToolClass<PlasModel.ProductViewModel>.ConvertDataTableToModel(ds);
-                    return Json(Common.ToJsonResult("Success", "获取成功", list), JsonRequestBehavior.AllowGet);
+                    var returndata = new
+                    {
+                        loginstatestr = loginstate,
+                        listdata = list
+                    };
+                    return Json(Common.ToJsonResult("Success", "获取成功", returndata), JsonRequestBehavior.AllowGet);
                 }
                 else
                 {

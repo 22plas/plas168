@@ -38,7 +38,61 @@ namespace PlasModel.Controllers
             ViewBag.company = companyAndtype;
             return View();
         }
-
+        //获取价格趋势头部搜索条件数据
+        [AllowCrossSiteJson]
+        [HttpGet]
+        public ActionResult GetTopParmList()
+        {
+            try
+            {
+                DataTable parentparmdt = bll.GetPriceParentParm();
+                List<PriceParm> returnlist = new List<PriceParm>();
+                if (parentparmdt.Rows.Count > 0)
+                {
+                    for (int i = 0; i < parentparmdt.Rows.Count; i++)
+                    {
+                        PriceParm model = new PriceParm();
+                        DataTable dt = bll.GetPriceTopChildParm(parentparmdt.Rows[i]["parentname"].ToString());
+                        List<ChildPriceParm> tlist = Comm.ToDataList<ChildPriceParm>(dt);
+                        for (int j = 0; j < tlist.Count; j++)
+                        {
+                            if (j>8)
+                            {
+                                tlist[j].classstr = "none";
+                            }
+                        }
+                        string tempclassstr = "";
+                        if (i>1)
+                        {
+                            tempclassstr = "itemboxclass";
+                        }
+                        model.tname = "更多 ∨";
+                        model.classstr = tempclassstr;
+                        model.Name = parentparmdt.Rows[i]["parentname"].ToString();
+                        model.childlist = tlist;
+                        returnlist.Add(model);
+                    }
+                    
+                }
+                return Json(Common.ToJsonResult("Success", "获取成功", returnlist), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(Common.ToJsonResult("Fail", "获取失败", ex.Message), JsonRequestBehavior.AllowGet);
+            }
+        }
+        public class PriceParm
+        {
+            public string Name { get; set; }
+            public string classstr { get; set; }
+            public List<ChildPriceParm> childlist { get; set; }
+            public string tname { get; set; }
+                    }
+        public class ChildPriceParm
+        {
+            public string Name { get; set; }
+            public string classstr { get; set; }
+        }
         public JsonResult GetPriceList(int pageindex, int pagesize)
         {
             var ds = new DataSet();

@@ -16,6 +16,7 @@ namespace PlasModel
         public int rownum { get; set; }
         public int BrowseCount { get; set; }
         public string ContentAll { get; set; }
+        public int HIt { get; set; }
     }
     public class NewsClass
     {
