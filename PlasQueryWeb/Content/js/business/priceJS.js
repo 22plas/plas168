@@ -418,7 +418,8 @@ $("#QuotationBtn").click(function () {
 	//echars
 	    function onLoadEchars() {
         //'2019-03-16', '2019-03-17', '2019-03-18', '2019-03-19'
-        var options = {
+            var options = {
+            backgroundColor: '#fffdff',
             title: {
                 text: ''
             },
@@ -449,18 +450,52 @@ $("#QuotationBtn").click(function () {
                     type: 'category',
                     boundaryGap: false,
                     data: dataArry//'2019-03-16', '2019-03-17', '2019-03-18', '2019-03-19', '2019-03-20', '2019-03-21', '2019-03-22'
+                    ,
+                    //网格样式
+                    splitLine: {
+                        show: true,
+                        lineStyle: {
+                            color: ['#e4e3e6'],
+                            width: 1,
+                            type: 'solid'
+                        }
+                    }
                 }
             ],
             yAxis: [
                 {
                     type: 'value'
+                    ,
+                    min: function (value) {
+                        return value.min;
+                    },
+                    //网格样式
+                    splitLine: {
+                        show: true,
+                        
+                        lineStyle: {
+                            color: ['#e4e3e6'],
+                            width: 1,
+                            type: 'solid'
+                        }
+                    }
                 }
             ],
             series: [
                 {
                     name: '价格',
                     type: 'line',
+                    areaStyle: {},
                     data: priceArry//
+                    ,
+                    itemStyle: {
+                        normal: {
+                            color: '#ddeff8',
+                            lineStyle: {
+                                color: '#3081c1'
+                            }
+                        }
+                    }
                 }
             ]
         };

@@ -250,7 +250,12 @@
         display: none;
         z-Index: 1001;
     }
-
+    
+    #DataList td {
+        height:53px;
+        line-height: 24px;
+        padding: 0px 3px;
+    }
 </style>
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" charset=“utf-8” />
 <link href="~/Content/css/iconfont/iconfont.css" rel="stylesheet" />
@@ -311,7 +316,7 @@
                         </ul>
                     </div>
                 </div>
-                <div class="search-item" name="AtrrNone" style="display:none;">
+                <div class="search-item" >
                     <div class="search-item-type">生产厂商：</div>
                     <div class="search-item-content" style="height: auto;">
                         <ul data-type="4" data-typename="生产厂商">
@@ -326,7 +331,7 @@
                     <div class="search-item-btn" data-type="4" data-typename="生产厂商">更多∨</div>
                 </div>
 
-                <div class="search-item" name="AtrrNone" style="display:none;">
+                <div class="search-item">
                     <div class="search-item-type">加工方法：</div>
                     <div class="search-item-content" style="height: auto;">
                         <ul data-type="5" data-typename="加工方法">
@@ -559,7 +564,7 @@
         </div>
         <div style="width:100%;height:auto;min-height:100px;float:left;">
             <div style="width:70%;height:auto;min-height:100px;margin:0 auto;">
-                <div style="width:100%;height:30px;line-height:30px;font-size:16px;color:#333333;text-indent:20px;">
+                <div style="width:100%;height:60px;line-height:60px;font-size:16px;color:#333333;text-indent:20px;position:absolute;">
                     当前选择条件:
                 </div>
                 <div id="selectparmdivbox" style="width:100%;height:auto;min-height:60px;padding-left:120px;float:left;">
@@ -644,12 +649,12 @@
                                 if (rowcount != 0 && productData != "") {
                                     $.each(JSON.parse(productData), function (i, n) {
                                         tbodyui += "<tr title='" + n.ProUse + "'>";
-                                        tbodyui += "<td class='phtd'><a href=\"/PhysicalProducts/Detail/" + n.productid + ".html\" style='color:#535353' target=\"_blank\">" + n.ProModel + "</a></td>";
-                                        tbodyui += "<td>" + n.PlaceOrigin + "</td>";
-                                        tbodyui += "<td>" + n.Name + "</td>";
-                                        tbodyui += "<td>" + n.ProUse + "</td>";
-                                        tbodyui += "<td>" + n.characteristic + "</td>";
-                                        tbodyui += "<td><span class='layui-btns' onclick=\"LookLoadingIcon('" + n.productid + "');\">寻找相似</span>";
+                                        tbodyui += "<td class='phtd' width='18%'><a href=\"/PhysicalProducts/Detail/" + n.productid + ".html\" style='color:#535353' target=\"_blank\">" + n.ProModel + "</a></td>";
+                                        tbodyui += "<td width='17%'>" + n.PlaceOrigin + "</td>";
+                                        tbodyui += "<td width='10%'>" + n.Name + "</td>";
+                                        tbodyui += "<td width='15%'>" + n.ProUse + "</td>";
+                                        tbodyui += "<td width='20%'>" + n.characteristic + "</td>";
+                                        tbodyui += "<td width='20%'><span class='layui-btns' onclick=\"LookLoadingIcon('" + n.productid + "');\">寻找相似</span>";
                                         //tbodyui += "<td><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.productid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span>";
                                         tbodyui += "<span class='layui-btns' id=\"Contrast_" + n.productid + "\" onClick=\"onColl('" + n.productid + "');\">添加对比</span>";
                                         //tbodyui += "<span class='layui-btn layui-btn-sm' id=\"Contrast_" + n.productid + "\" onClick=\"onColl('" + n.productid + "');\"><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>";
@@ -895,7 +900,7 @@
                 if ($("#selectparmdivbox").find(".selectparmitem").length == 0) {
                     str = '<div class="selectparmitem" dataguid="' + dataguid + '" title="' + $(this).attr("data-value") + '" datatype="' + datatype + '" bigTitle="' + dataname + '">' +
                         dataname + '：' + '<span style="color:#1593FF;">' + $(this).attr("data-value") +
-                        '</span> <i id="' + tempid+'i' +'" onclick="closes(this)" class="iconfont suyiguanbi1" style="font-size:18px;margin-left:5px;color:#1593FF;cursor:pointer;"></i></div >';
+                        '</span> <i id="' + tempid+'i' +'" onclick="closes(this);" class="iconfont suyiguanbi1" style="font-size:18px;margin-left:5px;color:#1593FF;cursor:pointer;"></i></div >';
                     //str = '<span class="search-select-item" dataguid="' + dataguid + '"  title="' + $(this).attr("data-value") + '"  datatype="' + datatype + '" bigTitle="' + dataname + '">' + dataname + ':' + $(this).attr("data-value") +
                     //    '<span class="fa fa-close" title="删除"></span></span>'
                 }
@@ -917,7 +922,7 @@
 
                         str = '<div class="selectparmitem" dataguid="' + dataguid + '" title="' + dataval + '" datatype="' + datatype + '" bigTitle="' + dataname + '">' +
                             dataname + '：<span style="color:#1593FF;">' + $(this).attr("data-value") +
-                            '</span> <i id="' + tempid + 'i'+'" onclick="closes(this)" class="iconfont suyiguanbi1" style="font-size:18px;margin-left:5px;color:#1593FF;cursor:pointer;"></i></div >';
+                            '</span> <i id="' + tempid + 'i' +'" onclick="closes(this)" class="iconfont suyiguanbi1" style="font-size:18px;margin-left:5px;color:#1593FF;cursor:pointer;"></i></div >';
                     }
                 }
                 $("#selectparmdivbox").append(str);
@@ -926,6 +931,8 @@
         });
         ///删除已经选择的
         function closes(t) {
+            debugger;
+            alert(t);
             var tid = t.id;            
             var datatype = $("#" + tid).parent().attr("datatype");
             var dataval = $("#" + tid).parent().attr("title");
