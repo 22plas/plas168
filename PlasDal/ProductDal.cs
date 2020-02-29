@@ -435,6 +435,66 @@ namespace PlasDal
             return dt;
         }
 
+        /// <summary>
+        /// 最近方法查询价格报价信息表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetPriceNewList(Dictionary<string,string> dic,ref string errMsg)
+        {
+            var dt = new DataTable();
+            try
+            {
+                int spanTime = 7;
+                StringBuilder sql = new StringBuilder();
+                StringBuilder str = new StringBuilder();///条件
+                foreach (var item in dic)
+                {
+                    if (!string.IsNullOrWhiteSpace(item.Value))
+                    {
+                        switch (item.Key)
+                        {
+                            case "SmallClass":
+                                str.Append(" and b.SmallClass like '" + item.Value + "'");
+                                break;
+                            case "Manufacturer":
+                                str.Append(" and b.Manufacturer like '" + item.Value + "'");
+                                break;
+                            case "Model":
+                                str.Append(" and b.Model like '" + item.Value + "'");
+                                break;
+                            case "priceDate":
+                                int.TryParse(item.Value, out spanTime);
+                                break;
+                            case "days":
+                                int.TryParse(item.Value, out spanTime);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+                sql.AppendFormat("declare @p int={0} ", spanTime);
+                sql.Append(" declare @table table(d date) ");
+                sql.Append(" while @p>-1");
+                sql.Append(" begin");
+                sql.Append(" insert into @table select dateadd(dd,0-@p,getdate())");
+                sql.Append(" select @p-=1");
+                sql.Append(" end ");
+                sql.Append(" select a.d as PriDate,ISNULL(b.Price,0) Price from @table a");
+                sql.Append(" left join Pri_DayAvgPrice b on a.d=b.PriDate ");
+              //  sql.Append(" where 1=1 ");
+                sql.Append(str.ToString());
+                sql.Append(" order by a.d desc");
+                 dt = SqlHelper.GetSqlDataTable(sql.ToString());
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message.ToString();
+            }
+            return dt;
+        }
+
+
         //获取分类
         public DataSet GetPriceType(int numtop = 10)
         {

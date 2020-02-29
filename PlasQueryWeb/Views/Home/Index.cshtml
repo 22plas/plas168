@@ -1554,6 +1554,7 @@
     };
     $("#selectpridate").change(function () {
         var thisvalue = $("#selectpridate").children('option:selected').val();
+       // alert(thisvalue)
         vm.priceData = "&priceDate=" + thisvalue;
         GetPriceList();
     });
@@ -1563,7 +1564,7 @@
         dataArry.length = 0;
         priceArry.length = 0;
         //$(".Txt_SmallClass").html(SmallClass);
-        //$(".Txt_Manufacturer").html(Manufacturer);
+        //$(".Txt_Manufacturer").html(Manufacturer); 
         //$(".Txt_Model").html(Model);
         $.ajax({
             type: "POST",
@@ -1579,6 +1580,7 @@
                         dataArry.push(getdatefroment(b.PriDate)); //PriDate formatterTime(b.PriDate, "YYYY-MM-DD")
                         priceArry.push(parseInt(b.Price));
                     });
+                    onLoadEchars();
                 }
                 //dataArry = dataArry.substring(0, dataArry.length - 1);
                 //priceArry = priceArry.substring(0, priceArry.length - 1);
@@ -1623,7 +1625,10 @@
             ],
             yAxis: [
                 {
-                    type: 'value'
+                    type: 'value',
+                    min: function (value) {
+                        return value.min;
+                    }
                 }
             ],
             series: [

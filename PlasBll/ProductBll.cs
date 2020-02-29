@@ -129,6 +129,15 @@ namespace PlasBll
             return dal.GetPriceLineDt(strwhere);
         }
 
+        /// <summary>
+        /// 最近方法查询价格报价信息表
+        /// </summary>
+        /// <returns></returns>
+        public DataTable GetPriceNewList(Dictionary<string, string> dic, ref string errMsg)
+        {
+            return dal.GetPriceNewList(dic, ref errMsg);
+        }
+
         //价格趋势分类列表
         public DataSet GetPriceType(int numtop = 10)
         {

@@ -294,6 +294,7 @@
 <script type="text/javascript" src="/Content/src/js/search-suggest.js"></script>
 
 <script type="text/javascript">
+    var word = "";
     //回车执行搜索事件
     $(document).keyup(function (event)
     {
@@ -472,22 +473,25 @@
         });
     //跳转会员中心
     function tomenmber() {
-        $.ajax({
-            type: "POST",
-            dataType: "JSON",
-            url: '/Home/SetJs',
-            data: "keyword=" + word,
-            async: false,
-            success: function (json) {
-                //debugger;
-                if (json.count > 0) {
-                    var resultData = json.result;
-                    callback(parent, resultData);
-                }
-            },
-            error: function () {
-            }
-        });
+        //debugger;
+        alert("请尽情期待！");
+        return false;
+        //$.ajax({
+        //    type: "POST",
+        //    dataType: "JSON",
+        //    url: '/Home/SetJs',
+        //    data: "keyword=" + word,
+        //    async: false,
+        //    success: function (json) {
+        //        //debugger;
+        //        if (json.count > 0) {
+        //            var resultData = json.result;
+        //            callback(parent, resultData);
+        //        }
+        //    },
+        //    error: function () {
+        //    }
+        //});
     }
     //显示登录
     function publidshowlogindiv() {

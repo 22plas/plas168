@@ -133,29 +133,31 @@ namespace PlasModel.Controllers
             StringBuilder sql = new StringBuilder();
             string jsonstr = string.Empty;
             string SmallClass = string.Empty;
+            Dictionary<string, string> dic = new Dictionary<string, string>();
             int count = 0;
             if (!string.IsNullOrWhiteSpace(Request["SmallClass"]))
             {
                 SmallClass = Request["SmallClass"].ToString();
-                sql.Append(" and SmallClass like '" + SmallClass + "'");
+                dic.Add("SmallClass", SmallClass);
             }
             string Manufacturer = string.Empty;
             if (!string.IsNullOrWhiteSpace(Request["Manufacturer"]))
             {
                 Manufacturer = Request["Manufacturer"].ToString();
-                sql.Append(" and Manufacturer like '" + Manufacturer + "'");
+                dic.Add("Manufacturer", Manufacturer);
             }
             string Model = string.Empty;
             if (!string.IsNullOrWhiteSpace(Request["Model"]))
             {
                 Model = Request["Model"].ToString();
-                sql.Append(" and Model like '" + Model + "'");
+                dic.Add("Model", Model);
             }
             string priceDate = string.Empty;//距离多少天
             if (!string.IsNullOrEmpty(Request["priceDate"]))
             {
                 priceDate = Request["priceDate"].ToString();
-                sql.Append(" and  datediff(d,PriDate,getdate())<=" + priceDate);
+                // sql.Append(" and  datediff(d,PriDate,getdate())<=" + priceDate);
+                dic.Add("priceDate", priceDate);
             }
 
             //开始时间
@@ -173,10 +175,16 @@ namespace PlasModel.Controllers
 
             if (!string.IsNullOrEmpty(bdate) && !string.IsNullOrEmpty(ndate))
             {
-                sql.Append(" and pridate>='" + bdate + "' and  pridate<='" + ndate + "'");
+                //    sql.Append(" and pridate>='" + bdate + "' and  pridate<='" + ndate + "'");
+                DateTime start = Convert.ToDateTime(bdate);
+                DateTime end = Convert.ToDateTime(ndate);
+                TimeSpan sp = end.Subtract(start);
+                int days = sp.Days;
+                dic.Add("days", days.ToString());
             }
+            string errMsg = string.Empty;
 
-            var dt = bll.GetPriceLineDt(sql.ToString());
+            var dt = bll.GetPriceNewList(dic, ref errMsg); //bll.GetPriceLineDt(sql.ToString());
 
             if (dt != null && dt.Rows.Count > 0)
             {
