@@ -1,0 +1,1824 @@
+﻿@{
+    ViewBag.Title = "塑蚁网- 塑料物性表|UL，ROSH认证|塑胶价格走势|塑胶助剂|物性替换搜索";
+    ViewBag.keywords = "塑蚁网,塑胶物性,物性表,塑料搜索,搜索平台,塑料助剂,COA,MSDS,UL,FDA,ROHS,REACH,塑料行情";
+    ViewBag.DescCentent = "塑蚁网是国内最精准永久免费塑料和助剂搜索平台，拥有行内最齐全的产品数据信息及在此基础上的智能检索、材料替换、材料推荐等功能，提供物性表及COA、MSDS、UL、FDA、ROHS、REACH等材质证明文书下载技术支持。";
+}
+@{var hotProducts = ViewBag.HotList == null ? (new List<PlasModel.ProductViewModel>()) : (ViewBag.HotList as List<PlasModel.ProductViewModel>);}
+<style type="text/css">
+    .item2 {
+        display: inline-block;
+        width: 30%;
+        /*height: 220px;*/
+        vertical-align: top;
+        margin: 30px 30px 0px 10px;
+        border: 1px solid #ddd;
+        background-color: #fff;
+        padding: 10px 20px;
+        box-sizing: border-box;
+    }
+
+        .item2 > .title {
+            font-size: 18px;
+            letter-spacing: 2px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .item2 > .text-gray {
+            padding: 10px 0;
+            font-size: 14px;
+            line-height: 25px;
+            min-height: 120px;
+        }
+
+    .index-more-btn {
+        padding: 10px 15px 0;
+        box-sizing: border-box;
+        text-align: right;
+        border-top: 1px solid #ddd;
+    }
+
+    a {
+        color: #000;
+        text-decoration: none;
+    }
+
+    .item-box > .item {
+        height: 210px;
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-left: 2.3%;
+        box-sizing: border-box;
+        background-color: #fff;
+        border-left: 5px solid #eaeaea;
+        border-right: 5px solid #eaeaea;
+    }
+
+    .item > .title {
+        font-weight: bold;
+    }
+
+    .item > .text-gray {
+        position: absolute;
+        width: 92%;
+        text-align: center;
+    }
+
+    .search-common-item {
+        font-size: 12px;
+        padding: 4px 10px;
+        color: #777;
+    }
+
+    /*轮播样式开始*/
+
+
+    * {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        border: 0;
+    }
+
+    body {
+        width: 100%;
+        margin: 0 auto;
+        background-size: 100%;
+    }
+
+    .img_gallery {
+        height: 420px;
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .main_img {
+        height: 100%;
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+    }
+
+        .main_img ul {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .main_img li {
+            float: left;
+            width: 100%;
+            height: 100%;
+        }
+
+            .main_img li span {
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
+
+            .main_img li a {
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
+
+            .main_img li .img_1 {
+                /*background: url('/Content/img/toplb.jpg') center top no-repeat;*/
+                width: 100%;
+                height: 500px;
+            }
+
+            .main_img li .img_2 {
+                background: url('/Content/img/banner/2.jpg') center top no-repeat;
+                width: 100%;
+                height: 500px;
+            }
+
+            .main_img li .img_3 {
+                background: url('/Content/img/banner/3.jpg') center top no-repeat;
+                width: 100%;
+                height: 500px;
+            }
+
+            .main_img li .img_4 {
+                background: url('/Content/img/banner/4.jpg') center top no-repeat;
+                width: 100%;
+                height: 500px;
+            }
+
+            .main_img li .img_5 {
+                background: url('/Content/img/banner/5.jpg') center top no-repeat;
+                width: 100%;
+                height: 500px;
+            }
+
+    .img_font {
+        position: absolute;
+        bottom: 30px;
+        left: 8.5%;
+        color: #fff;
+        width: 100%;
+        padding: 10px;
+    }
+
+        .img_font span {
+            display: none;
+        }
+
+    div.point {
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
+        z-index: 999;
+        width: 140px;
+        height: 21px;
+        margin: 0 0 0 -50px;
+    }
+
+        div.point a {
+            float: left;
+            width: 21px;
+            height: 21px;
+            margin: 0;
+            padding: 0;
+            background: url('/Content/img/banner/btn_main_img.png') 0 0 no-repeat;
+            display: block;
+            text-indent: -1000px
+        }
+
+            div.point a.on {
+                background-position: 0 -21px
+            }
+
+    #btn_prev, #btn_next {
+        z-index: 11111;
+        position: absolute;
+        display: block;
+        width: 73px !important;
+        height: 74px !important;
+        top: 50%;
+        margin-top: -37px;
+        display: none;
+    }
+
+    #btn_prev {
+        background: url('/Content/img/banner/hover_left.png') no-repeat left top;
+        left: 2%;
+    }
+
+    #btn_next {
+        background: url('/Content/img/banner/hover_right.png') no-repeat right top;
+        right: 2%;
+    }
+    /*轮播样式结束*/
+
+    .text-blue {
+        color: #278cd2 !important;
+    }
+
+    .itembox {
+        cursor: pointer;
+    }
+
+        .itembox:hover {
+            color: #14a5ef;
+        }
+
+            .itembox:hover .itemtitle span, .itembox:hover .itemtitle {
+                color: #14a5ef !important;
+            }
+
+        .itembox.active {
+            background-color: #14a5ef;
+            color: #fff;
+        }
+
+            .itembox.active .itemtitle, .itembox.active .itemtitle span {
+                color: #fff !important;
+            }
+
+
+    .aui-ellipsis-1 {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .aui-ellipsis {
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        word-break: break-all;
+        white-space: normal !important;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+    }
+
+    .aui-ellipsis-2 {
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        word-break: break-all;
+        white-space: normal !important;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .aui-ellipsis-4 {
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        word-break: break-all;
+        white-space: normal !important;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+    }
+    /*新版样式*/
+    .topleftbox, .toprightbox {
+        width: 212px;
+        height: 430px;
+        float: left;
+        /*padding-top: 30px;*/
+    }
+
+        .topleftbox img，.toprightbox img {
+            width: 212px;
+            height: 416px;
+        }
+
+    .topcenterbox {
+        width: calc(100% - 424px);
+        height: 430px;
+        float: left;
+    }
+
+    .topcenterboxleft {
+        width: 180px;
+        height: 430px;
+        background: rgba(255,255,255,1);
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.35);
+        float: left;
+    }
+
+    .leftmenubox:hover {
+        background: #ddd;
+    }
+
+    .toprightboxtop {
+        background: rgba(255,255,255,1);
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.35);
+        width: 100%;
+        height: 250px;
+        margin-top: 10px;
+    }
+
+    .toprightboxbottom {
+        background: rgba(255,255,255,1);
+        box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.35);
+        width: 100%;
+        height: 160px;
+        margin-top: 10px;
+    }
+
+    .toprightbtn, .rigistbtn {
+        width: 70%;
+        height: 40px;
+        background: #1593FF;
+        line-height: 40px;
+        color: #ffffff;
+        font-size: 14px;
+        margin: 0 auto;
+        text-align: center;
+        border: 1px solid #1593FF;
+        border-radius: 40px;
+        cursor: pointer;
+    }
+
+    .toprightbtnjc {
+        width: 70%;
+        height: 40px;
+        background: #ffffff;
+        line-height: 40px;
+        color: #1593FF;
+        font-size: 14px;
+        margin: 0 auto;
+        text-align: center;
+        border: 1px solid #1593FF;
+        border-radius: 40px;
+        cursor: pointer;
+    }
+
+    .rigistbtn {
+        background: #ffffff;
+        color: #1593FF;
+    }
+
+    .newstitle {
+        width: 85%;
+        height: 25px;
+        margin: 0 auto;
+        line-height: 25px;
+        font-size: 12px;
+        color: #666666;
+        cursor: pointer;
+        letter-spacing: 1px;
+    }
+
+        .newstitle:hover {
+            color: #333333;
+        }
+
+    .classitemdiv {
+        min-height: 30px;
+        height: auto;
+        font-size: 12px;
+        color: #666666;
+        cursor: pointer;
+        padding-right: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+        margin-bottom: 5px;
+        float: left;
+    }
+
+        .classitemdiv:hover {
+            color: #1593FF;
+        }
+
+    .showclassdivbox {
+        width: calc(70% - 470px);
+        height: 430px;
+        background: #ffffff;
+        z-index: 1000;
+        position: absolute;
+        margin-left: 175px;
+        border: 1px solid #4BADFF;
+        display: none;
+        overflow-y: auto;
+    }
+
+    .classitembox {
+        width: 40%;
+        height: auto;
+        min-height: 100px;
+        float: left;
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-bottom: 10px;
+    }
+
+    .classitemtitle {
+        width: 100%;
+        min-height: 30px;
+        height: auto;
+        color: #333333;
+        font-size: 16px;
+        text-indent: 15px;
+        margin-bottom: 10px;
+        margin-top: 5px;
+    }
+
+    .showdivbox, .showlogin {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        background: rgba(0, 0, 0, 0.4);
+        width: 100%; /*宽度设置为100%，这样才能使隐藏背景层覆盖原页面*/
+        height: 100%;
+        display: none;
+        z-Index: 1001;
+    }
+    /*新版样式*/
+</style>
+<link href="~/Content/css/style.css" rel="stylesheet" type="text/css" charset=“utf-8” />
+<script src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js" type="text/javascript"></script>
+<script src="https://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script type="text/javascript" src="/Content/src/js/search-suggest.js"></script>
+<script type="text/javascript" src="/Content/js/jquery.event.drag.js"></script>
+<script type="text/javascript" src="/Content/js/jquery.touchSlider.js"></script>
+<script type="text/javascript" src="/Content/js/scroll.1.3.js"></script>
+@*@Html.Partial("~/Views/Public/Header.cshtml")*@
+@Html.Partial("~/Views/Public/PubSearch.cshtml")
+<link href="~/Content/css/iconfont/iconfont.css" rel="stylesheet" />
+<div id="allboxdiv">
+    <div class="topboxdiv" style="width:100%;height:450px;">
+        <div style="width:calc(70% + 424px);height:450px;margin:0 auto;">
+            <div class="topleftbox">
+                <img src="~/Content/img/topbgleft.jpg" />
+            </div>
+            <div class="topcenterbox">
+                <div class="topcenterboxleft">
+                    <div class="leftmenubox" style="width:100%;height:40px;cursor:pointer;margin-top:10px;" v-for="(vlcass,index) in typelistdata">
+                        <div v-bind:id="index" style="width:90%;height:40px;margin:0 auto;" onmousemove="itemmousemove(this)" onmouseout="itemmouseout(this)">
+                            <div style="width:25px;height:40px;float:left;text-align:center;">
+                                <img v-bind:src="vlcass.Image" style="width:20px;height:20px;margin:0 auto;margin-top:10px;" />
+                            </div>
+                            <div style="width:calc(100% - 50px);height:40px;float:left;text-align:left;text-indent:10px;">
+                                <span style="color:#666666;letter-spacing:1px;font-size:14px;height:40px;line-height:40px;">{{vlcass.Name}}</span>
+                            </div>
+                            <div style="width:25px;height:40px;float:right;text-align:right;line-height:40px;">
+                                <i class="iconfont suyigengduo" style="margin-right:2px;color:#666666;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="width:calc(100% - 516px);height:430px;float:left;margin-left:17px;">
+                    <div style="width:100%;height:350px;margin-top:10px;">
+                        <div class="img_gallery">
+                            <div class="point">
+                                <a href="#">1</a>
+                                @*<a href="#">2</a>*@
+                                @*<a href="#">3</a>
+                                    <a href="#">4</a>
+                                    <a href="#">5</a>*@
+                            </div>
+                            <div class="main_img">
+                                <ul>
+                                    <li>
+                                        @*<span class="img_1">
+                                            </span>*@
+                                        <img src="~/Content/img/toplb.jpg" style="width:100%;height:100%;border:none;" />
+                                    </li>
+                                    @*<li>
+                                            <img src="~/Content/img/banner/1.jpg" style="width:100%;height:100%;border:none;" />
+                                        </li>*@
+                                    @*<li><span class="img_3"></span></li>
+                                        <li><span class="img_4"></span></li>
+                                        <li><span class="img_5"></span></li>*@
+                                </ul>
+                                <a href="javascript:;" id="btn_prev"></a>
+                                <a href="javascript:;" id="btn_next"></a>
+                            </div>
+                            @*<div class="img_font">
+                                    <span>img 1/5</span>
+                                    <span>img 2/5</span>
+                                    <span>img 3/5</span>
+                                    <span>img 4/5</span>
+                                    <span>img 5/5</span>
+                                </div>*@
+                        </div>
+                    </div>
+                    @*<div style="width:100%;height:120px;">
+                        <div class="wc1200 row rowE">
+                            <div class="bd mt20">
+                                <div id="sca2" class="warp-pic-list" style="height:120px;">
+                                    <div id="wrapBox2" class="wrapBox" style="height:120px;">
+                                        <ul id="counttop" class="count clearfix" style="height:120px;">
+                                            <li style="margin-left:0px;padding:0px;margin-top:8px;margin-right:25px;height:110px;">
+                                                <a href="#2685" class="img_wrap">
+                                                    <div style="width:100%;height:110px; color:#333333;font-size:14px;">
+                                                        <div style="width:70px;height:110px;float:left;">
+                                                            <img src="~/Content/img/t1.jpg" style="width:70px;height:70px;margin-top:20px;" />
+                                                        </div>
+                                                        <div style="width:calc(100% - 70px);height:110px;float:left;">
+                                                            <div style="width:100%;font-size:14px;line-height:15px;color:#666666;margin-top:20px;" class="aui-ellipsis-2">
+                                                                台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757
+                                                            </div>
+                                                            <div style="width:100%;height:40px;color:#ff5500;font-size:14px;line-height:40px;">
+                                                                ￥151.00
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li style="margin-left:0px;padding:0px;margin-top:8px;margin-right:25px;height:110px;">
+                                                <a href="#2685" class="img_wrap">
+                                                    <div style="width:100%;height:110px; color:#333333;font-size:14px;">
+                                                        <div style="width:70px;height:110px;float:left;">
+                                                            <img src="~/Content/img/t1.jpg" style="width:70px;height:70px;margin-top:20px;" />
+                                                        </div>
+                                                        <div style="width:calc(100% - 70px);height:110px;float:left;">
+                                                            <div style="width:100%;font-size:14px;line-height:15px;color:#666666;margin-top:20px;" class="aui-ellipsis-2">
+                                                                台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757
+                                                            </div>
+                                                            <div style="width:100%;height:40px;color:#ff5500;font-size:14px;line-height:40px;">
+                                                                ￥152.00
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li style="margin-left:0px;padding:0px;margin-top:8px;margin-right:25px;height:110px;">
+                                                <a href="#2685" class="img_wrap">
+                                                    <div style="width:100%;height:110px; color:#333333;font-size:14px;">
+                                                        <div style="width:70px;height:110px;float:left;">
+                                                            <img src="~/Content/img/t1.jpg" style="width:70px;height:70px;margin-top:20px;" />
+                                                        </div>
+                                                        <div style="width:calc(100% - 70px);height:110px;float:left;">
+                                                            <div style="width:100%;font-size:14px;line-height:15px;color:#666666;margin-top:20px;" class="aui-ellipsis-2">
+                                                                台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757
+                                                            </div>
+                                                            <div style="width:100%;height:40px;color:#ff5500;font-size:14px;line-height:40px;">
+                                                                ￥153.00
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li style="margin-left:0px;padding:0px;margin-top:8px;margin-right:25px;height:110px;">
+                                                <a href="#2685" class="img_wrap">
+                                                    <div style="width:100%;height:110px; color:#333333;font-size:14px;">
+                                                        <div style="width:70px;height:110px;float:left;">
+                                                            <img src="~/Content/img/t1.jpg" style="width:70px;height:70px;margin-top:20px;" />
+                                                        </div>
+                                                        <div style="width:calc(100% - 70px);height:110px;float:left;">
+                                                            <div style="width:100%;font-size:14px;line-height:15px;color:#666666;margin-top:20px;" class="aui-ellipsis-2">
+                                                                台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757
+                                                            </div>
+                                                            <div style="width:100%;height:40px;color:#ff5500;font-size:14px;line-height:40px;">
+                                                                ￥154.00
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li style="margin-left:0px;padding:0px;margin-top:8px;margin-right:25px;height:110px;">
+                                                <a href="#2685" class="img_wrap">
+                                                    <div style="width:100%;height:110px; color:#333333;font-size:14px;">
+                                                        <div style="width:70px;height:110px;float:left;">
+                                                            <img src="~/Content/img/t1.jpg" style="width:70px;height:70px;margin-top:20px;" />
+                                                        </div>
+                                                        <div style="width:calc(100% - 70px);height:110px;float:left;">
+                                                            <div style="width:100%;font-size:14px;line-height:15px;color:#666666;margin-top:20px;" class="aui-ellipsis-2">
+                                                                台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757
+                                                            </div>
+                                                            <div style="width:100%;height:40px;color:#ff5500;font-size:14px;line-height:40px;">
+                                                                ￥155.00
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li style="margin-left:0px;padding:0px;margin-top:8px;margin-right:25px;height:110px;">
+                                                <a href="#2685" class="img_wrap">
+                                                    <div style="width:100%;height:110px; color:#333333;font-size:14px;">
+                                                        <div style="width:70px;height:110px;float:left;">
+                                                            <img src="~/Content/img/t1.jpg" style="width:70px;height:70px;margin-top:20px;" />
+                                                        </div>
+                                                        <div style="width:calc(100% - 70px);height:110px;float:left;">
+                                                            <div style="width:100%;font-size:14px;line-height:15px;color:#666666;margin-top:20px;" class="aui-ellipsis-2">
+                                                                台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757
+                                                            </div>
+                                                            <div style="width:100%;height:40px;color:#ff5500;font-size:14px;line-height:40px;">
+                                                                ￥156.00
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li style="margin-left:0px;padding:0px;margin-top:8px;margin-right:25px;height:110px;">
+                                                <a href="#2685" class="img_wrap">
+                                                    <div style="width:100%;height:110px; color:#333333;font-size:14px;">
+                                                        <div style="width:70px;height:110px;float:left;">
+                                                            <img src="~/Content/img/t1.jpg" style="width:70px;height:70px;margin-top:20px;" />
+                                                        </div>
+                                                        <div style="width:calc(100% - 70px);height:110px;float:left;">
+                                                            <div style="width:100%;font-size:14px;line-height:15px;color:#666666;margin-top:20px;" class="aui-ellipsis-2">
+                                                                台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757
+                                                            </div>
+                                                            <div style="width:100%;height:40px;color:#ff5500;font-size:14px;line-height:40px;">
+                                                                ￥157.00
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <li style="margin-left:0px;padding:0px;margin-top:8px;margin-right:25px;height:110px;">
+                                                <a href="#2685" class="img_wrap">
+                                                    <div style="width:100%;height:110px; color:#333333;font-size:14px;">
+                                                        <div style="width:70px;height:110px;float:left;">
+                                                            <img src="~/Content/img/t1.jpg" style="width:70px;height:70px;margin-top:20px;" />
+                                                        </div>
+                                                        <div style="width:calc(100% - 70px);height:110px;float:left;">
+                                                            <div style="width:100%;font-size:14px;line-height:15px;color:#666666;margin-top:20px;" class="aui-ellipsis-2">
+                                                                台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757台湾奇美-ABS757
+                                                            </div>
+                                                            <div style="width:100%;height:40px;color:#ff5500;font-size:14px;line-height:40px;">
+                                                                ￥158.00
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <a id="right2" class="prev icon btn"></a>
+                                    <a id="left2" class="next icon btn"></a>
+                                </div>
+                            </div>
+                        </div>
+                                </div>*@
+                </div>
+                <div style="width:300px;height:430px;float:left;margin-left:17px;">
+                    <div class="toprightboxtop">
+                        <div v-show="usname==''" style="width:100%;height:150px;">
+                            <div style="width:100%;height:40px;margin-top:30px;float:left;">
+                                <div style="width:60%;height:40px;margin:0 auto;">
+                                    <div style="width:40px;height:40px;float:left;">
+                                        @*<img v-bind:src="usimg" style="width:40px;height:40px;" />*@
+                                        <img src="~/Content/img/icon.png" style="width:40px;height:40px;" />
+
+                                    </div>
+                                    <div style="width:calc(100% - 50px);height:40px;float:left;margin-left:10px;">
+                                        <div style="width:100%;height:20px;color:#666666;line-height:20px;font-size:16px;">
+                                            Hi，下午好
+                                        </div>
+                                        <div style="width:100%;height:20px;color:#666666;line-height:20px;font-size:16px;">
+                                            欢迎来到塑蚁网
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="width:100%;height:50px;float:left;margin-top:35px;">
+                                <div class="toprightbtn" onclick="showlogindivbox()">
+                                    登录/注册
+                                </div>
+                            </div>
+                        </div>
+                        <div v-show="usname!=''" style="width:100%;height:150px;">
+                            <div style="width:100%;height:150px;float:left;">
+                                <div style="width:80%;height:90px;margin:0 auto;">
+                                    <div style="width:100%;height:50px;margin-top:30px;">
+                                        <div style="width:50px;height:50px;margin:0 auto;">
+                                            <img v-bind:src="usimg" style="width:50px;height:50px;border-radius:180px;" />
+                                        </div>
+                                    </div>
+                                    <div style="width:100%;height:40px;float:left;margin-left:10px;">
+                                        <div style="width:100%;color:#333333;line-height:20px;font-size:16px;text-align:center;margin-top:5px;">
+                                            {{usname}}
+                                        </div>
+                                        <div style="width:100%;height:20px;color:#666666;line-height:20px;font-size:14px;text-align:center;margin-top:5px;">
+                                            欢迎来到塑蚁网
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div style="width:100%;height:50px;float:left;margin-top:5px;">
+                                    <div class="toprightbtnjc" onclick="">
+                                        立即认证 赠送检测<i class="iconfont suyigengduo" style="margin-left:5px;"></i>
+                                    </div>
+                                </div>*@
+                        </div>
+                        <div style="width:100%;height:85px;float:left;border-top:1px dashed #dddddd;margin-top:10px;">
+                            <div style="width:30%;height:80px;float:left;margin-top:5px;margin-left:3%;">
+                                <div style="width:100%;height:50px;text-align:center;">
+                                    <img src="~/Content/img/gyshz.png" style="width:40px;height:30px;margin:0 auto;margin-top:10px;" />
+                                </div>
+                                <div style="width:100%;height:30px;font-size:14px;color:#666666;text-align:center;">
+                                    供应商合作
+                                </div>
+                            </div>
+                            <div style="width:30%;height:80px;float:left;margin-top:5px;margin-left:3%;">
+                                <div style="width:100%;height:50px;text-align:center;">
+                                    <img src="~/Content/img/jczx.png" style="width:24px;height:32px;margin:0 auto;margin-top:10px;" />
+                                </div>
+                                <div style="width:100%;height:30px;font-size:14px;color:#666666;text-align:center;">
+                                    检测中心
+                                </div>
+                            </div>
+                            <div style="width:30%;height:80px;float:left;margin-top:5px;margin-left:3%;">
+                                <div style="width:100%;height:50px;text-align:center;">
+                                    <img src="~/Content/img/czlc.png" style="width:26px;height:32px;margin:0 auto;margin-top:10px;" />
+                                </div>
+                                <div style="width:100%;height:30px;font-size:14px;color:#666666;text-align:center;">
+                                    操作流程
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="toprightboxbottom">
+                        <div style="width:100%;height:20px;">
+                            <div style="height:25px;line-height:25px;font-size:14px;color:#333333;cursor:pointer;text-align:center;margin-left:25px;float:left;" onclick="selectnews(0)">
+                                热点资讯
+                            </div>
+                            <div style="height:25px;line-height:25px;font-size:14px;color:#333333;cursor:pointer;text-align:center;margin-left:20px;float:left;" onclick="selectnews(1)">
+                                平台公告
+                            </div>
+                            @*<div style="height:25px;line-height:25px;font-size:14px;color:#333333;cursor:pointer;text-align:center;margin-right:15px;float:right;">
+                                    更多<i class="iconfont suyigengduo" style="margin-right:2px;color:#333333;font-size:12px;"></i>
+                                </div>*@
+                        </div>
+                        <div v-if="newstype=='0'" style="width:100%;height:auto;margin-top:10px;">
+                            <div class="newstitle aui-ellipsis-1" v-for="(vo,index) in newlist">
+                                <div style="width:100%;height:25px;">
+                                    <i class="iconfont suyidian" style="margin-right:2px;color:#666666;font-size:12px;"></i>{{vo.Title}}
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="newstype=='1'" style="width:100%;height:auto;margin-top:10px;">
+                            <div class="newstitle aui-ellipsis-1" v-for="(vg,index) in ggnewlist">
+                                <div style="width:100%;height:25px;">
+                                    <i class="iconfont suyidian" style="margin-right:2px;color:#666666;font-size:12px;"></i>{{vg.Title}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @* 二级三级分类弹出div部分 *@
+                <div id="selectdivbox" class="showclassdivbox">
+                    <div class="classitembox" v-for="(vc,i) in childlist">
+                        <div class="classitemtitle">
+                            {{vc.MiddleName}}
+                        </div>
+                        <div class="classitemdiv" v-for="(vl,index) in vc.childclasslist">
+                            <span v-bind:id="i+','+index" onclick="selectclassitem(this)">{{vl.Name}}</span>
+                        </div>
+                    </div>
+                </div>
+                @* 二级三级分类弹出div部分 *@
+            </div>
+            <div class="toprightbox">
+                <img src="~/Content/img/topbgright.jpg" />
+            </div>
+        </div>
+    </div>
+
+    <div style="width:100%;height:100px;">
+        <div id="sliderdiv" style="width:70%;height:100px;margin:0 auto;">
+            @*<div  class="slider1">
+                    <div class="slide" style="border:1px solid #cccccc;padding-bottom:10px;padding-top:10px;border-radius:3px;">
+                        <img style="width:230px;height:100px;margin:0 auto;" src="~/Content/img/brand/1.png">
+                    </div>
+                    <div class="slide" style="border:1px solid #cccccc;padding-bottom:10px;padding-top:10px;border-radius:3px;"><img style="width:230px;height:100px;margin:0 auto;" src="~/Content/img/brand/2.png"></div>
+
+                    <div class="slide" style="border:1px solid #cccccc;padding-bottom:10px;padding-top:10px;border-radius:3px;"><img style="width:230px;height:100px;margin:0 auto;" src="~/Content/img/brand/3.png"></div>
+
+                    <div class="slide" style="border:1px solid #cccccc;padding-bottom:10px;padding-top:10px;border-radius:3px;"><img style="width:230px;height:100px;margin:0 auto;" src="~/Content/img/brand/1.png"></div>
+
+                    <div class="slide" style="border:1px solid #cccccc;padding-bottom:10px;padding-top:10px;border-radius:3px;"><img style="width:230px;height:100px;margin:0 auto;" src="~/Content/img/brand/4.png"></div>
+                </div>*@
+
+            <div class="wc1200 row rowE">
+                <div class="bd mt20" style="margin: 10px;">
+                    <div id="sca1" class="warp-pic-list">
+                        <div id="wrapBox1" class="wrapBox">
+                            <ul id="count1" class="count clearfix" style="height:100px !important;"></ul>
+                        </div>
+                        <a id="right1" class="prev icon btn" style="top:15px !important;"></a>
+                        <a id="left1" class="next icon btn" style="top:15px !important;"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<div style="width:100%;height:65px;margin-bottom:10px;">
+            <div style="width:75%;height:65px;border-bottom:2px solid #999999;margin:0 auto;">
+                <div style="width:180px;height:65px;border-bottom:2px solid #1593ff;color:#333333;font-size:20px;text-align:left;line-height:80px;font-weight:700;">
+                    <img src="~/Content/img/1f.jpg" style="width: 40px;height: 40px;float: left;margin-top: 18px;margin-left: 10px;margin-right:10px;" /> 价格行情
+                </div>
+            </div>
+        </div>*@
+    <div style="width:100%;height:550px;margin-top:30px;">
+        <div style="width:70%;height:510px;margin:0 auto;">
+            <div id="pricedivbox" style="width:25%;height:420px;float:left;">
+                <div style="width:100%;height:90px;position:relative;">
+                    <img src="~/Content/img/btbj.jpg" style="width:100%;height:100%;border-radius:2px;" />
+                    <div style="width:100%;height:70px;position:absolute;top:20px;line-height:50px;text-indent:20px;color:#ffffff;font-size:28px;font-weight:700;letter-spacing:2px;">
+                        价格行情<i class="iconfont suyiiconfontroundright" style="color:#ffffff;margin-left:15px;font-size:30px;"></i>
+                    </div>
+                </div>
+                <div style="width:100%;height:420px;border:1px solid #999999;border-radius:2px;margin-top:5px;">
+                    <div style="width:100%;height:70px;" v-for="(vi,index) in pricelist">
+                        <div v-bind:id="index" onclick="selectitem(this)" v-bind:class="vi.class" style="width:100%;height:70px;">
+                            <div style="width:95%;height:70px;margin:0 auto;border-bottom:1px solid #dddddd;">
+                                <div style="width:100%;height:35px;">
+                                    <div class="itemtitle aui-ellipsis-1" style="width:60%;height:35px;float:left; color:#666666;line-height:50px;font-size:14px;text-align:left;text-indent:10px;">
+                                        {{vi.SmallClass}} | {{vi.ManuFacturer}}
+                                    </div>
+                                    <div class="itemtitle" style="width:40%;height:35px;float:left;color:#666666;line-height:50px;font-size:14px;text-align:right;">
+                                        <span v-if="vi.Diff<0" class="fa fa-arrow-down text-blue" style="margin-right: 18px;"></span>
+                                        <span v-if="vi.Diff<0" class="text-blue">{{vi.Diff}}</span>
+                                        <span v-if="vi.Diff==0" class="fa fa-minus text-gray" style="margin-right: 18px;"></span>
+                                        <span v-if="vi.Diff==0" class="text-gray">{{vi.Diff}}</span>
+                                        <span v-if="vi.Diff>0" class="fa fa-arrow-up text-red" style="margin-right: 18px;"></span>
+                                        <span v-if="vi.Diff>0" class="text-red">{{vi.Diff}}</span>
+                                    </div>
+                                </div>
+                                <div style="width:100%;height:35px;">
+                                    <div class="itemtitle" style="width:60%;height:35px;float:left; color:#666666;line-height:35px;font-size:14px;text-align:left;text-indent:10px;">
+                                        {{vi.Model}}
+                                    </div>
+                                    <div class="itemtitle" style="width:40%;height:35px;float:left;color:#666666;line-height:35px;font-size:14px;text-align:right;">
+                                        {{vi.PriDatestr}}
+                                        @*{{vi.Price}}元一吨*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width:100%;height:60px;">
+                        <div style="width:50%;height:60px;margin:0 auto;">
+                            <a href="/Price/Index" target="_blank">
+                                <div style="clear:both;width:80px;height:30px;border:1px solid #3d85b5;border-radius:10px;margin:0 auto;margin-top:20px;color:#3d85b5;text-align:center;line-height:30px;font-size:14px;cursor:pointer;">
+                                    查看更多
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="width:73%;height:515px;border:1px solid #999999;border-radius:2px;float:left;margin-left:1.3%;">
+                <div style="width:100%;height:70px;">
+                    <div style="width:95%;height:70px;margin:0 auto;border-bottom:1px solid #dddddd;">
+                        <div style="width:100%;height:35px;">
+                            <div style="width:50%;height:35px;color:#278cd0;font-size:16px;line-height:40px;font-weight:700;float:left;">
+                                <img src="~/Content/img/jgqx.jpg" style="width: 25px;height: 25px;float: left;margin-top: 8px;margin-right:10px;" />
+                                价格趋势
+                            </div>
+                            <div style="width:50%;height:35px;color:#278cd0;float:left;">
+                                <div style="width:100px;height:35px;float:right;text-align:right;font-size:16px;line-height:40px;font-weight:700;cursor:pointer;">
+                                    @*更多<i class="fa fa-angle-double-right" style="font-size:22px;margin-left:5px;"></i>*@
+                                    <select id="selectpridate" style="width:80px;height:25px;">
+                                        <option value="7">近七天</option>
+                                        <option value="30">近一月</option>
+                                        <option value="180">近半年</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width:100%;height:35px;">
+                            <div class="itemtitle" style="width:50%;height:35px;float:left; color:#666666;line-height:40px;font-size:14px;text-align:left;">
+                                {{SmallClass}} | {{Model}}
+                            </div>
+                            <div class="itemtitle" style="width:50%;height:35px;float:left;color:#666666;line-height:40px;font-size:14px;text-align:right;">
+                                厂家：{{Manufacturer}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="width:100%;height:390px;">
+                    <div id="chart1" style="height: 390px;width: 100%;">
+
+                    </div>
+                </div>
+                <div style="width:100%;height:50px;">
+                    <div style="width:95%;height:50px;margin:0 auto;font-size:12px;color:#999999;">
+                        免责声明：参考价格是塑料网根据网络大数据分析的结果，仅供参考
+                    </div>
+                </div>
+            </div>
+            @*<div style="width:25%;height:420px;border:1px solid #999999;border-radius:2px;float:right;">
+                    <div style="width:100%;height:60px;">
+                        <div style="width:95%;height:60px;margin:0 auto;">
+                            <img src="~/Content/img/newstop.jpg" style="width: 100%;height: 60px;float: left;margin-top: 8px;margin-right:10px;" />
+                        </div>
+                    </div>
+                    <div style="width:100%;height:45px;">
+                        <div style="width:95%;height:45px;margin:0 auto;border-bottom:1px solid #dddddd;">
+                            <div style="width:50%;height:45px;color:#278cd0;font-size:16px;line-height:40px;font-weight:700;float:left;">
+                                <img src="~/Content/img/newsico.jpg" style="width: 25px;height: 25px;float: left;margin-top: 8px;margin-right:10px;" />
+                                新闻中心
+                            </div>
+                            <div style="width:50%;height:45px;color:#278cd0;float:left;">
+                                <div style="width:80px;height:35px;float:right;text-align:right;font-size:16px;line-height:40px;font-weight:700;cursor:pointer;">
+                                    更多<i class="fa fa-angle-double-right" style="font-size:22px;margin-left:5px;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width:100%;height:315px;">
+                        <div class="newdivbox" style="width:95%;height:315px;margin:0 auto;margin-top:10px;">
+                            <div v-for="(vn,index) in newlist" style="width:100%;height:30px;line-height:30px;font-size:12px;color:#999999;cursor:pointer;" class="aui-ellipsis-1">
+                                {{index+1}}、{{vn.Title}}
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
+        </div>
+    </div>
+
+    <div style="width:100%;height:80px;">
+        <div style="width:70%;height:80px;margin:0 auto;">
+            <img src="~/Content/img/zjhb.jpg" style="width:100%;height:100%;border:none;" />
+        </div>
+    </div>
+
+    <div style="width:100%;height:365px;margin-top:15px;">
+        <div style="width:70%;height:365px;margin:0 auto;">
+            <div style="width:calc((100% - 30px) / 2);height:365px;float:left;border:1px solid #dddddd;">
+                <div style="width:100%;height:50px;border-bottom:1px solid #dddddd;">
+                    <div style="width:100%;height:50px;">
+                        <div style="width:180px;height:50px;color:#ffffff;font-size:26px;text-align:left;line-height:45px;font-weight:700; background:#4BADFF;float:left;padding-left:20px;">
+                            物性报告
+                            <i class="iconfont suyiiconfontroundright" style="color:#ffffff;margin-left:10px;font-size:30px;"></i>
+                        </div>
+                        @*<div style="width:100px;height:50px;color:#666666;float:right;margin-right:15px;line-height:50px;text-align:right;cursor:pointer;">
+                                更多<i class="fa fa-angle-double-right" style="font-size:16px;margin-left:2px;color:#666666;"></i>
+                            </div>*@
+                    </div>
+                    <div style="width:100%;height:300px;margin-top:10px;">
+                        <div style="width:100%;height:300px;">
+                            <div style="width:calc((100% - 60px)/2);height:70px;border-bottom:1px solid #dddddd;float:left;margin-left:15px;margin-right:15px;cursor:pointer;" v-for="(vp,index) in prodata">
+                                <div v-bind:id="index" onclick="selectproitem(this)" style="width:100%;height:70px;">
+                                    <div style="width:95%;height:70px;margin:0 auto;border-bottom:1px solid #dddddd;">
+                                        <div style="width:100%;height:35px;">
+                                            <div class="itemtitle aui-ellipsis-1" style="width:50%;height:35px;float:left; color:#666666;line-height:50px;font-size:14px;text-align:left;">
+                                                {{vp.AliasName}}
+                                            </div>
+                                            <div class="itemtitle" style="width:50%;height:35px;float:left;color:#999999;line-height:50px;font-size:14px;text-align:right;">
+                                                {{vp.CreateDate}}
+                                            </div>
+                                        </div>
+                                        <div style="width:100%;height:35px;">
+                                            <div class="itemtitle aui-ellipsis-1" style="width:50%;float:left; color:#333333;line-height:35px;font-size:14px;text-align:left;">
+                                                {{vp.ProModel}}/{{vp.Name}}
+                                            </div>
+                                            <div class="itemtitle" style="width:50%;height:35px;float:left;color:#1593FF;line-height:35px;font-size:14px;text-align:right;">
+                                                {{vp.Name}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="width:26px;height:365px;float:left;"></div>
+            <div style="width:calc((100% - 30px) / 2);height:365px;float:left;border:1px solid #dddddd;">
+                <div style="width:100%;height:50px;border-bottom:1px solid #dddddd;">
+                    <div style="width:100%;height:50px;">
+                        <div style="width:180px;height:50px;color:#ffffff;font-size:26px;text-align:left;line-height:45px;font-weight:700; background:#4BADFF;float:left;padding-left:20px;">
+                            认证报告
+                            <i class="iconfont suyiiconfontroundright" style="color:#ffffff;margin-left:10px;font-size:30px;"></i>
+                        </div>
+                        @*<div style="width:100px;height:50px;color:#666666;float:right;margin-right:15px;line-height:50px;text-align:right;cursor:pointer;">
+                                更多<i class="fa fa-angle-double-right" style="font-size:16px;margin-left:2px;color:#666666;"></i>
+                            </div>*@
+                    </div>
+                </div>
+                <div style="width:100%;height:300px;margin-top:10px;">
+                    <div style="width:100%;height:300px;">
+                        <div style="width:calc((100% - 60px)/2);height:70px;border-bottom:1px solid #dddddd;float:left;margin-left:15px;margin-right:15px;cursor:pointer;" v-for="(vpdf,index) in pdfdata">
+                            <div style="width:100%;height:70px;" v-bind:id="index" onclick="bgtodetailt(this)">
+                                <div style="width:95%;height:70px;margin:0 auto;border-bottom:1px solid #dddddd;">
+                                    <div style="width:100%;height:70px;">
+                                        <div style="width:70%;height:70px;float:left;">
+                                            <div class="itemtitle" style="width:100%;height:35px;float:left; color:#333333;line-height:50px;font-size:14px;text-align:left;">
+                                                {{vpdf.AliasName}}
+                                            </div>
+                                            <div class="itemtitle aui-ellipsis-1" style="width:100%;height:35px;float:left;color:#999999;line-height:35px;font-size:14px;text-align:left;">
+                                                {{vpdf.Name}}/{{vpdf.ProModel}}
+                                            </div>
+                                        </div>
+                                        <div style="width:30%;height:70px;float:left;">
+                                            <div class="aui-ellipsis-1" style="position:relative;height:30px;margin-top:20px;text-align:center;font-size:12px;color:#ffffff;background:#0B68F5;opacity:0.7;border-radius:30px;line-height:30px;box-shadow:0px 2px 4px 0px rgba(0, 0, 0, 0.35);" v-bind:style="vpdf.typenamebcstyle">
+                                                {{vpdf.TypeName}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="width:100%;height:700px;margin-top:50px;">
+        <div style="width:70%;height:700px;margin:0 auto;border:1px solid #dddddd;">
+            <div style="width:275px;height:700px;float:left;">
+                <div style="width:100%;height:90px;position:relative;">
+                    <img src="~/Content/img/btbj.jpg" style="width:100%;height:100%;border-radius:2px;" />
+                    <div style="width:100%;height:70px;position:absolute;top:20px;">
+                        <div style="width:70%;height:70px;float:left;line-height:50px;text-indent:20px;color:#ffffff;font-size:28px;font-weight:700;letter-spacing:2px;">
+                            塑料行情
+                        </div>
+                        @*<div style="width:calc(30% - 15px);height:70px;float:left;text-align:right;font-size:14px;line-height:50px;margin-right:15px;color:#666666;cursor:pointer;">
+                                更多<i class="fa fa-angle-double-right" style="font-size:16px;margin-left:2px;color:#666666;"></i>
+                            </div>*@
+                    </div>
+                </div>
+                <div style="width:274px;height:610px;border-right:1px solid #dddddd;">
+                    <div style="width:100%;height:70px;" v-for="(vslhq,index) in slhqdata">
+                        <div style="width:100%;height:70px;cursor:pointer;" v-bind:id="vslhq.ID" onclick="tonewsdetail(this)">
+                            <div style="width:30%;height:70px;float:left;">
+                                <div style="min-width:50px;width:auto;display:inline-block !important; display:inline;position:relative;float:right;top:20px;text-align:center;padding-left:5px;padding-right:5px;font-size:12px;color:#4BADFF;border:1px solid #dddddd;border-radius:3px;">
+                                    {{vslhq.CreateDate}}
+                                </div>
+                            </div>
+                            <div style="width:70%;height:70px;float:left;">
+                                <div style="width:80%;margin:0 auto;font-size:12px;color:#666666;padding-top:10px;line-height:20px;" class="aui-ellipsis-2">
+                                    {{vslhq.Title}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="width:calc(100% - 565px);height:700px;float:left;">
+                <div style="width:100%;height:245px;">
+                    <img src="~/Content/img/hb2.png" style="width:100%;height:100%;border:none;" />
+                </div>
+                <div style="width:100%;height:45px;">
+                    <div style="width:95%;height:45px;margin:0 auto;">
+                        <div style="width:50%;height:45px;float:left;">
+                            <div style="width:4px;height:20px;margin-top:12px;float:left;background:#4BADFF;"></div>
+                            <div style="width:calc(100% - 4px);height:45px;line-height:45px;color:#333333;font-size:18px;text-indent:15px;letter-spacing:1px;">
+                                应用案例
+                            </div>
+                        </div>
+                        <div style="width:50%;height:45px;float:left;">
+                            <div style="width:100px;height:70px;float:right;text-align:right;font-size:14px;line-height:50px;margin-right:15px;color:#666666;cursor:pointer;">
+                                更多<i class="fa fa-angle-double-right" style="font-size:16px;margin-left:2px;color:#666666;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="width:100%;height:400px;margin-top:10px;">
+                    <div style="width:92%;height:110px;margin:0 auto;border-bottom:1px dashed #dddddd;margin-bottom:20px;" v-for="(val,index) in yyaldata">
+                        <div style="width:220px;height:110px;float:left;">
+                            <img v-bind:src="val.HomeImg" style="width:200px;height:105px;margin:2px auto;" />
+                        </div>
+                        <div style="width:calc(100% - 220px);height:110px;float:left;">
+                            <div style="width:100%;height:110px;cursor:pointer;" v-bind:id="val.ID" onclick="tonewsdetail(this)">
+                                <div style="width:100%;height:25px;">
+                                    <div class="aui-ellipsis-1" style="width:70%;height:25px;float:left;font-size:16px;color:#333333;line-height:25px;font-weight:700;">
+                                        {{val.Title}}
+                                    </div>
+                                    <div style="width:30%;height:25px;float:left;text-align:right;font-size:14px;color:#999999;line-height:25px;">
+                                        [{{val.CreateDate}}]
+                                    </div>
+                                </div>
+                                <div style="width:100%;max-height:40px;text-align:left;color:#707475;font-size:14px;line-height:20px;margin-top:5px;" class="aui-ellipsis-2">
+                                    {{val.DescMsg}}
+                                </div>
+                                <div style="width:100%;height:35px;margin-top:5px;">
+                                    <div style="width:60%;height:35px;float:left;">
+                                        @*<div style="height:15px;line-height:15px;font-size:10px;color:#dddddd;border:1px solid #dddddd;text-align:center;padding-left:3px;padding-right:3px;float:left;margin-right:10px;border-radius:3px;margin-top:10px;">
+                                                聚丙烯
+                                            </div>
+                                            <div style="height:15px;line-height:15px;font-size:10px;color:#dddddd;border:1px solid #dddddd;text-align:center;padding-left:3px;padding-right:3px;float:left;margin-right:10px;border-radius:3px;margin-top:10px;">
+                                                聚丙烯
+                                            </div>*@
+                                    </div>
+                                    <div style="width:40%;height:35px;float:left;text-align:right;font-size:14px;color:#999999;line-height:35px;">
+                                        <div style="height:35px;font-size:12px;color:#808080;line-height:35px;float:right;margin-left:15px;">
+                                            <i class="iconfont suyiliulan" style="font-size:16px;margin-left:2px;color:#666666;margin-right:3px;"></i>{{val.BrowseCount}}
+                                        </div>
+                                        <div style="height:35px;font-size:14px;color:#808080;line-height:35px;float:right;">
+                                            来源：塑蚁网
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div style="width:289px;height:700px;float:right;border-left:1px solid #dddddd;">
+                <div style="width:100%;height:45px; border-bottom:1px solid #f2f2f2;">
+                    <div style="width:95%;height:45px;margin:0 auto;">
+                        <div style="width:50%;height:45px;float:left;">
+                            <div style="width:calc(100% - 4px);height:45px;line-height:45px;color:#333333;font-size:18px;text-indent:15px;letter-spacing:1px;">
+                                塑料资讯
+                            </div>
+                        </div>
+                        <div style="width:50%;height:45px;float:left;">
+                            <div style="width:100px;height:45px;float:right;text-align:right;font-size:14px;line-height:50px;margin-right:15px;color:#666666;cursor:pointer;">
+                                更多<i class="fa fa-angle-double-right" style="font-size:16px;margin-left:2px;color:#666666;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="width:100%;height:500px;">
+                    <div style="width:90%;height:140px;margin:0 auto;border-bottom:1px solid #f2f2f2;margin-top:15px;" v-for="(vbc,index) in btnewdata">
+                        <div v-bind:id="vbc.ID" onclick="tonewsdetail(this)" style="width:100%;height:140px; cursor:pointer;">
+                            <div style="width:100%;max-height:50px; font-size:14px;color:#333333;line-height:20px;" class="aui-ellipsis-2">
+                                {{vbc.Title}}
+                            </div>
+                            <div style="width:100%;height:100px;">
+                                <div style="width:50%;height:100px;float:left;">
+                                    <img v-bind:src="vbc.HomeImg" style="width:90%;height:80px;margin:10px auto;" />
+                                </div>
+                                <div style="width:50%;max-height:100px;float:left;font-size:14px;color:#666666;line-height:20px;" class="aui-ellipsis-4">
+                                    {{vbc.DescMsg}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="width:100%;height:65px;margin-bottom:10px;">
+        <div style="width:70%;height:65px;border-bottom:2px solid #999999;margin:0 auto;">
+            <div style="width:180px;height:65px;border-bottom:2px solid #1593ff;color:#333333;font-size:20px;text-align:left;line-height:80px;font-weight:700;">
+                塑料频道
+            </div>
+        </div>
+    </div>
+    <div style="width:100%;height:450px;margin-bottom:20px;">
+        <div style="width:70%;height:450px;margin:0 auto;">
+            <div style="width:32%;height:450px;float:left;">
+                <img src="~/Content/img/tysl.jpg" style="width: 100%;height: 450px;" />
+            </div>
+            <div style="width:32%;height:450px;float:left;margin-left:2%;">
+                <img src="~/Content/img/gcsl.jpg" style="width: 100%;height: 450px;" />
+            </div>
+            <div style="width:32%;height:450px;float:right;">
+                <img src="~/Content/img/xjsl.jpg" style="width: 100%;height: 450px;" />
+            </div>
+        </div>
+    </div>
+
+
+</div>
+@*<div id="Home" class="showlogin" style="display:none;">
+        @Html.Partial("~/Views/Public/Login.cshtml")
+    </div>*@
+
+@*<div class="header-orange">
+        <div class="logo">
+            <a href="/"><img src="/Content/img/logo-withe.png" alt="塑蚁网-全国最精准永久免费塑胶和助剂材料物性搜索网站" title="塑蚁网-全国最精准永久免费塑胶和助剂材料物性搜索网站"></a>
+        </div>
+        <div class="header-search-box" style="margin-top: 28px;">
+            <input type="text" class="search-input-orange" id="search_input_top" placeholder="请输入任意塑料类型、型号、厂家、性能、用途进行智能搜索"><span onclick="onSearch_Top_select(0, $('#search_input_top').val());" class="fa fa-search search-icon text-orange">搜索</span>
+            <div class="common-models common-models-suliao-index">
+                常用型号：
+                @foreach (var item in hotProducts)
+                {
+                    <span class="item"><a href="/PhysicalProducts/Detail/@(item.ProductGuid).html" style="color:#fff;" target="_blank">@item.ProModel</a></span>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="meal-cut">
+        <ul>
+
+            <li>
+                <a href="/Price/Index">
+                    <span>
+                        <i class="fa fa-service fa-line-chart">
+                        </i>
+                        <h3>价格走势</h3>
+                        <p>种类 型号 厂家 用途 特性 熔脂 硬度等智能搜索</p>
+                        <b></b>
+                        <font>
+                        </font>
+                    </span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/PhysicalProducts/Index">
+                    <span>
+                        <i class="fa fa-search"></i>
+                        <h3>高级搜索</h3>
+                        <p>各类多条件综合搜索</p>
+                        <b></b>
+                        <font>
+                        </font>
+                    </span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/Replace/Index">
+                    <span>
+                        <i class="fa fa-compress"></i>
+                        <h3>材料替换</h3>
+                        <p>查找综合性能最接近的型号</p>
+                        <b></b>
+                        <font>
+                        </font>
+                    </span>
+                </a>
+            </li>
+
+            <li>
+                <a href="/Contrast/Index">
+                    <span>
+                        <i class="fa fa-sign-language"></i>
+                        <h3>物性对比</h3>
+                        <p>各种类型号参数对比</p>
+                        <b></b>
+                        <font>
+                        </font>
+                    </span>
+                </a>
+            </li>
+
+            <li>
+                <a href="javascript:void(0)" onclick="alert('暂未开放，敬请期待！');">
+                    <span>
+                        <i class="fa fa-window-restore"></i>
+                        <h3>应用案例</h3>
+                        <p>使用案例查看</p>
+                        <b></b>
+                        <font>
+                        </font>
+                    </span>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+
+
+    <div class="info-container">
+        <div class="info-container-list clearfix">
+            <div class="info-listItem" style="margin-left:10px;">
+                <div class="info-listItem-title">通用塑料频道</div>
+                <dl class="info-listItem-list">
+                    <dt>
+                        <a href="javascript:void(0)">
+                            <img src="/Content/images/news-001.png" alt="">
+                            <span>聚乙烯、聚丙烯、聚氯乙烯、聚苯乙烯、ABS</span>
+                        </a>
+                    </dt>
+                    <dd><a href="javascript:void(0)">通用塑料主要包括聚乙烯、聚丙烯、聚氯乙烯、聚苯乙烯、ABS（丙烯酸-丁二烯-苯乙烯）、聚甲基苯烯酸甲酯和氨基塑料等,其产量占整个塑料产量的90%以上,故又称之为大宗塑料品种。</a></dd>
+                </dl>
+            </div>
+            <div class="info-listItem">
+                <div class="info-listItem-title">工程塑料频道</div>
+                <dl class="info-listItem-list">
+                    <dt>
+                        <a href="javascript:void(0)">
+                            <img src="/Content/images/news-002.png" alt="">
+                            <span>聚酰胺、聚碳酸酯、聚甲醛、改性聚苯醚</span>
+                        </a>
+                    </dt>
+                    <dd><a href="javascript:void(0)">工程塑料分为通用工程塑料和特种工程塑料两类.前者主要品种有聚酰胺、聚碳酸酯、聚甲醛、改性聚苯醚和热塑性聚酯五大通用工程塑料;后者主要是指耐热达150℃以上的工程塑料,主要品种有聚酰亚胺、聚苯硫醚、聚砜类、芳香族聚酰胺、聚芳酯、聚苯酯、聚芳醚酮、液晶聚合物和氟树脂等。</a></dd>
+                </dl>
+            </div>
+            <div class="info-listItem" style="margin-right:0px;">
+                <div class="info-listItem-title">弹性体/降解塑料</div>
+                <dl class="info-listItem-list">
+                    <dt>
+                        <a href="javascript:void(0)">
+                            <img src="/Content/images/news-003.png" alt="">
+
+                            <span>TPU,TPV,TPE,TPR,POE,TPEE</span>
+                        </a>
+                    </dt>
+                    <dd><a href="javascript:void(0)">弹性体泛指在除去外力后能恢复原状的材料，然而具有弹性的材料并不一定是弹性体。主要品种有TPU,TPV,TPE,TPR,POE,TPEE。生物降解材料是指在适当和可表明期限的自然环境条件下，能够被微生物（如细菌、真菌和藻类等）完全分解变成低分子化合物的材料</a></dd>
+                </dl>
+            </div>
+        </div>
+    </div>*@
+
+
+
+<script src="~/Content/js/echarts.min.js" type="text/javascript"></script>
+<script src="~/Content/js/vue.js" type="text/javascript"></script>
+<script type="text/javascript">
+    //初始化vue组件
+    var vm = new Vue({
+        el: '#allboxdiv',
+        data: {
+            newlist: [],//热点资讯新闻数据
+            ggnewlist: [],//平台公告新闻数据
+            pricelist: [],//价格趋势数据
+            manufacturerlist: [],//厂家数据
+            SmallClass: "",//选中的价格类别
+            Manufacturer: "",//选中的价格厂家
+            Model: "",//选中的价格型号
+            priceData: "&priceDate=7",//价格时间
+            annotationdata: [],//助剂数据
+            indexitem: "",//选中的菜单id
+            newstype: "0",//0：显示热点资讯 1：平台公告
+            typelistdata: [],//大类数据
+            childlist: [],//下级分类数据
+            btnewdata: [],//底部资讯数据
+            yyaldata: [],//应用案例
+            slhqdata: [],//塑料行情数据
+            pdfdata: [],//pdf认证报告数据
+            prodata: [],//物性报告数据
+
+            usname: "",//用户名
+            usimg: "~/Content/img/icon.png"//头像
+
+        }, methods: {
+            load: function () {
+                $.ajax({
+                    type: "GET",
+                    dataType: "JSON",
+                    url: '/Product/GetIndexTopData',
+                    data: "",
+                    async: false,
+                    success: function (data) {
+                        //alert(JSON.stringify(data));
+                        console.log(data);
+                        var returnstate = data.State;
+                        if (returnstate == "Success") {
+                            var resultdata = data.Result;
+                            vm.usname = resultdata.usname;
+                            vm.usimg = resultdata.usimg;
+                            vm.newlist = resultdata.newdata;
+                            vm.yyaldata = resultdata.yyaldata;
+                            vm.slhqdata = resultdata.slhqldata;
+                            vm.btnewdata = resultdata.btnewdata;
+                            vm.ggnewlist = resultdata.newggdata;
+                            vm.typelistdata = resultdata.typelistdata;
+                            vm.prodata = resultdata.prodata;
+                            //处理pdf认证报告数据
+                            var temppdfdata = resultdata.pdfdata;
+                            //判断pdf数据渲染条件
+                            for (var i = 0; i < temppdfdata.length; i++) {
+                                temppdfdata[i]["typenamebcstyle"] = 'background:' + temppdfdata[i].ImagesColor + '; color:#ffffff;';
+                                vm.pdfdata.push(temppdfdata[i]);
+                            }
+                            //vm.pricelist = resultdata.pricedata;
+                            //处理价格趋势数据
+                            var temppricedata = resultdata.pricedata;
+                            for (var i = 0; i < temppricedata.length; i++) {
+                                if (i == 0) {
+                                    temppricedata[i]["class"] = "itembox active";
+                                }
+                                else {
+                                    temppricedata[i]["class"] = "itembox";
+                                }
+                                vm.pricelist.push(temppricedata[i]);
+                            }
+                            vm.SmallClass = vm.pricelist[0].SmallClass;
+                            vm.Manufacturer = vm.pricelist[0].ManuFacturer;
+                            vm.Model = vm.pricelist[0].Model;
+                            GetPriceList();
+                            //vm.manufacturerlist = resultdata.manufacturerdata;
+                            //处理合作厂家轮播图片数据
+                            var tempmanufacturerlist = resultdata.manufacturerdata;
+                            if (tempmanufacturerlist.length > 0) {
+                                var tempstr = "";
+                                for (var i = 0; i < tempmanufacturerlist.length; i++) {
+                                    tempstr = tempstr + "<li style='margin - left: 0px; padding: 0px; margin - top: 8px; margin - right: 15px; width: 170px; height:90px !important;border:0px !important;'>" +
+                                        //"< a href = '#2685' class='img_wrap' >" +
+                                        "<img src='" + tempmanufacturerlist[i].IcoPath + "' border='0' style='width:97%;height:85px;margin:2px auto;display:block;border:0px;'>" +
+                                        //"</a>" +
+                                        "</li >";
+                                }
+                                $("#count1").append(tempstr);
+                            }
+                            vm.annotationdata = resultdata.annotationdata;
+
+                            //var str = "";
+                            //for (var i = 0; i < vm.manufacturerlist.length; i++) {
+                            //    if (str == "") {
+                            //        str = "<div  class='slider1'><div class='slide' style='border:1px solid #cccccc;padding-bottom:10px;padding-top:10px;border-radius:3px;'>< img src='~/Content/img/brand/4.png' style ='width:230px;height:100px;margin:0 auto;'></div >";
+                            //        //vm.manufacturerlist[i].IcoPath
+                            //    }
+                            //    else {
+                            //        str = str + "<div class='slide' style='border:1px solid #cccccc;padding-bottom:10px;padding-top:10px;border-radius:3px;'>" +
+                            //            "< img src='~/Content/img/brand/4.png' style = 'width:230px;height:100px;margin:0 auto;'></div ></div >";
+                            //    }
+                            //}
+                            //$("#sliderdiv").html(str);
+                        }
+                    },
+                    error: function () { layer.msg('数据请求异常', { icon: 2 }); }
+                });
+            }
+        }
+    });
+
+    var dataArry = new Array();//时间
+    var priceArry = new Array();//价格
+    function onSearch_Top_select(id, keyword) {
+        //  var keyword = $.trim($("#search_input_top").val());
+        if (keyword == "") {
+            alert("请输入任意塑料类型、型号、厂家、性能、用途!");
+            $("#search_input_top").focus();
+            return false;
+        }
+        else {
+            window.location.href = "/Product/Index?key=" + encodeURI(encodeURIComponent(keyword)) + "&searchtype=1&keyid=" + id;
+        }
+    }
+    var inputwidht = "650";
+    $(function () {
+        inputwidht = $("#search_input_top").width();
+        vm.load();
+        //加载轮播图
+        $(".img_gallery").hover(function () {
+            $("#btn_prev,#btn_next").fadeIn()
+        }, function () {
+            $("#btn_prev,#btn_next").fadeOut()
+        });
+
+        $dragBln = false;
+
+        $(".main_img").touchSlider({
+            flexible: true,
+            speed: 200,
+            btn_prev: $("#btn_prev"),
+            btn_next: $("#btn_next"),
+            paging: $(".point a"),
+            counter: function (e) {
+                $(".point a").removeClass("on").eq(e.current - 1).addClass("on");//图片顺序点切换
+                $(".img_font span").hide().eq(e.current - 1).show();//图片文字切换
+            }
+        });
+
+        $(".main_img").bind("mousedown", function () {
+            $dragBln = false;
+        });
+
+        $(".main_img").bind("dragstart", function () {
+            $dragBln = true;
+        });
+
+        $(".main_img a").click(function () {
+            if ($dragBln) {
+                return false;
+            }
+        });
+
+        timer = setInterval(function () {
+            $("#btn_next").click();
+        }, 5000);
+
+        $(".img_gallery").hover(function () {
+            clearInterval(timer);
+        }, function () {
+            timer = setInterval(function () {
+                $("#btn_next").click();
+            }, 5000);
+        });
+
+        $(".main_img").bind("touchstart", function () {
+            clearInterval(timer);
+        }).bind("touchend", function () {
+            timer = setInterval(function () {
+                $("#btn_next").click();
+            }, 5000);
+        });
+
+        //加载品牌轮播
+        //$('.slider1').bxSlider({
+
+        //    slideWidth: 293,
+
+        //    minSlides: 2,
+
+        //    maxSlides: 4,
+
+        //    slideMargin: 10
+
+        //});
+
+
+        //加载头部商品轮播
+        $("#counttop").dayuwscroll({
+            parent_ele: '#wrapBox2',
+            list_btn: '#tabT02',
+            pre_btn: '#left2',
+            next_btn: '#right2',
+            path: 'left',
+            auto: false,
+            time: 3000,
+            num: 3,
+            gd_num: 3,
+            waite_time: 1000
+
+        })
+
+        //加载品牌轮播
+        $("#count1").dayuwscroll({
+            parent_ele: '#wrapBox1',
+            list_btn: '#tabT04',
+            pre_btn: '#left1',
+            next_btn: '#right1',
+            path: 'left',
+            auto: false,
+            time: 3000,
+            num: 7,
+            gd_num: 7,
+            waite_time: 1000
+
+        })
+
+
+        //加载价格趋势图
+        onLoadEchars();
+    })
+    //选择价格趋势
+    function selectitem(t) {
+        var index = t.id;
+        $("#pricedivbox .itembox").removeClass("active");
+        $("#pricedivbox #" + index).addClass("active");
+        vm.SmallClass = vm.pricelist[index].SmallClass;
+        vm.Manufacturer = vm.pricelist[index].ManuFacturer;
+        vm.Model = vm.pricelist[index].Model;
+        GetPriceList();
+    };
+    $("#selectpridate").change(function () {
+        var thisvalue = $("#selectpridate").children('option:selected').val();
+        vm.priceData = "&priceDate=" + thisvalue;
+        GetPriceList();
+    });
+    function GetPriceList() {
+        //debugger;
+        //SmallClass='ABS' and Manufacturer='台湾台化' and Model='AG15A1'
+        dataArry.length = 0;
+        priceArry.length = 0;
+        //$(".Txt_SmallClass").html(SmallClass);
+        //$(".Txt_Manufacturer").html(Manufacturer);
+        //$(".Txt_Model").html(Model);
+        $.ajax({
+            type: "POST",
+            dataType: "JSON",
+            url: '/Price/GetPriceDateList',
+            data: "SmallClass=" + vm.SmallClass + "&Manufacturer=" + vm.Manufacturer + "&Model=" + vm.Model + vm.priceData,
+            async: false,
+            success: function (result) {
+                var product_Data = result.data;
+                row_count = result.totalCount;
+                if (row_count != 0) {
+                    $.each(JSON.parse(product_Data), function (a, b) {
+                        dataArry.push(getdatefroment(b.PriDate)); //PriDate formatterTime(b.PriDate, "YYYY-MM-DD")
+                        priceArry.push(parseInt(b.Price));
+                    });
+                }
+                //dataArry = dataArry.substring(0, dataArry.length - 1);
+                //priceArry = priceArry.substring(0, priceArry.length - 1);
+            },
+            error: function () { layer.msg('Load the data failure!', { icon: 5 }); }
+        });
+    }
+    function onLoadEchars() {
+        //'2019-03-16', '2019-03-17', '2019-03-18', '2019-03-19'
+        var options = {
+            title: {
+                text: ''
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    label: {
+                        backgroundColor: '#6a7985'
+                    }
+                }
+            },
+            legend: { data: [] },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '3%',
+                bottom: '4%',
+                top: '7%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: dataArry//'2019-03-16', '2019-03-17', '2019-03-18', '2019-03-19', '2019-03-20', '2019-03-21', '2019-03-22'
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name: '价格',
+                    type: 'line',
+                    data: priceArry//
+                }
+            ]
+        };
+        function rpt1(id, option, h) {
+            var o = document.getElementById(id);
+            var myChart = echarts.init(o);
+            myChart.setOption(option);
+        }
+        //alert(dataArry)
+        //alert(priceArry)
+        rpt1('chart1', options);
+    }
+    //淘宝搜索建议
+    $("#search_input_top").searchSuggest({
+        url: 'http://suggest.taobao.com/sug?code=utf-8&extras=1&q=',
+        /*优先从url ajax 请求 json 帮助数据，注意最后一个参数为关键字请求参数*/
+        jsonp: 'callback',
+        /*如果从 url 获取数据，并且需要跨域，则该参数必须设置*/
+        json: {
+            'data': [{
+                'id': '0',
+                'word': 'baidu',
+                'description': ''
+            }, {
+                'id': '1',
+                'word': 'lzw.me',
+                'description': ''
+            }, {
+                'id': '2',
+                'word': 'w1.lzw.me',
+                'description': ''
+            }, {
+                'id': '3',
+                'word': 'g.lzw.me',
+                'description': ''
+            }, {
+                'id': '4',
+                'word': 'seo.lzw.me',
+                'description': ''
+            }],
+            'defaults': 'http://lzw.me'
+        }, //
+        width: inputwidht, //提示框的宽度，缺省为输入框的宽度相同
+        topoffset: 16, //提示框与输入框的距离，缺省为5
+        style: 'list',
+        cssFile: '/Content/src/css/search-suggest.css',
+        tpl: "<div class=\"list\"><div class=\"word\" rel_id=\"st_{id}\" onclick=\"DropDownSearch({id},'{word}','{category}','{ProductGuid}');\">{word}</div></div>",
+        processData: function (json) { // url 获取数据时，对数据的处理，作为 getData 的回调函数
+            debugger;
+            if (!json || json.length == 0) return false;
+
+            var jsonStr = "{'data':[";
+            $.each(json, function (index, item) {
+                jsonStr += "{'id':'" + item.id + "','word':'" + item.Word + "', 'description': '" + item.description + "'},";
+            })
+            jsonStr += "],'defaults':'塑蚁网'}";
+
+            //字符串转化为 js 对象
+            return json = (new Function("return " + jsonStr))();
+        },
+        getData: function (word, parent, callback) { //数据获取方法
+            if (!word) return;
+            //  debugger;
+            $.ajax({
+                type: "POST",
+                dataType: "JSON",
+                url: '/Home/SetJs',
+                data: "keyword=" + word,
+                async: false,
+                success: function (json) {
+                    //debugger;
+                    if (json.count > 0) {
+                        var resultData = json.result;
+                        callback(parent, resultData);
+                    }
+                },
+                error: function () {
+
+                }
+            });
+
+        }
+    });
+
+    function DropDownSearch(obj, keyword, category, productid) {
+        //alert(obj);
+        if (category == "产品型号") {
+            window.location.href = '/PhysicalProducts/Detail/' + productid + ".html";
+        }
+        else {
+            onSearch_Top_select(obj, keyword);
+        }
+
+    }
+
+    //显示或者隐藏选择分类板块
+    //$(".leftmenuboxitem").hover(function () {
+    //    alert("sdf");
+    //    $("#selectdivbox").show();
+    //}, function () {
+    //    $("#selectdivbox").hide();
+    //});
+    $("#selectdivbox").hover(function () {
+        $("#selectdivbox").show();
+    }, function () {
+        $("#selectdivbox").hide();
+    });
+    //鼠标移入大类时显示下级分类
+    function itemmousemove(t) {
+        var index = t.id;
+        var id = vm.typelistdata[index].Guid;
+        $.ajax({
+            type: "GET",
+            dataType: "JSON",
+            url: '/Product/GetIndexClass',
+            data: "classid=" + id,
+            async: false,
+            success: function (data) {
+                //alert(JSON.stringify(data));
+                var returnstate = data.State;
+                if (returnstate == "Success") {
+                    var resultdata = data.Result;
+                    vm.childlist = resultdata;
+                }
+            },
+            error: function () { layer.msg('数据请求异常', { icon: 2 }); }
+        });
+        $("#selectdivbox").show();
+    }
+    //鼠标移出大类时隐藏下级分类
+    function itemmouseout(t) {
+        $("#selectdivbox").hide();
+    }
+    ////显示或者隐藏品牌翻页按钮
+    //$("#wrapBox1").hover(function () {
+    //    $("#right1").css("display","block");
+    //    $("#left1").css("display","block");
+    //}, function () {
+    //    //$("#right1").css("display","none");
+    //    //$("#left1").css("display","none");
+    //});
+    //显示登录页面
+    function showlogindivbox() {
+        $(".showlogin").show();
+        //$(".showdivbox").show();
+        $('body').css("overflow", "hidden");
+    }
+    function selectnews(type) {
+        if (type == 0) {
+            vm.newstype = "0";
+        }
+        else {
+            vm.newstype = "1";
+        }
+    }
+    //选择二级或者三级分类跳转到搜索页
+    function selectclassitem(t) {
+        var index = t.id;
+        var splitlist = index.split(",");
+        var bigindex = splitlist[0];
+        var smallindex = splitlist[1];
+        var childlist = vm.childlist[bigindex].childclasslist;
+        var tempguid = childlist[smallindex].Guid;
+        var classitemname = childlist[smallindex].Name;
+        //window.location.href = "/Product/Index?key=" + encodeURI(encodeURIComponent(classitemname)) + "&keyid=" + 0;
+        //var turl = "/Product/Index?key=" + encodeURI(encodeURIComponent(classitemname)) + "&keyid=" + 0;
+        var turl = "/Product/Index?kind=" + encodeURI(encodeURIComponent(tempguid)) + "&kindname=" + encodeURI(encodeURIComponent(classitemname)) + "&searchtype=0&keyid=" + 0;
+        window.open(turl);
+    }
+    //认证报告跳转到详情
+    function bgtodetailt(t) {
+        var index = t.id;
+        var tid = vm.pdfdata[index].ProductGuid;
+        //window.location.href = "/PhysicalProducts/Detail/" + tid + ".html";
+        var turl = "/PhysicalProducts/Detail/" + tid + ".html";
+        window.open(turl);
+    }
+    //物性报告跳转到详情
+    function selectproitem(t) {
+        var index = t.id;
+        var tid = vm.prodata[index].ProductGuid;
+        var turl = "/PhysicalProducts/Detail/" + tid + ".html";
+        window.open(turl);
+    }
+    function tonewsdetail(t) {
+        var id = t.id;
+        var turl = "/News/Detail/?id=" + id;
+        window.open(turl);
+    }
+</script>
+@Html.Partial("~/Views/Public/Bottom.cshtml")

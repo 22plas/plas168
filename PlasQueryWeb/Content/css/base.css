@@ -120,7 +120,16 @@ a {
 .none {display:none !important;}
 .show {display:block;}
 /*¸ß¼¶ËÑË÷*/
-.search-input,.search-input-orange{display: inline-block;border: none; background-color: #098274;height: 100%;width: 380px;padding: 0 8px;box-sizing: border-box;}
+.search-input, .search-input-orange {
+    display: inline-block;
+    border: none;
+    background-color: #0088de;
+    height: 100%;
+    width: 380px;
+    padding: 0 8px;
+    font-size:16px;
+    box-sizing: border-box;
+}
 .search-input::-webkit-input-placeholder{color: #eee;}
 .search-input-blank{background-color: #5d6a77}
 .search-input-orange{border: 2px solid #1593ff;background-color: #fff;width: 100%; }

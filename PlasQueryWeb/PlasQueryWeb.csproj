@@ -245,6 +245,7 @@
     <Content Include="Content\css\iconfont.css" />
     <Content Include="Content\css\iconfont\iconfont.css" />
     <Content Include="Content\css\iconfont\iconfont.svg" />
+    <Content Include="Content\css\index200304.css" />
     <Content Include="Content\css\jquery.bxslider.css" />
     <Content Include="Content\css\newsmenu.css" />
     <Content Include="Content\css\PaginationCenter.css" />
@@ -343,6 +344,8 @@
     <Content Include="Content\img\logo-withe.png" />
     <Content Include="Content\img\logo.png" />
     <Content Include="Content\img\logo1.png" />
+    <Content Include="Content\img\newindex\APP banner.png" />
+    <Content Include="Content\img\newindex\logo.jpg" />
     <Content Include="Content\img\newsico.jpg" />
     <Content Include="Content\img\newstest.png" />
     <Content Include="Content\img\newstop.jpg" />
@@ -518,6 +521,7 @@
     <Content Include="Content\layui\images\face\9.gif" />
     <Content Include="Content\layui\layui.js" />
     <Content Include="Content\layui\lay\dest\layui.all.js" />
+    <Content Include="Content\layui\lay\modules\carousel.js" />
     <Content Include="Content\layui\lay\modules\code.js" />
     <Content Include="Content\layui\lay\modules\element.js" />
     <Content Include="Content\layui\lay\modules\flow.js" />
@@ -569,6 +573,7 @@
     <Content Include="appdownload\android.apk" />
     <Content Include="appdownload\ios.ipa" />
     <Content Include="Content\css\iconfont.ttf" />
+    <Content Include="fonts\SourceHanSansCN-Medium.otf" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\comm.js" />
@@ -597,7 +602,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -657,6 +664,7 @@
     <Content Include="Views\PhysicalProducts\Index - 复制.cshtml" />
     <Content Include="Views\News\Detail.cshtml" />
     <Content Include="Views\Public\Login.cshtml" />
+    <Content Include="Views\Home\index20200304.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
