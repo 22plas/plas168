@@ -20,9 +20,9 @@ namespace PlasDal
             set = SqlHelper.GetSqlDataSet(sqlstr);
             return set;
         }
-        public DataSet NewGetModelInfo(string pguid)
+        public DataSet NewGetModelInfo(string pguid,string userid)
         {
-            var ds = SqlHelper.GetSqlDataSet(string.Format(@"exec PROC_GetInfoByPguid '{0}' ", pguid));
+            var ds = SqlHelper.GetSqlDataSet(string.Format(@"exec PROC_GetInfoByPguid '{0}',2052,'{1}' ", pguid, userid));
             //var ds = SqlHelper.GetSqlDataSet(string.Format(@"exec readproduct '{0}' ", pguid));
             return ds;
         }
