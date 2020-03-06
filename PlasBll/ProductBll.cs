@@ -19,9 +19,9 @@ namespace PlasBll
         {
             return dal.GetModelInfo(pguid, userid, ipaddress);
         }
-        public DataSet NewGetModelInfo(string pguid)
+        public DataSet NewGetModelInfo(string pguid,string userid)
         {
-            return dal.NewGetModelInfo(pguid);
+            return dal.NewGetModelInfo(pguid, userid);
         }
 
         /// <summary>

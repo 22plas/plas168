@@ -468,7 +468,7 @@ namespace PlasQueryWeb.Controllers
                 }
 
                 #region 产品详情
-                var ds = bll.NewGetModelInfo(pid);//"9C37DC9C-E867-46A2-97DF-32A9489BCDC4"
+                var ds = bll.NewGetModelInfo(pid, userid);//"9C37DC9C-E867-46A2-97DF-32A9489BCDC4"
                 //var ds = bll.GetModelInfo(prodid);
                 string descriptionjsonstr = string.Empty;//说明
                 List<tempinfo> listinfo = new List<tempinfo>();
@@ -605,7 +605,7 @@ namespace PlasQueryWeb.Controllers
                     brand = ds.Tables[0].Rows[0]["Brand"].ToString();
                     icopath = ds.Tables[0].Rows[0]["IcoPath"].ToString();
                 }
-                bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewDetail?prodid=" + prodid, pdfUrl, Server.UrlEncode(pmodel), Server.UrlEncode(placeorigin), Server.UrlEncode(brand),"0", icopath);
+                bool success = PlasQueryWeb.CommonClass.PdfHelper.HtmlToPdf(MainHost + "/PhysicalProducts/ViewDetail?prodid=" + prodid + "&userid=" + userid, pdfUrl, Server.UrlEncode(pmodel), Server.UrlEncode(placeorigin), Server.UrlEncode(brand),"0", icopath);
                 if (success)
                 {
                     mbll.AddOperationPay("查看下载物性", userid);
