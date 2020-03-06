@@ -16,7 +16,7 @@
         display: none !important;
     }
 </style>
-@Html.Partial("~/Views/Public/SubPageNav.cshtml")
+
 @{
     Html.RenderAction("PubSearch", "Public");
 }
@@ -31,7 +31,7 @@
 
         <div class="search-item-content">
             <ul class="search-item-content">
-                <li style="font-size:16px; font-weight:bold; color:#F60">是否过滤掉同 SINDUSTRISPP 品牌下的替代物:</li>
+                <li style="font-size:16px; font-weight:bold; color:#F60">是否过滤掉同 @ViewBag.ProModel 品牌下的替代物:</li>
                 <li><label><input name="isFiter" type="radio" value="1">过滤</label></li>
                 <li><label><input name="isFiter" type="radio" value="0">不过滤</label></li>
                 <li> <!--<a class="btn btn-orange btn-sm">用户自定义权重</a>--><button class="layui-btn layui-btn-sm" onclick="window.location.href='/Replace/ReplaceGetList?Rpt=@ViewBag.ProGuid'">自定义权重</button></li>

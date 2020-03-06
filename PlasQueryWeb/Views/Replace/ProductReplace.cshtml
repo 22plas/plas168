@@ -15,23 +15,23 @@
     .none {
         display: none !important;
     }
+
 </style>
-@Html.Partial("~/Views/Public/SubPageNav.cshtml")
 @{
     Html.RenderAction("PubSearch", "Public");
 }
 
 <div style="width:100%;height:auto;">
-    <div style="width:70%;height:auto;margin:0 auto;">
+    <div class="mainwidth" style="height:auto;margin:0 auto;">
         <div class="search-item-box">
 
-            <Div style="font-size:26px; font-weight:bold; color:#333;  text-align: center;">可替代 ( @ViewBag.ProductName ) 的牌号列表</Div>
+            <Div style="font-size:26px; height:100px;line-height:100px; font-weight:bold; color:#333;  text-align: center;">可替代 ( @ViewBag.ProductName ) 的牌号列表</Div>
 
             <div class="search-item">
 
                 <div class="search-item-content">
                     <ul class="search-item-content">
-                        <li style="font-size:16px; font-weight:bold; color:#F60">是否过滤掉同 SINDUSTRISPP 品牌下的替代物:</li>
+                        <li style="font-size:16px; font-weight:bold; color:#F60">是否过滤掉同 @ViewBag.ProductName 品牌下的替代物:</li>
                         <li><label><input name="isFiter" type="radio" value="1">过滤</label></li>
                         <li><label><input name="isFiter" type="radio" value="0">不过滤</label></li>
                         <li> <!--<a class="btn btn-orange btn-sm">用户自定义权重</a>--><button class="layui-btn layui-btn-sm" onclick="window.location.href='/Replace/ReplaceGetList?Rpt=@ViewBag.ProGuid'">自定义权重</button></li>
@@ -55,17 +55,17 @@
         <div class="search-content-box">
             @*<div style=" display:inline; padding-left:30px; "><button class="layui-btn layui-btn-danger">物性对比</button></div>
             <div style=" display:inline; "><button class="layui-btn">添加到收藏夹</button></div>*@
-            <div style=" display:inline;float:right; margin-right:20px ">
+            <div style=" display:inline;float:right; height:25px;line-height:25px; margin-right:20px ">
                 共搜索到<span style="color: red;" id="records"></span>条相关商品信息
             </div>
             <div class="search-content">
                 <table>
                     <thead>
                         <tr>
-                            <th width="10%">选取</th>
+                            @*<th width="10%">选取</th>*@
                             <th width="15%">牌号</th>
                             <th width="15%">厂商</th>
-                            <th width="15%">产品特性</th>
+                            <th width="25%">产品特性</th>
                             <th width="20%">用途</th>
                             <th width="15%">相似度</th>
                             <th width="10%">操作</th>
@@ -75,6 +75,8 @@
                 </table>
             </div>
         </div>
+        <div class="clear"></div>
+        <div class="hei20"></div>
         <div class="black2" id="Pagination">
 
         </div>
@@ -128,13 +130,13 @@
                         $.each(JSON.parse(productData), function (i, n) {
                             //alert(n);
                             tbodyui += "<tr style='height:30px;line-height:30px;'>";
-                            tbodyui += "<td><input type=\"checkbox\" name=\"checkbox\" id=\"checkbox_" + n.TargetGuid +"\"></td>";
+                          //  tbodyui += "<td><input type=\"checkbox\" name=\"checkbox\" id=\"checkbox_" + n.TargetGuid +"\"></td>";
                             tbodyui += "<td class='xiangshidu'><a href='/PhysicalProducts/Detail/" + n.TargetGuid + ".html' target=\"_blank\">" + n.ProModel + "</a></td>";
                             tbodyui += "<td>" + n.PlaceOrigin + "</td>";
                             tbodyui += "<td>" + n.characteristic + "</td>";
                             tbodyui += "<td>" + n.ProUse + "</td>";
                             tbodyui += "<td><div class=\"layui-progress layui-progress-big\" lay-showpercent=\"true\"><div class=\"layui-progress-bar\" lay-percent=\"" + parseInt(n.AlikePercent) + "%\" style=\"width:" + parseInt(n.AlikePercent) + "%;\"><span class=\"layui-progress-text\">" + parseFloat(n.AlikePercent).toFixed(2) + "%</span></div></div></td>";
-                            tbodyui += "<td><a class=\"btn btn-orange btn-sm\" onClick=\"LookDetail('" + proid + "','" + n.TargetGuid+"');\">查看对比详情</a></td>";//<button class=\"layui-btn layui-btn-normal\" onClick=\"window.location.href='/PhysicalProducts/Detail/" + n.ProductId + ".html'\">相识度详情</button><button class=\"layui-btn layui-btn-normal\">加入收藏</button>
+                            tbodyui += "<td><a class=\"btn btn-orange btn-sm\" onClick=\"LookDetail('" + proid + "','" + n.TargetGuid+"');\">查看详情</a></td>";//<button class=\"layui-btn layui-btn-normal\" onClick=\"window.location.href='/PhysicalProducts/Detail/" + n.ProductId + ".html'\">相识度详情</button><button class=\"layui-btn layui-btn-normal\">加入收藏</button>
                             tbodyui += "</tr>";
                         });
                     }

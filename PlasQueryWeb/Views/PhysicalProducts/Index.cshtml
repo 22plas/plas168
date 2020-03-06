@@ -25,7 +25,6 @@
         list-style: none;
         border: 0;
     }
-
     .table-contrast, .ul-lst {
         background-color: #fff;
     }
@@ -140,9 +139,9 @@
         height: auto;
         min-height: 45px;
         margin: 0 auto;
-        font-size: 12px;
+        font-size:12px;
         /*line-height:30px;*/
-        padding-top: 10px;
+        padding-top:10px;
     }
 
     .clsxmiddleitem:hover {
@@ -155,7 +154,6 @@
         /*border-bottom: 1px solid #dddddd;*/
         background: #1593FF;
     }
-
         .clsxmiddleitemsearch input {
             width: 90%;
             height: 35px;
@@ -163,17 +161,17 @@
             text-indent: 10px;
             margin: 0 auto;
             margin-left: 3%;
-            margin-top: 7px;
+            margin-top:7px;
             border-radius: 3px;
         }
 
-    .search-content-box > .search-content > table > thead > tr > th {
-        background-color: #1593FF;
-        color: #ffffff;
-    }
+        .search-content-box > .search-content > table > thead > tr > th {
+            background-color: #1593FF;
+            color: #ffffff;
+        }
 
     .search-content-box > .search-content > table > tbody > tr > td {
-        padding: 2px;
+        padding:2px;
     }
 
     .selectparmitem {
@@ -188,7 +186,6 @@
         margin-top: 10px;
         margin-left: 20px;
     }
-
     .layui-btns {
         background-color: #ffffff !important;
         border: 1px solid #1593FF !important;
@@ -201,14 +198,13 @@
         width: 80px;
         float: right;
         margin-top: 5px;
-        cursor: pointer;
-        margin-right: 5px;
+        cursor:pointer;
+        margin-right:5px;
     }
-
+   
     .search-item-content li {
-        color: #666666;
+        color:#666666;
     }
-
     #secharbtn {
         width: 40%;
         height: 55px;
@@ -223,31 +219,27 @@
         letter-spacing: 2px;
         cursor: pointer;
     }
-
         #secharbtn:hover, #clearbtn:hover {
             color: #4BADFF;
         }
-
             #secharbtn:hover i, #clearbtn:hover i {
                 color: #4BADFF !important;
             }
-
-    #clearbtn {
-        height: 55px;
-        padding-left: 30px;
-        padding-right: 30px;
-        float: left;
-        background: #ffffff;
-        color: #1593FF;
-        line-height: 55px;
-        font-size: 16px;
-        border-radius: 5px;
-        text-align: center;
-        margin-left: 50px;
-        letter-spacing: 2px;
-        cursor: pointer;
-    }
-
+            #clearbtn {
+                height: 55px;
+                padding-left: 30px;
+                padding-right: 30px;
+                float: left;
+                background: #ffffff;
+                color: #1593FF;
+                line-height: 55px;
+                font-size: 16px;
+                border-radius: 5px;
+                text-align: center;
+                margin-left: 50px;
+                letter-spacing: 2px;
+                cursor: pointer;
+            }
     .showdivbox, .showlogin {
         position: fixed;
         left: 0px;
@@ -257,6 +249,12 @@
         height: 100%;
         display: none;
         z-Index: 1001;
+    }
+    
+    #DataList td {
+        height:53px;
+        line-height: 24px;
+        padding: 0px 3px;
     }
 </style>
 <link href="~/Content/css/style.css" rel="stylesheet" type="text/css" charset=“utf-8” />
@@ -270,286 +268,290 @@
 <script src="~/Content/js/vue.js" type="text/javascript"></script>
 <div id="allbox" style="width:100%;height:auto;margin-top:10px;">
     <div style="width:100%;height:auto;">
-        <div style="width:70%;height:auto;border:1px solid #dddddd;margin:0 auto;">
-            <div class="search-item-box">
-                <div class="search-item">
-                    <div class="search-item-type">产品种类：</div>
-                    <div class="search-item-content">
+        <div class="mainwidth">
+            <div style="width:100%;height:auto;border:1px solid #dddddd;margin:0 auto;">
+                <div class="search-item-box" style="padding-left:10px;">
+                    <div class="search-item">
+                        <div class="search-item-type">产品种类：</div>
+                        <div class="search-item-content">
 
-                        <ul class="search-item-content" data-type="1" data-typename="产品种类">
-                            <li data-guid="" data-value="0" class="active">全部</li>
-                            @for (var i = 0; i < type.Rows.Count; i++)
-                            {
-                                var tid = "cpzl" + i;
-                                <li id="@tid" data-guid="@type.Rows[i]["SmallGuid"].ToString()" data-value="@type.Rows[i]["Name"].ToString()">@type.Rows[i]["Name"].ToString()</li>
-                            }
-                        </ul>
+                            <ul class="search-item-content" data-type="1" data-typename="产品种类">
+                                <li data-guid="" data-value="0" class="active">全部</li>
+                                @for (var i = 0; i < type.Rows.Count; i++)
+                                {
+                                    var tid = "cpzl" + i;
+                                    <li id="@tid" data-guid="@type.Rows[i]["SmallGuid"].ToString()" data-value="@type.Rows[i]["Name"].ToString()">@type.Rows[i]["Name"].ToString()</li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="search-item-btn" data-type="1" data-typename="产品种类">更多∨</div>
+                        @*<span class="fa fa-angle-down"></span>*@
                     </div>
-                    <div class="search-item-btn" data-type="1" data-typename="产品种类">更多∨</div>
-                    @*<span class="fa fa-angle-down"></span>*@
-                </div>
-                <div class="search-item">
-                    <div class="search-item-type">产品特性：</div>
-                    <div class="search-item-content">
-                        <ul class="search-item-content" data-type="2" data-typename="产品特性">
-                            <li data-guid="" data-value="0" class="active">全部</li>
-                            @for (var i = 0; i < te.Rows.Count; i++)
-                            {
-                                var tid = "cptx" + i;
-                                <li id="@tid" data-guid="" data-value="@te.Rows[i]["Name"].ToString()">@te.Rows[i]["Name"].ToString()</li>
-                                @*<li id="@tid" data-guid="@type.Rows[i]["SmallGuid"].ToString()" data-value="@te.Rows[i]["Name"].ToString()">@te.Rows[i]["Name"].ToString()</li>*@
-                            }
-                        </ul>
+                    <div class="search-item">
+                        <div class="search-item-type">产品特性：</div>
+                        <div class="search-item-content">
+                            <ul class="search-item-content" data-type="2" data-typename="产品特性">
+                                <li data-guid="" data-value="0" class="active">全部</li>
+                                @for (var i = 0; i < te.Rows.Count; i++)
+                                {
+                                    var tid = "cptx" + i;
+                                    <li id="@tid" data-guid="" data-value="@te.Rows[i]["Name"].ToString()">@te.Rows[i]["Name"].ToString()</li>
+                                    @*<li id="@tid" data-guid="@type.Rows[i]["SmallGuid"].ToString()" data-value="@te.Rows[i]["Name"].ToString()">@te.Rows[i]["Name"].ToString()</li>*@
+                                }
+                            </ul>
 
+                        </div>
+                        <div class="search-item-btn" data-type="2" data-typename="产品特性">更多∨</div>
                     </div>
-                    <div class="search-item-btn" data-type="2" data-typename="产品特性">更多∨</div>
-                </div>
-                <div class="search-item">
-                    <div class="search-item-type">阻燃等级：</div>
-                    <div class="search-item-content">
-                        <ul class="search-item-content" data-type="3" data-typename="阻燃等级">
-                            <li data-guid="" data-value="0" class="active">全部</li>
-                            @for (var i = 0; i < zuran.Rows.Count; i++)
-                            {
-                                var tid = "zrdj" + i;
-                                <li id="@tid" data-guid="" data-value="@zuran.Rows[i]["Name"].ToString()">@zuran.Rows[i]["Name"].ToString()</li>
-                                @*<li id="@tid" data-guid="@type.Rows[i]["SmallGuid"].ToString()" data-value="@zuran.Rows[i]["Name"].ToString()">@zuran.Rows[i]["Name"].ToString()</li>*@
-                            }
-                        </ul>
+                    <div class="search-item">
+                        <div class="search-item-type">阻燃等级：</div>
+                        <div class="search-item-content">
+                            <ul class="search-item-content" data-type="3" data-typename="阻燃等级">
+                                <li data-guid="" data-value="0" class="active">全部</li>
+                                @for (var i = 0; i < zuran.Rows.Count; i++)
+                                {
+                                    var tid = "zrdj" + i;
+                                    <li id="@tid" data-guid="" data-value="@zuran.Rows[i]["Name"].ToString()">@zuran.Rows[i]["Name"].ToString()</li>
+                                    @*<li id="@tid" data-guid="@type.Rows[i]["SmallGuid"].ToString()" data-value="@zuran.Rows[i]["Name"].ToString()">@zuran.Rows[i]["Name"].ToString()</li>*@
+                                }
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                <div class="search-item" name="AtrrNone" style="display:none;">
-                    <div class="search-item-type">生产厂商：</div>
-                    <div class="search-item-content" style="height: auto;">
-                        <ul data-type="4" data-typename="生产厂商">
-                            <li data-guid="" data-value="0" class="active">全部</li>
-                            @for (var i = 0; i < company.Rows.Count; i++)
-                            {
-                                var tid = "sccs" + i;
-                                <li id="@tid" data-guid="@company.Rows[i]["SmallGuid"].ToString()" data-value="@company.Rows[i]["Name"].ToString()">@company.Rows[i]["Name"].ToString()</li>
-                            }
-                        </ul>
+                    <div class="search-item">
+                        <div class="search-item-type">生产厂商：</div>
+                        <div class="search-item-content" style="height: auto;">
+                            <ul data-type="4" data-typename="生产厂商">
+                                <li data-guid="" data-value="0" class="active">全部</li>
+                                @for (var i = 0; i < (company.Rows.Count-1); i++)
+                                {
+                                    var tid = "sccs" + i;
+                                    <li id="@tid" data-guid="@company.Rows[i]["SmallGuid"].ToString()" data-value="@company.Rows[i]["Name"].ToString()">@company.Rows[i]["Name"].ToString()</li>
+                                }
+                            </ul>
+                        </div>
+                        <div class="search-item-btn" data-type="4" data-typename="生产厂商">更多∨</div>
                     </div>
-                    <div class="search-item-btn" data-type="4" data-typename="生产厂商">更多∨</div>
-                </div>
 
-                <div class="search-item" name="AtrrNone" style="display:none;">
-                    <div class="search-item-type">加工方法：</div>
-                    <div class="search-item-content" style="height: auto;">
-                        <ul data-type="5" data-typename="加工方法">
-                            <li data-guid="" data-value="0" class="active">全部</li>
-                            @for (var i = 0; i < jiagong.Rows.Count; i++)
-                            {
-                                var tid = "gjff" + i;
-                                <li id="@tid" data-guid="" data-value="@jiagong.Rows[i]["Name"].ToString()">@jiagong.Rows[i]["Name"].ToString()</li>
-                                @*<li id="@tid" data-guid="@type.Rows[i]["SmallGuid"].ToString()" data-value="@jiagong.Rows[i]["Name"].ToString()">@jiagong.Rows[i]["Name"].ToString()</li>*@
-                            }
+                    <div class="search-item">
+                        <div class="search-item-type">加工方法：</div>
+                        <div class="search-item-content" style="height: auto;">
+                            <ul data-type="5" data-typename="加工方法">
+                                <li data-guid="" data-value="0" class="active">全部</li>
+                                @for (var i = 0; i < (jiagong.Rows.Count-1); i++)
+                                {
+                                    var tid = "gjff" + i;
+                                    <li id="@tid" data-guid="" data-value="@jiagong.Rows[i]["Name"].ToString()">@jiagong.Rows[i]["Name"].ToString()</li>
+                                    @*<li id="@tid" data-guid="@type.Rows[i]["SmallGuid"].ToString()" data-value="@jiagong.Rows[i]["Name"].ToString()">@jiagong.Rows[i]["Name"].ToString()</li>*@
+                                }
 
-                        </ul>
+                            </ul>
+                        </div>
+                        @*<i class="iconfont suyitriangledownfill" style="margin-left:2px;color:#4BADFF;"></i>*@
+                        <div class="search-item-btn" data-type="5" data-typename="加工方法">更多∨</div>
                     </div>
-                    @*<i class="iconfont suyitriangledownfill" style="margin-left:2px;color:#4BADFF;"></i>*@
-                    <div class="search-item-btn" data-type="5" data-typename="加工方法">更多∨</div>
-                </div>
-                <div class="search-item" name="AtrrNone" style="display:none;">
-                    <div class="search-item-type">产品用途：</div>
-                    <div class="search-item-content" style="height: auto;">
-                        <ul data-type="7" data-typename="产品用途">
-                            <li data-guid="" data-value="0" class="active">全部</li>
-                            @for (var i = 0; i < used.Rows.Count; i++)
-                            {
-                                var tid = "cpyt" + i;
-                                <li id="@tid" data-guid="" data-value="@used.Rows[i]["Name"].ToString()">@used.Rows[i]["Name"].ToString()</li>
-                                @*<li id="@tid" data-guid="@type.Rows[i]["SmallGuid"].ToString()" data-value="@used.Rows[i]["Name"].ToString()">@used.Rows[i]["Name"].ToString()</li>*@
-                            }
+                    <div class="search-item" name="AtrrNone" style="display:none;">
+                        <div class="search-item-type">产品用途：</div>
+                        <div class="search-item-content" style="height: auto;">
+                            <ul data-type="7" data-typename="产品用途">
+                                <li data-guid="" data-value="0" class="active">全部</li>
+                                @for (var i = 0; i < used.Rows.Count; i++)
+                                {
+                                    var tid = "cpyt" + i;
+                                    <li id="@tid" data-guid="" data-value="@used.Rows[i]["Name"].ToString()">@used.Rows[i]["Name"].ToString()</li>
+                                    @*<li id="@tid" data-guid="@type.Rows[i]["SmallGuid"].ToString()" data-value="@used.Rows[i]["Name"].ToString()">@used.Rows[i]["Name"].ToString()</li>*@
+                                }
 
-                        </ul>
+                            </ul>
+                        </div>
+                        <di0000.3 v class="search-item-btn" data-type="7" data-typename="产品用途">更多∨</di0000.3v>
                     </div>
-                    <di0000.3 v class="search-item-btn" data-type="7" data-typename="产品用途">更多∨</di0000.3v>
-                </div>
-                <div class="search-item" name="AtrrNone" style="display:none;">
-                    <div class="search-item-type">填料/增强：</div>
-                    <div class="search-item-content" style="height: auto;">
-                        <ul data-type="8" data-typename="填料/增强">
-                            <li data-guid="" data-value="0" class="active">全部</li>
-                            @for (var i = 0; i < addliao.Rows.Count; i++)
-                            {
-                                var tid = "tlzq" + i;
-                                <li id="@tid" data-guid="" data-value="@addliao.Rows[i]["Name"].ToString()">@addliao.Rows[i]["Name"].ToString()</li>
-                                @*<li id="@tid" data-guid="@type.Rows[i]["SmallGuid"].ToString()" data-value="@addliao.Rows[i]["Name"].ToString()">@addliao.Rows[i]["Name"].ToString()</li>*@
-                            }
-                        </ul>
+                    <div class="search-item" name="AtrrNone" style="display:none;">
+                        <div class="search-item-type">填料/增强：</div>
+                        <div class="search-item-content" style="height: auto;">
+                            <ul data-type="8" data-typename="填料/增强">
+                                <li data-guid="" data-value="0" class="active">全部</li>
+                                @for (var i = 0; i < addliao.Rows.Count; i++)
+                                {
+                                    var tid = "tlzq" + i;
+                                    <li id="@tid" data-guid="" data-value="@addliao.Rows[i]["Name"].ToString()">@addliao.Rows[i]["Name"].ToString()</li>
+                                    @*<li id="@tid" data-guid="@type.Rows[i]["SmallGuid"].ToString()" data-value="@addliao.Rows[i]["Name"].ToString()">@addliao.Rows[i]["Name"].ToString()</li>*@
+                                }
+                            </ul>
+                        </div>
+                        <div class="search-item-btn" data-type="8" data-typename="填料/增强">更多∨</div>
                     </div>
-                    <div class="search-item-btn" data-type="8" data-typename="填料/增强">更多∨</div>
-                </div>
-                <div class="search-item" name="AtrrNone" style="display:none;">
-                    <div class="search-item-type">添加剂：</div>
-                    <div class="search-item-content" style="height: auto;">
-                        <ul data-type="9" data-typename="添加剂">
-                            <li data-guid="" data-value="0" class="active">全部</li>
-                            @for (var i = 0; i < tianjiaji.Rows.Count; i++)
-                            {
-                                var tid = "tjj" + i;
-                                <li id="@tid" data-guid="" data-value="@tianjiaji.Rows[i]["Name"].ToString()">@tianjiaji.Rows[i]["Name"].ToString()</li>
-                                @*<li id="@tid" data-guid="@type.Rows[i]["SmallGuid"].ToString()" data-value="@tianjiaji.Rows[i]["Name"].ToString()">@tianjiaji.Rows[i]["Name"].ToString()</li>*@
-                            }
-                        </ul>
+                    <div class="search-item" name="AtrrNone" style="display:none;">
+                        <div class="search-item-type">添加剂：</div>
+                        <div class="search-item-content" style="height: auto;">
+                            <ul data-type="9" data-typename="添加剂">
+                                <li data-guid="" data-value="0" class="active">全部</li>
+                                @for (var i = 0; i < tianjiaji.Rows.Count; i++)
+                                {
+                                    var tid = "tjj" + i;
+                                    <li id="@tid" data-guid="" data-value="@tianjiaji.Rows[i]["Name"].ToString()">@tianjiaji.Rows[i]["Name"].ToString()</li>
+                                    @*<li id="@tid" data-guid="@type.Rows[i]["SmallGuid"].ToString()" data-value="@tianjiaji.Rows[i]["Name"].ToString()">@tianjiaji.Rows[i]["Name"].ToString()</li>*@
+                                }
+                            </ul>
+                        </div>
+                        <div class="search-item-btn" data-type="9" data-typename="添加剂">更多∨</div>
                     </div>
-                    <div class="search-item-btn" data-type="9" data-typename="添加剂">更多∨</div>
-                </div>
-                <div class="search-more-btn">
-                    <span style="color:#0094ff !important;">点击查看更多查询条件 <span class="fa fa-angle-down"></span></span>
+                    <div class="search-more-btn">
+                        <span style="color:#0094ff !important;">点击查看更多查询条件 <span class="fa fa-angle-down"></span></span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <div style="width:100%;height:700px;margin-top:15px;">
-        <div id="resultdivbox" style="width:70%;height:auto;min-height:200px;margin:0 auto;">
-            <div class="clsxleft">
-                <div style="width:100%;height:50px;background:#1593FF;line-height:50px;text-align:center;font-size:18px;color:#ffffff;letter-spacing:1px;font-weight:700;">
-                    智能选材
-                </div>
-                @*<li class="@(countone == 1 ? "active" : "")" style="width:95%;margin:0 auto;background:#ebebeb;margin-bottom:5px;border:none;padding:0px;height:35px;line-height:35px;" id="@item["ParentGuid"].ToString()">
-                    @item["FaceKey"].ToString()</li>*@
-                <div class="clsxleftitembox" v-for="(vi,index) in parentdata">
-                    <div style="width:100%;height:45px;" v-bind:class="vi.classstr" v-bind:id="index" onclick="selectleftitem(this)">
-                        <div class="clsxleftitem">
-                            <i v-bind:class="vi.ticon" style="margin-right:5px;color:#666666;font-size:20px;"></i>{{vi.FaceKey}}
-                        </div>
-                        <div class="clsxleftitemi">
-                            <i class="iconfont suyisanjiaoright"></i>
-                        </div>
+        <div class="mainwidth">
+            <div id="resultdivbox" style="width:100%;height:auto;min-height:200px;margin:0 auto;">
+                <div class="clsxleft">
+                    <div style="width:100%;height:50px;background:#1593FF;line-height:50px;text-align:center;font-size:18px;color:#ffffff;letter-spacing:1px;font-weight:700;">
+                        智能选材
                     </div>
-                </div>
-            </div>
-            <div v-show="showerji=='1'" class="clsxmiddlebox">
-                <div style="width:100%;height:50px;">
-                    <div class="clsxmiddleitemsearch">
-                        <input id="searchparm" type="text" placeholder="请输入性能搜索" />
-                    </div>
-                </div>
-                <div class="clsxmiddleitembox">
-                    <div class="clsxmiddleitem" v-for="(vo,index) in childdata">
-                        <div class="ejitembox" v-bind:index="index" v-bind:id="'ej'+index" onclick="selcteritem(this)">
-                            {{vo.FaceKey}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div v-show="showfill=='0'" id="resultlistdiv" style="width:calc(100% - 160px);height:700px;float:left;margin-left:5px;">
-                <div class="search-content-box" style="height:635px;overflow-y:auto;">
-                    <div class="search-content" style="border-right:1px solid #dddddd;">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>牌号</th>
-                                    <th>厂商</th>
-                                    <th>种类</th>
-                                    <th>用途</th>
-                                    <th>特性</th>
-                                    <th>操作</th>
-                                </tr>
-                            </thead>
-                            <tbody id="DataList">
-                                <tr>
-                                    <td colspan="6" align="center" class='red'>请筛选您需要查询的数据！</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div style="width:100%;height:30px;">
-                    <div style="width:90%;height:30px;margin:0 auto;">
-                        <div class="search-content-page" style="line-height:35px;">
-                            共搜索到<span style="color: red;" id="recordstr">0</span>条相关商品信息
-                        </div>
-                    </div>
-                </div>
-                <div class="black2" id="Paginations">
-                </div>
-            </div>
-            <div v-show="showfill=='1'" style="width:calc(100% - 355px);height:700px;float:left;margin-left:15px;box-shadow:0px 2px 4px 0px rgba(0, 0, 0, 0.35);">
-                <div style="width:90%;height:700px;margin:0 auto;margin-top:20px;">
-                    <div style="width:100%;height:50px;line-height:50px;">
-                        <div style="width:50%;height:50px;float:left;font-size:18px;color:#1593FF;">
-                            {{selectnamestr}}
-                        </div>
-                        <div style="width:50%;height:50px;float:left;line-height:50px;text-align:right;">
-                            <i class="iconfont suyiguanbi" style="font-size:20px;color:#666666;cursor:pointer;" onclick="closeselectparm()"></i>
-                        </div>
-                    </div>
-                    <div style="width:100%;height:70px;margin-top:50px;">
-                        <div style="width:80%;height:70px;margin:0 auto;">
-                            <div style="height:70px;font-size:16px;color:#666666;line-height:70px;float:left;">
-                                参数条件
+                    @*<li class="@(countone == 1 ? "active" : "")" style="width:95%;margin:0 auto;background:#ebebeb;margin-bottom:5px;border:none;padding:0px;height:35px;line-height:35px;" id="@item["ParentGuid"].ToString()">
+                @item["FaceKey"].ToString()</li>*@
+                    <div class="clsxleftitembox" v-for="(vi,index) in parentdata">
+                        <div style="width:100%;height:45px;" v-bind:class="vi.classstr" v-bind:id="index" onclick="selectleftitem(this)">
+                            <div class="clsxleftitem">
+                                <i v-bind:class="vi.ticon" style="margin-right:5px;color:#666666;font-size:20px;"></i>{{vi.FaceKey}}
                             </div>
-                            <div style="width:65%;height:70px;float:left;">
-                                <div style="width:90%;height:60px;margin:0 auto;margin-top:5px;">
-                                    <select id="selctparm" class="input" name="parmselect" style="width:100%;height:60px;border:1px solid #dddddd;border-radius:8px;cursor:pointer;">
-                                        <option value="等于(=)">等于(=)</option>
-                                        <option value="大于(>)">大于(>)</option>
-                                        <option value="小于(<)">小于(<)</option>
-                                        <option value="大于且小于">大于且小于</option>
-                                    </select>
-                                    @*<div style="width:60%;height:60px;float:right;line-height:60px;font-size:16px;color:#666666;">
-                                            <div style="width:70%;height:60px;float:left;">
-                                                等于(=)
-                                            </div>
-                                            <div style="width:30%;height:60px;float:left;text-align:left;text-indent:20px;cursor:pointer;">
-                                                <i class="iconfont suyixia" style="font-size:20px;"></i>
-                                            </div>
-                                        </div>*@
+                            <div class="clsxleftitemi">
+                                <i class="iconfont suyisanjiaoright"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-show="showerji=='1'" class="clsxmiddlebox">
+                    <div style="width:100%;height:50px;">
+                        <div class="clsxmiddleitemsearch">
+                            <input id="searchparm" type="text" placeholder="请输入性能搜索" />
+                        </div>
+                    </div>
+                    <div class="clsxmiddleitembox">
+                        <div class="clsxmiddleitem" v-for="(vo,index) in childdata">
+                            <div class="ejitembox" v-bind:index="index" v-bind:id="'ej'+index" onclick="selcteritem(this)">
+                                {{vo.FaceKey}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div v-show="showfill=='0'" id="resultlistdiv" style="width:calc(100% - 160px);height:700px;float:left;margin-left:5px;">
+                    <div class="search-content-box" style="height:635px;overflow-y:auto;">
+                        <div class="search-content" style="border-right:1px solid #dddddd;">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>牌号</th>
+                                        <th>厂商</th>
+                                        <th>种类</th>
+                                        <th>用途</th>
+                                        <th>特性</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="DataList">
+                                    <tr>
+                                        <td colspan="6" align="center" class='red'>请筛选您需要查询的数据！</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div style="width:100%;height:30px;">
+                        <div style="width:90%;height:30px;margin:0 auto;">
+                            <div class="search-content-page" style="line-height:35px;">
+                                共搜索到<span style="color: red;" id="recordstr">0</span>条相关商品信息
+                            </div>
+                        </div>
+                    </div>
+                    <div class="black2" id="Paginations">
+                    </div>
+                </div>
+                <div v-show="showfill=='1'" style="width:calc(100% - 355px);height:700px;float:left;margin-left:15px;box-shadow:0px 2px 4px 0px rgba(0, 0, 0, 0.35);">
+                    <div style="width:90%;height:700px;margin:0 auto;margin-top:20px;">
+                        <div style="width:100%;height:50px;line-height:50px;">
+                            <div style="width:50%;height:50px;float:left;font-size:18px;color:#1593FF;">
+                                {{selectnamestr}}
+                            </div>
+                            <div style="width:50%;height:50px;float:left;line-height:50px;text-align:right;">
+                                <i class="iconfont suyiguanbi" style="font-size:20px;color:#666666;cursor:pointer;" onclick="closeselectparm()"></i>
+                            </div>
+                        </div>
+                        <div style="width:100%;height:70px;margin-top:50px;">
+                            <div style="width:80%;height:70px;margin:0 auto;">
+                                <div style="height:70px;font-size:16px;color:#666666;line-height:70px;float:left;">
+                                    参数条件
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style="width:100%;height:70px;margin-top:50px;">
-                        <div style="width:80%;height:70px;margin:0 auto;">
-                            <div style="height:70px;font-size:16px;color:#666666;line-height:70px;float:left;">
-                                参数数值
-                            </div>
-                            <div style="width:65%;height:70px;float:left;">
-                                <input v-if="showsection=='0'" v-model="parmvalue" type="number" style="width:90%;height:60px; margin:0 auto;border:none;text-indent:15px;display:block;border:1px solid #dddddd;border-radius:8px;" placeholder="请输入参数值" />
-                                <div v-if="showsection=='1'" style="width:90%;height:70px;margin:0 auto;">
-                                    <div style="width:40%;height:70px;float:left;">
-                                        <input type="number" v-model="minparmvalue" style="width:100%;height:55px;margin-top:3px;border:none;text-indent:15px;display:block;border:1px solid #dddddd;border-radius:8px;" placeholder="请输入最小值" />
-                                    </div>
-                                    <div style="width:20%;height:70px;float:left;line-height:70px;text-align:center;">
-                                        <i class="iconfont suyijianxianxing" style="font-size:20px;color:#666666;"></i>
-                                    </div>
-                                    <div style="width:40%;height:70px;float:left;">
-                                        <input type="number" v-model="maxparmvalue" style="width:100%;height:55px;margin-top:3px;border:none;text-indent:15px;display:block;border:1px solid #dddddd;border-radius:8px;" placeholder="请输入最大值" />
+                                <div style="width:65%;height:70px;float:left;">
+                                    <div style="width:90%;height:60px;margin:0 auto;margin-top:5px;">
+                                        <select id="selctparm" class="input" name="parmselect" style="width:100%;height:60px;border:1px solid #dddddd;border-radius:8px;cursor:pointer;">
+                                            <option value="等于(=)">等于(=)</option>
+                                            <option value="大于(>)">大于(>)</option>
+                                            <option value="小于(<)">小于(<)</option>
+                                            <option value="大于且小于">大于且小于</option>
+                                        </select>
+                                        @*<div style="width:60%;height:60px;float:right;line-height:60px;font-size:16px;color:#666666;">
+                                        <div style="width:70%;height:60px;float:left;">
+                                            等于(=)
+                                        </div>
+                                        <div style="width:30%;height:60px;float:left;text-align:left;text-indent:20px;cursor:pointer;">
+                                            <i class="iconfont suyixia" style="font-size:20px;"></i>
+                                        </div>
+                                    </div>*@
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div style="width:100%;height:70px;margin-top:50px;">
-                        <div style="width:80%;height:70px;margin:0 auto;">
-                            <div style="height:70px;font-size:16px;color:#666666;line-height:70px;float:left;">
-                                参数单位
-                            </div>
-                            <div style="width:65%;height:70px;float:left;">
-                                <div style="width:90%;height:60px;margin:0 auto;margin-top:5px;">
-                                    <select id="unitselect" class="input" name="unitselect" style="width:100%;height:60px;border:1px solid #dddddd;border-radius:8px;cursor:pointer;">
-                                        <option v-for="(vu,index) in unitlist">{{vu.Name}}</option>
-                                    </select>
-                                    @*<div style="width:60%;height:60px;float:right;line-height:60px;font-size:16px;color:#666666;">
-                                            <div style="width:70%;height:60px;float:left;">
-                                                %
-                                            </div>
-                                            <div style="width:30%;height:60px;float:left;text-align:left;text-indent:20px;cursor:pointer;">
-                                                <i class="iconfont suyixia" style="font-size:20px;"></i>
-                                            </div>
-                                        </div>*@
+                        <div style="width:100%;height:70px;margin-top:50px;">
+                            <div style="width:80%;height:70px;margin:0 auto;">
+                                <div style="height:70px;font-size:16px;color:#666666;line-height:70px;float:left;">
+                                    参数数值
+                                </div>
+                                <div style="width:65%;height:70px;float:left;">
+                                    <input v-if="showsection=='0'" v-model="parmvalue" type="number" style="width:90%;height:60px; margin:0 auto;border:none;text-indent:15px;display:block;border:1px solid #dddddd;border-radius:8px;" placeholder="请输入参数值" />
+                                    <div v-if="showsection=='1'" style="width:90%;height:70px;margin:0 auto;">
+                                        <div style="width:40%;height:70px;float:left;">
+                                            <input type="number" v-model="minparmvalue" style="width:100%;height:55px;margin-top:3px;border:none;text-indent:15px;display:block;border:1px solid #dddddd;border-radius:8px;" placeholder="请输入最小值" />
+                                        </div>
+                                        <div style="width:20%;height:70px;float:left;line-height:70px;text-align:center;">
+                                            <i class="iconfont suyijianxianxing" style="font-size:20px;color:#666666;"></i>
+                                        </div>
+                                        <div style="width:40%;height:70px;float:left;">
+                                            <input type="number" v-model="maxparmvalue" style="width:100%;height:55px;margin-top:3px;border:none;text-indent:15px;display:block;border:1px solid #dddddd;border-radius:8px;" placeholder="请输入最大值" />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div style="width:100%;height:70px;margin-top:50px;">
-                        <div style="width:70%;height:70px;margin:0 auto;">
-                            <div onclick="defineparm()" style="width:80%;height:60px;background:#1593FF;color:#ffffff;font-size:18px;line-height:60px;margin-top:5px;border-radius:8px;text-align:center;letter-spacing:2px;cursor:pointer;">
-                                确定
+                        <div style="width:100%;height:70px;margin-top:50px;">
+                            <div style="width:80%;height:70px;margin:0 auto;">
+                                <div style="height:70px;font-size:16px;color:#666666;line-height:70px;float:left;">
+                                    参数单位
+                                </div>
+                                <div style="width:65%;height:70px;float:left;">
+                                    <div style="width:90%;height:60px;margin:0 auto;margin-top:5px;">
+                                        <select id="unitselect" class="input" name="unitselect" style="width:100%;height:60px;border:1px solid #dddddd;border-radius:8px;cursor:pointer;">
+                                            <option v-for="(vu,index) in unitlist">{{vu.Name}}</option>
+                                        </select>
+                                        @*<div style="width:60%;height:60px;float:right;line-height:60px;font-size:16px;color:#666666;">
+                                        <div style="width:70%;height:60px;float:left;">
+                                            %
+                                        </div>
+                                        <div style="width:30%;height:60px;float:left;text-align:left;text-indent:20px;cursor:pointer;">
+                                            <i class="iconfont suyixia" style="font-size:20px;"></i>
+                                        </div>
+                                    </div>*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="width:100%;height:70px;margin-top:50px;">
+                            <div style="width:70%; height:70px;margin:0 auto;">
+                                <div onclick="defineparm()" style="width:80%;height:60px;background:#1593FF;color:#ffffff;font-size:18px;line-height:60px;margin-top:5px;border-radius:8px;text-align:center;letter-spacing:2px;cursor:pointer;">
+                                    确定
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -565,8 +567,8 @@
             <i class="iconfont suyitriangledownfill" style="font-size:22px;margin-right:5px;color:#1593FF;cursor:pointer;" onclick="opensearchdiv('0')"></i>
         </div>
         <div style="width:100%;height:auto;min-height:100px;float:left;">
-            <div style="width:70%;height:auto;min-height:100px;margin:0 auto;">
-                <div style="width:100%;height:30px;line-height:30px;font-size:16px;color:#333333;text-indent:20px;">
+            <div class="mainwidth" style="height:auto;min-height:100px;margin:0 auto;">
+                <div style="width:130px;height:60px;line-height:60px;font-size:16px;color:#333333;text-indent:20px;position:absolute;">
                     当前选择条件:
                 </div>
                 <div id="selectparmdivbox" style="width:100%;height:auto;min-height:60px;padding-left:120px;float:left;">
@@ -578,7 +580,7 @@
         </div>
         <div style="width:100%;height:5px;"></div>
         <div id="searchbtnbottom" style="width:100%;height:100px;background:#1593FF;float:left;">
-            <div style="width:70%;height:100px;float:left;margin-left:15%;">
+            <div style="width:1190px;height:100px;float:left;margin-left:15%;">
                 <div style="width:100%;height:50px;float:left;margin-top:25px;">
                     <div id="secharbtn">
                         <i class="iconfont suyisearch_light" style="font-size:22px;margin-right:5px;color:#1593FF;"></i>立即搜索
@@ -592,617 +594,621 @@
     </div>
     <div style="width:100%;height:20px;"></div>
 
-
+   
 
 </div>
 @*<div id="PhysicalProducts" class="showlogin" style="display:none;">
-        @Html.Partial("~/Views/Public/Login.cshtml")
-    </div>*@
+    @Html.Partial("~/Views/Public/Login.cshtml")
+</div>*@
 
-<script type="text/javascript">
-    var rowcount = 0;
-    var page_indx = 0;
-    var pagesize = 10;
-    var datas = "";
-    var guidstr = guid();
-    //初始化vue组件
-    var vm = new Vue({
-        el: '#allbox',
-        data: {
-            searchstr: "",//搜索条件(拼接)
-            parentdata: [],//一级智能选材数据
-            childdata: [],//二级智能选材数据
-            showerji: "0",//是否显示二级智能选材数据
-            selectparentparmid: "",//选中的智能选材id
-            selectparentindex: 0,//选中的智能选材一级index
-            selectchildindex: 0,//选中的智能选材二级index
-            selectparmlist: [],//选中的参数集合
-            showfill: "0",//是否显示参数值div
-            selectnamestr: "",//选中的参数值名称
-            showsection: "0",//是否显示区间参数值
-            unitlist: [],//单位数据
-            selectparmname: "",//选中的参数条件名称
-            parmvalue: "",//参数条件值
-            minparmvalue: "",//最小参数条件值
-            maxparmvalue: "",//最大参数条件值
-            selectunitname: "",//选中的单位
-            showloading: "0",//是否显示加载图标
-            showsearchbtndiv: "0",//是否显示搜索按钮div
-            showopenbtn: "0"//是否展开搜索按钮区域0:否 1：是
-        }, methods: {
-            //加载数据
-            loaddata: function (pageindex, isnavlink, searchtype) {
-                var tbodyui = "";
-                page_indx = pageindex;
-                $.ajax({
-                    type: "POST",
-                    dataType: "JSON",
-                    url: '/PhysicalProducts/SuperMsgSearch',
-                    data: "pageindex=" + (pageindex + 1) + "&pagesize=" + pagesize + "&guidstr=" + guidstr + "&isNavLink=" + isnavlink + datas + "&searchtype=" + searchtype,
-                    async: true,
-                    success: function (json) {
-                        //debugger;
-                        var state = json.state;
-                        if (state == "Success") {
-                            var productData = json.data;
-                            rowcount = json.totalCount;
-                            $("#recordstr").html(rowcount);
-                            //alert(JSON.parse(productData));
-                            if (rowcount != 0 && productData != "") {
-                                $.each(JSON.parse(productData), function (i, n) {
-                                    tbodyui += "<tr title='" + n.ProUse + "'>";
-                                    tbodyui += "<td class='phtd'><a href=\"/PhysicalProducts/Detail/" + n.productid + ".html\" style='color:#535353' target=\"_blank\">" + n.ProModel + "</a></td>";
-                                    tbodyui += "<td>" + n.PlaceOrigin + "</td>";
-                                    tbodyui += "<td>" + n.Name + "</td>";
-                                    tbodyui += "<td>" + n.ProUse + "</td>";
-                                    tbodyui += "<td>" + n.characteristic + "</td>";
-                                    tbodyui += "<td><span class='layui-btns' onclick=\"LookLoadingIcon('" + n.productid + "');\">寻找相似</span>";
-                                    //tbodyui += "<td><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.productid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span>";
-                                    tbodyui += "<span class='layui-btns' id=\"Contrast_" + n.productid + "\" onClick=\"onColl('" + n.productid + "');\">添加对比</span>";
-                                    //tbodyui += "<span class='layui-btn layui-btn-sm' id=\"Contrast_" + n.productid + "\" onClick=\"onColl('" + n.productid + "');\"><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>";
-                                    tbodyui += "</td>";// <span class='layui-btn layui-btn-sm'><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>
+    <script type="text/javascript">
+        var rowcount = 0;
+        var page_indx = 0;
+        var pagesize = 10;
+        var datas = "";
+        var guidstr = guid();
+        //初始化vue组件
+        var vm = new Vue({
+            el: '#allbox',
+            data: {
+                searchstr: "",//搜索条件(拼接)
+                parentdata: [],//一级智能选材数据
+                childdata: [],//二级智能选材数据
+                showerji: "0",//是否显示二级智能选材数据
+                selectparentparmid: "",//选中的智能选材id
+                selectparentindex: 0,//选中的智能选材一级index
+                selectchildindex: 0,//选中的智能选材二级index
+                selectparmlist: [],//选中的参数集合
+                showfill: "0",//是否显示参数值div
+                selectnamestr: "",//选中的参数值名称
+                showsection: "0",//是否显示区间参数值
+                unitlist: [],//单位数据
+                selectparmname: "",//选中的参数条件名称
+                parmvalue: "",//参数条件值
+                minparmvalue: "",//最小参数条件值
+                maxparmvalue: "",//最大参数条件值
+                selectunitname: "",//选中的单位
+                showloading: "0",//是否显示加载图标
+                showsearchbtndiv: "0",//是否显示搜索按钮div
+                showopenbtn:"0"//是否展开搜索按钮区域0:否 1：是
+            }, methods: {
+                //加载数据
+                loaddata: function (pageindex, isnavlink, searchtype) {
+                    var tbodyui = "";
+                    page_indx = pageindex;
+                    $.ajax({
+                        type: "POST",
+                        dataType: "JSON",
+                        url: '/PhysicalProducts/SuperMsgSearch',
+                        data: "pageindex=" + (pageindex + 1) + "&pagesize=" + pagesize + "&guidstr=" + guidstr + "&isNavLink=" + isnavlink + datas + "&searchtype=" + searchtype,
+                        async: true,
+                        success: function (json) {
+                            //debugger;
+                            var state = json.state;
+                            if (state == "Success") {
+                                var productData = json.data;
+                                rowcount = json.totalCount;
+                                $("#recordstr").html(rowcount);
+                                //alert(JSON.parse(productData));
+                                if (rowcount != 0 && productData != "") {
+                                    $.each(JSON.parse(productData), function (i, n) {
+                                        tbodyui += "<tr title='" + n.ProUse + "'>";
+                                        tbodyui += "<td class='phtd' width='18%'><a href=\"/PhysicalProducts/Detail/" + n.productid + ".html\" style='color:#535353' target=\"_blank\">" + n.ProModel + "</a></td>";
+                                        tbodyui += "<td width='17%'>" + n.PlaceOrigin + "</td>";
+                                        tbodyui += "<td width='10%'>" + n.Name + "</td>";
+                                        tbodyui += "<td width='15%'>" + n.ProUse + "</td>";
+                                        tbodyui += "<td width='20%'>" + n.characteristic + "</td>";
+                                        tbodyui += "<td width='20%'><span class='layui-btns' onclick=\"LookLoadingIcon('" + n.productid + "');\">寻找相似</span>";
+                                        //tbodyui += "<td><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.productid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span>";
+                                        tbodyui += "<span class='layui-btns' id=\"Contrast_" + n.productid + "\" onClick=\"onColl('" + n.productid + "');\">添加对比</span>";
+                                        //tbodyui += "<span class='layui-btn layui-btn-sm' id=\"Contrast_" + n.productid + "\" onClick=\"onColl('" + n.productid + "');\"><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>";
+                                        tbodyui += "</td>";// <span class='layui-btn layui-btn-sm'><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>
+                                        tbodyui += "</tr>";
+                                    });
+                                }
+                                else {
+                                    tbodyui += "<tr>";
+                                    tbodyui += "<td colspan=\"6\" align=\"center\" class='red'>未找到数据</td>";
                                     tbodyui += "</tr>";
+                                }
+                                $("#DataList").html(tbodyui);
+
+                                $("#Paginations").pagination(rowcount, {
+                                    callback: pageselectCallback,
+                                    prev_text: '上一页',
+                                    next_text: '下一页',
+                                    items_per_page: pagesize,
+                                    num_display_entries: 8,
+                                    current_page: pageindex,
+                                    num_edge_entries: 1
                                 });
                             }
+                            else if (state == "NedLogin") {
+                                pageindex = 1;
+                                //layer.msg("请先登录后再查看！", { icon: 5 });
+                                showlogindivbox();
+                            }
                             else {
+                                rowcount = "0";
                                 tbodyui += "<tr>";
                                 tbodyui += "<td colspan=\"6\" align=\"center\" class='red'>未找到数据</td>";
                                 tbodyui += "</tr>";
+                                $("#DataList").html(tbodyui);
+                                //layer.msg("系统异常！", { icon: 5 });
                             }
-                            $("#DataList").html(tbodyui);
-
-                            $("#Paginations").pagination(rowcount, {
-                                callback: pageselectCallback,
-                                prev_text: '上一页',
-                                next_text: '下一页',
-                                items_per_page: pagesize,
-                                num_display_entries: 8,
-                                current_page: pageindex,
-                                num_edge_entries: 1
-                            });
-                        }
-                        else if (state == "NedLogin") {
-                            pageindex = 1;
-                            //layer.msg("请先登录后再查看！", { icon: 5 });
-                            showlogindivbox();
-                        }
-                        else {
-                            rowcount = "0";
+                        },
+                        error: function () {
                             tbodyui += "<tr>";
                             tbodyui += "<td colspan=\"6\" align=\"center\" class='red'>未找到数据</td>";
                             tbodyui += "</tr>";
                             $("#DataList").html(tbodyui);
-                            //layer.msg("系统异常！", { icon: 5 });
+                            //layer.msg('未找到数据', { icon: 5 });
                         }
-                    },
-                    error: function () {
-                        tbodyui += "<tr>";
-                        tbodyui += "<td colspan=\"6\" align=\"center\" class='red'>未找到数据</td>";
-                        tbodyui += "</tr>";
-                        $("#DataList").html(tbodyui);
-                        //layer.msg('未找到数据', { icon: 5 });
-                    }
-                });
+                    });
 
-                //$("html, body").stop().animate({ scrollTop: $("#records").offset().top - 200 }, 400);
-            },
-            loadparmdata: function (parentid) {
-                $.ajax({
-                    type: "get",
-                    dataType: "JSON",
-                    url: '/PhysicalProducts/GetParmData',
-                    data: "parentid=" + parentid,
-                    async: false,
-                    success: function (result) {
-                        var data = result.Result;
-                        if (parentid == 0) {
-                            //alert(data.length);
-                            for (var i = 0; i < data.length; i++) {
-                                if (i == 0) {
-                                    data[i]["classstr"] = "itemboxdiv clsxleftitemboxactive";
+                    //$("html, body").stop().animate({ scrollTop: $("#records").offset().top - 200 }, 400);
+                },
+                loadparmdata: function (parentid) {
+                    $.ajax({
+                        type: "get",
+                        dataType: "JSON",
+                        url: '/PhysicalProducts/GetParmData',
+                        data: "parentid=" + parentid,
+                        async: false,
+                        success: function (result) {
+                            var data = result.Result;
+                            if (parentid == 0) {
+                                //alert(data.length);
+                                for (var i = 0; i < data.length; i++) {
+                                    if (i == 0) {
+                                        data[i]["classstr"] = "itemboxdiv clsxleftitemboxactive";
+                                    }
+                                    else {
+                                        data[i]["classstr"] = "itemboxdiv";
+                                    }
+                                    var tempitem = data[i].FaceKey;
+                                    if (tempitem == "光学性能") {
+                                        data[i]["ticon"] = "iconfont suyiguangxuexingneng";
+                                    }
+                                    else if (tempitem == "硬度") {
+                                        data[i]["ticon"] = "iconfont suyiyingdu";
+                                    }
+                                    else if (tempitem == "冲击性能") {
+                                        data[i]["ticon"] = "iconfont suyichongjixingneng";
+                                    }
+                                    else if (tempitem == "弹性体") {
+                                        data[i]["ticon"] = "iconfont suyidanxingti";
+                                    }
+                                    else if (tempitem == "机械性能") {
+                                        data[i]["ticon"] = "iconfont suyijixiexingneng";
+                                    }
+                                    else if (tempitem == "可燃性") {
+                                        data[i]["ticon"] = "iconfont suyikeranxing";
+                                    }
+                                    else if (tempitem == "热性能") {
+                                        data[i]["ticon"] = "iconfont suyirenengxing";
+                                    }
+                                    else if (tempitem == "老化") {
+                                        data[i]["ticon"] = "iconfont suyilaohua";
+                                    }
+                                    else if (tempitem == "物理性能") {
+                                        data[i]["ticon"] = "iconfont suyiwulixingneng";
+                                    }
+                                    else if (tempitem == "薄膜") {
+                                        data[i]["ticon"] = "iconfont suyibaomo";
+                                    }
+                                    else if (tempitem == "电气性能") {
+                                        data[i]["ticon"] = "iconfont suyidianqixingneng";
+                                    }
+                                    if (tempitem != "总体") {
+                                        vm.parentdata.push(data[i]);
+                                    }
                                 }
-                                else {
-                                    data[i]["classstr"] = "itemboxdiv";
-                                }
-                                var tempitem = data[i].FaceKey;
-                                if (tempitem == "光学性能") {
-                                    data[i]["ticon"] = "iconfont suyiguangxuexingneng";
-                                }
-                                else if (tempitem == "硬度") {
-                                    data[i]["ticon"] = "iconfont suyiyingdu";
-                                }
-                                else if (tempitem == "冲击性能") {
-                                    data[i]["ticon"] = "iconfont suyichongjixingneng";
-                                }
-                                else if (tempitem == "弹性体") {
-                                    data[i]["ticon"] = "iconfont suyidanxingti";
-                                }
-                                else if (tempitem == "机械性能") {
-                                    data[i]["ticon"] = "iconfont suyijixiexingneng";
-                                }
-                                else if (tempitem == "可燃性") {
-                                    data[i]["ticon"] = "iconfont suyikeranxing";
-                                }
-                                else if (tempitem == "热性能") {
-                                    data[i]["ticon"] = "iconfont suyirenengxing";
-                                }
-                                else if (tempitem == "老化") {
-                                    data[i]["ticon"] = "iconfont suyilaohua";
-                                }
-                                else if (tempitem == "物理性能") {
-                                    data[i]["ticon"] = "iconfont suyiwulixingneng";
-                                }
-                                else if (tempitem == "薄膜") {
-                                    data[i]["ticon"] = "iconfont suyibaomo";
-                                }
-                                else if (tempitem == "电气性能") {
-                                    data[i]["ticon"] = "iconfont suyidianqixingneng";
-                                }
-                                if (tempitem != "总体") {
-                                    vm.parentdata.push(data[i]);
+                                vm.selectparentparmid = data[0].id;
+                                vm.selectparentindex = 0;
+                                //vm.loadparmdata(vm.selectparentparmid);
+                            }
+                            else {
+                                vm.childdata = data;
+                                vm.childdatatwo = data;
+                                //var parentname = vm.parentdata[vm.selectparentindex].FaceKey;
+                                //var childname = vm.childdata[0].FaceKey;
+                                //vm.searchstr = "{" + parentname + "=)"+childname+"=>5,3==>''''}";
+                            }
+                        },
+                        error: function () { layer.msg('Load the data failure!', { icon: 5 }); }
+                    });
+                },
+                //获取单位
+                getunit: function (parmname) {
+                    vm.unitlist = [];
+                    $.ajax({
+                        type: "get",
+                        dataType: "JSON",
+                        url: '/AppApi/GetUnit',
+                        data: "parmname=" + parmname,
+                        async: false,
+                        success: function (result) {
+                            var returndata = result.Result;
+                            if (returndata.length > 0) {
+                                for (var i = 0; i < returndata.length; i++) {
+                                    var unitname = returndata[i].Name;
+                                    if (unitname != "") {
+                                        vm.unitlist.push(returndata[i]);
+                                    }
                                 }
                             }
-                            vm.selectparentparmid = data[0].id;
-                            vm.selectparentindex = 0;
-                            //vm.loadparmdata(vm.selectparentparmid);
-                        }
-                        else {
-                            vm.childdata = data;
-                            vm.childdatatwo = data;
-                            //var parentname = vm.parentdata[vm.selectparentindex].FaceKey;
-                            //var childname = vm.childdata[0].FaceKey;
-                            //vm.searchstr = "{" + parentname + "=)"+childname+"=>5,3==>''''}";
-                        }
-                    },
-                    error: function () { layer.msg('Load the data failure!', { icon: 5 }); }
-                });
-            },
-            //获取单位
-            getunit: function (parmname) {
-                vm.unitlist = [];
-                $.ajax({
-                    type: "get",
-                    dataType: "JSON",
-                    url: '/AppApi/GetUnit',
-                    data: "parmname=" + parmname,
-                    async: false,
-                    success: function (result) {
-                        var returndata = result.Result;
-                        if (returndata.length > 0) {
-                            for (var i = 0; i < returndata.length; i++) {
-                                var unitname = returndata[i].Name;
-                                if (unitname != "") {
-                                    vm.unitlist.push(returndata[i]);
-                                }
-                            }
-                        }
-                    },
-                    error: function () { layer.msg('Load the data failure!', { icon: 5 }); }
-                });
-            },
-            getparmlist: function (keystr) {
-                var keyword = keystr;
-                if (keyword) {
-                    var templist = this.childdatatwo.filter(function (childdatatwo) { return Object.keys(childdatatwo).some(function (key) { return String(childdatatwo[key]).indexOf(keyword) > -1 }) });
-                    //var templist = this.childdatatwo.filter(function (childdatatwo) { return Object.keys(childdatatwo).some(function (key) { return String(childdatatwo[key]).toLowerCase().indexOf(keyword) > -1 }) });
-                    vm.childdata = templist;
+                        },
+                        error: function () { layer.msg('Load the data failure!', { icon: 5 }); }
+                    });
+                },
+                getparmlist: function (keystr) {
+                    var keyword = keystr;
+                    if (keyword) {
+                        var templist = this.childdatatwo.filter(function (childdatatwo) { return Object.keys(childdatatwo).some(function (key) { return String(childdatatwo[key]).indexOf(keyword) > -1 }) });
+                        //var templist = this.childdatatwo.filter(function (childdatatwo) { return Object.keys(childdatatwo).some(function (key) { return String(childdatatwo[key]).toLowerCase().indexOf(keyword) > -1 }) });
+                        vm.childdata = templist;
+                    }
+                    else {
+                        vm.childdata = vm.childdatatwo;
+                    }
                 }
-                else {
-                    vm.childdata = vm.childdatatwo;
-                }
-            }
-        }
-    });
-    $(function () {
-        vm.loaddata(0, '', 0);
-        vm.loadparmdata(0);
-        $(window).scroll(function () {
-            var tscroll = $(document).scrollTop();
-            //this.console.log(tscroll);
-            if (tscroll >= 380) {
-                $("#searchbottom").css("position", "static");
-                $("#searchbottom").css("bottom", "280px");
-                $("#searchbottom").css("margin-bottom", "10px");
-            }
-            else {
-                $("#searchbottom").css("position", "fixed");
-                $("#searchbottom").css("bottom", "0");
-                $("#searchbottom").css("margin-bottom", "0px");
             }
         });
-    });
-    function pageselectCallback(page_id, jq) {
-        //InitData(page_id, '1');
-        vm.loaddata(page_id, "1", 1);
-    }
-    //选择智能选材
-    function selectleftitem(t) {
-        vm.showerji = "1";
-        var tempwidth = $(window).width() * 0.7;
-        var twidth = tempwidth - 345;
-        $("#resultlistdiv").width(twidth);
-        var index = t.id;
-        vm.selectparentindex = index;
-        vm.selectparentparmid = vm.parentdata[index].id;
-        $(".itemboxdiv").removeClass("clsxleftitemboxactive");
-        $("#" + index).addClass("clsxleftitemboxactive");
-        if (vm.selectparentparmid > 0) {
-            vm.childdata = [];
-        }
-        vm.loadparmdata(vm.selectparentparmid);
-    }
-    //选择二级只能选材
-    function selcteritem(t) {
-        var id = t.id;
-        var indexspilt = id.split('ej');
-        var index = indexspilt[1];
-        $(".ejitembox").removeClass("clsxleftitemboxactive");
-        $("#" + id).addClass("clsxleftitemboxactive");
-        vm.showfill = "1";
-        vm.selectchildindex = index;
-        var ejname = vm.childdata[index].FaceKey;
-        var parentname = vm.parentdata[vm.selectparentindex].FaceKey;
-        vm.selectnamestr = parentname + "-" + ejname;
-        vm.getunit(ejname);
-        //$("#" + id).addClass("clsxleftitemboxactive");
-    }
-    ///选中值，可多选择
-    $(".search-item-content").find("li").click(function () {
-
-        var dataname = $(this).parent().attr("data-typename");//名称
-        var datatype = $(this).parent().attr("data-type");//类型
-        var dataguid = $(this).attr("data-guid");//ID
-        var dataval = $(this).attr("data-value");
-        var tempid = $(this).attr("id");
-        var str = "";
-        var istrue = false;
-        //vm.showsearchbtndiv = "1";
-        //$("#searchbtnbottom").show();
-        //$("#searchbottom").show();
-        vm.showopenbtn = "1";
-        $("#searchbottom").css("margin-bottom", "0px");
-        ///添加样式
-        if (dataval == "0") {
-            $.each($("ul[data-type='" + datatype + "']").find("li"), function (index, item) {
-                $(this).removeClass("active");
-            })
-            $("ul[data-type='" + datatype + "']").find("li").eq(0).addClass("active");
-            ///删除条件同类条件
-            //$(".search_condition_wrap").find("span[datatype='" + datatype + "']").remove();
-            $("#selectparmdivbox").find("div[datatype='" + datatype + "']").remove();
-
-        }
-        else {
-            $("ul[data-type='" + datatype + "']").find("li").eq(0).removeClass("active");
-            if (datatype == 3) {//阻燃只允许单选
-                $("ul[data-type='" + datatype + "']").find("li").removeClass("active");
-            }
-            $(this).removeClass("active").addClass("active");
-            //首次添加
-            if ($("#selectparmdivbox").find(".selectparmitem").length == 0) {
-                str = '<div class="selectparmitem" dataguid="' + dataguid + '" title="' + $(this).attr("data-value") + '" datatype="' + datatype + '" bigTitle="' + dataname + '">' +
-                    dataname + '：' + '<span style="color:#1593FF;">' + $(this).attr("data-value") +
-                    '</span> <i id="' + tempid + 'i' + '" onclick="closes(this)" class="iconfont suyiguanbi1" style="font-size:18px;margin-left:5px;color:#1593FF;cursor:pointer;"></i></div >';
-                //str = '<span class="search-select-item" dataguid="' + dataguid + '"  title="' + $(this).attr("data-value") + '"  datatype="' + datatype + '" bigTitle="' + dataname + '">' + dataname + ':' + $(this).attr("data-value") +
-                //    '<span class="fa fa-close" title="删除"></span></span>'
-            }
-            else {//否则判断是否已经添加
-                $.each($("#selectparmdivbox").find(".selectparmitem"), function (index, item) {
-                    if (datatype == 3) {//3 阻燃等级特殊处理，只允许单选
-                        if ($(this).attr("datatype") == "3") {
-                            $(this).remove();
-                        }
-                    }
-                    else if ($(this).attr("title") == dataval && datatype != 3) {
-                        istrue = true;
-                    }
-
-                })
-                if (!istrue) {
-                    //str = '<span class="search-select-item" dataguid="' + dataguid + '"  title="' + dataval + '"  datatype="' + datatype + '" bigTitle="' + dataname + '">' + dataname + ':' + dataval +
-                    //    '<span class="fa fa-close" title="删除"></span></span>'
-
-                    str = '<div class="selectparmitem" dataguid="' + dataguid + '" title="' + dataval + '" datatype="' + datatype + '" bigTitle="' + dataname + '">' +
-                        dataname + '：<span style="color:#1593FF;">' + $(this).attr("data-value") +
-                        '</span> <i id="' + tempid + 'i' + '" onclick="closes(this)" class="iconfont suyiguanbi1" style="font-size:18px;margin-left:5px;color:#1593FF;cursor:pointer;"></i></div >';
+        $(function () {
+            vm.loaddata(0, '',0);
+            vm.loadparmdata(0);
+            $(window).scroll(function () {
+                var tscroll = $(document).scrollTop();
+                //this.console.log(tscroll);
+                if (tscroll >= 380) {
+                    $("#searchbottom").css("position", "static");
+                    $("#searchbottom").css("bottom", "280px");
+                    $("#searchbottom").css("margin-bottom", "10px");
                 }
+                else {
+                    $("#searchbottom").css("position", "fixed");
+                    $("#searchbottom").css("bottom", "0");
+                    $("#searchbottom").css("margin-bottom", "0px");
+                }
+            });
+        });
+        function pageselectCallback(page_id, jq) {
+            //InitData(page_id, '1');
+            vm.loaddata(page_id, "1",1);
+        }
+        //选择智能选材
+        function selectleftitem(t) {
+            vm.showerji = "1";
+            var tempwidth = 1190;//$(window).width() * 0.7;
+            var twidth = tempwidth - (160 + 185);
+            $("#resultlistdiv").width(twidth);
+            var index = t.id;
+            vm.selectparentindex = index;
+            vm.selectparentparmid = vm.parentdata[index].id;
+            $(".itemboxdiv").removeClass("clsxleftitemboxactive");
+            $("#" + index).addClass("clsxleftitemboxactive");
+            if (vm.selectparentparmid > 0) {
+                vm.childdata = [];
             }
-            $("#selectparmdivbox").append(str);
+            vm.loadparmdata(vm.selectparentparmid);
+        }
+        //选择二级只能选材
+        function selcteritem(t) {
+            var id = t.id;
+            var indexspilt = id.split('ej');
+            var index = indexspilt[1];
+            $(".ejitembox").removeClass("clsxleftitemboxactive");
+            $("#" + id).addClass("clsxleftitemboxactive");
+            vm.showfill = "1";
+            vm.selectchildindex = index;
+            var ejname = vm.childdata[index].FaceKey;
+            var parentname = vm.parentdata[vm.selectparentindex].FaceKey;
+            vm.selectnamestr = parentname + "-" + ejname;
+            vm.getunit(ejname);
+            //$("#" + id).addClass("clsxleftitemboxactive");
+        }
+        ///选中值，可多选择
+        $(".search-item-content").find("li").click(function () {
 
+            var dataname = $(this).parent().attr("data-typename");//名称
+            var datatype = $(this).parent().attr("data-type");//类型
+            var dataguid = $(this).attr("data-guid");//ID
+            var dataval = $(this).attr("data-value");
+            var tempid = $(this).attr("id");
+            var str = "";
+            var istrue = false;
+            //vm.showsearchbtndiv = "1";
+            //$("#searchbtnbottom").show();
+            //$("#searchbottom").show();
+            vm.showopenbtn = "1";
+            $("#searchbottom").css("margin-bottom", "0px");
+            ///添加样式
+            if (dataval == "0") {
+                $.each($("ul[data-type='" + datatype + "']").find("li"), function (index, item) {
+                    $(this).removeClass("active");
+                })
+                $("ul[data-type='" + datatype + "']").find("li").eq(0).addClass("active");
+                ///删除条件同类条件
+                //$(".search_condition_wrap").find("span[datatype='" + datatype + "']").remove();
+                $("#selectparmdivbox").find("div[datatype='" + datatype + "']").remove();
+
+            }
+            else {
+                $("ul[data-type='" + datatype + "']").find("li").eq(0).removeClass("active");
+                if (datatype == 3) {//阻燃只允许单选
+                    $("ul[data-type='" + datatype + "']").find("li").removeClass("active");
+                }
+                $(this).removeClass("active").addClass("active");
+                //首次添加
+                if ($("#selectparmdivbox").find(".selectparmitem").length == 0) {
+                    str = '<div class="selectparmitem" dataguid="' + dataguid + '" title="' + $(this).attr("data-value") + '" datatype="' + datatype + '" bigTitle="' + dataname + '">' +
+                        dataname + '：' + '<span style="color:#1593FF;">' + $(this).attr("data-value") +
+                        '</span> <i id="' + tempid+'i' +'" onclick="closes(this);" class="iconfont suyiguanbi1" style="font-size:18px;margin-left:5px;color:#1593FF;cursor:pointer;"></i></div >';
+                    //str = '<span class="search-select-item" dataguid="' + dataguid + '"  title="' + $(this).attr("data-value") + '"  datatype="' + datatype + '" bigTitle="' + dataname + '">' + dataname + ':' + $(this).attr("data-value") +
+                    //    '<span class="fa fa-close" title="删除"></span></span>'
+                }
+                else {//否则判断是否已经添加
+                    $.each($("#selectparmdivbox").find(".selectparmitem"), function (index, item) {
+                        if (datatype == 3) {//3 阻燃等级特殊处理，只允许单选
+                            if ($(this).attr("datatype") == "3") {
+                                $(this).remove();
+                            }
+                        }
+                        else if ($(this).attr("title") == dataval && datatype != 3) {
+                            istrue = true;
+                        }
+
+                    })
+                    if (!istrue) {
+                        //str = '<span class="search-select-item" dataguid="' + dataguid + '"  title="' + dataval + '"  datatype="' + datatype + '" bigTitle="' + dataname + '">' + dataname + ':' + dataval +
+                        //    '<span class="fa fa-close" title="删除"></span></span>'
+
+                        str = '<div class="selectparmitem" dataguid="' + dataguid + '" title="' + dataval + '" datatype="' + datatype + '" bigTitle="' + dataname + '">' +
+                            dataname + '：<span style="color:#1593FF;">' + $(this).attr("data-value") +
+                            '</span> <i id="' + tempid + 'i' +'" onclick="closes(this)" class="iconfont suyiguanbi1" style="font-size:18px;margin-left:5px;color:#1593FF;cursor:pointer;"></i></div >';
+                    }
+                }
+                $("#selectparmdivbox").append(str);
+               
+            }
+        });
+        ///删除已经选择的
+        function closes(t) {
+            //debugger;
+            var tid = t.id;            
+            var datatype = $("#" + tid).parent().attr("datatype");
+            var dataval = $("#" + tid).parent().attr("title");
+            if ($("ul[data-type='" + datatype + "']").find("li[data-value='" + dataval + "']").length > 0) {
+                $("ul[data-type='" + datatype + "']").find("li[data-value='" + dataval + "']").removeClass("active");
+            }
+            var tempnumber = $("#selectparmdivbox").children(".selectparmitem").length;
+            //如果只剩一个选中条件则关闭搜索区域
+            if (tempnumber==1) {
+                //$("#searchbottom").hide();
+                vm.showopenbtn = "0";
+            }
+            $("#" + tid).parent().remove();
         }
-    });
-    ///删除已经选择的
-    function closes(t) {
-        var tid = t.id;
-        var datatype = $("#" + tid).parent().attr("datatype");
-        var dataval = $("#" + tid).parent().attr("title");
-        if ($("ul[data-type='" + datatype + "']").find("li[data-value='" + dataval + "']").length > 0) {
-            $("ul[data-type='" + datatype + "']").find("li[data-value='" + dataval + "']").removeClass("active");
-        }
-        var tempnumber = $("#selectparmdivbox").children(".selectparmitem").length;
-        //如果只剩一个选中条件则关闭搜索区域
-        if (tempnumber == 1) {
+        ///删除已经选择的
+        $(".suyiguanbi1").click(function () {
+            //alert("清理");
+            //alert($(this).parent().html());
+            var datatype = $(this).parent().attr("datatype");
+            var dataval = $(this).parent().attr("title");
+            //  alert(datatype + "+" + dataval);
+            if ($("ul[data-type='" + datatype + "']").find("li[data-value='" + dataval + "']").length > 0) {
+                $("ul[data-type='" + datatype + "']").find("li[data-value='" + dataval + "']").removeClass("active");
+            }
+            var tempnumber = $("#selectparmdivbox").children(".selectparmitem").length;
+            //如果只剩一个选中条件则关闭搜索区域
+            //if (tempnumber==1) {
+            //    $("#searchbottom").hide();
+            //}
+            $(this).parent().remove();
+        });
+
+        //清空搜索条件
+        function clearparm() {
+            $("#selectparmdivbox").html("");
+            //$("#searchbtnbottom").hide();
             //$("#searchbottom").hide();
             vm.showopenbtn = "0";
         }
-        $("#" + tid).parent().remove();
-    }
-    ///删除已经选择的
-    $(".suyiguanbi1").click(function () {
-        //alert("清理");
-        //alert($(this).parent().html());
-        var datatype = $(this).parent().attr("datatype");
-        var dataval = $(this).parent().attr("title");
-        //  alert(datatype + "+" + dataval);
-        if ($("ul[data-type='" + datatype + "']").find("li[data-value='" + dataval + "']").length > 0) {
-            $("ul[data-type='" + datatype + "']").find("li[data-value='" + dataval + "']").removeClass("active");
-        }
-        var tempnumber = $("#selectparmdivbox").children(".selectparmitem").length;
-        //如果只剩一个选中条件则关闭搜索区域
-        //if (tempnumber==1) {
-        //    $("#searchbottom").hide();
-        //}
-        $(this).parent().remove();
-    });
-
-    //清空搜索条件
-    function clearparm() {
-        $("#selectparmdivbox").html("");
-        //$("#searchbtnbottom").hide();
-        //$("#searchbottom").hide();
-        vm.showopenbtn = "0";
-    }
-    //查询
-    $("#secharbtn").click(function () {
-        //组合查询
-        //debugger;
-        var titlestr = "";
-        var str = "";
-        vm.showerji = "0";
-        var tempwidth = $(window).width() * 0.7;
-        var twidth = tempwidth - 160;
-        $("#resultlistdiv").width(twidth);
-        if ($("#selectparmdivbox").find(".selectparmitem").length > 0) {
-            for (var i = 1; i < 10; i++) {
-                if ($("#selectparmdivbox").find("div[datatype='" + i + "']").length > 0) {
-                    str = "{";//{产品特性=>''高光;阻燃'',0,0} {'产品用途=>''电视外壳''==>'''''}
-                    //阻燃等级
-                    if (i != 3) {
-                        str += $("#selectparmdivbox").find("div[datatype='" + i + "']").attr("bigtitle");
-                    }
-                    else {
-                        str += $("#selectparmdivbox").find("div[datatype='" + i + "']").attr("title");
-                    }
-
-                    str += "=>''";
-                    var count = 0;
-                    $.each($("#selectparmdivbox").find("div[datatype='" + i + "']"), function (index, item) {
-                        count++;
-                        var isval = "";
-                        if ($.trim($(this).attr("dataguid")) != "") {
-                            isval = $.trim($(this).attr("dataguid"));
+        //查询
+        $("#secharbtn").click(function () {
+            //组合查询
+            //debugger;
+            var titlestr = "";
+            var str = "";
+            vm.showerji = "0";
+            var tempwidth = 1190;//$(window).width() * 0.7;
+            var twidth = tempwidth - (160 + 185);
+            $("#resultlistdiv").width(twidth);
+            if ($("#selectparmdivbox").find(".selectparmitem").length > 0) {
+                for (var i = 1; i < 10; i++) {
+                    if ($("#selectparmdivbox").find("div[datatype='" + i + "']").length > 0) {
+                        str = "{";//{产品特性=>''高光;阻燃'',0,0} {'产品用途=>''电视外壳''==>'''''}
+                        //阻燃等级
+                        if (i!=3) {
+                            str += $("#selectparmdivbox").find("div[datatype='" + i + "']").attr("bigtitle");
                         }
                         else {
-                            isval = $.trim($(this).attr("title"));
+                            str += $("#selectparmdivbox").find("div[datatype='" + i + "']").attr("title");
                         }
-                        str += isval;
-                        if (count < $("#selectparmdivbox").find("div[datatype='" + i + "']").length) {
-                            str += ";"
-                        }
-                    })
-                    str += "''==>''''"
-                    str += "}"
-                    //alert(i+"_"+str);
+                        
+                        str += "=>''";
+                        var count = 0;
+                        $.each($("#selectparmdivbox").find("div[datatype='" + i + "']"), function (index, item) {
+                            count++;
+                            var isval = "";
+                            if ($.trim($(this).attr("dataguid")) != "") {
+                                isval = $.trim($(this).attr("dataguid"));
+                            }
+                            else {
+                                isval = $.trim($(this).attr("title"));
+                            }
+                            str += isval;
+                            if (count < $("#selectparmdivbox").find("div[datatype='" + i + "']").length) {
+                                str += ";"
+                            }
+                        })
+                        str += "''==>''''"
+                        str += "}"
+                        //alert(i+"_"+str);
+                    }
+                    titlestr += str;
+                    str = "";
                 }
-                titlestr += str;
-                str = "";
+                // alert(titlestr);
             }
+            //2019-2-24{'物理性能=)密度=>1.0,1.5==>''g/cm³'''}
+            $.each($("#selectparmdivbox").find("div[datatype='11']"), function (index, item) {
+                str += "{" + $(this).attr("title") + "=)" + $(this).attr("bigtitle") + "=>" + $(this).attr("minval") + "," + $(this).attr("maxval") + "==>''" + $(this).attr("unit") + "''}";
+            });
+            if ((titlestr != "" && titlestr!= null) ||(str != "" && str!=null)) {
+                    titlestr += str
+                    datas = "&searchstr=" + titlestr;
+                    //vm.searchstr = titlestr;
+                    //alert(datas);
+                    guidstr = guid();//重置UGID
+                    vm.isNavLink = "";
+                    vm.pageindex = 1;
+                    vm.showfill = "0";
+                    vm.parmvalue = "";//参数条件值
+                    vm.minparmvalue = "";//最小参数条件值
+                    vm.maxparmvalue = "";//最大参数条件值
+                    vm.loaddata(0, '',1);
+            }
+            else {
+                layer.msg("请选择搜索条件！", { icon: 5 });
+            }
+
             // alert(titlestr);
-        }
-        //2019-2-24{'物理性能=)密度=>1.0,1.5==>''g/cm³'''}
-        $.each($("#selectparmdivbox").find("div[datatype='11']"), function (index, item) {
-            str += "{" + $(this).attr("title") + "=)" + $(this).attr("bigtitle") + "=>" + $(this).attr("minval") + "," + $(this).attr("maxval") + "==>''" + $(this).attr("unit") + "''}";
         });
-        if ((titlestr != "" && titlestr != null) || (str != "" && str != null)) {
-            titlestr += str
-            datas = "&searchstr=" + titlestr;
-            //vm.searchstr = titlestr;
-            //alert(datas);
-            guidstr = guid();//重置UGID
-            vm.isNavLink = "";
-            vm.pageindex = 1;
+        //关闭设置参数值页面
+        function closeselectparm() {
             vm.showfill = "0";
-            vm.parmvalue = "";//参数条件值
-            vm.minparmvalue = "";//最小参数条件值
-            vm.maxparmvalue = "";//最大参数条件值
-            vm.loaddata(0, '', 1);
         }
-        else {
-            layer.msg("请选择搜索条件！", { icon: 5 });
-        }
-
-        // alert(titlestr);
-    });
-    //关闭设置参数值页面
-    function closeselectparm() {
-        vm.showfill = "0";
-    }
-    //选择参数条件
-    $("#selctparm").change(function () {
-        var parmname = ($(this).val());
-        if (parmname == "大于且小于") {
-            vm.showsection = "1";
-            vm.parmvalue = "";
-        }
-        else {
-            vm.showsection = "0";
-            vm.minparmvalue = "";
-            vm.maxparmvalue = "";
-        }
-        vm.selectparmname = parmname;
-    });
-    //选择单位
-    $("#unitselect").change(function () {
-        var unitname = ($(this).val());
-        vm.selectunitname = unitname;
-    });
-
-    //确定选择参数值
-    function defineparm() {
-        vm.showerji = "0";
-        vm.showfill = "0";
-        //vm.showsearchbtndiv = "1";
-        //$("#searchbtnbottom").show();
-        //$("#searchbottom").show();
-        vm.showopenbtn = "1";
-        var tempwidth = $(window).width() * 0.7;
-        var twidth = tempwidth - 160;
-        $("#resultlistdiv").width(twidth);
-        var bigname = vm.parentdata[vm.selectparentindex].FaceKey;
-        var samlname = vm.childdata[vm.selectchildindex].FaceKey;
-        var tid = vm.childdata[vm.selectchildindex].id;
-        //alert(bigname + "," + samlname);
-        var tunit = $("#unitselect option:selected").val();
-        var tparm = $("#selctparm option:selected").val();
-        var resultcheck = checkparm();
-        if (resultcheck) {
-            if (tunit != "" && tunit != undefined && tunit != null && tunit != "全部") {
-                vm.selectunitname = tunit;
+        //选择参数条件
+        $("#selctparm").change(function () {
+            var parmname = ($(this).val());
+            if (parmname == "大于且小于") {
+                vm.showsection = "1";
+                vm.parmvalue = "";
             }
             else {
-                vm.selectunitname = "";
+                vm.showsection = "0";
+                vm.minparmvalue = "";
+                vm.maxparmvalue = "";
             }
-            if (tparm != "大于且小于") {
-                vm.minparmvalue = vm.parmvalue;
-                vm.maxparmvalue = vm.parmvalue;
-            }
-            if ($("#selectparmdivbox").find(".selectparmitem").length == 0) {
-                str = '<div class="selectparmitem" dataguid="" title="' + bigname + '" unit="' + vm.selectunitname + '" minval="' + vm.minparmvalue + '" maxval="' + vm.maxparmvalue + '" datatype="11" bigTitle="' + samlname + '">' +
-                    samlname + '：' + vm.minparmvalue + "-" + vm.maxparmvalue + '/' + vm.selectunitname + '<i id="' + tid + '" onclick="closes(this)" class="iconfont suyiguanbi1" style="font-size:18px;margin-left:5px;color:#1593FF;cursor:pointer;"></i></div >';
+            vm.selectparmname = parmname;
+        });
+        //选择单位
+        $("#unitselect").change(function () {
+            var unitname = ($(this).val());
+            vm.selectunitname = unitname;
+        });
 
-                //str = '<span class="selectparmitem" dataguid="" title="' + bigname + '" unit="' + unit + '" minval="' + minval + '" maxval="' + maxval + '" datatype="11" bigTitle="' + samlname + '">' + samlname +
-                //    '：' + minval + "-" + maxval + '/' + unit + '<span class="fa fa-close" title="删除"></span></span>';
-            }
-            else {
-                //  var istrue = false;
-                if ($("#selectparmdivbox").find("div[bigtitle='" + samlname + "']").length > 0) {
-                    // alert("存在")
-                    $("#selectparmdivbox").find("div[bigtitle='" + samlname + "']").remove();
-                }
-                str = '<div class="selectparmitem" dataguid="" title="' + bigname + '" unit="' + vm.selectunitname + '" minval="' + vm.minparmvalue + '" maxval="' + vm.maxparmvalue + '" datatype="11" bigTitle="' + samlname + '">' +
-                    samlname + '：' + vm.minparmvalue + "-" + vm.maxparmvalue + '/' + vm.selectunitname + '<i id="' + tid + '" onclick="closes(this)" class="iconfont suyiguanbi1" style="font-size:18px;margin-left:5px;color:#1593FF;cursor:pointer;"></i></div >';
-
-                //str = '<span class="selectparmitem" dataguid="" title="' + bigname + '" unit="' + unit + '" minval="' + minval + '" maxval="' + maxval + '" datatype="11" bigTitle="' + samlname + '">' + samlname + '：'
-                //    + minval + "-" + maxval + '/' + unit + '<span class="fa fa-close" title="删除"></span></span>';
-            }
-            $("#selectparmdivbox").append(str);
-
-        }
-    }
-    ///删除已经选择的
-    //$(".suyiguanbi1").click(function () {
-    //    // alert("清理");
-    //    //alert($(this).parent().html());
-    //    var datatype = $(this).parent().attr("datatype");
-    //    var dataval = $(this).parent().attr("title");
-    //    //  alert(datatype + "+" + dataval);
-    //    if ($("ul[data-type='" + datatype + "']").find("li[data-value='" + dataval + "']").length > 0) {
-    //        $("ul[data-type='" + datatype + "']").find("li[data-value='" + dataval + "']").removeClass("active");
-    //    }
-    //    $(this).parent().remove();
-    //});
-
-    //检查验证输入参数值
-    function checkparm() {
-        var returns = false;
-        var tparm = $("#selctparm option:selected").val();
-        if (!returns) {
-            if (tparm != "" && tparm != undefined && tparm != null && tparm != "大于且小于") {
-                if (vm.parmvalue <= 0) {
-                    layer.msg("请输入参数值！", { icon: 5 });
-                    returns = false;
-                }
-                else {
-                    returns = true;
-                }
-            }
-            else {
-                if (vm.minparmvalue == "" || vm.minparmvalue == undefined || vm.minparmvalue == null) {
-                    layer.msg("请输入参数最小值！", { icon: 5 });
-                    returns = false;
-                }
-                else if (Number(vm.minparmvalue) < 0) {
-                    layer.msg("参数最小值最小为0！", { icon: 5 });
-                    returns = false;
-                }
-                else {
-                    returns = true;
-                }
-                if (vm.maxparmvalue == "" || vm.maxparmvalue == undefined || vm.maxparmvalue == null) {
-                    layer.msg("请输入参数最大值！", { icon: 5 });
-                    returns = false;
-                }
-                else if (Number(vm.maxparmvalue) < Number(vm.minparmvalue)) {
-                    layer.msg("参数最大值不能小于最小值！", { icon: 5 });
-                    returns = false;
-                }
-                else {
-                    returns = true;
-                }
-            }
-        }
-        return returns;
-    }
-    //输入检索性能
-    $("#searchparm").bind("input propertychange", function (event) {
-        var keyvalue = $("#searchparm").val();
-        vm.getparmlist(keyvalue);
-    });
-    //选择更多条件
-    function selectmoreparm() {
-        $(".showdivbox").show();
-        $('body').css("overflow", "hidden");
-    }
-    //关闭选择更多条件
-    function closeselectmoreparm() {
-        $(".showdivbox").hide();
-        $('body').css("overflow", "auto");
-    }
-    //是否展开搜索div
-    function opensearchdiv(t) {
-        if (t == "1") {
+        //确定选择参数值
+        function defineparm() {
+            vm.showerji = "0";
+            vm.showfill = "0";
+            //vm.showsearchbtndiv = "1";
+            //$("#searchbtnbottom").show();
+            //$("#searchbottom").show();
             vm.showopenbtn = "1";
-            $("#searchbottom").css("margin-bottom", "0px");
+            var tempwidth = 1190;//$(window).width() * 0.7;
+            var twidth = tempwidth - (160);
+            $("#resultlistdiv").width(twidth);
+            var bigname = vm.parentdata[vm.selectparentindex].FaceKey;
+            var samlname = vm.childdata[vm.selectchildindex].FaceKey;
+            var tid = vm.childdata[vm.selectchildindex].id;
+            //alert(bigname + "," + samlname);
+            var tunit = $("#unitselect option:selected").val();
+            var tparm = $("#selctparm option:selected").val();
+            var resultcheck = checkparm();
+            if (resultcheck) {
+                if (tunit != "" && tunit != undefined && tunit != null && tunit != "全部") {
+                    vm.selectunitname = tunit;
+                }
+                else {
+                    vm.selectunitname = "";
+                }
+                if (tparm != "大于且小于") {
+                    vm.minparmvalue = vm.parmvalue;
+                    vm.maxparmvalue = vm.parmvalue;
+                }
+                if ($("#selectparmdivbox").find(".selectparmitem").length == 0) {
+                    str = '<div class="selectparmitem" dataguid="" title="' + bigname + '" unit="' + vm.selectunitname + '" minval="' + vm.minparmvalue + '" maxval="' + vm.maxparmvalue + '" datatype="11" bigTitle="' + samlname + '">' +
+                        samlname + '：' + vm.minparmvalue + "-" + vm.maxparmvalue + '/' + vm.selectunitname + '<i id="' + tid +'" onclick="closes(this)" class="iconfont suyiguanbi1" style="font-size:18px;margin-left:5px;color:#1593FF;cursor:pointer;"></i></div >';
+
+                    //str = '<span class="selectparmitem" dataguid="" title="' + bigname + '" unit="' + unit + '" minval="' + minval + '" maxval="' + maxval + '" datatype="11" bigTitle="' + samlname + '">' + samlname +
+                    //    '：' + minval + "-" + maxval + '/' + unit + '<span class="fa fa-close" title="删除"></span></span>';
+                }
+                else {
+                    //  var istrue = false;
+                    if ($("#selectparmdivbox").find("div[bigtitle='" + samlname + "']").length > 0) {
+                        // alert("存在")
+                        $("#selectparmdivbox").find("div[bigtitle='" + samlname + "']").remove();
+                    }
+                    str = '<div class="selectparmitem" dataguid="" title="' + bigname + '" unit="' + vm.selectunitname + '" minval="' + vm.minparmvalue + '" maxval="' + vm.maxparmvalue +  '" datatype="11" bigTitle="' + samlname + '">' +
+                        samlname + '：' + vm.minparmvalue + "-" + vm.maxparmvalue + '/' + vm.selectunitname + '<i id="' + tid +'" onclick="closes(this)" class="iconfont suyiguanbi1" style="font-size:18px;margin-left:5px;color:#1593FF;cursor:pointer;"></i></div >';
+
+                    //str = '<span class="selectparmitem" dataguid="" title="' + bigname + '" unit="' + unit + '" minval="' + minval + '" maxval="' + maxval + '" datatype="11" bigTitle="' + samlname + '">' + samlname + '：'
+                    //    + minval + "-" + maxval + '/' + unit + '<span class="fa fa-close" title="删除"></span></span>';
+                }
+                $("#selectparmdivbox").append(str);
+                
+            }
         }
-        else {
-            vm.showopenbtn = "0";
+        ///删除已经选择的
+        //$(".suyiguanbi1").click(function () {
+        //    // alert("清理");
+        //    //alert($(this).parent().html());
+        //    var datatype = $(this).parent().attr("datatype");
+        //    var dataval = $(this).parent().attr("title");
+        //    //  alert(datatype + "+" + dataval);
+        //    if ($("ul[data-type='" + datatype + "']").find("li[data-value='" + dataval + "']").length > 0) {
+        //        $("ul[data-type='" + datatype + "']").find("li[data-value='" + dataval + "']").removeClass("active");
+        //    }
+        //    $(this).parent().remove();
+        //});
+
+        //检查验证输入参数值
+        function checkparm() {
+            var returns = false;
+            var tparm = $("#selctparm option:selected").val();
+            if (!returns) {
+                if (tparm != "" && tparm != undefined && tparm != null && tparm != "大于且小于") {
+                    if (vm.parmvalue <= 0) {
+                        layer.msg("请输入参数值！", { icon: 5 });
+                        returns = false;
+                    }
+                    else {
+                        returns = true;
+                    }
+                }
+                else {
+                    if (vm.minparmvalue == "" || vm.minparmvalue == undefined || vm.minparmvalue == null) {
+                        layer.msg("请输入参数最小值！", { icon: 5 });
+                        returns = false;
+                    }
+                    else if (Number(vm.minparmvalue) < 0) {
+                        layer.msg("参数最小值最小为0！", { icon: 5 });
+                        returns = false;
+                    }
+                    else {
+                        returns = true;
+                    }
+                    if (vm.maxparmvalue == "" || vm.maxparmvalue == undefined || vm.maxparmvalue == null) {
+                        layer.msg("请输入参数最大值！", { icon: 5 });
+                        returns = false;
+                    }
+                    else if (Number(vm.maxparmvalue) < Number(vm.minparmvalue)) {
+                        layer.msg("参数最大值不能小于最小值！", { icon: 5 });
+                        returns = false;
+                    }
+                    else {
+                        returns = true;
+                    }
+                }
+            }
+            return returns;
         }
-    }
-    function showlogindivbox() {
-        $(".showlogin").show();
-        //$(".showdivbox").show();
-        $('body').css("overflow", "hidden");
-    }
-</script>
-@Scripts.Render("~/PhysicalJS/BesJS")
-@Html.Partial("~/Views/Public/Bottom.cshtml")
+        //输入检索性能
+        $("#searchparm").bind("input propertychange", function (event) {
+            var keyvalue = $("#searchparm").val();
+            vm.getparmlist(keyvalue);
+        });
+        //选择更多条件
+        function selectmoreparm()
+        {
+            $(".showdivbox").show();
+            $('body').css("overflow", "hidden");
+        }
+        //关闭选择更多条件
+        function closeselectmoreparm()
+        {
+            $(".showdivbox").hide();
+            $('body').css("overflow", "auto");
+        }
+        //是否展开搜索div
+        function opensearchdiv(t)
+        {
+            if (t=="1") {
+                vm.showopenbtn = "1";
+                $("#searchbottom").css("margin-bottom", "0px");
+            }
+            else {
+                vm.showopenbtn = "0";
+            }
+        }
+        function showlogindivbox() {
+            $(".showlogin").show();
+            //$(".showdivbox").show();
+            $('body').css("overflow", "hidden");
+        }
+    </script>
+    @Scripts.Render("~/PhysicalJS/BesJS")
+    @Html.Partial("~/Views/Public/Bottom.cshtml")

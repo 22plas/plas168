@@ -596,14 +596,14 @@ div.point {
 }
 
 /*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
-::-webkit-scrollbar {
-    width: 7px;
-    height: 7px;
-    background-color: #2982c4;
-}
+    .showclassdivbox::-webkit-scrollbar {
+        width: 7px;
+        height: 7px;
+        background-color: #2982c4;
+    }
 
 /*定义滚动条轨道 内阴影+圆角*/
-::-webkit-scrollbar-track {
+.showclassdivbox::-webkit-scrollbar-track {
     box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
@@ -611,12 +611,12 @@ div.point {
 }
 
 /*定义滑块 内阴影+圆角*/
-::-webkit-scrollbar-thumb {
-    border-radius: 10px;
-    box-shadow: inset 0 0 6px rgba(0, 0, 0, .1);
-    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .1);
-    background-color: #31343d;
-}
+    .showclassdivbox::-webkit-scrollbar-thumb {
+        border-radius: 10px;
+        box-shadow: inset 0 0 6px rgba(0, 0, 0, .1);
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .1);
+        background-color: #31343d;
+    }
 
 .classitembox {
     width: 40%;

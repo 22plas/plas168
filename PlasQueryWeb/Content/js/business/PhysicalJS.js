@@ -341,7 +341,7 @@ function onColl(ProductId) {
         success: function (json) {
             if (json != null && json != '') {
                 if (json.isContonl == true) {
-                    layer.msg('收藏成功！', { icon: 1 });
+                    layer.msg('已添加对比！', { icon: 1 });
                     //<i class='Hui-iconfont'>&#xe61f;</i> 已参与对比
                     $("#Contrast_" + ProductId).removeAttr("onlick");
                     $("#Contrast_" + ProductId).html("<i class='Hui-iconfont'>&#xe61f;</i> 已参与对比");

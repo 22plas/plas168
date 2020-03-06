@@ -261,6 +261,7 @@
     <Content Include="Content\images\360server-icon6.png" />
     <Content Include="Content\images\360server-icon7.png" />
     <Content Include="Content\images\360server-line.png" />
+    <Content Include="Content\images\applog.png" />
     <Content Include="Content\images\cjsstop1.jpg" />
     <Content Include="Content\images\hqtop.jpg" />
     <Content Include="Content\images\news-001.png" />
@@ -344,8 +345,9 @@
     <Content Include="Content\img\logo-withe.png" />
     <Content Include="Content\img\logo.png" />
     <Content Include="Content\img\logo1.png" />
-    <Content Include="Content\img\newindex\APP banner.png" />
+    <Content Include="Content\img\newindex\APPbanner.png" />
     <Content Include="Content\img\newindex\logo.jpg" />
+    <Content Include="Content\img\newindex\weixinbanner.jpg" />
     <Content Include="Content\img\newsico.jpg" />
     <Content Include="Content\img\newstest.png" />
     <Content Include="Content\img\newstop.jpg" />

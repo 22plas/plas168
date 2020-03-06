@@ -139,7 +139,7 @@ a {
     background-color: #1593ff;
     color: #fff;
 }
-.search-item-box{width: 100%;padding: 10px 25px;box-sizing: border-box;}
+.search-item-box{width: 100%;/*padding: 10px 25px;*/box-sizing: border-box;}
 .search-item-box > .search-item{display: flex;flex-wrap: nowrap; width: 100%;padding: 8px 0;box-sizing: border-box;font-size: 14px;
     line-height: 26px;border-bottom: 1px dashed #ddd}
 .search-item-box > .search-item > .search-item-type{font-weight: bold;width: 90px;}
