@@ -667,6 +667,7 @@
     <Content Include="Views\News\Detail.cshtml" />
     <Content Include="Views\Public\Login.cshtml" />
     <Content Include="Views\Home\index20200304.cshtml" />
+    <Content Include="Views\Account\LoginByQQ.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

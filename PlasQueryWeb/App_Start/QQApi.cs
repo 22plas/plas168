@@ -26,8 +26,11 @@ namespace PlasQueryWeb.App_Start
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
-        public qqAccessTokenResult GetAccessTokenSns(string code,string returnurl)
+        public qqAccessTokenResult GetAccessTokenSns(string code)
         {
+
+            string returnurl = "http://168plas.com/Account/LoginByQQ";// "http%3A%2F%2F168plas.com%2FAccount%2FLoginByQQ";// HttpUtility.UrlEncode("http://168plas.com/Account/LoginByQQ"); // Server.UrlEncode("http://168plas.com/Account/LoginByQQ");
+            PlasCommon.Common.AddLog("", "qq获取AccessToken的url", "qq登录看返回值", returnurl);
             var p = new Dictionary<string, string>();
             p.Add("grant_type", "authorization_code");
             p.Add("client_id", _config.qqAppID);
@@ -35,8 +38,10 @@ namespace PlasQueryWeb.App_Start
             p.Add("code", code);
             p.Add("redirect_uri", returnurl);
             string url = $"https://graph.qq.com/oauth2.0/token{p.ToParam("?")}";
+            PlasCommon.Common.AddLog("", "qq获取AccessToken请求url", "qq登录看返回值", url);
             //Comm.WriteLog("GetAccessTokenSns", url, DebugLogLevel.Normal);
             var result = new CommonApi.BaseApi(url, "GET").CreateRequestReturnJson();
+            PlasCommon.Common.AddLog("", "qq获取AccessToken", "qq登录看返回值", result.ToString());
             if (result["errcode"] != null)
             {
                 throw new Exception(JsonConvert.SerializeObject(result));

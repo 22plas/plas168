@@ -76,14 +76,14 @@ namespace PlasBll
             }
         }
         //获取微信请求code用于匹配是否请求过
-        public DataTable GetWxCodeCheck(string code)
+        public DataTable GetWxCodeCheck(string code, int type)
         {
-            return cdal.GetWxCodeCheck(code);
+            return cdal.GetWxCodeCheck(code, type);
         }
         //添加微信请求code
-        public void AddWxCode(string code)
+        public void AddWxCode(string code, int type)
         {
-            cdal.AddWxCode(code);
+            cdal.AddWxCode(code, type);
         }
     }
 }
