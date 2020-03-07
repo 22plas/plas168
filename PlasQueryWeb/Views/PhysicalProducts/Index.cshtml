@@ -197,7 +197,7 @@
         line-height: 25px !important;
         width: 80px;
         float: right;
-        margin-top: 5px;
+        margin-top: 15px;
         cursor:pointer;
         margin-right:5px;
     }
@@ -643,11 +643,12 @@
                         data: "pageindex=" + (pageindex + 1) + "&pagesize=" + pagesize + "&guidstr=" + guidstr + "&isNavLink=" + isnavlink + datas + "&searchtype=" + searchtype,
                         async: true,
                         success: function (json) {
-                            //debugger;
+                            debugger;
                             var state = json.state;
                             if (state == "Success") {
                                 var productData = json.data;
                                 rowcount = json.totalCount;
+                                var contentDate = json.list;
                                 $("#recordstr").html(rowcount);
                                 //alert(JSON.parse(productData));
                                 if (rowcount != 0 && productData != "") {
@@ -658,9 +659,32 @@
                                         tbodyui += "<td width='10%'>" + n.Name + "</td>";
                                         tbodyui += "<td width='15%'>" + n.ProUse + "</td>";
                                         tbodyui += "<td width='20%'>" + n.characteristic + "</td>";
-                                        tbodyui += "<td width='20%'><span class='layui-btns' onclick=\"LookLoadingIcon('" + n.productid + "');\">寻找相似</span>";
+                                        tbodyui += "<td width='20%'><button class='layui-btns' onclick=\"LookLoadingIcon('" + n.productid + "');\">寻找相似</button>";
                                         //tbodyui += "<td><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.productid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span>";
-                                        tbodyui += "<span class='layui-btns' id=\"Contrast_" + n.productid + "\" onClick=\"onColl('" + n.productid + "');\">添加对比</span>";
+                                        //tbodyui += "<span class=\"cart-item\">+</span>";
+                                        //tbodyui += "<div class=\"page-wrapper\">";
+                                        //tbodyui += "<button name=\"addtocart\" onClick=\"onPlash(this);\">";
+                                        //tbodyui += "添加对比<span class=\"cart-item\"></span>";
+                                        //tbodyui += "</button >";
+                                        //tbodyui += "</div >";
+                                        var isAdd = "";
+                                        if (contentDate != "" && contentDate != null) {
+                                            $.each(contentDate, function (index, item) {
+                                                if (item.ProductGuid == n.productid) {
+                                                    isAdd = item.ProductGuid;
+                                                }
+                                            })
+                                            if (isAdd != "") {
+                                                tbodyui += "<span class='layui-btns' id=\"Contrast_" + n.productid + "\" style='background-color:#e1e1e1 !important'><i class='Hui-iconfont'>&#xe61f;</i> 已参与对比</span>";                                  
+                                            }
+                                            else {
+                                                tbodyui += "<span class='layui-btns' id=\"Contrast_" + n.productid + "\" onClick=\"onColl('" + n.productid + "');\">添加对比</span>";                                  
+                                            }
+                                            
+                                        }
+                                        else {
+                                            tbodyui += "<span class='layui-btns' id=\"Contrast_" + n.productid + "\" onClick=\"onColl('" + n.productid + "');\">添加对比</span>";                                  
+                                        }
                                         //tbodyui += "<span class='layui-btn layui-btn-sm' id=\"Contrast_" + n.productid + "\" onClick=\"onColl('" + n.productid + "');\"><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>";
                                         tbodyui += "</td>";// <span class='layui-btn layui-btn-sm'><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>
                                         tbodyui += "</tr>";
@@ -1210,5 +1234,23 @@
             $('body').css("overflow", "hidden");
         }
     </script>
+<script type="text/javascript">
+    ///飞
+    function onPlash(obj) {
+        var button = $(obj);
+        //  var cart = $('#cart');
+        //   var cartTotal = cart.attr('data-totalitems');
+        // var newCartTotal = parseInt(cartTotal) + 1;
+        //  var newCartTotal=1;
+        button.addClass('sendtocart');
+        //setTimeout(function () {
+        //    button.removeClass('sendtocart');
+        //    //cart.addClass('shake');//.attr('data-totalitems', newCartTotal);
+        //    setTimeout(function () {
+        //      //  cart.removeClass('shake');
+        //    }, 500)
+        //}, 1000)
+    }
+</script>
     @Scripts.Render("~/PhysicalJS/BesJS")
     @Html.Partial("~/Views/Public/Bottom.cshtml")

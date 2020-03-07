@@ -1,4 +1,5 @@
-﻿using PlasBll;
+﻿using Newtonsoft.Json;
+using PlasBll;
 using PlasCommon;
 using PlasModel.App_Start;
 using PlasQueryWeb.Models;
@@ -159,7 +160,18 @@ namespace PlasModel.Controllers
                     SamllType = ToolClass<ProductAttr>.ConvertDataTableToModel(ds.Tables[2]);// ToolHelper.DataTableToJson(ds.Tables[2]);
                 }
             }
-            return Json(new { state="Success", data = jsonstr, totalCount = count, BigType = BigType, SamllType = SamllType }, JsonRequestBehavior.AllowGet);
+
+            //查询会员登录后已经参与对比的数据
+            var list = new List<Physics_ContrastModel>();
+            if (AccountData != null && !string.IsNullOrWhiteSpace(AccountData.UserID))
+            {
+                string errMsg = string.Empty;
+                int counts = 0;
+                ProductBll bll = new ProductBll();
+                list = bll.getContrastList(AccountData.UserID, ref counts, ref errMsg);
+            }
+
+            return Json(new { state="Success", data = jsonstr, totalCount = count, BigType = BigType, SamllType = SamllType, list= list }, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -268,5 +280,50 @@ namespace PlasModel.Controllers
             public string Name { get; set; }
             public string CreateDate { get; set; }
         }
+
+
+        /// <summary>
+        /// 获取当然会员下的所有对比数据
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult getContrastList()
+        {
+            var list = new List<Physics_ContrastModel>();
+            string errMsg = string.Empty;
+            int counts = 0;
+            if (AccountData != null && !string.IsNullOrWhiteSpace(AccountData.UserID))
+            {
+                ProductBll bll = new ProductBll();
+                list = bll.getContrastList(AccountData.UserID, ref counts, ref errMsg);
+
+            }
+            
+            return Json(new { list= list,errMsg=errMsg, counts = counts },JsonRequestBehavior.AllowGet);
+        }
+
+
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult delContrastList(string productIdList)
+        {
+            string errMsg = string.Empty;
+            var isDelete = false;
+            if (!string.IsNullOrWhiteSpace(productIdList) && AccountData!=null && !string.IsNullOrWhiteSpace(AccountData.UserID))
+            {
+                ProductBll bll = new ProductBll();
+                var list = new List<Physics_ContrastModel>();
+                list = JsonConvert.DeserializeObject<List<Physics_ContrastModel>>(productIdList);
+                if (list != null && list.Count() > 0)
+                {
+                    list.ForEach(p => p.UserId = AccountData.UserID);
+                    isDelete= bll.deleteContrastList(list, ref errMsg);
+                }
+            }
+            return Json(new { isDelete = isDelete , errMsg = errMsg },JsonRequestBehavior.AllowGet);
+        }
+
+
     }
 }

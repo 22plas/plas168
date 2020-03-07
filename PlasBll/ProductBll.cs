@@ -390,5 +390,32 @@ namespace PlasBll
         {
             return dal.GetProductList(pagesize);
         }
+
+        #region 获取对比项
+
+        /// <summary>
+        /// 获取对比项
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public List<Physics_ContrastModel> getContrastList(string userId,ref int contrasts, ref string errMsg)
+        {
+            return dal.getContrastList(userId, ref contrasts, ref errMsg);
+        }
+
+        /// <summary>
+        /// 删除对比项
+        /// </summary>
+        /// <param name="physics"></param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public bool deleteContrastList(List<Physics_ContrastModel> physics, ref string errMsg)
+        {
+            return dal.deleteContrastList(physics, ref errMsg);
+        }
+
+        #endregion
+
     }
 }

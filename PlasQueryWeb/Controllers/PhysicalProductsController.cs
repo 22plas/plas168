@@ -426,7 +426,16 @@ namespace PlasModel.Controllers
                     int.TryParse(ds.Tables[1].Rows[0]["totalcount"].ToString(), out count);
                 }
             }
-            return Json(new { state = "Success", data = jsonstr, totalCount = count }, JsonRequestBehavior.AllowGet);
+            //getContrastList
+            var list = new List<Physics_ContrastModel>();
+            if (AccountData != null && !string.IsNullOrEmpty(AccountData.UserID))
+            {
+                int counts = 0;
+                string errMeg = string.Empty;
+                list = bll.getContrastList(AccountData.UserID, ref counts, ref errMeg);
+            }
+
+            return Json(new { state = "Success", data = jsonstr, totalCount = count , list = list }, JsonRequestBehavior.AllowGet);
         }
 
 

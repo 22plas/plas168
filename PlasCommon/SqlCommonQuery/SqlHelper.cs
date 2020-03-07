@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -409,33 +410,7 @@ namespace PlasCommon.SqlCommonQuery
         }
 
 
-        #region 返回DataTable [带参数]
-        /// <summary>
-        /// 返回DataTable [带参数]
-        /// </summary>
-        /// <param name="SQLString">查询语句</param>
-        /// <returns>DataSet</returns>
-        public static DataTable GetSqlDataTable_Param(string SQLString, SqlParameter[] param)
-        {
-            using (SqlConnection connection = new SqlConnection(ConnectionStrings))
-            {
-                using (SqlCommand cmd = new SqlCommand(SQLString, connection))
-                {
-                    DataSet ds = new DataSet();
-
-                    cmd.CommandTimeout = 100;
-                    connection.Open();
-                    if (param != null)
-                        cmd.Parameters.AddRange(param); //添加参数集
-                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                    adapter.Fill(ds, "ds");
-                    adapter.Dispose();
-                    return ds.Tables[0];
-                }
-
-            }
-        }
-        #endregion
+        
 
 
         #region 返回DataTable
@@ -592,6 +567,163 @@ namespace PlasCommon.SqlCommonQuery
             }
         }
 
+
+        #region 20200306获取list转换list
+        #region 返回DataTable [带参数]
+        /// <summary>
+        /// 返回DataTable [带参数]
+        /// </summary>
+        /// <param name="SQLString">查询语句</param>
+        /// <returns>DataSet</returns>
+        public static DataTable GetSqlDataTable_Param(string SQLString, SqlParameter[] param = null)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionStrings))
+            {
+                using (SqlCommand cmd = new SqlCommand(SQLString, connection))
+                {
+                    DataSet ds = new DataSet();
+
+                    cmd.CommandTimeout = 10;
+                    connection.Open();
+                    if (param != null)
+                        cmd.Parameters.AddRange(param); //添加参数集
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    adapter.Fill(ds, "ds");
+                    adapter.Dispose();
+                    return ds.Tables[0];
+                }
+
+            }
+        }
+
+        /// <summary>
+        /// 获取数据列表
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sqlString"></param>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public static List<T> GetQueryList<T>(string sqlString, SqlParameter[] param = null)
+        {
+            var dt = GetSqlDataTable_Param(sqlString, param);
+            var list = ConvertToList<T>(dt);
+            return list;
+        }
+
+        /// <summary>
+        /// 获取单行列表
+        /// </summary>
+        /// <typeparam name="T">对象</typeparam>
+        /// <param name="sql"></param>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        public static T GetQuery<T>(string sql, SqlParameter[] param = null)
+        {
+            DataTable dt = GetSqlDataTable_Param(sql, param);
+            var list = ConvertToList<T>(dt);
+            if (list.Count > 0)
+            {
+                return list[0];
+            }
+            return default(T);
+        }
+        #endregion
+
+
+        #region 返回DataTable
+        /// <summary>
+        /// datatable转换成List
+        /// </summary>
+        /// <typeparam name="T">对象</typeparam>
+        /// <param name="table">表</param>
+        /// <returns></returns>
+        public static List<T> ConvertToList<T>(DataTable table)
+        {
+            if (table == null)
+            {
+                return null;
+            }
+
+            List<DataRow> rows = new List<DataRow>();
+
+            foreach (DataRow row in table.Rows)
+            {
+                rows.Add(row);
+            }
+
+            return ConvertToList<T>(rows);
+        }
+
+        public static List<T> ConvertToList<T>(List<DataRow> rows)
+        {
+            List<T> list = null;
+
+            if (rows != null)
+            {
+                list = new List<T>();
+
+                foreach (DataRow row in rows)
+                {
+                    T item = CreateItem<T>(row);
+                    list.Add(item);
+                }
+            }
+
+            return list;
+        }
+
+        public static T CreateItem<T>(DataRow row)
+        {
+            T obj = default(T);
+            if (row != null)
+            {
+                obj = Activator.CreateInstance<T>();
+
+                foreach (DataColumn column in row.Table.Columns)
+                {
+                    PropertyInfo prop = obj.GetType().GetProperty(column.ColumnName);
+                    try
+                    {
+                        object value = row[column.ColumnName];
+                        prop.SetValue(obj, value, null);
+                    }
+                    catch
+                    {  //You can log something here     
+                       //throw;    
+                    }
+                }
+            }
+
+            return obj;
+        }
+
+        /// <summary>
+        /// 执行查询语句，返回DataSet
+        /// </summary>
+        /// <param name="SQLString">查询语句</param>
+        /// <returns>DataSet</returns>
+        public static DataSet GetDataSet(string SQLString)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionStrings))
+            {
+                DataSet ds = new DataSet();
+                try
+                {
+                    connection.Open();
+                    SqlDataAdapter command = new SqlDataAdapter(SQLString, connection);
+                    command.Fill(ds, "ds");
+                }
+                catch (System.Data.SqlClient.SqlException ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+                return ds;
+            }
+        }
+
+
+        #endregion
+        #endregion
 
 
 
