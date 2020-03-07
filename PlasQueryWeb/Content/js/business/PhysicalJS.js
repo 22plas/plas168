@@ -232,7 +232,6 @@ function InitData(pageindx, isNavLink) {
                 var strvar = "";
                 rowcount = json.totalCount;
                 $("#records").html(rowcount);
-                
                 if (rowcount != 0 && productData != "") {
                     $.each(JSON.parse(productData), function (i, n) {
                         tbodyui += "<tr title='" + n.ProUse + "'>";
@@ -332,30 +331,38 @@ $("#QueryBtnSuper").click(function () {
 
 ///添加对比
 function onColl(ProductId) {
-    $.ajax({
-        type: "POST",
-        dataType: "JSON",
-        url: '/MemberCenter/AddContrast',
-        data: "ProductId=" + ProductId,
-        async: false,
-        success: function (json) {
-            if (json != null && json != '') {
-                if (json.isContonl == true) {
-                    layer.msg('已添加对比！', { icon: 1 });
-                    //<i class='Hui-iconfont'>&#xe61f;</i> 已参与对比
-                    $("#Contrast_" + ProductId).removeAttr("onlick");
-                    $("#Contrast_" + ProductId).html("<i class='Hui-iconfont'>&#xe61f;</i> 已参与对比");
-                    $("#Contrast_" + ProductId).css("background-color", "#e1e1e1");
+    var counts = 0;
+    if ($("#ContrentNumber").length > 0) {
+        counts = parseInt($("#ContrentNumber").html());
+    }
+    if (counts < 3) {
+        $.ajax({
+            type: "POST",
+            dataType: "JSON",
+            url: '/MemberCenter/AddContrast',
+            data: "ProductId=" + ProductId,
+            async: false,
+            success: function (json) {
+                if (json != null && json != '') {
+                    if (json.isContonl == true) {
+                        layer.msg('已添加对比！', { icon: 1 });
+                        //<i class='Hui-iconfont'>&#xe61f;</i> 已参与对比
+                        $("#Contrast_" + ProductId).removeAttr("onlick");
+                        $("#Contrast_" + ProductId).html("<i class='Hui-iconfont'>&#xe61f;</i> 已参与对比");
+                        $("#Contrast_" + ProductId).css("background-color", "#e1e1e1 !important");
+                    }
+                    else {
+                        layer.msg(json.errmsg, { icon: 2 });
+                    }
                 }
-                else {
-                    layer.msg(json.errmsg, { icon: 2 });
-                }
-            }
-        },
-        error: function () { layer.msg('数据请求异常', { icon: 2 }); }
-
-
-    });
+            },
+            error: function () { layer.msg('数据请求异常', { icon: 2 }); }
+        });
+    }
+    else {
+        layer.msg('只能对比三条数据！', { icon: 2 });
+    }
+  
 
 }
 ///点击数字输入值

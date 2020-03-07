@@ -819,57 +819,70 @@ namespace PlasDal
             bool isTrue = true;//是否允许添加
             try
             {
-                StringBuilder sql = new StringBuilder();
-                sql.Append("insert into Physics_Contrast(ProductGuid,UserId,CreateDate)");
-                sql.Append("values(@ProductGuid,@UserId,@CreateDate)");
-                SqlParameter[] parmts = {
-                        new SqlParameter("@ProductGuid", model.ProductGuid),
-                        new SqlParameter("@UserId", model.UserId),
-                        new SqlParameter("@CreateDate",DateTime.Now)
-                       };
-                isadd = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), parmts) > 0;
-                //int count = 0;
-                //string isExites = string.Format(@"select ProductGuid from Physics_Contrast where UserId=@UserId");
-                //SqlParameter[] parm = { new SqlParameter("@UserId", model.UserId) };
-                //var dt = SqlHelper.GetSqlDataTable_Param(isExites, parm);
-                //if (dt.Rows.Count > 0)
+                //string sqlstr = string.Format(@"select * from Physics_Contrast where  UserId='{0}'", model.UserId);
+                //var list = SqlHelper.GetQueryList<Physics_ContrastModel>(sqlstr, null);
+                //if (list.Count >= 3)
                 //{
-                //    count = dt.Rows.Count;
-                //    //int.TryParse(dt.Rows[0]["counts"].ToString(),out count);
-                //    for (var i = 0; i < dt.Rows.Count; i++)
-                //    {
-                //        if (dt.Rows[i]["ProductGuid"].ToString().ToLower() == model.ProductGuid.ToLower())
-                //        {
-                //            isTrue = false;
-                //        }
-                //    }
-                //    dt.Dispose();
+                //    errMsg = "你最多只能三条数据对比";
                 //}
-                /////目前只运行三行对比
-                //if (count < 3)
+                //else
                 //{
-                //    if (isTrue)
+                //    foreach (var item in list)
                 //    {
-                //        StringBuilder sql = new StringBuilder();
-                //        sql.Append("insert into Physics_Contrast(ProductGuid,UserId,CreateDate)");
-                //        sql.Append("values(@ProductGuid,@UserId,@CreateDate)");
-                //        SqlParameter[] parmts = {
+                //        if ()
+                //    }
+                //    StringBuilder sql = new StringBuilder();
+                //    sql.Append("insert into Physics_Contrast(ProductGuid,UserId,CreateDate)");
+                //    sql.Append("values(@ProductGuid,@UserId,@CreateDate)");
+                //    SqlParameter[] parmts = {
                 //        new SqlParameter("@ProductGuid", model.ProductGuid),
                 //        new SqlParameter("@UserId", model.UserId),
                 //        new SqlParameter("@CreateDate",DateTime.Now)
                 //       };
-                //        isadd = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), parmts) > 0;
-                //    }
-                //    else
-                //    {
-                //        errMsg = "此数据已经参与对比！";
-                //    }
+                //    isadd = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), parmts) > 0;
+                //}
+                int count = 0;
+                string isExites = string.Format(@"select ProductGuid from Physics_Contrast where UserId=@UserId");
+                SqlParameter[] parm = { new SqlParameter("@UserId", model.UserId) };
+                var dt = SqlHelper.GetSqlDataTable_Param(isExites, parm);
+                if (dt.Rows.Count > 0)
+                {
+                    count = dt.Rows.Count;
+                    //int.TryParse(dt.Rows[0]["counts"].ToString(),out count);
+                    for (var i = 0; i < dt.Rows.Count; i++)
+                    {
+                        if (dt.Rows[i]["ProductGuid"].ToString().ToLower() == model.ProductGuid.ToLower())
+                        {
+                            isTrue = false;
+                        }
+                    }
+                    dt.Dispose();
+                }
+                ///目前只运行三行对比
+                if (count < 3)
+                {
+                    if (isTrue)
+                    {
+                        StringBuilder sql = new StringBuilder();
+                        sql.Append("insert into Physics_Contrast(ProductGuid,UserId,CreateDate)");
+                        sql.Append("values(@ProductGuid,@UserId,@CreateDate)");
+                        SqlParameter[] parmts = {
+                        new SqlParameter("@ProductGuid", model.ProductGuid),
+                        new SqlParameter("@UserId", model.UserId),
+                        new SqlParameter("@CreateDate",DateTime.Now)
+                       };
+                        isadd = SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), parmts) > 0;
+                    }
+                    else
+                    {
+                        errMsg = "此数据已经参与对比！";
+                    }
 
-                //}
-                //else
-                //{
-                //    errMsg = "你最多只能三条数据对比！";
-                //}
+                }
+                else
+                {
+                    errMsg = "你最多只能三条数据对比！";
+                }
 
 
             }

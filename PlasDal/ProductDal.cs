@@ -1,4 +1,5 @@
 ﻿using PlasCommon.SqlCommonQuery;
+using PlasModel;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -707,10 +708,12 @@ namespace PlasDal
 
         #endregion
 
+        #region 其他
+
         //获取产品助剂列表
-        public DataTable GetAnnotationList(int pagesize, int pageindex, string key,int? type=0)
+        public DataTable GetAnnotationList(int pagesize, int pageindex, string key, int? type = 0)
         {
-            string sql = string.Format("exec Fi_FillerList {0},{1},{2},{3},{4},'{5}'", pagesize, pageindex, 2052, 1, type,key);
+            string sql = string.Format("exec Fi_FillerList {0},{1},{2},{3},{4},'{5}'", pagesize, pageindex, 2052, 1, type, key);
             return SqlHelper.GetSqlDataTable(sql);
         }
         /// <summary>
@@ -723,7 +726,7 @@ namespace PlasDal
         /// <returns>返回助剂类别或者厂家</returns>
         public DataTable GetAnnotationClassOrFactory(string typestr, string key, int? pageindex = 1, int? pagesize = 10)
         {
-            string sql = string.Format(@"exec Fi_FillerProductTypeOrFactory {0},{1},{2},{3},'{4}'", pagesize, pageindex,2052, typestr, key);
+            string sql = string.Format(@"exec Fi_FillerProductTypeOrFactory {0},{1},{2},{3},'{4}'", pagesize, pageindex, 2052, typestr, key);
             return SqlHelper.GetSqlDataTable(sql);
         }
 
@@ -731,7 +734,7 @@ namespace PlasDal
         public DataSet GetAnnotationDetail(int id)
         {
             //根据id查询产品助剂热度
-            string gethitsql =string.Format("select * from Fi_FillterHitCount where ParentId={0}",id);
+            string gethitsql = string.Format("select * from Fi_FillterHitCount where ParentId={0}", id);
             DataTable hitdt = SqlHelper.GetSqlDataTable(gethitsql);
             int hitcount = 0;
             if (hitdt.Rows.Count > 0)
@@ -762,7 +765,7 @@ namespace PlasDal
             return dt;
         }
         //获取轮播pdf数据
-        public DataTable GetListPDF(int? pagesize=30)
+        public DataTable GetListPDF(int? pagesize = 30)
         {
             string sql = string.Format(@"SELECT TOP {0} p.ProductGuid,ptp.TypeName,ptp.ImagesColor,p.ProModel,sm.AliasName,psl.Name,pt.createtime FROM dbo.Product_TestPdf pt
                                         INNER JOIN dbo.Product_TypePdf ptp ON pt.TestType=ptp.ID
@@ -778,7 +781,7 @@ namespace PlasDal
         /// </summary>
         /// <param name="pagesize"></param>
         /// <returns></returns>
-        public DataTable GetProductList(int? pagesize=10)
+        public DataTable GetProductList(int? pagesize = 10)
         {
             string sql = string.Format(@"SELECT TOP {0} p.ProductGuid,p.ProModel,CASE WHEN sm.AliasName IS NULL THEN sm.EnglishName WHEN sm.AliasName='' THEN sm.EnglishName end AS AliasName,psl.Name, 
                                         CONVERT(varchar(100), p.CreateDate, 23) AS CreateDate FROM Product p
@@ -787,5 +790,80 @@ namespace PlasDal
             DataTable dt = SqlHelper.GetSqlDataTable(sql);
             return dt;
         }
+
+        #endregion、
+
+        #region 产品对比
+
+        /// <summary>
+        /// 获取产品对比列表
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="errMsg"></param>
+        /// <returns></returns>
+        public List<Physics_ContrastModel> getContrastList(string userId, ref int contrasts, ref string errMsg)
+        {
+            var list = new List<Physics_ContrastModel>();
+            try
+            {
+                string sql = string.Format(@"select top 3 a.*,b.ProModel,b.PlaceOrigin from Physics_Contrast a 
+                                            left join Product b on a.ProductGuid=b.ProductGuid
+                                            where a.UserId='{0}'", userId);
+                SqlParameter[] sqlParameters = { new SqlParameter("@UserId", userId) };
+                list = SqlHelper.GetQueryList<Physics_ContrastModel>(sql, sqlParameters);
+                contrasts = list.Count();
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message.ToString();
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// 删除添加对比(支持批量删除)
+        /// </summary>
+        /// <param name="physics">必须传入产品编号和会员编号</param>
+        /// <param name="errMsg">错误信息</param>
+        /// <returns></returns>
+        public bool deleteContrastList(List<Physics_ContrastModel> physics, ref string errMsg)
+        {
+            var isDelete = false;
+            try
+            {
+                StringBuilder sql = new StringBuilder();
+                if (physics != null && physics.Count > 0)
+                {
+                    foreach (var item in physics)
+                    {
+                        if (!string.IsNullOrWhiteSpace(item.ProductGuid) && !string.IsNullOrWhiteSpace(item.UserId))
+                        {
+                            sql.AppendFormat(" delete from Physics_Contrast where ProductGuid='{0}' and UserId='{1}'", item.ProductGuid, item.UserId);
+                        }
+                        else if (item.Id > 0)
+                        {
+                            sql.AppendFormat(" delete from Physics_Contrast where Id={0}", item.Id);
+                        }
+                    }
+                }
+                if (!string.IsNullOrWhiteSpace(sql.ToString()))
+                {
+                    isDelete=SqlHelper.ExectueNonQuery(SqlHelper.ConnectionStrings, sql.ToString(), null)>0;
+                }
+                else
+                {
+                    errMsg = "无删除数据";
+                }
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message.ToString();
+            }
+            return isDelete;
+        }
+
+
+        #endregion
+
     }
 }

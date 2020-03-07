@@ -4,8 +4,8 @@
 }
 
 <div class="clear"></div>
-<div  style="background:#D5D5D5">
-    <div   style="background:#09429c">
+<div style="background:#D5D5D5">
+    <div style="background:#09429c">
         <div class="mainwidth" style="background:#09429c;height:100px;">
             <div style="background:#09429c;">
                 <div style="width:20%;height:100px;float:left;">
@@ -83,8 +83,8 @@
 
             <div class="clear"></div>
             <div class="footbase">
-            © 2019-2022 168plas.com 版权所有 ICP证：粤ICP备18032546号-2
-           </div>
+                © 2019-2022 168plas.com 版权所有 ICP证：粤ICP备18032546号-2
+            </div>
         </div>
         <div style="width:270px;float:left;">
             <div style="width:100%;height:40px;font-size:22px;color:#666666;margin-top:20px;line-height:40px;">
@@ -109,7 +109,48 @@
         </div>
     </div>
     <div class="clear"></div>
- </div>
+</div>
+<!--漂浮对比-->
+<!--<div id="Contrast_List" class="floatContrast">
+    <div class="Contrast_title">
+        <span class="left duibiliebiao">对比列表</span>
+        <span class="right">收起</span>
+        <span class="clear"></span>
+    </div>
+
+</div>-->
+<div class="side">
+    <ul>
+        <li id="HomePage"><a href="/"><i class="iconfont">&#xe7d4;</i>首页</a></li>
+        <li class="sideetel">
+            <i class="iconfont">&#xe7dc;</i>物料对比
+            <label class="ContrentNumber" id="ContrentNumber">0</label>
+            <div class="telBox son">
+                <dd class="title">对比列表</dd>
+                <dd class="">
+
+                    <div id="ContrastList" style="height:100px;">
+
+                        <!--
+                          <div class="ContrentLnList">
+                              <div class="left">Panlite®LN-1250asdfadfgdfgdfgdfgdfgdfg</div>
+                              <div class="right iconfont" title="删除" style="color:red;">&#xe62a;</div>
+                              <div class="clear"></div>
+                          </div>
+                        -->
+
+                    </div>
+
+                    <div class="treeMore">最多可对比3个牌号</div>
+                    <div class="ContrentButton"><button class="clare_button" onclick="onclareAll();">清空</button><button class="clare_button">开始比对</button></div>
+                </dd>
+            </div>
+        </li>
+        <li class="sidetop" onClick="goTop();"><i class="iconfont">&#xe719;</i>返回顶部</li>
+    </ul>
+</div>
+
+<!--end 漂浮对比-->
 
 <script>
     var _hmt = _hmt || [];
@@ -118,4 +159,101 @@
         hm.src = "https://hm.baidu.com/hm.js?7b4797c3b4cbc4d59314649eb4d87621";
         var s = document.getElementsByTagName("script")[0];
         s.parentNode.insertBefore(hm, s);
-    })();</script>  
+    })();
+
+    //返回顶部
+    function goTop() {
+        $('html,body').animate({
+            scrollTop: 0
+        }, 500)
+    }
+
+    //加载收藏产品
+    function onLoadContrast() {
+        $.ajax({
+            type: "POST",
+            dataType: "JSON",
+            url: '/Product/getContrastList',
+            data: "AdminID=1",
+            async: false,
+            success: function (json) {
+                if (json.errMsg == "") {
+                    var str = "";
+                    $.each(json.list, function (index, item) {
+                        str += "<div class=\"ContrentLnList\" id='" + item.ProductGuid + "'>";
+                        str += "<div class=\"left\">" + item.ProModel + "</div>";
+                        str += "<div class=\"right iconfont\" title=\"删除\" onClick=\"ContratDelete('" + item.ProductGuid + "')\" style=\"color:red;\">&#xe62a;</div>";
+                        str += "<div class=\"clear\"></div>";
+                        str += "</div>";
+                    })
+                    $("#ContrastList").html(str);
+                    $("#ContrentNumber").html(json.counts);
+                }
+            },
+            error: function () { layer.msg('数据异常!', { icon: 5 }); }
+        });
+
+    }
+
+    //清空所有
+    function onclareAll() {
+        layer.confirm('你确定清空所有对比数据？', function (index) {
+            if ($(".ContrentLnList").length > 0) {
+                var arry = new Array();
+                $.each($(".ContrentLnList"), function (index, item) {
+                    arry.push({ "ProductGuid": $(this).attr("id") });
+                })
+                $.ajax({
+                    type: "POST",
+                    dataType: "JSON",
+                    url: '/Product/delContrastList',
+                    data: "productIdList=" + JSON.stringify(arry),
+                    async: false,
+                    success: function (json) {
+                        if (json.isDelete) {
+                            onLoadContrast();
+                            layer.close(index);
+                        }
+
+                    },
+                    error: function () { layer.msg('数据异常!', { icon: 5 }); }
+                });
+            }
+            else {
+                layer.msg('没有清空的对比！', { icon: 5 });
+            }
+        })
+    }
+
+    //删除
+    function ContratDelete(objid) {
+        layer.confirm('你确定删除此对比？', function (index) {
+            var arry = new Array();
+            arry.push({ "ProductGuid": objid });
+            if (objid != "") {
+                $.ajax({
+                    type: "POST",
+                    dataType: "JSON",
+                    url: '/Product/delContrastList',
+                    data: "productIdList=" + JSON.stringify(arry),
+                    async: false,
+                    success: function (json) {
+                        if (json.isDelete) {
+                            onLoadContrast();
+                            layer.close(index);
+                        }
+                        
+                    },
+                    error: function () { layer.msg('数据异常!', { icon: 5 }); }
+                });
+            }
+
+        })
+    }
+
+    $(document).ready(function () {
+        onLoadContrast();
+    })
+
+
+</script>  

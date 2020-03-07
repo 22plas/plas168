@@ -53,8 +53,7 @@ $().ready(function () {
 });
 
 function InitData(pageindx) {
-    //   debugger;
-    // alert(datas);
+      // debugger;
     page_indx = pageindx;
     var tbodyui = "";
     var typelist = "";
@@ -66,7 +65,7 @@ function InitData(pageindx) {
         data: "pageindex=" + (pageindx + 1) + "&pagesize=" + pagesize + "&searchtype=" + _searchtype + "&key=" + keywork + "&strGuid=" + strGuid + "" + datas,
         async: false,
         success: function (json) {
-            //   debugger;
+           
             try {
                 var state = json.state;
                 if (state == "Success") {
@@ -74,6 +73,7 @@ function InitData(pageindx) {
                     var bigData = json.BigType;
                     var smaillData = json.SamllType;
                     var strvar = "";
+                    var contentDate = json.list;
                     rowcount = json.totalCount;
                     $("#records").html(rowcount);
                     if (rowcount != 0 && productData != "") {
@@ -88,7 +88,25 @@ function InitData(pageindx) {
                             //tbodyui += "<td ><span class='layui-btn layui-btn-sm' onclick=\"LookLoadingIcon('" + n.prodid + "');\"><i class='Hui-iconfont'>&#xe6bd;</i> 寻找相似</span>";
                             //后期需要添加用户账户
                             //if (n.isColl == '0') {
-                            tbodyui += "<span class='layui-btns layui-btn-sm' id=\"Contrast_" + n.prodid + "\" onClick=\"onColl('" + n.prodid + "');\">添加对比</span>";
+                            var isAdd = "";
+                            if (contentDate != "" && contentDate != null) {
+                                $.each(contentDate, function (index, item) {
+                                    if (item.ProductGuid == n.prodid) {
+                                        isAdd = item.ProductGuid;
+                                    }
+                                })
+                                if (isAdd != "") {
+                                    tbodyui += "<span class='layui-btns layui-btn-sm' id=\"Contrast_" + n.prodid + "\" style='background-color:#e1e1e1 !important'><i class='Hui-iconfont'>&#xe61f;</i> 已参与对比</span>";
+                                }
+                                else {
+                                    tbodyui += "<span class='layui-btns layui-btn-sm' id=\"Contrast_" + n.prodid + "\" onClick=\"onColl('" + n.prodid + "');\">添加对比</span>";
+                                }
+
+                            }
+                            else {
+                                tbodyui += "<span class='layui-btns layui-btn-sm' id=\"Contrast_" + n.prodid + "\" onClick=\"onColl('" + n.prodid + "');\">添加对比</span>";
+                            }
+                          //  tbodyui += "<span class='layui-btns layui-btn-sm' id=\"Contrast_" + n.prodid + "\" onClick=\"onColl('" + n.prodid + "');\">添加对比</span>";
                             //tbodyui += "<span class='layui-btn layui-btn-sm' id=\"Contrast_" + n.prodid + "\" onClick=\"onColl('" + n.prodid + "');\"><i class='Hui-iconfont'>&#xe61f;</i> 添加对比</span>";
                             //}
                             //else {
@@ -216,31 +234,39 @@ function pageselectCallback(page_id, jq) {
 
 ///添加对比
 function onColl(ProductId) {
-    $.ajax({
-        type: "POST",
-        dataType: "JSON",
-        url: '/MemberCenter/AddContrast',
-        data: "ProductId=" + ProductId,
-        async: false,
-        success: function (json) {
-            if (json != null && json != '') {
-                if (json.isContonl == true) {
-                    layer.msg('收藏成功！', { icon: 1 });
-                    //<i class='Hui-iconfont'>&#xe61f;</i> 已参与对比
-                    $("#Contrast_" + ProductId).removeAttr("onlick");
-                    $("#Contrast_" + ProductId).html("<i class='Hui-iconfont'>&#xe61f;</i> 已参与对比");
-                    $("#Contrast_" + ProductId).css("background-color", "#e1e1e1");
+
+
+    var counts = 0;
+    if ($("#ContrentNumber").length > 0) {
+        counts = parseInt($("#ContrentNumber").html());
+    }
+    if (counts < 3) {
+        $.ajax({
+            type: "POST",
+            dataType: "JSON",
+            url: '/MemberCenter/AddContrast',
+            data: "ProductId=" + ProductId,
+            async: false,
+            success: function (json) {
+                if (json != null && json != '') {
+                    if (json.isContonl == true) {
+                        layer.msg('已添加对比！', { icon: 1 });
+                        //<i class='Hui-iconfont'>&#xe61f;</i> 已参与对比
+                        $("#Contrast_" + ProductId).removeAttr("onlick");
+                        $("#Contrast_" + ProductId).html("<i class='Hui-iconfont'>&#xe61f;</i> 已参与对比");
+                        $("#Contrast_" + ProductId).css("background-color", "#e1e1e1 !important");
+                    }
+                    else {
+                        layer.msg(json.errmsg, { icon: 2 });
+                    }
                 }
-                else {
-                    layer.msg(json.errmsg, { icon: 2 });
-                }
-            }
-        },
-        error: function () { layer.msg('数据请求异常', { icon: 2 }); }
-
-
-    });
-
+            },
+            error: function () { layer.msg('数据请求异常', { icon: 2 }); }
+        });
+    }
+    else {
+        layer.msg('只能对比三条数据！', { icon: 2 });
+    }
 }
 
 

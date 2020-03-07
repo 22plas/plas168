@@ -20,9 +20,9 @@ namespace PlasModel
             bundles.Add(new StyleBundle("~/GetContent/CommonCss").Include(
                       "~/Content/css/base.css",
                       "~/Content/css/pageSwitch.min.css",
-                      "~/Content/css/iconfont/iconfont.css"
+                      "~/Content/css/iconfont/iconfont.css",
+                      "~/Content/layui/css/layui.css"
                       ));
-
             bundles.Add(new ScriptBundle("~/GetButtom/FootJS").Include(
                 "~/Content/js/pageSwitch.min.js",
                 "~/Content/js/index.js",
@@ -55,7 +55,8 @@ namespace PlasModel
               "~/Content/js/jquery-ui.js",
               "~/Content/js/uploadfile.js",
               "~/Content/js/Area.js",
-              "~/Content/js/business/Register.js"
+              "~/Content/js/business/Register.js",
+              "~/Content/layui/layui.js"
               ));
                  BundleTable.EnableOptimizations = true;
         }
